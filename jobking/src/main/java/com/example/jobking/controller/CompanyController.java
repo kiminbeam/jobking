@@ -17,12 +17,17 @@ public class CompanyController {
 		return "regi_jobadForm";
 	}
 	
-	@RequestMapping("regi_jobad")
+	@RequestMapping("/regi_jobad")
 	public String regiAD() {
 		//데이터 등록하는 메서드
 		
 		//등록한 채용공고 목록페이지
 		return "redirect: jobadList";
+	}
+	
+	@RequestMapping("/jobadList")
+	public String jobadList() {
+		return "jobadList";
 	}
 	
 }
