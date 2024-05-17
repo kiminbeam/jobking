@@ -17,7 +17,7 @@ import com.example.jobking.entity.User;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.IUserRepository;
 
-
+@RequestMapping("/user")
 @Controller
 public class YController {
 

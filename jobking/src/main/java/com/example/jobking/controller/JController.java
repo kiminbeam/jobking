@@ -16,6 +16,7 @@ import com.example.jobking.repository.IUserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+@RequestMapping("/user")
 @Controller
 public class JController {
 
