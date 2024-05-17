@@ -1,6 +1,5 @@
 package com.example.jobking.controller;
 
-import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.jobking.entity.User;
-import com.example.jobking.repository.UserRepository;
+import com.example.jobking.repository.IUserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -18,10 +17,12 @@ public class JController {
 
 	
 	@Autowired
-	private UserRepository userRepo;
+	private IUserRepository userRepo;
 	
-	@RequestMapping("/")
-	public String root() {
+	@RequestMapping("/index")
+	public String root(Model model) {
+		model.addAttribute("name", "jia");
+		model.addAttribute("name111", "yaaay");
 		return "index";
 	}
 	
@@ -41,12 +42,13 @@ public class JController {
 		Optional<User> user = userRepo.findById(uid);
 		user.ifPresent(u->{
 			if(u.getUpw().equals(upw)) {
-				model.addAttribute("result", true);
+				
 				request.getSession().setAttribute("id", uid);
 				request.getSession().setAttribute("name", u.getUname());
+				model.addAttribute("result", "true");
 			}
 		});
-		return "redirect:/";
+		return "login_form";
 	}
 	@RequestMapping("/company_login")
 	public String companyLogin(HttpServletRequest request, Model model) {

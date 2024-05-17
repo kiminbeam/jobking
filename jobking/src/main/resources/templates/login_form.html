@@ -69,7 +69,8 @@ ul.tabs li.current{
 	</div>
 </div>
 
-<script>
+
+<script th:inline="javascript">
 
 	const tabs = document.querySelectorAll("li");
 	const userForm = document.querySelector("#user_login");
@@ -113,6 +114,13 @@ ul.tabs li.current{
 			}
 		})
 	})
+	if([[${result}]] != null){
+		console.log("xxx");
+		console.log([[${sessionScope.id}]]);
+	}
+	
+	
+	
 
 </script>
 </body>
