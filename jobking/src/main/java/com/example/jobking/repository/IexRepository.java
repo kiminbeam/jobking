@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.jobking.entity.User;
 
-public interface IexRepository extends JpaRepository<User, Long>{
-
-}
+//public interface IexRepository extends JpaRepository<User, Long>{
+//
+//}
