@@ -2,6 +2,8 @@ package com.example.jobking.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -29,6 +31,7 @@ public class User extends BaseEntity {
     @Column(name = "upw", nullable = false)
     private String upw;
     
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "birthDate", nullable = false)
     private Date birthDate;
     

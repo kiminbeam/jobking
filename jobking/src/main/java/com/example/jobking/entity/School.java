@@ -3,6 +3,8 @@ package com.example.jobking.entity;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -37,9 +39,11 @@ public class School extends BaseEntity {
 	@JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
 	private User user;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "accDate", nullable = false)
 	private Date accDate;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "gradDate", nullable = false)
 	private Date gradDate;
 
