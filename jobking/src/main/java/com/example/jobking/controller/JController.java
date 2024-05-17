@@ -1,9 +1,9 @@
 package com.example.jobking.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -37,5 +37,11 @@ public class JController {
 		//db에서 user 로그인 정보 확인
 	    //맞으면 result 보내주기
 		return "redirect:/";
+	}
+	@RequestMapping("/user_myPage")
+	public void userMyPage(Model model) {
+		
+		model.addAttribute("name", "jia");
+		
 	}
 }
