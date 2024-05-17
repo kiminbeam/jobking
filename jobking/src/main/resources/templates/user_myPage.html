@@ -15,11 +15,12 @@ li{
 <h1>마이페이지</h1>
 <div>
 <h3>회원정보</h3>
-	<h2 th:text="${name}"></h2>
-	<span>생년월일</span> <span th:text="${name}"></span>
-	<span>전화번호</span> <span th:text="${name}"></span>
-	<span>주소</span> <span th:text="${name}"></span>
-	<a href="">회원정보 수정하기</a>
+<!-- 이미지 파일 넣어주기 -->
+	<h2 th:text="${user.uname}"></h2>
+	<span>생년월일</span> <span th:text="${user.birthDate}"></span>
+	<span>전화번호</span> <span th:text="${user.tel}"></span>
+	<span>주소</span> <span th:text="${user.uaddr}"></span>
+	<a href="user_information">회원정보 수정하기</a>
 </div>
 <div>
 	<h3>이력서 관리</h3>
@@ -29,10 +30,10 @@ li{
 			<th>제목</th>
 			<th>대표</th>
 		</tr>
-		<tr th:each="resume : ${resume}">
-			<td th:text="${resume.count}"></td>
-			<td th:text="${resume.title}"></td>
-			<td th:text="${resume.default}"></td>
+		<tr th:each="resumeList, stat :${resumeList}">
+			<td>[[${stat.count}]]</td>
+			<td>[[${resumeList.rtitle}]]</td>
+			<td>[[${resumeList.def}]]</td>
 		</tr>
 	</table>
 </div>
@@ -57,4 +58,12 @@ li{
 
 </body>
 <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+
+<script th:inline="javascript">
+console.log([[${result}]]);
+	if([[${result}]] == "false"){
+		alert("등록된 이력서가 없습니다. 빠른 구직을 위하여 이력서를 등록해주세요");
+	}
+	
+</script>
 </html>
