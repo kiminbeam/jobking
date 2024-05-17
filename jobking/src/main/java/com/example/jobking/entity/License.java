@@ -1,8 +1,6 @@
 package com.example.jobking.entity;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,7 +45,6 @@ public class License extends BaseEntity {
 	@Column(name = "org")
 	private String org;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "getDate")
-	private Date getDate;
+	private LocalDate getDate;
 }
