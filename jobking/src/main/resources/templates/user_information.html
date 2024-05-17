@@ -5,8 +5,18 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<form action="edit_">
-	
-	</form>
+<h1>userInfo</h1>
+	<form action="user_edit" method="post">
+		<!-- 	이미지파일 -->
+			이름 <input type="text" name="uname" th:value="${user.uname}">
+			성별 <input type="text" name="gender" th:value="${user.gender}" readonly>
+			생년월일 <input type="date" name="birthDate" th:value="${user.birthDate}" readonly>
+			아이디 <input type="text" name="uid" th:value="${user.uid}" readonly>
+			비밀번호 <input type="text" name="upw" >
+			비밀번호확인 <input type="text" >
+			주소 <input type="text" name="uaddr" th:value="${user.uaddr}">
+			전화번호 <input type="text" name="tel" th:value="${user.tel}">
+			<input type="submit" value="수정하기">
+	 </form>
 </body>
 </html>

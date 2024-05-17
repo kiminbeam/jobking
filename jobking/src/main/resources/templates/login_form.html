@@ -114,9 +114,14 @@ ul.tabs li.current{
 			}
 		})
 	})
-	if([[${result}]] != null){
-		console.log("xxx");
-		console.log([[${sessionScope.id}]]);
+	if([[${result}]] != null ){
+		if([[${result}]] == "true"){
+			alert("성공적으로 로그인되었습니다. 메인화면으로 이동합니다.");
+// 			location.href="";
+		}else{
+			alert("입력하신 아이디와 비밀번호와 일치하는 회원이 없습니다. 다시 시도해주세요");
+		}
+		
 	}
 	
 	
