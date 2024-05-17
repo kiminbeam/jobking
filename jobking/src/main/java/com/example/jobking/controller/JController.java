@@ -1,6 +1,5 @@
 package com.example.jobking.controller;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.jobking.entity.Company;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
+import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.IUserRepository;
 
@@ -25,9 +26,12 @@ public class JController {
 	@Autowired
 	private IResumeRepository resumeRepo;
 	
+	@Autowired
+	private ICompanyRepository companyRepo;
+	
 	@RequestMapping("/index")
-	public String root(Model model) {
-		userRepo.save(new User("aaa", "홍길동","1234", new Date(), "M", "aaa1234@gmail.com","010-1111-1111", "서울","dog"));
+	public String root() {
+//		companyRepo.save(new Company("ccc","", "네이버", "12345", "12345", "james", "11111", "서울", 500, "", "11", "11", "11"));
 		return "index";
 	}
 	
