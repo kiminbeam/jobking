@@ -20,10 +20,10 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
 
 	@Id
-    @Column(name = "uid", nullable = false, unique = true)
+    @Column(name = "uid", nullable = false, unique = true, length = 20)
     private String uid;
     
-    @Column(name = "uname", nullable = false)
+    @Column(name = "uname", nullable = false, length = 50)
     private String uname;
     
     @Column(name = "upw", nullable = false)
