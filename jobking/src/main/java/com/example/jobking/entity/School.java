@@ -1,9 +1,7 @@
 package com.example.jobking.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -39,13 +37,11 @@ public class School extends BaseEntity {
 	@JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
 	private User user;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "accDate", nullable = false)
-	private Date accDate;
+	private LocalDate accDate;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	@Column(name = "gradDate", nullable = false)
-	private Date gradDate;
+	private LocalDate gradDate;
 
 	@Column(name = "eduName", nullable = false)
 	private String eduName;
