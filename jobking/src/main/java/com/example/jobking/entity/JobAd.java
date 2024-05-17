@@ -1,6 +1,6 @@
 package com.example.jobking.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -48,7 +48,7 @@ public class JobAd extends BaseEntity {
     private String jobCont;
     
     @Column(name = "receiptCloseDt", nullable = false)
-    private Date receiptCloseDt;
+    private LocalDate receiptCloseDt;
     
     @Column(name = "empTpNm", nullable = false, length = 30)
     private String empTpNm;
@@ -74,7 +74,7 @@ public class JobAd extends BaseEntity {
     @Column(name = "rcptMthd", length = 10)
     private String rcptMthd;
     
-    @Column(name = "regionCd", nullable = false, length = 3)
+    @Column(name = "regionCd", nullable = false, length = 10)
     private String regionCd;
     
     @Column(name = "WkdWkhCnt", nullable = false, length = 2)

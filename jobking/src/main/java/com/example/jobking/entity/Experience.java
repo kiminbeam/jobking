@@ -1,6 +1,6 @@
 package com.example.jobking.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,12 +36,11 @@ public class Experience extends BaseEntity {
     @JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
     private User user;
 
-
     @Column(name = "startDay")
-    private Date startDay;
-
+    private LocalDate startDay;
+    
     @Column(name = "endDay")
-    private Date endDay;
+    private LocalDate endDay;
 
     @Column(name = "org")
     private String org;

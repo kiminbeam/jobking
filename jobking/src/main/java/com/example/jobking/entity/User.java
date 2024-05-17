@@ -1,6 +1,6 @@
 package com.example.jobking.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,17 +20,17 @@ import lombok.NoArgsConstructor;
 public class User extends BaseEntity {
 
 	@Id
-    @Column(name = "uid", nullable = false, unique = true, length = 20)
+    @Column(name = "uid", nullable = false, unique = true)
     private String uid;
     
-    @Column(name = "uname", nullable = false, length = 50)
+    @Column(name = "uname", nullable = false)
     private String uname;
     
     @Column(name = "upw", nullable = false)
     private String upw;
     
     @Column(name = "birthDate", nullable = false)
-    private Date birthDate;
+    private LocalDate birthDate;
     
     @Column(name = "gender", nullable = false)
     private String gender;

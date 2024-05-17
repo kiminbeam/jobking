@@ -1,6 +1,6 @@
 package com.example.jobking.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,10 +37,10 @@ public class Career extends BaseEntity {
     private User user;
 
     @Column(name = "startDate")
-    private Date startDate;
+    private LocalDate startDate;
 
     @Column(name = "endDate")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "cName")
     private String cName;

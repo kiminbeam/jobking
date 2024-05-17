@@ -1,7 +1,7 @@
 package com.example.jobking.entity;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,10 +38,10 @@ public class School extends BaseEntity {
 	private User user;
 
 	@Column(name = "accDate", nullable = false)
-	private Date accDate;
+	private LocalDate accDate;
 
 	@Column(name = "gradDate", nullable = false)
-	private Date gradDate;
+	private LocalDate gradDate;
 
 	@Column(name = "eduName", nullable = false)
 	private String eduName;

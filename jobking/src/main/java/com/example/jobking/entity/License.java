@@ -1,6 +1,6 @@
 package com.example.jobking.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -46,5 +46,5 @@ public class License extends BaseEntity {
 	private String org;
 
 	@Column(name = "getDate")
-	private Date getDate;
+	private LocalDate getDate;
 }

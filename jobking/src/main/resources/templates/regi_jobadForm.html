@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+	.jcontent {
+		width: 500px;
+		height: 1500px;
+	}
+	
+	.skill {
+		width:500px;
+		height:100px;
+	}
+</style>
+</head>
+<body>
+<h1>채용공고 등록</h1>
+<hr>
+<form action="/regi_jobad" method=post>
+	공고 제목: <input type="text" name="wantedTitle"><br>
+	모집직무: <input type="text" name="position"><br>
+	모집업종: <input type="text" name=sectors><br>
+	모집 인원: <input type="number" name="collectPscnt"><br>
+	접수마감일: <input type="date" name="receiptCloseDt" required><br>
+	직무내용:<br>
+	<textarea class="jcontent" name=jobCont placeholder="구직자모집 직무내용을 입력하세요."></textarea><br>
+	<label for="empTpNm">고용형태</label>
+	<select id="empTpNm" name="empTpNm">
+		<option value="정규직">정규직</option>
+		<option value="비정규직">비정규직</option>
+		<option value="계약직">계약직</option>
+		<option value="파견직">파견직</option>
+	</select><br>
+	최소학력조건<input type="text" name="minedubglcd"><br>
+	최대학력조건<input type="text" name="maxedubglcd"><br>
+	필요스킬<br>
+	<textarea class="skill" name= needskill placeholder="최대 20자까지..."></textarea>
+	<br>
+	접수방법: <input type="text" name="rcptMthd"><br>
+	근무시간: 
+	<label for="WkdWkhCnt">근무시간</label>
+	<select id="WkdWkhCnt" name="WkdWkhCnt">
+		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
+	</select><br>
+	
+	급여:
+	<label for="salTpNm">급여조건</label>
+	<select id="salTpNm" name="salTpNm">
+		<option value="일급">일급</option>
+		<option value="월급">월급</option>
+	</select><br>
+	퇴직금 여부: <input type="checkbox" name=retirepay><br>
+	기타복리후생: <br>
+	<textarea rows="40" cols="60" name=etcWelfare placeholder="내용을 입력해주세요."></textarea>
+	<br>
+	병역특례채용희망 <input type="checkbox" name="mltsvcExcHope">><br>
+	
+	채용공고 관련키워드
+	<label for="srchKeywordNum">키워드 선택</label>
+	<select id="srchKeywordNum" name="srchKeywordNum">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+	</select><br>
+	<input type="submit" value="등록하기">
+	
+</form>
+
+
+
+</body>
+</html>
