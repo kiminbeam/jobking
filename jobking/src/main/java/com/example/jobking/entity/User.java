@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,13 +18,12 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "user")
 public class User extends BaseEntity {
-	
-	
+
 	@Id
-    @Column(name = "uid", nullable = false, unique = true, length = 20)
+    @Column(name = "uid", nullable = false, unique = true)
     private String uid;
     
-    @Column(name = "uname", nullable = false, length = 50)
+    @Column(name = "uname", nullable = false)
     private String uname;
     
     @Column(name = "upw", nullable = false)
@@ -46,9 +46,4 @@ public class User extends BaseEntity {
     
     @Column(name = "photo")
     private String photo;
-
-
-  
-    
-
 }
