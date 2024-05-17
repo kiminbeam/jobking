@@ -2,6 +2,8 @@ package com.example.jobking.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,9 +38,11 @@ public class Career extends BaseEntity {
     @JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
     private User user;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "startDate")
     private Date startDate;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "endDate")
     private Date endDate;
 
