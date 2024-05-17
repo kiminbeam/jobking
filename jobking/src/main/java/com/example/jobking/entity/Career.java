@@ -1,8 +1,6 @@
 package com.example.jobking.entity;
 
-import java.util.Date;
-
-import org.springframework.format.annotation.DateTimeFormat;
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,13 +36,11 @@ public class Career extends BaseEntity {
     @JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
     private User user;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "startDate")
-    private Date startDate;
+    private LocalDate startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "endDate")
-    private Date endDate;
+    private LocalDate endDate;
 
     @Column(name = "cName")
     private String cName;
