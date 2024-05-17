@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+</head>
+<body>
+    <div>마이페이지</div>
+    <div>이력서 관리</div>
+    <div>
+        <input type="button" value="대표 이력서 설정하기" onclick="f()">
+    </div>
+
+    <!-- 첫 번째 이력서 목록 -->
+    <div id="resumeListDiv" style="display: block">
+        <ul th:each="resume : ${resumeList}">
+            <li th:text="${resume.rtitle}"></li>
+            <li>
+                <img src="../../images/pen.png" width="50" height="50">
+            </li>
+            <li>
+                <img src="../../images/X.png" width="50" height="50">
+            </li>
+        </ul>
+    </div>
+    
+    <!-- 두 번째 이력서 목록, 초기에는 숨김 -->
+    <div id="resumeListDiv2" style="display: none">
+        <ul th:each="resume : ${resumeList}">
+            <li>
+                <span th:text="${resume.rtitle}"></span>
+                <div id="selfInfoDiv">
+                    <ul>
+                        <li th:if="${selfinfoMap[resume.rno]}" th:text="${selfinfoMap[resume.rno].content}"></li>
+                        <li th:unless="${selfinfoMap[resume.rno]}">No self information available</li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+
+<script>
+
+	function toggleCheck(checkbox) {
+		// 모든 체크박스 가져오기
+		var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+		// 현재 클릭된 체크박스의 상태 확인
+		var isChecked = checkbox.checked;
+
+		// 모든 체크박스의 체크 상태 해제
+		checkboxes.forEach(function (cb) {
+			cb.checked = false;
+		});
+
+		// 현재 클릭된 체크박스만 체크 상태 설정
+		checkbox.checked = isChecked;
+	}
+
+	function f() {
+        // 첫 번째 이력서 목록 숨기기
+        document.getElementById('resumeListDiv').style.display = 'none';
+        
+        // 두 번째 이력서 목록 보이기
+        document.getElementById('resumeListDiv2').style.display = 'block';
+    }
+
+
+</script>
+
+</html>
