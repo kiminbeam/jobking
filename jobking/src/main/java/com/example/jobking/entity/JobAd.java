@@ -2,6 +2,8 @@ package com.example.jobking.entity;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -47,6 +49,7 @@ public class JobAd extends BaseEntity {
     @Column(name = "jobCont", nullable = false, columnDefinition = "TEXT")
     private String jobCont;
     
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "receiptCloseDt", nullable = false)
     private Date receiptCloseDt;
     
@@ -74,7 +77,7 @@ public class JobAd extends BaseEntity {
     @Column(name = "rcptMthd", length = 10)
     private String rcptMthd;
     
-    @Column(name = "regionCd", nullable = false, length = 3)
+    @Column(name = "regionCd", nullable = false, length = 10)
     private String regionCd;
     
     @Column(name = "WkdWkhCnt", nullable = false, length = 2)
