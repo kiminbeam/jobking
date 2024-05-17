@@ -1,5 +1,6 @@
 package com.example.jobking.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,8 +27,7 @@ public class JController {
 	
 	@RequestMapping("/index")
 	public String root(Model model) {
-		model.addAttribute("name", "jia");
-		model.addAttribute("name111", "yaaay");
+		userRepo.save(new User("aaa", "홍길동","1234", new Date(), "M", "aaa1234@gmail.com","010-1111-1111", "서울","dog"));
 		return "index";
 	}
 	
@@ -93,7 +93,9 @@ public class JController {
 		});
 	}
 	@RequestMapping("/user_edit")
-	public void userEdit(User user) {
+	public String userEdit(User user) {
 		userRepo.save(user);
+		
+		return "redirect:/user_myPage";
 	}
 }
