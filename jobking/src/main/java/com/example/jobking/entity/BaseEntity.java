@@ -25,7 +25,6 @@ public abstract class BaseEntity {
     @PrePersist
     protected void onCreate() {
         regdate = new Date();
-        moddate = new Date();
     }
 
     @PreUpdate
