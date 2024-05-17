@@ -42,6 +42,7 @@ ul.tabs li.current{
 .tab-content.current{
 	display: inherit;
 }
+
 </style>
 </head>
 <body>
@@ -52,16 +53,16 @@ ul.tabs li.current{
 	</ul>
 	<div id="user_login" class="tab-content current">
 		<form action="user_login" method="post">
-			<input type="text" name="uid" placeholder="아이디">
-			<input type="password" name="upw" placeholder="비밀번호">
+			<input type="text" name="uid" placeholder="아이디"> <br>
+			<input class="pw" type="password" name="upw" placeholder="비밀번호"> <span class="pwShowBtn">👁</span><br>
 			<input type="submit" value="로그인">
 			<input class="regBtn" type="button" value="회원가입">
 		</form>
 	</div>
 	<div id="company_login"  class="tab-content">
 		<form action="company_login" method="post">
-			<input type="text" name="cid" value="cccc">
-			<input type="password" name="cpw" value="cccc">
+			<input type="text" name="cid" placeholder="아이디"><br>
+			<input  class="pw"  type="password" name="cpw" placeholder="비밀번호"><span class="pwShowBtn">👁</span><br>
 			<input type="submit" value="로그인">
 			<input class="regBtn" type="button" value="회원가입">
 		</form>
@@ -76,6 +77,7 @@ ul.tabs li.current{
 	const userTab = document.querySelector("#userTab");
 	const companyTab = document.querySelector("#companyTab");
 	const regBtns = document.querySelectorAll(".regBtn")
+	const pwShowBtns = document.querySelectorAll(".pwShowBtn");
 
 	
 	tabs.forEach(tab=>{
@@ -100,7 +102,17 @@ ul.tabs li.current{
 			location.href="";
 		})
 	})
-
+	pwShowBtns.forEach(btn=>{
+		btn.addEventListener("click", function(e){
+			const pwElement = e.target.previousElementSibling;
+			pwElement.classList.toggle("active");
+			if(pwElement.classList.contains("active")){
+				pwElement.setAttribute("type", "text")
+			}else{
+				pwElement.setAttribute("type", "password")
+			}
+		})
+	})
 
 </script>
 </body>

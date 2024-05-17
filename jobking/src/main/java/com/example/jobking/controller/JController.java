@@ -3,10 +3,10 @@ package com.example.jobking.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import ch.qos.logback.core.model.Model;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-
 public class JController {
 
 	
@@ -20,13 +20,22 @@ public class JController {
 		
 	}
 	@RequestMapping("/user_login")
-	public void userLogin(HttpServletRequest request) {
-//		String uid = request.getParameter("uid");
-//		String upw = request.getParameter("upw");
-//		System.out.println("xxx");
+	public String userLogin(HttpServletRequest request, Model model) {
+		String uid = request.getParameter("uid");
+		String upw = request.getParameter("upw");
+	
+		//db에서 user 로그인 정보 확인
+		//맞으면 result 보내주기
+	
+		return "redirect:/";
 	}
 	@RequestMapping("/company_login")
-	public void companyLogin() {
-		
+	public String companyLogin(HttpServletRequest request, Model model) {
+		String cid = request.getParameter("cid");
+		String cpw = request.getParameter("cpw");
+		System.out.println(cid);
+		//db에서 user 로그인 정보 확인
+	    //맞으면 result 보내주기
+		return "redirect:/";
 	}
 }
