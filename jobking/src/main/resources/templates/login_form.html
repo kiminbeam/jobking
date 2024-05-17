@@ -1,10 +1,107 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+body{
+	margin-top: 100px;
+	line-height: 1.6
+}
+.container{
+	width: 500px;
+	margin: 0 auto;
+}
+
+
+
+ul.tabs{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.tabs li{
+	background: none;
+	color: #222;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+}
+
+ul.tabs li.current{
+	background: #ededed;
+	color: #222;
+}
+
+.tab-content{
+	display: none;
+	background: #ededed;
+	padding: 15px;
+}
+
+.tab-content.current{
+	display: inherit;
+}
+</style>
 </head>
 <body>
+<div class="container">
+	<ul class="tabs">
+		<li id="userTab" class="tab-link current" data-tab="user_login" >개인회원</li>
+		<li id="companyTab" class="tab-link" data-tab="company_login">기업회원</li>
+	</ul>
+	<div id="user_login" class="tab-content current">
+		<form action="user_login" method="post">
+			<input type="text" name="uid" placeholder="아이디">
+			<input type="password" name="upw" placeholder="비밀번호">
+			<input type="submit" value="로그인">
+			<input class="regBtn" type="button" value="회원가입">
+		</form>
+	</div>
+	<div id="company_login"  class="tab-content">
+		<form action="company_login" method="post">
+			<input type="text" name="cid" value="cccc">
+			<input type="password" name="cpw" value="cccc">
+			<input type="submit" value="로그인">
+			<input class="regBtn" type="button" value="회원가입">
+		</form>
+	</div>
+</div>
 
+<script>
+
+	const tabs = document.querySelectorAll("li");
+	const userForm = document.querySelector("#user_login");
+	const companyForm = document.querySelector("#company_login");
+	const userTab = document.querySelector("#userTab");
+	const companyTab = document.querySelector("#companyTab");
+	const regBtns = document.querySelectorAll(".regBtn")
+
+	
+	tabs.forEach(tab=>{
+		tab.addEventListener("click", function(e){
+			const id = e.target.getAttribute("data-tab")
+			if(id == "user_login"){
+				userTab.classList.add("current");
+				userForm.classList.add("current");
+				companyForm.classList.remove("current");
+				companyTab.classList.remove("current");
+			}else{
+				userTab.classList.remove("current");
+				companyTab.classList.add("current");
+				userForm.classList.remove("current");
+				companyForm.classList.add("current");
+			}
+		})
+	})
+	regBtns.forEach(btn=>{
+		btn.addEventListener("click", function(){
+			///회원가입폼으로 가기
+			location.href="";
+		})
+	})
+
+
+</script>
 </body>
 </html>
