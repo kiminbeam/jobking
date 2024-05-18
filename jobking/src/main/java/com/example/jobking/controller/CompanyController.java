@@ -17,7 +17,7 @@ import com.example.jobking.entity.JobAd;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.IJobAdRepository;
 
-
+@RequestMapping("/company")
 @Controller
 public class CompanyController {
 	
@@ -37,7 +37,7 @@ public class CompanyController {
 		return "regi_jobadForm";
 	}
 	
-<<<<<<< HEAD
+
 	@RequestMapping("/regi_jobad")
 	public String regiAD() {
 		//데이터 등록하는 메서드
@@ -45,29 +45,28 @@ public class CompanyController {
 		//등록한 채용공고 목록페이지
 		return "redirect: jobadList";
 	}
-=======
+
 	@InitBinder
     public void initBinder(WebDataBinder binder) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         dateFormat.setLenient(false);
         binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
-
+	
+	/*
 	@RequestMapping("/regi_jobad")
-    public String regiAD(@ModelAttribute JobAd jobad, @RequestParam("receiptCloseDt") Date receiptCloseDt) { 
+    public String regiAD(@ModelAttribute JobAd jobad, @RequestParam("receiptCloseDt") Date receiptCloseDt, @RequestParam("cid") String cid) { 
         
-		Company cid = comrepository.findByCid("1");
+		Optional com = comrepository.findById(cid);
 		cid.getClass();
 		jobad.setReceiptCloseDt(receiptCloseDt); 
         jobad = JobAd.builder().company(cid.getCid()).sectors(jobad.getSectors()).wantedTitle(jobad.getWantedTitle()).position(jobad.getPosition()).jobCont(jobad.getJobCont()).receiptCloseDt(receiptCloseDt).empTpNm(jobad.getEmpTpNm()).collectPsncnt(jobad.getCollectPsncnt()).salTpNm(jobad.getSalTpNm()).minEdubglcd(jobad.getMinEdubglcd()).maxEdubglcd(jobad.getMaxEdubglcd()).rcptMthd(jobad.getRcptMthd()).regionCd(jobad.getRegionCd()).WkdWkhCnt(jobad.getWkdWkhCnt()).etcWelfare(jobad.getEtcWelfare()).enterTpCd(jobad.getEnterTpCd()).salTpCd(jobad.getSalTpCd()).empName("sdf").empTel("123").empEmail("213123").build();
         repository.save(jobad);
         return "redirect:/jobadList";
     }
+	*/
 	
-	
-	
-	
->>>>>>> 3aeb16e1de6903610a32585e73c7afb096734076
+
 	
 	@RequestMapping("/jobadList")
 	public String jobadList() {

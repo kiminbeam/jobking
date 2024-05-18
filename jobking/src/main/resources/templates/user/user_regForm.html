@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://wwww.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+    ul,li{list-style: none;}
+    .hide {
+        display: none;
+    }
+</style>
+<body>
+<div id="main-logo"></div>
+<div id="reg-wrap">
+
+    <ul id="reg-tab">
+        <li>개인회원
+            <div id="reg-box">
+                <p>* 필수 입력 정보입니다.</p>
+                <form action="user_regist" method="post">
+                    <ul id="user-regForm-ul">
+                        <li>이름 <input type="text" name="uname" placeholder="이름(실명)*"></li>
+                        <li>아이디 
+                            <input type="text" name="uid" placeholder="아이디*" id="uid">
+                            <input type="button" name="dup-check" value="중복체크" onclick="loadDoc1()">
+                        </li>
+                        <li id="uid-msg"></li>
+                        <div class="failure-message hide">아이디는 4~12글자이어야 합니다</div>
+                        <div class="failure-message2 hide">영어 또는 숫자만 가능합니다</div>
+
+                        <li>비밀번호 <input type="password" name="upw" placeholder="비밀번호*" id="upw"></li>
+                        <div class="strongPassword-message hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요</div>
+                        <li>비밀번호 확인 <input type="password" name="upw2" placeholder="비밀번호확인*" id="upw2"></li>
+                        <li id="upw-msg"></li>
+
+                        <li>생년월일 <input type="date" name="birthDate"></li>
+                        <li>성별 
+                            <input type="radio" name="gender" value="0">&nbsp;남성
+                            <input type="radio" name="gender" value="1">&nbsp;여성
+                        </li>
+                        <li>이메일 <input type="text" name="email" placeholder="이메일*"></li>
+                        <li>전화번호 <input type="text" name="tel" placeholder="전화번호*"></li>
+                        <li>주소 <input type="text" name="uaddr" placeholder="현 거주지"></li>
+                    	<li>사진 <input type="file" name="photo" placeholder="사진 첨부하기"></li>
+                    </ul>
+                    <br>
+                    <ul id="agreement">
+                        필수 동의 항목 및 개인정보 수집 및 이용 동의(선택), 광고성 정보 수신 동의(선택)에 모두 동의합니다.
+                        <input type="checkbox">
+                        <br>
+                        <li>[필수] 이용약관 동의<input type="checkbox"></li>
+                        <li>[필수] 개인정보 수집 및 이용 동의<input type="checkbox"></li>
+                        <li>[필수] 만 15세 이상입니다<input type="checkbox"></li>
+                        <li>[선택] 개인정보 수집 및 이용 동의 <input type="checkbox"></li>
+                        <li>[선택] 광고성 정보 이메일 수신 동의 <input type="checkbox"></li>
+                    </ul>
+                    <input type="submit" value="가입하기">
+                </form>
+            </div>
+        </li>
+        <li>기업회원
+            <div id="reg-box">
+                <p>* 필수 입력 정보입니다.</p>
+                <form action="com_regist" method="post">
+                    <ul id="company-regForm-ul">
+                        <li>기업명 <input type="text" name="cname" placeholder="기업명*"></li>
+                        <li>아이디 
+                            <input type="text" name="cid" placeholder="아이디*" id="cid">
+                            <input type="button" name="dup-check" value="중복체크" onclick="loadDoc2()">
+                        </li>
+                        <li id="cid-msg"></li>
+                        <div class="failure-message-com hide">아이디는 4~12글자이어야 합니다</div>
+                        <div class="failure-message2-com hide">영어 또는 숫자만 가능합니다</div>
+
+                        <li>비밀번호 <input type="password" name="cpw" placeholder="비밀번호*" id="cpw"></li>
+                        <div class="strongPassword-message-com hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요</div>
+                        <li>비밀번호 확인 <input type="password" name="cpw2" placeholder="비밀번호확인*" id="cpw2"></li>
+                        <li id="cpw-msg"></li>
+
+                        <li>대표자명 <input type="text" name="ceo" placeholder="대표자명*"></li>
+                        <li>사업자번호 <input type="text" name="cnum" placeholder="사업자번호*"></li>
+                        <li>기업주소 <input type="text" name="caddr" placeholder="기업주소*"></li>
+                        <li>업종코드 <input type="text" name="jobsCd" placeholder="업종코드*"></li>
+                        <li>사원수 <input type="text" name="employee" placeholder="사원수*"></li>
+                    	<li>로고이미지 <input type="file" name="logo" placeholder="사진 첨부하기"></li>
+                        <li>기업홈페이지 <input type="text" name="url" placeholder="회사홈페이지url*"></li>
+                        <li>기업규모 <input type="text" name="size" placeholder="기업규모*"></li>
+                        <li>주요사업 <input type="text" name="major" placeholder="주요사업*"></li>
+                        <li>연매출액 <input type="text" name="yrSales" placeholder="연매출액"></li>
+                    </ul>
+                    <br>
+                    <ul id="agreement">
+                        필수 동의 항목 및 개인정보 수집 및 이용 동의(선택), 광고성 정보 수신 동의(선택)에 모두 동의합니다.
+                        <input type="checkbox">
+                        <br>
+                        <li>[필수] 이용약관 동의<input type="checkbox"></li>
+                        <li>[필수] 개인정보 수집 및 이용 동의<input type="checkbox"></li>
+                        <li>[필수] 만 15세 이상입니다<input type="checkbox"></li>
+                        <li>[선택] 개인정보 수집 및 이용 동의 <input type="checkbox"></li>
+                        <li>[선택] 광고성 정보 이메일 수신 동의 <input type="checkbox"></li>
+                    </ul>
+                    <input type="submit" value="가입하기">
+                </form>
+            </div>          
+        </li>
+    </ul>
+</div>
+
+
+
+<script>
+
+    // 1. USER
+
+	const uid = document.getElementById("uid");
+    /////// 아이디
+    // 중복검사
+	function loadDoc1() {
+	    const xhttp = new XMLHttpRequest();
+	    const uidCheck = uid.value;
+		console.log(uidCheck);
+	    xhttp.onload = function() {
+	    	console.log(this.responseText);
+ 	        document.getElementById("uid-msg").innerHTML = this.responseText;
+	    }
+	    xhttp.open("GET", "uidCheck?uid="+ uidCheck, true);
+	    xhttp.send();
+	}
+
+
+    // 유효성 검사
+
+    // 실패 메시지 정보 가져오기 (글자수 제한 4~12글자)
+    let elFailureMessage = document.querySelector('.failure-message'); 
+    // 실패 메시지2 정보 가져오기 (영어 또는 숫자)
+    let elFailureMessageTwo = document.querySelector('.failure-message2');
+
+    function idLength(value) {
+        return value.length >= 4 && value.length <= 12
+    }
+    function onlyNumberAndEnglish(str) {
+        return /^[A-Za-z0-9][A-Za-z0-9]*$/.test(str);
+    }
+
+
+    uid.onkeyup = function () {
+    // 값을 입력한 경우
+  if (uid.value.length !== 0) {
+    // 영어 또는 숫자 외의 값을 입력했을 경우
+    if(onlyNumberAndEnglish(uid.value) === false) {
+      elFailureMessage.classList.add('hide');
+      elFailureMessageTwo.classList.remove('hide'); // 영어 또는 숫자만 가능합니다
+    }
+    // 글자 수가 4~12글자가 아닐 경우
+    else if(idLength(uid.value) === false) {
+      elFailureMessage.classList.remove('hide'); // 아이디는 4~12글자이어야 합니다
+      elFailureMessageTwo.classList.add('hide'); // 실패 메시지2가 가려져야 함
+    }
+    // 조건을 모두 만족할 경우
+    else if(idLength(uid.value) || onlyNumberAndEnglish(uid.value)) {
+      elFailureMessage.classList.add('hide'); // 실패 메시지가 가려져야 함
+      elFailureMessageTwo.classList.add('hide'); // 실패 메시지2가 가려져야 함
+    }
+  }
+    // 값을 입력하지 않은 경우 (지웠을 때)
+    // 모든 메시지를 가린다.
+    else {
+        elFailureMessage.classList.add('hide');
+        elFailureMessageTwo.classList.add('hide');
+    }
+}
+
+
+    /////// 비밀번호
+    // 유효성검사
+    // 중복 검사
+    const upw = document.getElementById("upw");
+	const upw2 = document.getElementById("upw2");
+
+    upw2.addEventListener('input', function() {
+		const upwInput = upw.value;
+		const upw2Input = upw2.value;
+		
+		if(upwInput === upw2Input) {
+			document.getElementById("upw-msg").innerText = "비밀번호 입력이 완료되었습니다."
+		}else{
+			document.getElementById("upw-msg").innerText = "비밀번호가 같지 않습니다."
+		}
+	});
+
+
+
+    // 실패 메시지 정보 가져오기 (8글자 이상, 영문, 숫자, 특수문자 미사용)
+    let elStrongPasswordMessage = document.querySelector('.strongPassword-message');
+
+    function strongPassword (str) {
+        return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
+    }
+
+    upw.onkeyup = function () {
+    console.log(upw.value);
+    // 값을 입력한 경우
+    if (upw.value.length !== 0) {
+        if(strongPassword(upw.value)) {
+            elStrongPasswordMessage.classList.add('hide'); // 실패 메시지가 가려져야 함
+        }
+        else {
+            elStrongPasswordMessage.classList.remove('hide'); // 실패 메시지가 보여야 함
+        }
+    }
+    // 값을 입력하지 않은 경우 (지웠을 때)
+    // 모든 메시지를 가린다.
+    else {
+        elStrongPasswordMessage.classList.add('hide');
+    }
+};
+
+/////////////// COMPANY
+   /////// 아이디
+    /// 중복검사
+    const cid = document.getElementById("cid");
+    function loadDoc2() {
+	    const xhttp = new XMLHttpRequest();
+	    const cidCheck = cid.value;
+		console.log(cidCheck);
+	    xhttp.onload = function() {
+	    	console.log(this.responseText);
+ 	        document.getElementById("cid-msg").innerHTML = this.responseText;
+	    }
+	    xhttp.open("GET", "cidCheck?cid="+ cidCheck, true); 
+	    xhttp.send();
+	}
+
+    /// 유효성 검사
+    let elFailureMessageC = document.querySelector('.failure-message-com'); 
+    // 실패 메시지2 정보 가져오기 (영어 또는 숫자)
+    let elFailureMessageTwoC= document.querySelector('.failure-message2-com');
+    cid.onkeyup = function () {
+    // 값을 입력한 경우
+    if (cid.value.length !== 0) {
+        // 영어 또는 숫자 외의 값을 입력했을 경우
+        if(onlyNumberAndEnglish(cid.value) === false) {
+            elFailureMessageC.classList.add('hide');
+            elFailureMessageTwoC.classList.remove('hide'); 
+        }
+        // 글자 수가 4~12글자가 아닐 경우
+        else if(idLength(cid.value) === false) {
+            elFailureMessageC.classList.remove('hide'); 
+            elFailureMessageTwoC.classList.add('hide');
+        }
+        // 조건을 모두 만족할 경우
+        else if(idLength(cid.value) || onlyNumberAndEnglish(cid.value)) {
+            elFailureMessageC.classList.add('hide');
+            elFailureMessageTwoC.classList.add('hide'); 
+        }
+     }
+        // 값을 입력하지 않은 경우 (지웠을 때)
+        // 모든 메시지를 가린다.
+        else {
+            elFailureMessageC.classList.add('hide');
+            elFailureMessageTwoC.classList.add('hide');
+        }
+
+}
+
+
+/////// 비밀번호
+    // 유효성검사
+    // 중복 검사
+    const cpw = document.getElementById("cpw");
+	const cpw2 = document.getElementById("cpw2");
+
+    cpw2.addEventListener('input', function() {
+		const cpwInput = cpw.value;
+		const cpw2Input = cpw2.value;
+		
+		if(cpwInput === cpw2Input) {
+			document.getElementById("cpw-msg").innerText = "비밀번호 입력이 완료되었습니다."
+		}else{
+			document.getElementById("cpw-msg").innerText = "비밀번호가 같지 않습니다."
+		}
+	});
+
+    let elStrongPasswordMessageC = document.querySelector('.strongPassword-message-com');
+    cpw.onkeyup = function () {
+    console.log(cpw.value);
+
+    if (cpw.value.length !== 0) {
+        if(strongPassword(cpw.value)) {
+            elStrongPasswordMessageC.classList.add('hide'); 
+        }
+        else {
+            elStrongPasswordMessageC.classList.remove('hide'); 
+        }
+    }
+
+    else {
+        elStrongPasswordMessageC.classList.add('hide');
+    }
+};
+</script>
+</body>
+</html>

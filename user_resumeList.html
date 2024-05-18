@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div>마이페이지</div>
+
+	<div>이력서 관리</div>
+
+	<div>
+		<input type="button" value="대표 이력서 설정하기" onclick="f()" >
+	</div>
+
+	<div>
+		<ul th:each="resume : ${resume}">
+			
+			<li th:text="${resume.rtitle}"></li>
+			<li>	 
+				<img src="../../images/pen.png" width="50" height="50">				
+			</li>
+			<li>
+				<img src="../../images/X.png" width="50" height="50">
+			</li>
+		</ul>
+	</div>
+asdasdsaasdsad
+
+</body>
+
+<script>
+
+	function f(){
+		
+		
+	}
+	
+	
+</script>
+</html>
