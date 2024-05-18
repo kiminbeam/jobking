@@ -2,73 +2,193 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>채용공고 등록</title>
 <style>
-	.jcontent {
-		width: 500px;
-		height: 1500px;
-	}
-	
-	.skill {
-		width:500px;
-		height:100px;
-	}
+	body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #ccc;
+    margin: 20px 0;
+}
+
+form {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="date"],
+.form-group textarea,
+.form-group select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.form-group input[type="checkbox"] {
+    width: auto;
+}
+
+.form-group select {
+    height: 40px;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: block;
+    margin: 20px auto;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
 </style>
 </head>
 <body>
 <h1>채용공고 등록</h1>
 <hr>
-<form action="/regi_jobad" method=post>
-	공고 제목: <input type="text" name="wantedTitle"><br>
-	모집직무: <input type="text" name="position"><br>
-	모집업종: <input type="text" name=sectors><br>
-	모집 인원: <input type="number" name="collectPscnt"><br>
-	접수마감일: <input type="date" name="receiptCloseDt" required><br>
-	직무내용:<br>
-	<textarea class="jcontent" name=jobCont placeholder="구직자모집 직무내용을 입력하세요."></textarea><br>
-	<label for="empTpNm">고용형태</label>
-	<select id="empTpNm" name="empTpNm">
-		<option value="정규직">정규직</option>
-		<option value="비정규직">비정규직</option>
-		<option value="계약직">계약직</option>
-		<option value="파견직">파견직</option>
-	</select><br>
-	최소학력조건<input type="text" name="minedubglcd"><br>
-	최대학력조건<input type="text" name="maxedubglcd"><br>
-	필요스킬<br>
-	<textarea class="skill" name= needskill placeholder="최대 20자까지..."></textarea>
-	<br>
-	접수방법: <input type="text" name="rcptMthd"><br>
-	근무시간: 
-	<label for="WkdWkhCnt">근무시간</label>
-	<select id="WkdWkhCnt" name="WkdWkhCnt">
-		<option th:each="i : ${#numbers.sequence(1, 12)}" th:value="${i}" th:text="${i}"></option>
-	</select><br>
-	
-	급여:
-	<label for="salTpNm">급여조건</label>
-	<select id="salTpNm" name="salTpNm">
-		<option value="일급">일급</option>
-		<option value="월급">월급</option>
-	</select><br>
-	퇴직금 여부: <input type="checkbox" name=retirepay><br>
-	기타복리후생: <br>
-	<textarea rows="40" cols="60" name=etcWelfare placeholder="내용을 입력해주세요."></textarea>
-	<br>
-	병역특례채용희망 <input type="checkbox" name="mltsvcExcHope">><br>
-	
-	채용공고 관련키워드
-	<label for="srchKeywordNum">키워드 선택</label>
-	<select id="srchKeywordNum" name="srchKeywordNum">
-		<option value="1">1</option>
-		<option value="2">2</option>
-		<option value="3">3</option>
-	</select><br>
+<form action="/company/regi_jobad" method="post">
+	<div class="form-group">
+		<label for="wantedTitle">공고 제목</label>
+		<input type="text" id="wantedTitle" name="wantedTitle">
+	</div>
+	<div class="form-group">
+		<label for="position">모집직무</label>
+		<input type="text" id="position" name="position">
+	</div>
+	<div class="form-group">
+		<label for="sectors">모집업종</label>
+		<input type="text" id="sectors" name="sectors">
+	</div>
+	<div class="form-group">
+		<label for="collectPsncnt">모집 인원</label>
+		<input type="number" id="collectPsncnt" name="collectPsncnt">
+	</div>
+	<div class="form-group">
+		<label for="receiptCloseDt">접수마감일</label>
+		<input type="date" id="receiptCloseDt" name="receiptCloseDt" required>
+	</div>
+	<div class="form-group">
+		근무지역코드(임시)<input type="text" name="regionCd">
+	</div>
+	<div class="form-group">
+		<label for="jobCont">직무내용</label>
+		<textarea rows="5" cols="50" id="jobCont" name="jobCont" placeholder="구직자모집 직무내용을 입력하세요."></textarea>
+	</div>
+	<div class="form-group">
+		<label for="empTpNm">고용형태</label>
+		<select id="empTpNm" name="empTpNm">
+			<option value="정규직">정규직</option>
+			<option value="비정규직">비정규직</option>
+			<option value="계약직">계약직</option>
+			<option value="파견직">파견직</option>
+		</select><br>
+		근무형태코드(임시) <input type="text" name="enterTpCd">
+	</div>
+	<div class="form-group">
+		<label for="minEdubglcd">최소학력조건</label>
+		<input type="text" id="minEdubglcd" name="minEdubglcd">
+	</div>
+	<div class="form-group">
+		<label for="maxEdubglcd">최대학력조건</label>
+		<input type="text" id="maxEdubglcd" name="maxEdubglcd">
+	</div>
+	<div class="form-group">
+		<label for="needskill">필요스킬</label>
+		<textarea id="needskill" name="needskill" placeholder="최대 20자까지..."></textarea>
+	</div>
+	<div class="form-group">
+		<label for="rcptMthd">접수방법</label>
+		<input type="text" id="rcptMthd" name="rcptMthd">
+	</div>
+	<div class="form-group">
+		<label for="WkdWkhCnt">근무시간</label>
+		<select id="WkdWkhCnt" name="WkdWkhCnt">
+			<option value="1">1시간</option>
+			<option value="2">2시간</option>
+			<option value="3">3시간</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="salTpCd">급여조건</label>
+		<select id="salTpCd" name="salTpCd">
+			<option value="일급">일급</option>
+			<option value="월급">월급</option>
+		</select>
+		<input type="text" id="salTpNm" name="salTpNm">
+	</div>
+	<div class="form-group">
+		<label for="retirepay">퇴직금 여부</label>
+		<input type="checkbox" id="retirepay" name="retirepay">
+	</div>
+	<div class="form-group">
+		<label for="etcWelfare">기타복리후생</label>
+		<textarea rows="5" cols="50" id="etcWelfare" name="etcWelfare" placeholder="내용을 입력해주세요."></textarea>
+	</div>
+	<div class="form-group">
+		<label for="mltsvcExcHope">병역특례채용희망</label>
+		<input type="checkbox" id="mltsvcExcHope" name="mltsvcExcHope">
+	</div>
+	<div class="form-group">
+		<label for="srchKeywordNm">채용공고 관련키워드</label>
+		<select id="srchKeywordNm" name="srchKeywordNm">
+			<option value="1">1</option>
+			<option value="2">2</option>
+			<option value="3">3</option>
+		</select>
+	</div>
+	<div class="form-group">
+		<label for="empName">담당자명</label>
+		<input type="text" id="empName" name="empName">
+	</div>
+	<div class="form-group">
+		<label for="empTel">연락처</label>
+		<input type="text" id="empTel" name="empTel">
+	</div>
+	<div class="form-group">
+		<label for="empEmail">이메일</label>
+		<input type="text" id="empEmail" name="empEmail">
+	</div>
 	<input type="submit" value="등록하기">
-	
 </form>
-
-
-
 </body>
 </html>
