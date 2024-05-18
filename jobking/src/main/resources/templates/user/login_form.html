@@ -52,7 +52,7 @@ ul.tabs li.current{
 		<li id="companyTab" class="tab-link" data-tab="company_login">기업회원</li>
 	</ul>
 	<div id="user_login" class="tab-content current">
-		<form action="user_login" method="post">
+		<form action="/user/user_login" method="post">
 			<input type="text" name="uid" placeholder="아이디"> <br>
 			<input class="pw" type="password" name="upw" placeholder="비밀번호"> <span class="pwShowBtn">👁</span><br>
 			<input type="submit" value="로그인">
@@ -60,7 +60,7 @@ ul.tabs li.current{
 		</form>
 	</div>
 	<div id="company_login"  class="tab-content">
-		<form action="company_login" method="post">
+		<form action="/user/company_login" method="post">
 			<input type="text" name="cid" placeholder="아이디"><br>
 			<input  class="pw"  type="password" name="cpw" placeholder="비밀번호"><span class="pwShowBtn">👁</span><br>
 			<input type="submit" value="로그인">
@@ -86,9 +86,9 @@ ul.tabs li.current{
 			const id = e.target.getAttribute("data-tab")
 			if(id == "user_login"){
 				userTab.classList.add("current");
+				companyTab.classList.remove("current");
 				userForm.classList.add("current");
 				companyForm.classList.remove("current");
-				companyTab.classList.remove("current");
 			}else{
 				userTab.classList.remove("current");
 				companyTab.classList.add("current");
@@ -115,18 +115,10 @@ ul.tabs li.current{
 		})
 	})
 	if([[${result}]] != null ){
-		if([[${result}]] == "true"){
-			alert("성공적으로 로그인되었습니다. 메인화면으로 이동합니다.");
-// 			location.href="";
-		}else{
+		if([[${result}]] == false){
 			alert("입력하신 아이디와 비밀번호와 일치하는 회원이 없습니다. 다시 시도해주세요");
 		}
-		
 	}
-	
-	
-	
-
 </script>
 </body>
 </html>

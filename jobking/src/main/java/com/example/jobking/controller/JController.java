@@ -1,6 +1,5 @@
 package com.example.jobking.controller;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.jobking.entity.Company;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
+import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.IUserRepository;
 
@@ -26,10 +27,14 @@ public class JController {
 	@Autowired
 	private IResumeRepository resumeRepo;
 	
+	@Autowired
+	private ICompanyRepository companyRepo;
+	
 	@RequestMapping("/index")
-	public String root(Model model) {
-		userRepo.save(new User("aaa", "홍길동","1234", new Date(), "M", "aaa1234@gmail.com","010-1111-1111", "서울","dog"));
-		return "index";
+	public String root() {
+		companyRepo.save(new Company("ccc","", "네이버", "12345", "12345", "james", "11111", "서울", 500, "", "11", "11", "11"));
+//		userRepo.save(new User("aab", "james","1234", LocalDate.now(), "M", "aaa1234@gmail.com","010-1111-1111", "서울","dog"));
+		return "/user/index";
 	}
 	
 	@RequestMapping("/login_form")
@@ -40,32 +45,40 @@ public class JController {
 	public String userLogin(HttpServletRequest request, Model model) {
 		String uid = request.getParameter("uid");
 		String upw = request.getParameter("upw");
-	
+		boolean result = false;
+		
 		//db에서 user 로그인 정보 확인
-		System.out.println(userRepo.findById(uid));
-		System.out.println(userRepo.findById(uid).isEmpty());
-		System.out.println(userRepo.findById(uid).isPresent());
 		Optional<User> user = userRepo.findById(uid);
-		user.ifPresent(u->{
-			if(u.getUpw().equals(upw)) {
-				
+		if(user.isPresent()) {
+			if(user.get().getUpw().equals(upw)) {
 				request.getSession().setAttribute("id", uid);
-				request.getSession().setAttribute("name", u.getUname());
-				model.addAttribute("result", "true");
-			}else {
-				model.addAttribute("result", "false");
+				request.getSession().setAttribute("name", user.get().getUname());
+				result = true;
+				model.addAttribute("result", true);
 			}
-		});
-		return "login_form";
+		}else {
+			model.addAttribute("result", false);
+		}
+		return result ? "/user/index" : "/user/login_form";
 	}
 	@RequestMapping("/company_login")
 	public String companyLogin(HttpServletRequest request, Model model) {
 		String cid = request.getParameter("cid");
 		String cpw = request.getParameter("cpw");
-		System.out.println(cid);
+		boolean result = false;
 		//db에서 user 로그인 정보 확인
-	    //맞으면 result 보내주기
-		return "redirect:/";
+		Optional<Company> company = companyRepo.findById(cid);
+		if(company.isPresent()) {
+			if(company.get().getCpw().equals(cpw)) {
+				request.getSession().setAttribute("id", cid);
+				request.getSession().setAttribute("name", company.get().getCname());
+				result = true;
+				model.addAttribute("result", true);
+			}
+		}else {
+			model.addAttribute("result", false);
+		}
+		return result ? "/user/index" : "/user/login_form";
 	}
 	@RequestMapping("/user_myPage")
 	public void userMyPage(HttpServletRequest request, Model model) {
@@ -97,6 +110,11 @@ public class JController {
 	public String userEdit(User user) {
 		userRepo.save(user);
 		
-		return "redirect:/user_myPage";
+		return "redirect:/user/user_myPage";
+	}
+	@RequestMapping("/user_logout")
+	public String userLogout(HttpServletRequest request) {
+		request.getSession().invalidate();
+		return "redirect:/user/index";
 	}
 }
