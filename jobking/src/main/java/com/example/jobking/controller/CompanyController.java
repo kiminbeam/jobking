@@ -80,5 +80,12 @@ public class CompanyController {
 	public String jobadList() {
 		return "/company/jobadList";
 	}
+	
+	@RequestMapping("/com_jobDetail")
+	public String jobadDetail(){
+		// 채용공고 정보 불러오는 메서드 필요
+		
+		return "/company/com_jobDetail";
+	}
 
 }
