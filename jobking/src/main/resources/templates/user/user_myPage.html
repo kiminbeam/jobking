@@ -60,10 +60,12 @@ li{
 <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 
 <script th:inline="javascript">
-console.log([[${result}]]);
-	if([[${result}]] == "false"){
-		alert("등록된 이력서가 없습니다. 빠른 구직을 위하여 이력서를 등록해주세요");
-	}
+
+
+
+// 	if([[${result}]] == "false"){
+// 		alert("등록된 이력서가 없습니다. 빠른 구직을 위하여 이력서를 등록해주세요");
+// 	}
 	
 </script>
 </html>

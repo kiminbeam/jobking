@@ -8,7 +8,18 @@
 <body>
 
 <h1>xxxx</h1>
+<h2></h2>
+[[${session.id}]]님 어서오세용!
 
+
+
+
+<script th:inline="javascript">
+if([[${session.id}]] != null){
+	document.querySelector("h2").innerHTML="<a href='/user/user_logout'>로그아웃</a>"
+}
+
+</script>
 
 </body>
 </html>
