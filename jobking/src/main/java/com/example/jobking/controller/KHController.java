@@ -29,6 +29,7 @@ public class KHController {
 		return "user_mainPage";
 	}
 
+	/*
 	@RequestMapping("/user_resumeList")
 	public void resumeList(Model model) {
 	    List<Resume> resumeList = ResumeRepository.findAll();
@@ -45,6 +46,7 @@ public class KHController {
 	    model.addAttribute("resumeList", resumeList);
 	    model.addAttribute("selfinfoMap", selfinfoMap);
 	}
+	*/
 
 	
 }

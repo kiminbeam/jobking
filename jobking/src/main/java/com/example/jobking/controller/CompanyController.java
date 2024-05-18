@@ -47,7 +47,8 @@ public class CompanyController {
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
 	}
-
+	
+	/*
 	@RequestMapping("/regi_jobad")
 	public String regiAD(@ModelAttribute JobAd jobad, @RequestParam("receiptCloseDt") LocalDate receiptCloseDt) throws UnsupportedEncodingException {
 		
@@ -73,6 +74,7 @@ public class CompanyController {
 		}
 		return "redirect:/company/jobadList";
 	}
+	*/
 
 	@RequestMapping("/jobadList")
 	public String jobadList() {

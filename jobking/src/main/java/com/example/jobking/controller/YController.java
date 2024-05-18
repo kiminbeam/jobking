@@ -46,7 +46,7 @@ public class YController {
 		return msg;
 	}
 	
-	
+	/*
 	// Company 아이디 중복체크
 	@RequestMapping("/cidCheck")
 	public @ResponseBody String cidCheck(@RequestParam("cid") String cid) {
@@ -84,6 +84,6 @@ public class YController {
 		}
 		return "login_form";
 	}
-	
+	*/
 	
 }

@@ -12,6 +12,16 @@ body{
 		background-color: white;
 	}
 	
+	.navbar{
+		background-color: black;
+		overflow: hidden;
+		
+		top:0;
+		width:100%;
+		z-index:1000;
+		height: 100px;
+	}
+	
 	.navbar a{
 		float: left;
 		display:block;
@@ -84,12 +94,14 @@ body{
 		display: flex;
 		justify-content: space-around;
 		width: 80%;
+		margin: 0 auto;
+		padding-top: 50px;
 	}
 	
 	#box{
-		width: 300px;
-		height: 100px;
-		background-color: #4CAF50;
+		width: 340px;
+		height: 135px;
+		background-color: darkgray;
 		display: flex;
 		justify-content: center;
 		align-items:center;
@@ -97,13 +109,43 @@ body{
 		font-size:20px;
 	}
 	
+	.match{
+		display: flex;
+		justify-content: space-around;
+		width:1140px;
+		padding-top: 200px;
+		margin: 0 auto;
+	}
 	
+	#human{
+		width:200px;
+		height:200px;
+		border: 1px solid black;
+		
+	}
+	
+	.miniboard{
+		margin: 0 auto;
+		width:1140px;
+		height:320px;
+		background-color: darkgray;
+		margin-bottom: 200px;
+	}
+	
+	#boardcontent{
+		margin-bottom: 50px;
+	}
+	
+	.footer{
+		padding-top:20px;
+		border-top:1px solid darkgray;
+	}
 </style>
 </head>
 
 <body>
 <div class="navbar">
-	<a href="#home">home</a>
+	<div id="dropdown"><a href="">logo</a></div>
 	<div id="dropdown">
 		<button id="dropbtn">공고*지원자관리</button>
 		<div id="dropdown-content">
@@ -148,6 +190,34 @@ body{
 	<div id="human">구직자4</div>
 	<div id="human">구직자5</div>
 </div>
+
+<div class="miniboard">
+	<div id="boardcontent">
+		<h3>title</h3><br>
+		<p>content/content/content/content/</p>
+	</div>
+	<div id="boardcontent">
+		<h3>title2</h3><br>
+		<p>content2/content2/content2/content2/</p>
+	</div>
+</div>
+
+<footer class="footer">
+	고객센터 1588-9350 (평일 09:00 ~ 19:00 토요일 09:00 ~ 15:00)  FAX 02-565-9351  Email helpdesk@jobkorea.co.kr<br>
+	대표 : 윤현준  사업자등록번호 : 110-81-34859사업자정보 확인 > 주소 : 서울시 서초구 서초대로 301 동익성봉빌딩 16~18층<br>
+	통신판매업 신고번호 : 2016-서울서초-0287호 직업정보제공사업 신고번호 : 서울청 제2016-11호 유료직업소개업 등록번호 : 제2002-3210195-14-5-
+</footer>
+
+<script>
+	const miniboard = document.querySelector('.miniboard');
+	
+	const children = miniboard.children;
+	
+	for(let i = 0; i < children.length; i++){
+		children[i].style.backgroundColor = 'darkgray';
+	}
+</script>
+	
 
 </body>
 </html>
