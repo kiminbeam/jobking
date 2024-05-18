@@ -8,6 +8,11 @@
 		font-family: Arial, sans-serif;
 	}
 	
+	.top{
+		width: 100%;
+		height: 100px;
+		background-color: black;
+	}
 	#dropdown {
 		background-color: white;
 	}
@@ -79,6 +84,10 @@
 		background-color: white;
 	}
 	
+	.maincontent{
+		display: flex;
+	}
+	
 	.sidebar {
 		height: 100%;
 		width: 250px;
@@ -117,72 +126,113 @@
 		border-bottom: 1px solid black;
 	}
 	
+	.button{
+		background-color: dodgerblue;
+		border: none;
+		color:white;
+		text-align: center;
+		text-decoration: none;
+		display:inline-block;
+		padding: 15px 32px;
+		font-size: 16px;
+		margin: 4px 2px;
+	}
+	
+	.listcontent{
+		flex:1;
+		padding: 20px;
+		margin-left: 250px;
+	}
+	
+	.listtop{
+		display:flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 20px;
+		border-bottom: 1px solid #ccc;
+	}
+	
+	.list{
+		padding: 20px;
+	}
 </style>
 </head>
 <body>
-<h1>등록된 채용공고 리스트</h1>
-<hr>
-<div class="navbar">
-	<a href="#home">home</a>
-	<div id="dropdown">
-		<button id="dropbtn">공고*지원자관리</button>
-		<div id="dropdown-content">
-			<a href="" id="content">채용공고</a>
-			<a href="" id="content">입사지원관리</a>
+	<div class="top">
+		<div class="navbar">
+			<a href="#home">home</a>
+			<div id="dropdown">
+				<button id="dropbtn">공고*지원자관리</button>
+				<div id="dropdown-content">
+					<a href="" id="content">채용공고</a>
+					<a href="" id="content">입사지원관리</a>
+				</div>
+			</div>
+			<div id="dropdown">
+				<button id="dropbtn">회사정보관리</button>
+				<div id="dropdown-content">
+					<a href=" " id="content">기본정보관리</a>
+					<a href=" " id="content">내기업평점보기</a>		
+				</div>
+			</div>
+			<div id="dropdown">
+				<button id="dropbtn">인재관리</button>
+				<div id="dropdown-content">
+					<a href=" " id="content">포지션제안인재</a>
+					<a href=" " id="content">기업구독인재</a>
+					<a href=" " id="content">스크랩한인재</a>
+					<a href=" " id="content">최근 본 인재</a>		
+				</div>
+			</div>
+			<div id="dropdown">
+				<a href=" ">인재 검색</a>
+			</div>
+			
+			<a href=" " id="content">로그인</a>
+			<a href=" " id="content">유저서비스</a>
 		</div>
-	</div>
-	<div id="dropdown">
-		<button id="dropbtn">회사정보관리</button>
-		<div id="dropdown-content">
-			<a href=" " id="content">기본정보관리</a>
-			<a href=" " id="content">내기업평점보기</a>		
-		</div>
-	</div>
-	<div id="dropdown">
-		<button id="dropbtn">인재관리</button>
-		<div id="dropdown-content">
-			<a href=" " id="content">포지션제안인재</a>
-			<a href=" " id="content">기업구독인재</a>
-			<a href=" " id="content">스크랩한인재</a>
-			<a href=" " id="content">최근 본 인재</a>		
-		</div>
-	</div>
-	<div id="dropdown">
-		<a href=" ">인재 검색</a>
 	</div>
 	
-	<a href=" " id="content">로그인</a>
-	<a href=" " id="content">유저서비스</a>
-</div>
+	
+	<div class="maincontent">
+		<div class="sidebar">
+			<div>
+				<button class="dropdown-btn">공고*지원자관리</button>
+				<div class="dropdown-container">
+					<a href=" ">채용공고</a>
+					<a href="">입사지원관리</a>
+				</div>
+			</div>
+			<div>
+				<button class="dropdown-btn">회사정보관리</button>
+				<div class="dropdown-container">
+					<a href="">기본정보관리</a>
+					<a href="">내기업평점보기</a>
+				</div>
+			</div>
+			<div>
+				<button class="dropdown-btn">인재관리</button>
+				<div class="dropdown-container">
+					<a href="">인재 검색</a>
+					<a href="">포지션제안 인재</a>
+					<a href="">기업구독 인재</a>
+					<a href="">스크랩한 인재</a>
+					<a href="">최근 본 인재</a>
+				</div>
+			</div>
+			<a href="">커뮤니티</a>
+		</div><!--sidebar end-->
+		<div class="listcontent">
+			<div class="listtop">
+				<h3>채용공고 목록</h3>
+				<button class="button" onclick="location.href='regi_jobadForm'">채용공고등록</button>
+			</div>
+			<div class="list">
+				<div id="jobad">여기 목록 나옴</div>
+			</div>
+		</div>
+	</div><!--maincontent end-->
 
-<div class="sidebar">
-	<div>
-		<button class="dropdown-btn">공고*지원자관리</button>
-		<div class="dropdown-container">
-			<a href=" ">채용공고</a>
-			<a href="">입사지원관리</a>
-		</div>
-	</div>
-	<div>
-		<button class="dropdown-btn">회사정보관리</button>
-		<div class="dropdown-container">
-			<a href="">기본정보관리</a>
-			<a href="">내기업평점보기</a>
-		</div>
-	</div>
-	<div>
-		<button class="dropdown-btn">인재관리</button>
-		<div class="dropdown-container">
-			<a href="">인재 검색</a>
-			<a href="">포지션제안 인재</a>
-			<a href="">기업구독 인재</a>
-			<a href="">스크랩한 인재</a>
-			<a href="">최근 본 인재</a>
-		</div>
-	</div>
-	<a href="">커뮤니티</a>
-	
-</div>
 
 
 
