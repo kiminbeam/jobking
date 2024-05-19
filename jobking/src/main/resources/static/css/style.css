@@ -75,12 +75,6 @@ main {
     text-decoration: underline;
     background-color:lightblue;
 }
-
-.content {
-    margin-left: 220px; /* 사이드바 너비 + 약간의 여백 */
-    padding: 20px;
-}
-
 main::after {
     content: "";
     display: table;
