@@ -30,6 +30,7 @@ public class JController {
 	@Autowired
 	private ICompanyRepository companyRepo;
 	
+	/*
 	@RequestMapping("/index")
 	public String root() {
 		companyRepo.save(new Company("ccc","", "네이버", "12345", "12345", "james", "11111", "서울", 500, "", "11", "11", "11"));
@@ -128,5 +129,5 @@ public class JController {
 	@RequestMapping("/user_recruit_sector")
 	public void userRecruitSector() {
 	}
-
+	*/
 }

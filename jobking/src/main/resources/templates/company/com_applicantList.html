@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	<style>
+		body{
+				font-family: Arial, sans-serif;
+			}
+			
+			.navbar{
+				display: flex;
+				background-color: #333;
+				overflow: hidden;
+			}
+			
+			.navbar a, .dropbtn {
+				color: black;
+				text-align: center;
+				padding: 14px 20px;
+				text-decoration: none;
+				display: block;
+				
+			}
+			
+			.navbar a:hover, dropdown:hover .dropbtn{
+				background-color: #ddd;
+				color: black;
+			}
+			
+			.dropdown{
+				float: left;
+				overflow: hidden;
+			}
+			
+			
+			.dropdown-content {
+				display: none;
+				position: absolute;
+				background-color: #f9f9f9;
+				min-width: 160px;
+				z-index: 1;
+			}
+			
+			
+			
+			.dropdown-content a {
+				color: black;
+				padding: 12px 16px;
+				text-decoration: none;
+				display: block;
+				text-align: left;
+			}
+			
+			.dropdown-content a:hover{
+				background-color: #f1f1f1;
+			}
+			
+			
+			
+			.dropdown:hover .dropdown-content{
+				display: block;
+			}
+			
+			.maincontent{
+				display: flex;
+			}
+			
+			.sidebar {
+				width: 200px;
+				background-color:white;
+				padding: 15px;
+				border-right: 1px solid #ddd;
+				
+			}
+			
+			.dropdown-btn {
+				padding: 10px;
+				font-size: 16px;
+				border: none;
+				background: none;
+				cursor: pointer;
+				border-bottom: dimgray;
+			}
+			
+			.dropdown-container {
+				display: none;
+				padding-left: 8px;
+			}
+			
+			
+			.sidebar a {
+				padding: 10px;
+				text-decoration: none;
+				display: block;
+				color: black;
+			}
+			
+			.sidebar a:hover {
+				background-color: #ddd;
+			}
+			
+			.humanList{
+				flex:1;
+				padding:20px;
+			}
+			
+			.humanList h2{
+				border-bottom: 2px solid dimgray;
+				padding-bottom: 10px;
+				margin-bottom: 20px;
+				
+			}
+			
+			#human-container .human{
+				display: flex;
+				align-items: center;
+				border-top: 1px solid #ddd;
+				padding: 10px 0;
+			}
+			
+			#human-container .human img{
+				border-radius: 50%;
+				width: 50px;
+				height: 50px;
+				margin-right: 10px;
+			}
+			
+			#human-container .human:not(:last-child){
+				border-bottom: 1px solid #ddd;
+			}
+			
+			
+			
+	</style>
+</head>
+<body>
+	<div class="top">
+			<div class="navbar">
+				<a href="#home">home</a>
+				<div class="dropdown">
+					<button class="dropbtn">공고*지원자관리</button>
+					<div class="dropdown-content">
+						<a href="">채용공고</a>
+						<a href="">입사지원관리</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">회사정보관리</button>
+					<div class="dropdown-content">
+						<a href=" " >기본정보관리</a>
+						<a href=" " >내기업평점보기</a>		
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">인재관리</button>
+					<div class="dropdown-content">
+						<a href=" ">포지션제안인재</a>
+						<a href=" ">기업구독인재</a>
+						<a href=" ">스크랩한인재</a>
+						<a href=" ">최근 본 인재</a>		
+					</div>
+				</div>
+				<div id="dropdown">
+					<a href=" ">인재 검색</a>
+				</div>
+				
+				<a href=" " class="content">로그인</a>
+				<a href=" " class="content">유저서비스</a>
+			</div>
+		</div><!-- top end-->
+		
+		<div class="maincontent">
+				<div class="sidebar">
+					<div>
+						<button class="dropdown-btn">공고*지원자관리</button>
+						<div class="dropdown-container">
+							<a href=" ">채용공고</a>
+							<a href="">입사지원관리</a>
+						</div>
+					</div>
+					<div>
+						<button class="dropdown-btn">회사정보관리</button>
+						<div class="dropdown-container">
+							<a href="">기본정보관리</a>
+							<a href="">내기업평점보기</a>
+						</div>
+					</div>
+					<div>
+						<button class="dropdown-btn">인재관리</button>
+						<div class="dropdown-container">
+							<a href="">인재 검색</a>
+							<a href="">포지션제안 인재</a>
+							<a href="">기업구독 인재</a>
+							<a href="">스크랩한 인재</a>
+							<a href="">최근 본 인재</a>
+						</div>
+					</div>
+					<a href="">커뮤니티</a>
+				</div><!--sidebar end-->
+				
+				<div class="humanList">
+					<h2>지원자 관리 목록</h2>
+					<div id="human-container">
+						
+					</div>
+				</div><!--humanList end-->
+			</div><!--maincontent end-->
+			
+	<script>
+		document.addEventListener("DOMContentLoaded", function(){
+			var dropdownButtons = document.querySelectorAll(".dropdown-btn");
+			
+			dropdownButtons.forEach(function(button){
+				button.addEventListener("click",function(){
+					var dropdownContent = this.nextElementSibling;
+					dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
+				});
+			});
+		});
+		
+		document.addEventListener("DOMContentLoaded",function(){
+			var humanContainer = document.getElementById("human-container");
+			
+			//example data
+			var applicants = [
+				{name: "kim", img:"img.jpg"},
+				{name: "홍길동", img:"img2.jpg"}
+			];
+			
+			applicants.forEach(function(applicant){
+				var humanDiv = document.createElement("div");
+				humanDiv.classList.add("human");
+				
+				var img = document.createElement("img");
+				img.scr = applicant.img;
+				img.alt = applicant.name + " Profile Image";
+				
+				var nameLink = document.createElement("a");
+				nameLink.href = "com_resumeDetail?id=" + applicant.id;
+				nameLink.textContent = applicant.name;
+				
+				var name = document.createElement("h3");
+				name.appendChild(nameLink);
+				
+				humanDiv.appendChild(img);
+				humanDiv.appendChild(name);
+				humanContainer.appendChild(humanDiv);
+			});
+		});
+	</script>
+</body>
+</html>
