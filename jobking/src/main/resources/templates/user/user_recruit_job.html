@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
 <style>
 *{
 	list-style:none;
@@ -74,48 +75,64 @@ ul.tabs li.current{
 </style>
 </head>
 <body>
-<div class="container">
-	<ul class="tabs">
-		<li id="jobTab" class="tab-link current" data-tab="jobFilter">직무별</li>
-		<li id="regionTab" class="tab-link" data-tab="regionFilter" >지역별</li>
-		<li id="sectorTab" class="tab-link" data-tab="sectorFilter">업종별</li>
-	</ul>
-	<div id="jobFilter" class="tab-content current">
-		<div>
-			<ul class="topCateogory jobCategory">
-			</ul>
+<header>
+	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+</header>
+<main>
+	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+	<div>
+		<div class="container">
+		<ul class="tabs">
+			<li id="jobTab" class="tab-link current" data-tab="jobFilter">직무별</li>
+			<li id="regionTab" class="tab-link" data-tab="regionFilter" >지역별</li>
+			<li id="sectorTab" class="tab-link" data-tab="sectorFilter">업종별</li>
+		</ul>
+		<div id="jobFilter" class="tab-content current">
+			<div>
+				<ul class="topCateogory jobCategory">
+				</ul>
+			</div>
+			<div>
+				<ul class="category position">
+				</ul>
+			</div>
 		</div>
-		<div>
-			<ul class="category position">
-			</ul>
+		<div id="regionFilter" class="tab-content">
+			<div>
+				<ul class="topCateogory city">
+				</ul>
+			</div>
+			<div>
+				<ul class="category gu">
+				</ul>
+			</div>
+		</div>
+		<div id="sectorFilter" class="tab-content">
+			<div>
+				<ul class="topCateogory sectorCategory">
+				</ul>
+			</div>
+			<div>
+				<ul class="category sector">
+				</ul>
+			</div>
 		</div>
 	</div>
-	<div id="regionFilter" class="tab-content">
-		<div>
-			<ul class="topCateogory city">
-			</ul>
-		</div>
-		<div>
-			<ul class="category gu">
-			</ul>
-		</div>
+	
+	
+	<div class="jobad">
+	
 	</div>
-	<div id="sectorFilter" class="tab-content">
-		<div>
-			<ul class="topCateogory sectorCategory">
-			</ul>
-		</div>
-		<div>
-			<ul class="category sector">
-			</ul>
-		</div>
-	</div>
-</div>
+		
+    
+    
+    
+    </div>
+</main>
+	<footer>
+		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+	</footer>
 
-
-<div class="jobad">
-
-</div>
 
 
 <script>

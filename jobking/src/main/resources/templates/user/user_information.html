@@ -3,27 +3,41 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-<h1>userInfo</h1>
-	<form action="user_edit" method="post">
-		
-		<ul>
-		<!-- 	이미지파일 -->
-			<li>이름 <input type="text" name="uname" th:value="${user.uname}"></li>
-			<li>성별 <input type="text" name="gender" th:value="${user.gender}" readonly> </li>
-			<li>생년월일 <input type="text" name="birthDate" th:value="${user.birthDate}" readonly> </li>
-			<li>아이디 <input type="text" name="uid" th:value="${user.uid}" readonly></li>
-            <li>비밀번호 <input type="password" name="upw" placeholder="비밀번호*" id="upw"></li>
-            <div class="strongPassword-message hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요</div>
-            <li>비밀번호 확인 <input type="password" name="upw2" placeholder="비밀번호확인*" id="upw2"></li>
-            <li id="upw-msg"></li>
-			<li>주소 <input type="text" name="uaddr" th:value="${user.uaddr}"></li>
-			<li>전화번호 <input type="text" name="tel" th:value="${user.tel}"></li>
-			<li>이메일 <input type="text" name="email" th:value="${user.email}"></li>
-			<li><input type="submit" value="수정하기"></li>
-	 	</ul>
-	 </form>
+<header>
+	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+</header>
+<main>
+	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+	<div>
+		<h1>userInfo</h1>
+		<form action="user_edit" method="post">
+			
+			<ul>
+			<!-- 	이미지파일 -->
+				<li>이름 <input type="text" name="uname" th:value="${user.uname}"></li>
+				<li>성별 <input type="text" name="gender" th:value="${user.gender}" readonly> </li>
+				<li>생년월일 <input type="text" name="birthDate" th:value="${user.birthDate}" readonly> </li>
+				<li>아이디 <input type="text" name="uid" th:value="${user.uid}" readonly></li>
+	            <li>비밀번호 <input type="password" name="upw" placeholder="비밀번호*" id="upw"></li>
+	            <div class="strongPassword-message hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요</div>
+	            <li>비밀번호 확인 <input type="password" name="upw2" placeholder="비밀번호확인*" id="upw2"></li>
+	            <li id="upw-msg"></li>
+				<li>주소 <input type="text" name="uaddr" th:value="${user.uaddr}"></li>
+				<li>전화번호 <input type="text" name="tel" th:value="${user.tel}"></li>
+				<li>이메일 <input type="text" name="email" th:value="${user.email}"></li>
+				<li><input type="submit" value="수정하기"></li>
+		 	</ul>
+		 </form>
+    </div>
+</main>
+	<footer>
+		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+	</footer>
+
+
 	 <script>
 // 	 비밀번호 1과 2와 같은지 확인하는 코드
 	const upw = document.getElementById("upw");
