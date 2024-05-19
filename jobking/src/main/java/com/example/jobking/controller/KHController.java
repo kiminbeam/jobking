@@ -2,6 +2,7 @@ package com.example.jobking.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -12,8 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.SelfInfo;
+import com.example.jobking.entity.User;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.ISelfInfo;
+import com.example.jobking.repository.IUserRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class KHController {
@@ -22,14 +27,17 @@ public class KHController {
 	IResumeRepository ResumeRepository;
 	@Autowired
 	ISelfInfo SelfInfoRepository;
-
+	@Autowired
+	IUserRepository UserRepository;
+	
+	
 	@RequestMapping("/user_mainPage")
 	public String mainPage() {
 
 		return "user_mainPage";
 	}
 
-	/*
+	
 	@RequestMapping("/user_resumeList")
 	public void resumeList(Model model) {
 	    List<Resume> resumeList = ResumeRepository.findAll();
@@ -46,7 +54,26 @@ public class KHController {
 	    model.addAttribute("resumeList", resumeList);
 	    model.addAttribute("selfinfoMap", selfinfoMap);
 	}
-	*/
-
 	
+	
+	@RequestMapping("/user_resume_form")
+	public String resumeForm(HttpServletRequest request, Model model) {
+		
+//		String uid = (String) request.getSession().getAttribute("id");
+//				
+//				Optional<User> user = UserRepository.findById(uid);
+//				user.ifPresent(u->{
+//					model.addAttribute("user", u );
+//				});	
+		
+		return "user_resume_form";
+	}
+	
+	@RequestMapping("/user_resume")
+	public String resume() {
+		
+			
+		
+		return "redirect:user_resumeList";
+	}
 }
