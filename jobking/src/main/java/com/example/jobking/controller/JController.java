@@ -166,6 +166,7 @@ public class JController {
 	@RequestMapping("/user_recruit_sector")
 	public void userRecruitSector() {
 	}
+
 	@RequestMapping("/user_recruitDetail")
 	public void userRecruitDetail(@RequestParam("jno") Long jno, Model model) {
 
@@ -204,5 +205,4 @@ public class JController {
 		model.addAttribute("jobad", jobad);
 		
 	}
-
 }

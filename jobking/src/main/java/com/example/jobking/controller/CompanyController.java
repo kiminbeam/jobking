@@ -87,5 +87,10 @@ public class CompanyController {
 		
 		return "/company/com_jobDetail";
 	}
+	
+	@RequestMapping("/com_applicantList")
+	public String applicantList() {
+		return "/company/com_applicantList";
+	}
 
 }
