@@ -1,0 +1,88 @@
+@charset "UTF-8";
+*{
+	text-decoration:none;
+}
+li{
+	list-style:none;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+header, footer {
+    background-color: #f4f4f4;
+    padding: 10px;
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex: 1;
+}
+.navbar {
+    padding: 10px;
+}
+
+.navbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+}
+
+.navbar ul li {
+    display: inline;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+}
+
+.navbar ul li a:hover {
+    background-color: lightblue;
+}
+
+.sidebar {
+    width: 200px;
+    padding: 15px;
+    float: left;
+    height: 100vh; /* 사이드바의 높이를 전체 높이로 설정 */
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+}
+.sidebar ul li a:visited {
+	color:black;
+}
+
+.sidebar ul li a:hover {
+    text-decoration: underline;
+    background-color:lightblue;
+}
+
+.content {
+    margin-left: 220px; /* 사이드바 너비 + 약간의 여백 */
+    padding: 20px;
+}
+
+main::after {
+    content: "";
+    display: table;
+    clear: both;
+}
