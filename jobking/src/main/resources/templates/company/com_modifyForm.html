@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>채용공고 수정 폼</title>
+</head>
+<style>
+body {
+	font-family: Arial, sans-serif;
+	background-color: #f9f9f9;
+	margin: 0;
+	padding: 0;
+}
+
+h1 {
+	text-align: center;
+	color: #333;
+}
+
+hr {
+	border: 0;
+	border-top: 1px solid #ccc;
+	margin: 20px 0;
+}
+
+form {
+	max-width: 800px;
+	margin: 0 auto;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+	margin-bottom: 15px;
+}
+
+.form-group label {
+	display: block;
+	font-weight: bold;
+	margin-bottom: 5px;
+}
+
+.form-group input[type="text"], .form-group input[type="number"],
+	.form-group input[type="date"], .form-group textarea, .form-group select
+	{
+	width: calc(100% - 22px);
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.form-group textarea {
+	resize: vertical;
+}
+
+.form-group input[type="checkbox"] {
+	width: auto;
+}
+
+.form-group select {
+	height: 40px;
+}
+
+input[type="submit"] {
+	background-color: #007bff;
+	color: white;
+	padding: 10px 20px;
+	font-size: 18px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	display: block;
+	margin: 20px auto;
+}
+
+input[type="submit"]:hover {
+	background-color: #0056b3;
+}
+</style>
+<body>
+	<h1>채용공고 수정</h1>
+	<hr>
+	<form action="/company/com_modify" method="post">
+		<input type="hidden" name="jno" th:value="${modify.jno}">
+		<div class="form-group">
+			<label for="wantedTitle">공고 제목</label> <input type="text"
+				id="wantedTitle" name="wantedTitle" th:value="${modify.wantedTitle}">
+		</div>
+		<div class="form-group">
+			<label for="position">모집직무</label> <input type="text" id="position"
+				name="position" th:value="${modify.position}">
+		</div>
+		<div class="form-group">
+			<label for="sectors">모집업종</label> <input type="text" id="sectors"
+				name="sectors" th:value="${modify.sectors}">
+		</div>
+		<div class="form-group">
+			<label for="collectPsncnt">모집 인원</label> <input type="number"
+				id="collectPsncnt" name="collectPsncnt" min="0" max="99"
+				th:value="${modify.collectPsncnt}">
+		</div>
+		<div class="form-group">
+			<label for="receiptCloseDt">접수마감일</label> <input type="date"
+				id="receiptCloseDt" name="receiptCloseDt"
+				th:value="${modify.receiptCloseDt}">
+		</div>
+		<div class="form-group">
+			근무지역코드(임시)<input type="text" name="regionCd"
+				th:value="${modify.regionCd}">
+		</div>
+		<div class="form-group">
+			<label for="jobCont">직무내용</label>
+			<textarea rows="5" cols="50" id="jobCont" name="jobCont"
+				placeholder="구직자모집 직무내용을 입력하세요.">[[${modify.jobCont}]]</textarea>
+		</div>
+		<div class="form-group">
+			<label for="empTpNm">고용형태</label> <select id="empTpNm" name="empTpNm">
+				<option value="정규직" th:selected="${modify.empTpNm == '정규직'}">정규직</option>
+				<option value="비정규직" th:selected="${modify.empTpNm == '비정규직'}">비정규직</option>
+				<option value="계약직" th:selected="${modify.empTpNm == '계약직'}">계약직</option>
+				<option value="파견직" th:selected="${modify.empTpNm == '파견직'}">파견직</option>
+			</select><br> 근무형태코드(임시) <input type="text" name="enterTpCd"
+				th:value="${modify.enterTpCd}">
+		</div>
+
+		<div class="form-group">
+			<label for="yofExperiences">경력제한</label> <select id="yofExperiences"
+				name="yofExperiences">
+				<option value="신입" th:selected="${modify.yofExperiences == '신입'}">신입</option>
+				<option value="경력" th:selected="${modify.yofExperiences == '경력'}">경력</option>
+				<option value="경력무관"
+					th:selected="${modify.yofExperiences == '경력무관'}">경력무관</option>
+			</select><br>
+		</div>
+
+		<div class="form-group">
+			<label for="minEdubglcd">최소학력조건</label> <select id="minEdubglcd"
+				name="minEdubglcd">
+				<option value="학력무관" th:selected="${modify.minEdubglcd == '학력무관'}">학력무관</option>
+				<option value="고등학교졸업"
+					th:selected="${modify.minEdubglcd == '고등학교졸업'}">고등학교졸업</option>
+				<option value="초급대학교졸업"
+					th:selected="${modify.minEdubglcd == '초급대학교졸업'}">초급대학교졸업</option>
+				<option value="대학교(4년제)졸업"
+					th:selected="${modify.minEdubglcd == '대학교(4년제)졸업'}">대학교(4년제)졸업</option>
+				<option value="석사" th:selected="${modify.minEdubglcd == '석사'}">석사</option>
+				<option value="박사" th:selected="${modify.minEdubglcd == '박사'}">박사</option>
+			</select><br>
+		</div>
+		<div class="form-group">
+			<label for="maxEdubglcd">최대학력조건</label> <select id="maxEdubglcd"
+				name="maxEdubglcd">
+				<option value="학력무관" th:selected="${modify.maxEdubglcd == '학력무관'}">학력무관</option>
+				<option value="고등학교졸업"
+					th:selected="${modify.maxEdubglcd == '고등학교졸업'}">고등학교졸업</option>
+				<option value="초급대학교졸업"
+					th:selected="${modify.maxEdubglcd == '초급대학교졸업'}">초급대학교졸업</option>
+				<option value="대학교(4년제)졸업"
+					th:selected="${modify.maxEdubglcd == '대학교(4년제)졸업'}">대학교(4년제)졸업</option>
+				<option value="석사" th:selected="${modify.maxEdubglcd == '석사'}">석사</option>
+				<option value="박사" th:selected="${modify.maxEdubglcd == '박사'}">박사</option>
+			</select><br>
+		</div>
+		<div class="form-group">
+			<label for="needskill">필요스킬</label>
+			<textarea id="needskill" name="needskill" placeholder="최대 20자까지...">[[${modify.needskill}]]</textarea>
+		</div>
+		<div>
+			<p><strong>접수방법</strong></p>
+			<label for="option1">잡왕 이력서 지원</label>
+			<input type="radio" id="option1" name="rcptMthd" value="잡왕이력서지원" th:checked="${modify.rcptMthd == '잡왕이력서지원'}">
+			<label for="option2">홈페이지 방문 지원</label> 
+			<input type="radio" id="option2" name="rcptMthd" value="홈페이지방문지원" th:checked="${modify.rcptMthd == '홈페이지방문지원'}"> 
+			
+		</div><br>
+		<div class="form-group">
+			<label for="WkdWkhCnt">근무시간</label> 
+			<select id="WkdWkhCnt" name="WkdWkhCnt">
+				<option value="1">1시간</option>
+				<option value="2">2시간</option>
+				<option value="3">3시간</option>
+			</select>
+		</div>
+		<div>
+			<label for="salTpCd"><strong>급여조건</strong></label>
+			<select id="salTpCd" name="salTpCd">
+				<option value="일급">일급</option>
+				<option value="월급">월급</option>
+				<option value="연봉">연봉</option>
+			</select> <input type="text" id="salTpNm" name="salTpNm"> 만 원
+		</div><br>
+		<div>
+			<label for="retirepay"><strong>퇴직금 여부</strong></label> 
+			<input type="checkbox" id="retirepay" name="retirepay">
+		</div><br>
+		<div class="form-group">
+			<label for="etcWelfare">기타복리후생</label>
+			<textarea rows="5" cols="50" id="etcWelfare" name="etcWelfare" placeholder="내용을 입력해주세요.">[[${modify.etcWelfare}]]</textarea>
+		</div>
+		<div class="form-group">
+			<label for="mltsvcExcHope">병역특례채용희망</label> 
+			<input type="checkbox" id="mltsvcExcHope" name="mltsvcExcHope">
+		</div>
+		<div class="form-group">
+			<label for="srchKeywordNm">채용공고 관련키워드</label>
+			<select	id="srchKeywordNm" name="srchKeywordNm">
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="empName">담당자명</label>
+			<input type="text" id="empName"	name="empName" th:value="${modify.empName}">
+		</div>
+		<div class="form-group">
+			<label for="empTel">연락처</label>
+			<input type="text" id="empTel" name="empTel" th:value="${modify.empTel}">
+		</div>
+		<div class="form-group">
+			<label for="empEmail">이메일</label>
+			<input type="text" id="empEmail" name="empEmail" th:value="${modify.empEmail}">
+		</div>
+		<input type="submit" value="수정하기">
+	</form>
+</body>
+</html>
