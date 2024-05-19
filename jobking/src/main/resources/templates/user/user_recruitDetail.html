@@ -4,6 +4,18 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+ <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+	.link-icon { position: relative; display: inline-block; width: auto; font-size: 14px; font-weight: 500; color: #333; margin-right: 10px; padding-top: 50px; }
+	.link-icon.twitter { background-image: url(/images/icon/icon-twitter.png); background-repeat: no-repeat; }
+	.link-icon.facebook { background-image: url(/images/icon/icon-facebook.png); background-repeat: no-repeat; } 
+	.link-icon.kakao { background-image: url(/images/icon/icon-kakao.png); background-repeat: no-repeat; }
+     #chart-container {
+         height: 500px;
+     }
+
+</style>
 </head>
 <body>
 	<header>
@@ -12,7 +24,32 @@
 	<main>
 		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 		<div>
-			<h1>detailsss</h1>
+		
+		
+		
+<!-- 1. 복사(버튼) url 복사, 공유 기능 -->
+<!-- 2. 채용제목/ 기업명/ 접수기간 등 -->
+<!-- 3. 접수기간: D-day 기능 (접수기간이 몇 일 남았는지?) -->
+<!-- 4. 관심기업 구독(Button) -->
+<!-- 5. 채용공고 스크랩(B) -->
+<!-- 6. 채용공고 상세 정보(img도 가능 ) -->
+<!-- 7. 기업자체 이력서 존재시 => 이력서 다운로드 버튼/ 없을시 채용사이트에 저장된 이력서목록보이기 -->
+<!-- 8. 관련키워드(기업이 등록해놓은 관련업무) view -->
+<!-- 9. 지원자 현황 (그래프나 인원수만 보이도록) -->
+<!-- 10. 추천 일자리 (5개 표시;) -->
+			<button id="copyBtn" onclick="copyToClipboard()">주소 복사하기</button>
+			<a id="btnTwitter" class="link-icon twitter" href="javascript:shareTwitter();">트위터</a>
+			<a id="btnFacebook" class="link-icon facebook" href="javascript:shareFacebook();">페이스북</a>    
+			<a id="btnKakao" class="link-icon kakao" href="javascript:shareKakao();">카카오톡</a>
+			<h1 >접수기간 d-day : <span id="dDay"></span></h1>
+			<button onclick="">관심기업구독하기</button>
+			<button onclick="">공고스크랩하기</button>
+			<button onclick="">지원서 제출하기</button>
+			
+			<div id="chart-container">
+        		<canvas id="chart"></canvas>
+    		</div>
+			
 			<div class="jobad header">
 				<h3>[[${jobad.company.cname}]]</h3>
 				<h1>[[${jobad.wantedTitle}]]</h1>
@@ -111,6 +148,106 @@
 			</div>
 		</div>
 	</main>
+<script th:inline="javascript">
+	const dDay = document.querySelector("#dDay");
+	const targetDate = [[${jobad.receiptCloseDt}]];
+	const regDate = [[${jobad.regdate}]];
+	console.log(regDate);
+	
+	  // 그래프 초기화
+    document.addEventListener("DOMContentLoaded", function() {
+        var chartContainer = document.getElementById('chart-container');
+        var chartCanvas = document.getElementById('chart');
+        var ctx = chartCanvas.getContext('2d');
+        
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["공고등록일", "오늘"],
+                datasets: [{
+                    label: '실시간 지원자수 현황',
+                    data: [1, 50],
+                    borderColor: 'blue',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        display: true,
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 10
+                        }
+                    },
+                    y: {
+                        display: true,
+                        suggestedMin: 0,
+                        suggestedMax: 100
+                    }
+                }
+            }
+        });
+    });
 
+	function calcDday(){
+		 // 주어진 날짜와 현재 날짜 간의 차이 계산
+	    const oneDay = 24 * 60 * 60 * 1000; // 하루를 밀리초 단위로 표현
+	    const today = new Date(); // 현재 날짜
+	    const target = new Date(targetDate); // 주어진 날짜
+
+	    // 주어진 날짜와 현재 날짜 간의 차이를 일 단위로 계산
+	    const diffDays = Math.round((target - today) / oneDay);
+
+	    return diffDays;
+	}
+	const dday = calcDday(targetDate);
+	dDay.innerHTML=dday;
+	
+	function copyToClipboard() {
+	    var t = document.createElement("textarea");
+	    document.body.appendChild(t);
+	    t.value = window.location.href;
+	    t.select();
+	    document.execCommand('copy');
+	    document.body.removeChild(t);
+	};
+    document.querySelector("#copyBtn").addEventListener("click", function() {
+    	console.log(window.location.href);
+	      copyToClipboard(window.location.href);
+	      alert('주소를 복사하였습니다');
+	    })
+
+	function shareTwitter() {
+	    const sendText = [[${jobad.wantedTitle}]]; // 전달할 텍스트
+	    const sendUrl = window.location.href; // 전달할 URL
+	    window.open("https://twitter.com/intent/tweet?text=" + sendText + "&url=" + sendUrl);
+	}
+	function shareFacebook() {
+	    var sendUrl = window.location.href; // 전달할 URL
+	    window.open("http://www.facebook.com/sharer/sharer.php?u=" + sendUrl);
+	}
+	function shareKakao() {
+		  // 사용할 앱의 JavaScript 키 설정
+		  Kakao.init('a65924b5ad21649d69b934fcd8c1eeea');
+		  // 카카오링크 버튼 생성
+		  Kakao.Link.createDefaultButton({
+		    container: '#btnKakao', // 카카오공유버튼ID
+		    objectType: 'feed',
+		    content: {
+		      title: [[${jobad.wantedTitle}]], // 보여질 제목
+		      description: "잡왕채용공고", // 보여질 설명
+		      imageUrl: window.location.href, // 콘텐츠 URL
+		      link: {
+		         mobileWebUrl: window.location.href,
+		         webUrl: window.location.href
+		      }
+		    }
+		  });
+		}
+</script>
 </body>
 </html>
