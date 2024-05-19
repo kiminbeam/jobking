@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+
+
+<script>
+
+// fetch('http://localhost:8093/json/korea-administrative-district.json')
+// .then(response => response.json())
+// .then(data => {
+//   console.log(data);
+//   console.log(data.data[0]);
+//   console.log(data.data[0].서울특별시);
+//   // 데이터를 처리하는 코드
+// })
+// .catch(error => {
+//   console.error('Error fetching data:', error);
+// });
+
+from selenium import webdriver
+chrome_options = webdriver.ChromeOptions()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+import requests
+from bs4 import BeautifulSoup
+from openpyxl import Workbook
+from google.colab import drive
+drive.mount('/content/drive', force_remount=True)
+from openpyxl import Workbook
+ 
+ 
+BASE_URL = "https://www.theteams.kr/recruit/"
+ 
+ 
+POSTING_NUM_LIST = []        # 도메인의 마지막 자리 숫자를 모으는 리스트
+JOB_DESC_LIST = []             # 공고내용 (col-md-12)
+TITLE_LIST = []             # 채용공고 제목 (tm_mgt_title)
+COMPANY_NAME_LIST = []         # 회사이름 (tm_h2_title_company_info)
+CATEGORY_LIST = []             # 부문 (rc_categories_name)
+ 
+ 
+def get_desc(URL):
+  print("$", end="")
+  driver = webdriver.Chrome('chromedriver', options=chrome_options)
+  driver.implicitly_wait(1)
+ 
+  driver.get(URL)
+  html = driver.page_source
+  soup = BeautifulSoup(html, 'lxml') # html parser
+ 
+  # 제목; TITLE = soup.select('div.tm_mgt_title')
+  title = soup.findAll("h3", {"class": "tm_mgt_title"})
+  title = str(title)
+  title = title[title.find(">") + 1 : title.find("</")]
+  TITLE_LIST.append(title)
+ 
+  # 부분; CATEGORY = soup.findAll; div.rc_categories_name
+  category = soup.findAll("div", {"class": "rc_categories_name"})
+  category = str(category)
+  category = category[category.find(">") + 3 : category.find("</")]
+  CATEGORY_LIST.append(category)
+ 
+  # 회사이름; COMPANY_NAME; tm_h2_title_company_info
+  company_name = soup.findAll("h2", {"class": "tm_h2_title_company_info"})
+  company_name = str(company_name)
+  company_name = company_name[company_name.find(">") + 1 : company_name.find("</")]
+  COMPANY_NAME_LIST.append(company_name)
+ 
+  # 채용공고 내용; JOB_DESC; col-md-12
+  # job_desc = soup.select('div.col-md-12 p')
+  job_desc = soup.select('div.col-md-12')
+  job_des=""
+ 
+  for i in range(0, len(job_desc), 1):
+    job_des = job_des + job_desc[i].get_text()
+ 
+  JOB_DESC_LIST.append(job_des)
+ 
+  driver.quit()
+ 
+ 
+# https://www.theteams.kr/recruit/
+def get_posting_numbers(URL):
+  print("$", end="")
+  driver = webdriver.Chrome('chromedriver', options=chrome_options)
+  driver.implicitly_wait(3)
+ 
+  driver.get(URL)
+  html = driver.page_source
+ 
+  # bs4 html parser
+  soup = BeautifulSoup(html, 'lxml')
+ 
+  # a 태그에서 recruitment page number 추출
+  a_tags = soup.select('div.card_recruit a')
+  
+  emp_list=[]; want_list=[];
+  emp_list.append(a_tags)
+  
+  want_list = str(emp_list[-1]).split("wanted/")
+ 
+  for i, want in enumerate(want_list):
+    if (i%2==1):
+      POSTING_NUM_LIST.append(want[:want.find('"')])
+ 
+  driver.quit()
+ 
+ 
+# M A I N
+# 채용공고 URL 가져오기
+for i in range(1, 93, 1):
+  get_posting_numbers(BASE_URL+str(i))
+ 
+# Remove Duplicates from the List; POSTING_NUM_LIST
+POSTING_NUM_LIST = list(dict.fromkeys(POSTING_NUM_LIST))
+ 
+# 각 채용공고에 들어가서 (회사이름, 직무, desc 가져오기)
+for num in POSTING_NUM_LIST:
+  URL = "https://www.theteams.kr/recruit/wanted/"+num
+  get_desc(URL)
+ 
+print("C O M P L E T E D")
+print(COMPANY_NAME_LIST)
+ 
+# .csv 포맷 엑셀 파일 작성
+ABC = ["A1", "B1", "C1", "D1"]
+columns = ["기업이름", "직무", "채용공고", "채용내용"]
+ 
+write_wb = Workbook()
+write_ws = write_wb.active
+ 
+# Head Columns 만들기
+for (alphabet, col) in zip(ABC, columns): 
+  write_ws[alphabet] = col
+ 
+#행 단위로 추가
+for i in range(len(TITLE_LIST)):
+  write_ws.append([ 
+                    COMPANY_NAME_LIST[i],
+                   CATEGORY_LIST[i],
+                   TITLE_LIST[i],
+                   JOB_DESC_LIST[i]
+                   
+                ])
+ 
+write_wb.save("The_TEAMS_1.csv")
+
+
+
+
+
+
+</script>
+</body>
+</html>
