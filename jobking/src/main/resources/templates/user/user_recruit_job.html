@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style>
+*{
+	list-style:none;
+}
+body{
+	margin-top: 100px;
+	line-height: 1.6
+}
+.container{
+	width: 1200px;
+	margin: 0 auto;
+}
+ul.tabs{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.tabs li{
+	background: none;
+	color: #222;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+}
+
+ul.tabs li.current{
+	background: #ededed;
+	color: #222;
+}
+
+.tab-content{
+	display: none;
+	background: #ededed;
+	padding: 15px;
+}
+
+.tab-content.current{
+	display:flex;
+}
+.tab-content .topCateogory{
+	display: flex;
+	flex-wrap: wrap;
+	width: 300px; /* 너비 조절 */ 
+    max-height: 150px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 수직 스크롤바 추가 */ 
+    padding: 10px; /* 패딩 추가 */ 
+ } 
+.topCateogory li{
+	margin: 10px; /* 아이템 간 간격 */
+} 
+.tab-content .category{
+	display: flex; 
+	flex-wrap: wrap; 
+	width: 800px; /* 너비 조절 */ 
+    max-height: 150px; /* 최대 높이 설정 */ 
+    overflow-y: auto; /* 수직 스크롤바 추가 */ 
+    padding: 10px; /* 패딩 추가 */ 
+ } 
+/*  .gu li{ */
+/* 		margin-right: 15px; /* 아이템 간 간격 */ */
+/*              color: black; /* 글자색 설정 */  */
+/*  } */
+#regionFilter, #sectorFilter, #jobFilter {
+	display:flex;
+} 
+.tab-content .category li{
+	margin-right:15px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+	<ul class="tabs">
+		<li id="jobTab" class="tab-link current" data-tab="jobFilter">직무별</li>
+		<li id="regionTab" class="tab-link" data-tab="regionFilter" >지역별</li>
+		<li id="sectorTab" class="tab-link" data-tab="sectorFilter">업종별</li>
+	</ul>
+	<div id="jobFilter" class="tab-content current">
+		<div>
+			<ul class="topCateogory jobCategory">
+			</ul>
+		</div>
+		<div>
+			<ul class="category position">
+			</ul>
+		</div>
+	</div>
+	<div id="regionFilter" class="tab-content">
+		<div>
+			<ul class="topCateogory city">
+			</ul>
+		</div>
+		<div>
+			<ul class="category gu">
+			</ul>
+		</div>
+	</div>
+	<div id="sectorFilter" class="tab-content">
+		<div>
+			<ul class="topCateogory sectorCategory">
+			</ul>
+		</div>
+		<div>
+			<ul class="category sector">
+			</ul>
+		</div>
+	</div>
+</div>
+
+
+<div class="jobad">
+
+</div>
+
+
+<script>
+
+const tabs = document.querySelectorAll(".tab-link");
+const contents = document.querySelectorAll(".tab-content")
+const cityEl = document.querySelector(".city");
+const guEl = document.querySelector(".gu");
+const sectorCateEl = document.querySelector(".sectorCategory");
+const sectorEl = document.querySelector(".sector");
+const jobCateEl = document.querySelector(".jobCategory");
+const positionEl = document.querySelector(".position");
+
+tabs.forEach(tab=>{
+	tab.addEventListener("click", function(e){
+		const id = e.target.getAttribute("data-tab")
+		tabs.forEach(t=>{t.classList.remove("current")})
+		contents.forEach(content=>{content.classList.remove("current")})
+		tab.classList.add("current");
+		document.querySelector("#"+id).classList.add("current")
+	})
+})
+
+
+
+//지역리스트	
+document.addEventListener("DOMContentLoaded", function() {
+	fetch('http://localhost:8093/json/korea-administrative-district.json')
+	.then(response => response.json())
+	.then(data => {
+		let i = 0;
+	  while(i < data.data.length){
+		  //기본 도시 리스트 뿌려주기
+		  const city = Object.keys(data.data[i]);
+		  cityEl.innerHTML += "<li id='city"+ i +"'>"+city+"</li>";
+		  i++;
+		  //도시 이름 클릭시 도시 내 세부 행정구역 뿌려주기
+		  const cities = document.querySelectorAll(".city li");
+		  cities.forEach(city =>{
+		  	city.addEventListener("click", function(e){
+		  		//다른 도시 클릭시 마다 구 정보 칸 비워주기
+		  		guEl.innerHTML="";
+		  		const cname = e.target.innerText;
+		  		const ccode = Number(e.target.id.slice(4));
+		  		const gu = Object.values(data.data[ccode])[0];
+		  	let j = 0;
+			  	while(j<gu.length){
+			  		console.log(gu[j])
+			  		const guName = gu[j];
+			  		guEl.innerHTML += "<li id='gu"+ j +"'>"+guName+"</li>";
+			  		j++;
+			  	}
+		  	})
+		  })
+	  }
+	})
+	.catch(error => {
+	  console.error('Error fetching data:', error);
+	});
+})
+
+//업종리스트
+document.addEventListener("DOMContentLoaded", function() {
+	fetch('http://localhost:8093/json/sector_category.json')
+	.then(response => response.json())
+	.then(data => {
+		console.log(data)
+		let i = 0;
+		//업종 상위 카테고리 뿌려주기
+		while(i<data.length){
+				const sectorCateCode = data[i].코드;
+				const sectorCategory = (data[i])["산업/업종명"];
+					if(sectorCategory != null){
+						sectorCateEl.innerHTML+="<li id='sectorCategory"+ sectorCateCode +"'>"+sectorCategory+"</li>";
+					}
+				i++;
+		}
+		//상위 카테고리 클릭시 해당 카테고리 내 상세 직무 카테고리 뿌려주기
+		const sectorCategories = document.querySelectorAll(".sectorCategory li")
+		sectorCategories.forEach(sectorCate =>{
+		
+			sectorCate.addEventListener("click", function(e){
+				//상위카테고리 클릭시 세부 직무 카테고리칸 비워주기
+				sectorEl.innerHTML="";
+				fetch('http://localhost:8093/json/sector.json')
+				.then(response=> response.json())
+				.then(data=>{
+// 					console.log(data)
+					let j = 0;
+					while(j<data.length){
+						const sectorCode = (data[j])["코드"]
+						const sectorTitle = (data[j])["산업/업종명"];
+						if(Number(sectorCate.id.slice(14)) == (data[j])["상위코드"]){
+							sectorEl.innerHTML += "<li id='sectorTitle"+ sectorCode +"'>"+sectorTitle+"</li>"
+						}
+						j++;
+					}
+				})
+			})
+		})
+	})
+	.catch(error => {
+	  console.error('Error fetching data:', error);
+	});
+})
+
+//직무리스트
+document.addEventListener("DOMContentLoaded", function() {
+	fetch('http://localhost:8093/json/job_category.json')
+	.then(response => response.json())
+	.then(data => {
+		
+		let i = 0;
+		//직무 상위 카테고리 뿌려주기
+		while(i<data.length){
+				const cateCode = data[i].코드;
+				const jobCategory = data[i].상위직무;
+					if(jobCategory != null){
+						jobCateEl.innerHTML+="<li id='jobCategory"+ cateCode +"'>"+jobCategory+"</li>";
+					}
+				i++;
+		}
+		//상위 카테고리 클릭시 해당 카테고리 내 상세 직무 카테고리 뿌려주기
+		const jobCategories = document.querySelectorAll(".jobCategory li")
+		jobCategories.forEach(jobCate =>{
+		
+			jobCate.addEventListener("click", function(e){
+				//상위카테고리 클릭시 세부 직무 카테고리칸 비워주기
+				positionEl.innerHTML="";
+				fetch('http://localhost:8093/json/job.json')
+				.then(response=> response.json())
+				.then(data=>{
+					let j = 0;
+					while(j<data.length){
+						const jobCode = (data[j])["직무 코드"]
+						const positionTitle = (data[j])["직무 키워드명"];
+						if(Number(jobCate.id.slice(11)) == (data[j])["직무 상위 코드"]){
+							console.log(positionTitle);
+							positionEl.innerHTML += "<li id='positionTitle"+ jobCode +"'>"+positionTitle+"</li>"
+						}
+						j++;
+					}
+				})
+			})
+		})
+	})
+	.catch(error => {
+	  console.error('Error fetching data:', error);
+	});
+})
+
+
+
+</script>
+</body>
+</html>

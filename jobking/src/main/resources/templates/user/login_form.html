@@ -62,7 +62,7 @@ ul.tabs li.current{
 	<div id="company_login"  class="tab-content">
 		<form action="/user/company_login" method="post">
 			<input type="text" name="cid" placeholder="아이디"><br>
-			<input  class="pw"  type="password" name="cpw" placeholder="비밀번호"><span class="pwShowBtn">👁</span><br>
+			<input  class="pw"  type="password" name="cpw" placeholder="비밀번호"> <span class="pwShowBtn">👁</span><br>
 			<input type="submit" value="로그인">
 			<input class="regBtn" type="button" value="회원가입">
 		</form>
@@ -72,11 +72,8 @@ ul.tabs li.current{
 
 <script th:inline="javascript">
 
-	const tabs = document.querySelectorAll("li");
-	const userForm = document.querySelector("#user_login");
-	const companyForm = document.querySelector("#company_login");
-	const userTab = document.querySelector("#userTab");
-	const companyTab = document.querySelector("#companyTab");
+	const tabs = document.querySelectorAll(".tab-link");
+	const contents = document.querySelectorAll(".tab-content")
 	const regBtns = document.querySelectorAll(".regBtn")
 	const pwShowBtns = document.querySelectorAll(".pwShowBtn");
 
@@ -84,17 +81,11 @@ ul.tabs li.current{
 	tabs.forEach(tab=>{
 		tab.addEventListener("click", function(e){
 			const id = e.target.getAttribute("data-tab")
-			if(id == "user_login"){
-				userTab.classList.add("current");
-				companyTab.classList.remove("current");
-				userForm.classList.add("current");
-				companyForm.classList.remove("current");
-			}else{
-				userTab.classList.remove("current");
-				companyTab.classList.add("current");
-				userForm.classList.remove("current");
-				companyForm.classList.add("current");
-			}
+			tabs.forEach(t=>{t.classList.remove("current")})
+			contents.forEach(content=>{content.classList.remove("current")})
+			tab.classList.add("current");
+			document.querySelector("#"+id).classList.add("current")
+			
 		})
 	})
 	regBtns.forEach(btn=>{
