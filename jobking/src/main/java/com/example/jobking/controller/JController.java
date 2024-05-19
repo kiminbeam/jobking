@@ -121,4 +121,10 @@ public class JController {
 	@RequestMapping("/user_recruit_region")
 	public void userRecruitRegion() {
 	}
+	@RequestMapping("/user_recruit_job")
+	public void userRecruitJob() {
+	}
+	@RequestMapping("/user_recruit_sector")
+	public void userRecruitSector() {
+	}
 }
