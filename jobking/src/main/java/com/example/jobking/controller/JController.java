@@ -2,9 +2,9 @@ package com.example.jobking.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jobking.entity.Company;
+import com.example.jobking.entity.InterestCop;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
 import com.example.jobking.repository.ICompanyRepository;
+import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.IUserRepository;
@@ -38,9 +40,12 @@ public class JController {
 	@Autowired
 	private ICompanyRepository companyRepo;
 	@Autowired
+	private IInterestCopRepository interestRepo;
+	@Autowired
 	private IJobAdRepository jobadRepo;
 	@Autowired
 	private ServletContext servletContext;
+	
 	
 	@RequestMapping("/index")
 	public String root() {
@@ -203,6 +208,25 @@ public class JController {
 		
 		JobAd jobad = jobadRepo.findById(jno).get();
 		model.addAttribute("jobad", jobad);
+	}
+	@RequestMapping("/user_subNscrap_list")
+	public void userSubNscrapList(Model model) {
+//		interestRepo.save(new InterestCop(0L, userRepo.findById("aab").get(), companyRepo.findById("ccc").get()));
+//		interestRepo.save(new InterestCop(0L, userRepo.findById("aab").get(), companyRepo.findById("cid1").get()));
+//		interestRepo.save(new InterestCop(0L, userRepo.findById("aab").get(), companyRepo.findById("cid2").get()));
 		
+		
+//		List<InterestCop> interestCopList = interestRepo.findAll();
+//		
+//		List<String> jobAdList = new ArrayList<>();
+//		for(InterestCop ic : interestCopList) {
+//			System.out.println(ic.getCompany().getCid());
+//			String cid = ic.getCompany().getCid();
+//			String latestJobadTitle = jobadRepo.findLatestJobAd(cid).get().getWantedTitle();
+//			jobAdList.add(latestJobadTitle);
+//		}
+//		
+//		model.addAttribute("interestCopList", interestCopList);
+//		model.addAttribute("jobAdList", jobAdList);
 	}
 }

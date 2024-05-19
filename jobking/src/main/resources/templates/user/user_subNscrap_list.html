@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body>
+<header>
+	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+</header>
+<main>
+	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+	<div>
+		<h1>마이페이지</h1>
+		<h3>구독 및 스크랩</h3>
+		
+		<h3>내가 구독한 기업리스트</h3>
+		<table>
+			<tr>
+				<th>check all</th>
+				<th>기업</th>
+				<th>가장 최근 공고</th>
+				<th>삭제</th>
+			</tr>
+
+		</table>
+		
+		
+		
+	</div>
+</main>
+	<footer>
+		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+	</footer>
+</body>
+
+
+
+<script th:inline="javascript">
+
+
+
+// 	if([[${result}]] == "false"){
+// 		alert("등록된 이력서가 없습니다. 빠른 구직을 위하여 이력서를 등록해주세요");
+// 	}
+	
+</script>
+</html>
