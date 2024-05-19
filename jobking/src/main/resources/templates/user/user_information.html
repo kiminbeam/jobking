@@ -13,10 +13,10 @@
 	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 	<div>
 		<h1>userInfo</h1>
-		<form action="user_edit" method="post">
-			
+		<form action="user_edit" method="post" enctype="multipart/form-data">
 			<ul>
-			<!-- 	이미지파일 -->
+				<li id="photoUrl"><a th:href="@{http://localhost:8093/images/pen.png}">[]</a></li>
+				<li id="photo"><input type="file" name="photo"></li>
 				<li>이름 <input type="text" name="uname" th:value="${user.uname}"></li>
 				<li>성별 <input type="text" name="gender" th:value="${user.gender}" readonly> </li>
 				<li>생년월일 <input type="text" name="birthDate" th:value="${user.birthDate}" readonly> </li>

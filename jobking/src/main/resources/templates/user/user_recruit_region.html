@@ -121,7 +121,13 @@ ul.tabs li.current{
 	
 	
 	<div class="jobad">
-	
+		<div th:each="jobad : ${jobadList}">
+			<h1 th:text="${jobad.company.cname}"></h1>
+			<span>❤️</span>
+			공고제목 : <span><a th:href="@{/user/user_recruitDetail(jno=${jobad.jno})}">[[${jobad.wantedTitle}]]</a></span>
+			마감 날짜 : <span th:text="${jobad.receiptCloseDt}"></span>
+			<span>⭐</span>
+		</div>
 	</div>
 	
 	

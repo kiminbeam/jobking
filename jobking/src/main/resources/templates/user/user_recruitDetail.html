@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+	<header>
+		<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+	</header>
+	<main>
+		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+		<div>
+			<h1>detailsss</h1>
+			<div class="jobad header">
+				<h3>[[${jobad.company.cname}]]</h3>
+				<h1>[[${jobad.wantedTitle}]]</h1>
+			</div>
+			<div class="jobad company_info">
+				<table>
+					<tr>
+						<th>대표자명</th>
+						<td>[[${jobad.company.ceo}]]</td>
+						<th>업종코드</th>
+						<td>[[${jobad.company.jobsCd}]]</td>
+					</tr>
+					<tr>
+						<th>기업규모</th>
+						<td>[[${jobad.company.size}]]</td>
+						<th>주요사업</th>
+						<td>[[${jobad.company.major}]]</td>
+					</tr>
+					<tr>
+						<th>연매출액</th>
+						<td>[[${jobad.company.yrSales}]]</td>
+						<th>기업주소</th>
+						<td>[[${jobad.company.caddr}]]</td>
+					</tr>
+				</table>
+			</div>
+			<div class="jobad main">
+				<table>
+					<tr>
+						<th>직무</th>
+						<td>[[${jobad.position}]]</td>
+						<th>상세공고</th>
+						<td>[[${jobad.jobCont}]]</td>
+					</tr>
+					<tr>
+						<th>채용 마감</th>
+						<td>[[${jobad.receiptCloseDt}]]</td>
+						<th>근무형태</th>
+						<td>[[${jobad.empTpNm}]]</td>
+					</tr>
+					<tr>
+						<th>채용인원</th>
+						<td>[[${jobad.collectPsncnt}]]</td>
+						<th>연봉</th>
+						<td>[[${jobad.salTpNm}]]</td>
+					</tr>
+					<tr>
+						<th>최소학력</th>
+						<td>[[${jobad.minEdubglcd}]]</td>
+						<th>최대학력</th>
+						<td>[[${jobad.maxEdubglcd}]]</td>
+					</tr>
+					<tr>
+						<th>병역특례채용희망</th>
+						<td>[[${jobad.mltsvcExcHope}]]</td>
+						<th>필요스킬</th>
+						<td>[[${jobad.needskill}]]</td>
+					</tr>
+					<tr>
+						<th>접수방법</th>
+						<td>[[${jobad.rcptMthd}]]</td>
+						<th>근무지역</th>
+						<td>[[${jobad.regionCd}]]</td>
+					</tr>
+					<tr>
+						<th>근무시간</th>
+						<td>[[${jobad.WkdWkhCnt}]]</td>
+						<th>퇴직금여부</th>
+						<td>[[${jobad.retirepay}]]</td>
+					</tr>
+					<tr>
+						<th>기타복리후생</th>
+						<td>[[${jobad.etcWelfare}]]</td>
+						<th>회사소개첨부파일</th>
+						<td>[[${jobad.attachFileUrl}]]</td>
+					</tr>
+					<tr>
+						<th>근무형태</th>
+						<td>[[${jobad.enterTpCd}]]</td>
+						<th>제출서류양식첨부</th>
+						<td>[[${jobad.attachFileUrl2}]]</td>
+					</tr>
+					<tr>
+						<th>임금형태</th>
+						<td>[[${jobad.salTpCd}]]</td>
+						<th>담당자명</th>
+						<td>[[${jobad.empName}]]</td>
+					</tr>
+					<tr>
+						<th>담당자 이메일</th>
+						<td>[[${jobad.empEmail}]]</td>
+						<th>담당자 번호</th>
+						<td>[[${jobad.empTel}]]</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</main>
+
+</body>
+</html>
