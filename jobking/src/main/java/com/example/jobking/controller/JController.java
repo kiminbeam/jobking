@@ -117,6 +117,7 @@ public class JController {
 		request.getSession().invalidate();
 		return "redirect:/user/index";
 	}
+
 	
 	@RequestMapping("/user_recruit_region")
 	public void userRecruitRegion() {
@@ -127,4 +128,5 @@ public class JController {
 	@RequestMapping("/user_recruit_sector")
 	public void userRecruitSector() {
 	}
+
 }

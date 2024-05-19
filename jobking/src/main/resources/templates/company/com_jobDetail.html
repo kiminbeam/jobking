@@ -86,17 +86,19 @@
 	
 	.maincontent{
 		display: flex;
+		margin-top: 100px;
 	}
 	
 	.sidebar {
-		height: 100%;
+		height: calc(100vh - 100px);
 		width: 250px;
 		position: fixed;
-		top: 20;
+		top: 100px;
 		left:0;
 		background-color:white;
 		overflow-x:hidden;
 		padding-top: 20px;
+		box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 	}
 	
 	.sidebar a, .sidebar button {
@@ -126,35 +128,39 @@
 		border-bottom: 1px solid black;
 	}
 	
-	.button{
-		background-color: dodgerblue;
-		border: none;
-		color:white;
-		text-align: center;
-		text-decoration: none;
-		display:inline-block;
-		padding: 15px 32px;
-		font-size: 16px;
-		margin: 4px 2px;
-	}
-	
-	.listcontent{
-		flex:1;
+	.jobadD{
+		border: 1px solid black;
 		padding: 20px;
-		margin-left: 250px;
-	}
-	
-	.listtop{
-		display:flex;
+		width: calc(100% - 270px); 
+		margin-left: 270px;
+		
+		display: flex;
 		justify-content: space-between;
-		align-items: center;
-		padding: 20px;
-		border-bottom: 1px solid #ccc;
 	}
 	
-	.list{
-		padding: 20px;
+	.simpleinfo{
+		margin-bottom: 20px;
 	}
+	
+	.simpleinfo #adtitle{
+		font-size: 24px;
+		font-weight: bold;
+		margin-bottom: 10px;
+	}
+	
+	.simpleinfo #info{
+		font-size: 18px;
+	}
+	
+	.additionalInfo{
+		border: 1px solid black;
+		padding: 20px;
+		width: calc(100% - 270px); 
+		margin-left: 270px;
+		margin-top: 20px;
+	}
+	
+	
 </style>
 </head>
 <body>
@@ -222,19 +228,31 @@
 			</div>
 			<a href="">커뮤니티</a>
 		</div><!--sidebar end-->
-		<div class="listcontent">
-			<div class="listtop">
-				<h3>채용공고 목록</h3>
-				<button class="button" onclick="location.href='regi_jobadForm'">채용공고등록</button>
+		
+		
+		<div class="jobadD">
+			<div class="simpleinfo">
+				<div id="adtitle">공고제목</div>
+				<div id="info">
+					접수기간<div>${데이터}</div>
+					모집인원<div>${데이터}</div>
+				</div>
 			</div>
-			<div class="list">
-				<div id="jobad">여기 목록 나옴</div>
-			</div>
-		</div>
+			<div class="cpinfo">
+				<div id="comlogo">이미지</div>
+				<div id="comsimpleinfo">
+					기업정보
+					<div>${데이터}</div>
+					<div>${데이터}</div>
+					<div>${데이터}</div>
+				</div>
+			</div>		
+		</div> 
+		<div class="additionalInfo">
+			<!--추가정보-->
+			content
+		</div> 
+		
 	</div><!--maincontent end-->
-
-
-
-
 </body>
 </html>

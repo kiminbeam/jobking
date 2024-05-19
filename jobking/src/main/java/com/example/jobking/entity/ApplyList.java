@@ -17,31 +17,30 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Data
 @Table(name = "applyList")
+@Data
 public class ApplyList extends BaseEntity {
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ano", nullable = false)
-    private Long ano;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ano", nullable = false)
+	private Long ano;
 
 	@ManyToOne
-    @JoinColumn(name = "rno", referencedColumnName = "rno", nullable = false)
-    private Resume resume;
+	@JoinColumn(name = "rno", referencedColumnName = "rno", nullable = false)
+	private Resume resume;
 
-    @ManyToOne
-    @JoinColumn(name = "jno", referencedColumnName = "jno", nullable = false)
-    private JobAd jobAd;
+	@ManyToOne
+	@JoinColumn(name = "jno", referencedColumnName = "jno", nullable = false)
+	private JobAd jobAd;
 
-    @ManyToOne
-    @JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
-    private User user;
+	@ManyToOne
+	@JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
+	private User user;
 
+	@Column(name = "status", nullable = false)
+	private int status;
 
-    @Column(name = "status", nullable = false)
-    private int status;
-
-    @Column(name = "save", nullable = false)
-    private String save;
+	@Column(name = "save", nullable = false)
+	private String save;
 }
