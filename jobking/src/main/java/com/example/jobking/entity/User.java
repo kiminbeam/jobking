@@ -2,6 +2,8 @@ package com.example.jobking.entity;
 
 import java.time.LocalDate;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -45,5 +47,5 @@ public class User extends BaseEntity {
     private String uaddr;
     
     @Column(name = "photo")
-    private String photo;
+    private MultipartFile photo;
 }
