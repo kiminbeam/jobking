@@ -2,7 +2,6 @@ package com.example.jobking.controller;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.SelfInfo;
-import com.example.jobking.entity.User;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.ISelfInfo;
 import com.example.jobking.repository.IUserRepository;
@@ -72,7 +70,7 @@ public class KHController {
 	@RequestMapping("/user_resume")
 	public String resume() {
 		
-			
+		
 		
 		return "redirect:user_resumeList";
 	}
