@@ -48,13 +48,23 @@
                     <br>
                     <ul id="agreement">
                         필수 동의 항목 및 개인정보 수집 및 이용 동의(선택), 광고성 정보 수신 동의(선택)에 모두 동의합니다.
-                        <input type="checkbox">
+                        <input type="checkbox" name="selectall" value="selectall" onclick="selectAll(this)" />
                         <br>
-                        <li>[필수] 이용약관 동의<input type="checkbox"></li>
-                        <li>[필수] 개인정보 수집 및 이용 동의<input type="checkbox"></li>
-                        <li>[필수] 만 15세 이상입니다<input type="checkbox"></li>
-                        <li>[선택] 개인정보 수집 및 이용 동의 <input type="checkbox"></li>
-                        <li>[선택] 광고성 정보 이메일 수신 동의 <input type="checkbox"></li>
+                        <li>
+                            [필수] 이용약관 동의 <input type="checkbox" name="chk" onclick="checkSelectAll()">
+                        </li>
+                        <li>
+                            [필수] 개인정보 수집 및 이용 동의 <input type="checkbox" name="chk" onclick="checkSelectAll()">
+                        </li>
+                        <li>
+                            [필수] 만 15세 이상입니다 <input type="checkbox" name="chk" onclick="checkSelectAll()">
+                        </li>
+                        <li>
+                            [선택] 개인정보 수집 및 이용 동의 <input type="checkbox" name="chk" onclick="checkSelectAll()">
+                        </li>
+                        <li>
+                            [선택] 광고성 정보 이메일 수신 동의 <input type="checkbox" name="chk" onclick="checkSelectAll()">
+                        </li>
                     </ul>
                     <input type="submit" value="가입하기">
                 </form>
@@ -93,13 +103,23 @@
                     <br>
                     <ul id="agreement">
                         필수 동의 항목 및 개인정보 수집 및 이용 동의(선택), 광고성 정보 수신 동의(선택)에 모두 동의합니다.
-                        <input type="checkbox">
+                        <input type="checkbox" name="selectall2" value="selectall2" onclick="selectAll2(this)" />
                         <br>
-                        <li>[필수] 이용약관 동의<input type="checkbox"></li>
-                        <li>[필수] 개인정보 수집 및 이용 동의<input type="checkbox"></li>
-                        <li>[필수] 만 15세 이상입니다<input type="checkbox"></li>
-                        <li>[선택] 개인정보 수집 및 이용 동의 <input type="checkbox"></li>
-                        <li>[선택] 광고성 정보 이메일 수신 동의 <input type="checkbox"></li>
+                        <li>
+                            [필수] 이용약관 동의 <input type="checkbox" name="chk2" onclick="checkSelectAll2()">
+                        </li>
+                        <li>
+                            [필수] 개인정보 수집 및 이용 동의 <input type="checkbox" name="chk2" onclick="checkSelectAll2()">
+                        </li>
+                        <li>
+                            [필수] 만 15세 이상입니다 <input type="checkbox" name="chk2" onclick="checkSelectAll2()">
+                        </li>
+                        <li>
+                            [선택] 개인정보 수집 및 이용 동의 <input type="checkbox" name="chk2" onclick="checkSelectAll2()">
+                        </li>
+                        <li>
+                            [선택] 광고성 정보 이메일 수신 동의 <input type="checkbox" name="chk2" onclick="checkSelectAll2()">
+                        </li>
                     </ul>
                     <input type="submit" value="가입하기">
                 </form>
@@ -195,6 +215,7 @@
     // 실패 메시지 정보 가져오기 (8글자 이상, 영문, 숫자, 특수문자 미사용)
     let elStrongPasswordMessage = document.querySelector('.strongPassword-message');
 
+
     function strongPassword (str) {
         return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
     }
@@ -217,7 +238,26 @@
     }
 };
 
-/////////////// COMPANY
+// checkbox 전체선택 및 전체해제 구현
+function checkSelectAll() {
+        // 전체 체크박스
+        const checkboxes = document.querySelectorAll('input[name="chk"]');
+        // 선택된 체크박스
+        const checked = document.querySelectorAll('input[name="chk"]:checked');
+        // select all 체크박스
+        const selectAll = document.querySelector('input[name="selectall"]');
+
+        selectAll.checked = checkboxes.length === checked.length;
+    }
+
+function selectAll(selectAll) {
+    const checkboxes = document.querySelectorAll('input[name="chk"]');
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = selectAll.checked;
+    });
+}
+
+//2.  COMPANY
    /////// 아이디
     /// 중복검사
     const cid = document.getElementById("cid");
@@ -298,8 +338,27 @@
 
     else {
         elStrongPasswordMessageC.classList.add('hide');
-    }
+    } 
 };
+
+// checkbox 전체선택 및 전체해제 구현2
+function checkSelectAll2() {
+            // 전체 체크박스
+            const checkboxes2 = document.querySelectorAll('input[name="chk2"]');
+            // 선택된 체크박스
+            const checked2 = document.querySelectorAll('input[name="chk2"]:checked');
+            // select all 체크박스
+            const selectAll2 = document.querySelector('input[name="selectall2"]');
+
+            selectAll2.checked = checkboxes2.length === checked2.length;
+        }
+
+        function selectAll2(selectAll2) {
+            const checkboxes2 = document.querySelectorAll('input[name="chk2"]');
+            checkboxes2.forEach((checkbox) => {
+                checkbox.checked = selectAll2.checked;
+            });
+        }
 </script>
 </body>
 </html>
