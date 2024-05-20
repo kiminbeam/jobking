@@ -4,28 +4,31 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.InterestCop;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.JobScrap;
+import com.example.jobking.entity.OfferList;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IJobScrapRepository;
+import com.example.jobking.repository.IOfferListRepository;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.IUserRepository;
 
@@ -51,13 +54,16 @@ public class JController {
 	private ServletContext servletContext;
 	@Autowired
 	private IJobScrapRepository jobscrapRepo;
+	@Autowired
+	private IOfferListRepository offerListRepo;
 	private final Path rootLocation = Paths.get("/upload");
 	
 	
 	@RequestMapping("/index")
 	public String root() {
-		companyRepo.save(new Company("ccc","", "네이버", "12345", "12345", "james", "11111", "서울", 500, "", "11", "11", "11"));
+//		companyRepo.save(new Company("ccc","", "네이버", "12345", "12345", "james", "11111", "서울", 500, "", "11", "11", "11"));
 //		userRepo.save(new User("aab", "james","1234", LocalDate.now(), "M", "aaa1234@gmail.com","010-1111-1111", "서울","dog"));
+			
 		return "/user/index";
 	}
 	
@@ -167,7 +173,7 @@ public class JController {
 	@RequestMapping("/user_logout")
 	public String userLogout(HttpServletRequest request) {
 		request.getSession().invalidate();
-		return "redirect:/user/index";
+		return "/user/index";
 	}
 
 	
@@ -207,4 +213,38 @@ public class JController {
 		jobscrapRepo.deleteById(Long.parseLong(jno));
 		return"redirect:/user/user_subNscrap_list";
 	}
+	@RequestMapping("/user_offer_list")
+	public void userOfferList(HttpServletRequest request, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		System.out.println(uid);
+		List<OfferList> offerList = offerListRepo.findAllByUid(uid);
+		model.addAttribute("offerList", offerList);
+		System.out.println(offerList);
+	}
+	@RequestMapping("/delete_offerList")
+	public String deletOfferList(@RequestParam("ono") String ono) {
+		offerListRepo.deleteById(Long.parseLong(ono));
+		return"redirect:/user/user_offer_list";
+	}
+	@RequestMapping("/user_offer_detail")
+	public void userOfferDetail(@RequestParam("ono") String ono, Model model) {
+		OfferList offer = offerListRepo.findById(Long.parseLong(ono)).get();
+		System.out.println(offer); 
+		
+		model.addAttribute("offer", offer);
+	}
+	@RequestMapping("/delete_offer_detail")
+	public String deletOfferDetail(@RequestParam("ono") String ono) {
+		offerListRepo.deleteById(Long.parseLong(ono));
+		return"redirect:/user/user_offer_list";
+	}
+	@RequestMapping("/answerToOffer")
+	public @ResponseBody String answerToOffer(@RequestParam("answer") String answer, @RequestParam("ono") String ono) {
+		OfferList offer = offerListRepo.findById(Long.parseLong(ono)).get();
+		offer.setAccept(answer);
+		offerListRepo.save(offer);
+		return "done";
+		
+	}
+	
 }

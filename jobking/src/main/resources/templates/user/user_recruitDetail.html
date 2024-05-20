@@ -42,9 +42,9 @@
 			<a id="btnFacebook" class="link-icon facebook" href="javascript:shareFacebook();">페이스북</a>    
 			<a id="btnKakao" class="link-icon kakao" href="javascript:shareKakao();">카카오톡</a>
 			<h1 >접수기간 d-day : <span id="dDay"></span></h1>
-			<button onclick="">관심기업구독하기</button>
-			<button onclick="">공고스크랩하기</button>
-			<button onclick="">지원서 제출하기</button>
+			<button onclick="likeTheCom">관심기업구독하기</button>
+			<button onclick="scrapJobad">공고스크랩하기</button>
+			<button onclick="apply">지원서 제출하기</button>
 			
 			<div id="chart-container">
         		<canvas id="chart"></canvas>
@@ -154,6 +154,11 @@
 	const regDate = [[${jobad.regdate}]];
 	console.log(regDate);
 	
+	function scrapJobad(){
+		
+	}
+	
+	
 	  // 그래프 초기화
     document.addEventListener("DOMContentLoaded", function() {
         var chartContainer = document.getElementById('chart-container');
@@ -216,7 +221,6 @@
 	    document.body.removeChild(t);
 	};
     document.querySelector("#copyBtn").addEventListener("click", function() {
-    	console.log(window.location.href);
 	      copyToClipboard(window.location.href);
 	      alert('주소를 복사하였습니다');
 	    })

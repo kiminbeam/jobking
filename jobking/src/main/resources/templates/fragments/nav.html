@@ -13,8 +13,14 @@
 			<li><a>커뮤니티</a></li>
 			<li><a>포지션매치</a></li>
 			<li><input type="text" value="검색창"> </li>
-			<li><a href="/user/login_form">로그인</a></li>
-			<li><a>회원가입</a></li>
+			<th:block th:if="${session.id == null}">
+				<li><a href="/user/login_form">로그인</a></li>
+				<li><a>회원가입</a></li>
+			</th:block>
+			<th:block th:if="${session.id != null}">
+				<li><a href="/user/user_logout">로그아웃</a></li>
+				<li><a href="/user/user_myPage">마이페이지</a></li>
+			</th:block>
 		</ul>
 	</nav>
 </div>
