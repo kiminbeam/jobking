@@ -17,18 +17,34 @@
 		<h3>구독 및 스크랩</h3>
 		
 		<h3>내가 구독한 기업리스트</h3>
-		<table>
+		<table class="interestCop">
 			<tr>
-				<th>check all</th>
 				<th>기업</th>
-				<th>가장 최근 공고</th>
+				<th>회사 홈페이지</th>
 				<th>삭제</th>
 			</tr>
-
+			<tr th:each="interest : ${interestCopList}">
+				<td>[[${interest.company.cname}]]</td>
+				<td><a th:href="${interest.company.url != ''} ? ${interest.company.url} : '' ">[[${interest.company.url != ''} ? ${interest.company.url} : '없음' ]]</a></td>
+				<td class="deleteBtn">❌<span style="display:none;">[[${interest.interno}]]</span></td>
+			</tr>
 		</table>
 		
 		
-		
+		<h3>내가 찜한 공고리스트</h3>
+		<table class="jobScrap">
+			<tr>
+				<th>기업</th>
+				<th>내가 찜한 공고</th>
+				<th>삭제</th>
+			</tr>
+			<tr th:each="jobscrap : ${jobscrapList}">
+				<td>[[${jobscrap.jobAd.company.cname}]]</td>
+				<td><a th:href="@{/user/user_recruitDetail(jno=${jobscrap.jobAd.jno})}">[[${jobscrap.jobAd.wantedTitle}]]</a></td>
+				<td class="deleteBtn">❌<span style="display:none;">[[${jobscrap.jobAd.jno}]]</span></td>
+				
+			</tr>
+		</table>
 	</div>
 </main>
 	<footer>
@@ -39,12 +55,24 @@
 
 
 <script th:inline="javascript">
+	const deleteBtns = document.querySelectorAll(".deleteBtn");
+	deleteBtns.forEach(btn=>{
+		btn.addEventListener("click", function(e){
+			let table = e.target.parentElement.parentElement.parentElement.classList;
+			let no = e.target.querySelector("span").innerText;
+			
+			if(table =="interestCop"){
+				if(confirm("정말로 해당 기업을 리스트에서 삭제하시겠습니까?")){
+					location.href="/user/delete_interestCop?interno="+no;
+				};
+			}else if(table =="jobScrap"){
+				if(confirm("정말로 해당 공고를 리스트에서 삭제하시겠습니까?")){
+					location.href="/user/delete_jobScrap?jno="+no;
+				}
+			}
+		})
+	})
 
-
-
-// 	if([[${result}]] == "false"){
-// 		alert("등록된 이력서가 없습니다. 빠른 구직을 위하여 이력서를 등록해주세요");
-// 	}
 	
 </script>
 </html>
