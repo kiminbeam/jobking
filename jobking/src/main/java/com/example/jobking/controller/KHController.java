@@ -96,7 +96,7 @@ public class KHController {
 	
 	@RequestMapping("/user_resume")
 	public String resume(Resume resume, Hope hope, SelfInfo selfInfo, Oa oa, User user, Career career, School school, License license, Experience experience) {
-		
+		User user = new User();
 		ResumeRepository.save(resume);
 		SelfInfoRepository.save(selfInfo);
 		UserRepository.save(user);

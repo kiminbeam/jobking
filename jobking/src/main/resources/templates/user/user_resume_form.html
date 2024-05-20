@@ -83,6 +83,7 @@
                     <th>전공학과</th>
                     <th>학점<em class="em1">[필수]</em></th>
                     <th>상태</th>
+                    <th>등록</th>
                     <th>삭제</th>
                 </tr>
             </thead>
@@ -122,6 +123,9 @@
                         </select>
                     </td>
                     <td>
+                        <button type="button" class="regRowButton">등록</button>
+                    </td>
+                    <td>
                         <button type="button" class="deleteRowButton">삭제</button>
                     </td>
                 </tr>
@@ -139,6 +143,7 @@
                     <th>직급<em class="em1">[필수]</em></th>
                     <th>직책<em class="em1">[필수]</em></th>
                     <th>상태</th>
+                    <th>등록</th>
                     <th>삭제</th>
                 </tr>
             </thead>
@@ -164,6 +169,9 @@
                             <option value="0">퇴직</option>
                             <option value="1">재직</option>
                         </select>
+                    </td>
+                    <td>
+                        <button type="button" class="regRowButton2">등록</button>
                     </td>
                     <td>
                         <button type="button" class="deleteRowButton2">삭제</button>
@@ -215,7 +223,7 @@
                     <input type="date" name="endDay" id="endDay" title="종료일자" placeholder="yyyy.mm.dd" maxlength="10">
                 </td>
                 <td>
-                    <input type="text" value="내용을 입력해주세요.">
+                    <input type="text" placeholder="내용을 입력해주세요.">
                 </td>
                 <td>
                     <button type="button" class="deleteRowButton3">삭제</button>
@@ -271,7 +279,7 @@
         <hr>
         보유 스킬
         <hr>
-        <input type="text" value="내용을 입력해주세요.">
+        <input type="text" placeholder="내용을 입력해주세요.">
         <hr>
         희망 직종
         <hr>
@@ -545,6 +553,50 @@
     });
 
     
+    function checkRequiredFields() {
+    // 필수 입력 필드 목록
+    var requiredFields = [
+        'region1',
+        'sectors',
+        'job',
+        'rtitle',
+        'disclo',
+        'accDate',
+        'gradDate',
+        'eduName',
+        'status',
+        'title',
+        'scontent'
+    ];
+
+    // 필수 입력 필드 중 하나라도 입력되지 않은 경우
+    for (var i = 0; i < requiredFields.length; i++) {
+        var field = document.getElementsByName(requiredFields[i])[0];
+        if (!field || field.value.trim() === '') {
+            return false;
+        }
+    }
+    return true; // 모든 필수 입력 필드가 입력되었을 경우
+}
+
+// 제출 버튼 상태 업데이트 함수
+function updateSubmitButtonState() {
+    var submitButton = document.querySelector('input[type="submit"]');
+    if (checkRequiredFields()) {
+        submitButton.disabled = false; // 필수 입력 필드가 모두 입력되었을 경우 버튼 활성화
+    } else {
+        submitButton.disabled = true; // 필수 입력 필드 중 하나라도 입력되지 않았을 경우 버튼 비활성화
+    }
+}
+
+// 페이지 로드 시 제출 버튼 상태 업데이트
+updateSubmitButtonState();
+
+// 필수 입력 필드 값이 변경될 때마다 제출 버튼 상태 업데이트
+var requiredFields = document.querySelectorAll('[name="region1"], [name="sectors"], [name="job"], [name="rtitle"], [name="disclo"], [name="accDate"], [name="gradDate"], [name="eduName"], [name="status"], [name="title"], [name="scontent"]');
+requiredFields.forEach(function(field) {
+    field.addEventListener('input', updateSubmitButtonState);
+});
 
 </script>
 </body>
