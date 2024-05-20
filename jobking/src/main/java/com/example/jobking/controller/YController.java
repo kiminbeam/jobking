@@ -29,7 +29,7 @@ public class YController {
 	
 	@RequestMapping("/user_regForm")
 	public String regForm() {
-		return "user_regForm";
+		return "/user/user_regForm";
 	}
 	
 	// User 아이디 중복체크
@@ -46,7 +46,7 @@ public class YController {
 		return msg;
 	}
 	
-	/*
+	
 	// Company 아이디 중복체크
 	@RequestMapping("/cidCheck")
 	public @ResponseBody String cidCheck(@RequestParam("cid") String cid) {
@@ -61,29 +61,31 @@ public class YController {
 		return msg;
 	}
 	
-	// 
+	// User 회원가입 기능
 	@RequestMapping("/user_regist")
-	public String userReg(User user) {
+	public String userReg(User user, @RequestParam("uid") String uid, @RequestParam("upw") String upw) {
 		Optional<User> result = userRepository.findById(user.getUid());
 		if(result.isPresent()) {
-			return "user_regForm";
-		}else {
+			return "/user/user_regForm";
+		}else if(uid.length()>=4 &&  uid.length()<=12 && upw.length()>=8){
 			userRepository.save(user);
+			return "/user/login_form";
 		}
-		return "login_form";
+		return "/user/user_regForm";
 	}
 	
-
+	// Company 회원가입 기능
 	@RequestMapping("/com_regist")
-	public String comReg(Company company) {
+	public String comReg(Company company, @RequestParam("cid") String cid, @RequestParam("cpw") String cpw) {
 		Optional<Company> result = companyRepository.findById(company.getCid());
 		if(result.isPresent()) {
-			return "user_regForm";
-		}else {
+			return "/user/user_regForm";
+		}else if(cid.length()>=4 &&  cid.length()<=12 && cpw.length()>=8){
 			companyRepository.save(company);
+			return "/user/login_form";
 		}
-		return "login_form";
+		return "/user/user_regForm";
 	}
-	*/
+	
 	
 }
