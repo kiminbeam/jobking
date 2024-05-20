@@ -1,11 +1,15 @@
 package com.example.jobking.controller;
 
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +51,7 @@ public class JController {
 	private ServletContext servletContext;
 	@Autowired
 	private IJobScrapRepository jobscrapRepo;
+	private final Path rootLocation = Paths.get("/upload");
 	
 	
 	@RequestMapping("/index")
@@ -126,30 +131,37 @@ public class JController {
 		});
 	}
 	@RequestMapping("/user_edit")
-	public String userEdit(@RequestParam("photo") MultipartFile file, HttpServletRequest request) {
-		User oriUser = userRepo.findById(request.getParameter("uid")).get();
-		User user = new User();
-		user = oriUser;
-		user.setUpw(request.getParameter("upw"));
-		user.setUname(request.getParameter("uname"));
-		user.setUaddr(request.getParameter("uaddr"));
-		user.setTel(request.getParameter("tel"));
-		user.setEmail(request.getParameter("email"));
-		System.out.println(file.getOriginalFilename());
-		if(!file.isEmpty()) {
-			 String uploadDir = servletContext.getRealPath("/images/");
-		     File destPath = new File(uploadDir + File.separator + file.getOriginalFilename());
-			try {
-				
-				file.transferTo(destPath);
-//				user.setPhoto(file.getOriginalFilename());
-				userRepo.save(user);
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
+	public String userEdit(@RequestParam("photo") MultipartFile file, User user) {
+		 try {
+	            // 만약 업로드할 폴더 없으면 만들기
+	            if (!Files.exists(rootLocation)) {
+	                Files.createDirectories(rootLocation);
+	            }
+
+	            if (file != null && !file.isEmpty()) {
+	                // 파일업로드
+	                String originalFilename = file.getOriginalFilename();
+	                String extension = originalFilename.substring(originalFilename.lastIndexOf('.'));
+	                String filename = UUID.randomUUID().toString() + extension;
+	                Path destinationFile = this.rootLocation.resolve(Paths.get(filename)).normalize().toAbsolutePath();
+
+	                // 파일이 이미 존재하면 덮어쓰기 또는 다른 처리를 해야 할 수 있음
+	                Files.copy(file.getInputStream(), destinationFile);
+
+	                String filePath = destinationFile.toString();
+
+	                // User 엔티티에 파일 정보 설정
+	                user.setFileName(filename);
+	                user.setFilePath(filePath);
+	                user.setFileSize(file.getSize());
+
+	                // User 엔티티 저장
+	                userRepo.save(user);
+	            }
+	        } catch (IOException e) {
+	            throw new RuntimeException("Could not create upload directory or save file!", e);
+	        }
+	
 		return "redirect:/user/user_myPage";
 	}
 	@RequestMapping("/user_logout")
