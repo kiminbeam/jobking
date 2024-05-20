@@ -42,9 +42,11 @@
 			<a id="btnFacebook" class="link-icon facebook" href="javascript:shareFacebook();">페이스북</a>    
 			<a id="btnKakao" class="link-icon kakao" href="javascript:shareKakao();">카카오톡</a>
 			<h1 >접수기간 d-day : <span id="dDay"></span></h1>
-			<button onclick="likeTheCom">관심기업구독하기</button>
-			<button onclick="scrapJobad">공고스크랩하기</button>
-			<button onclick="apply">지원서 제출하기</button>
+			<button th:if="${interest == false}" onclick="likeTheCom()">관심기업구독하기</button>
+			<button th:if="${interest == true}" onclick="likeTheCom()">해당기업구독취소하기</button>
+			<button th:if="${scrap == false}" onclick="scrapJobad()">공고스크랩하기</button>
+			<button th:if="${scrap == true}" onclick="scrapJobad()">스크랩취소하기</button>
+			<button onclick="apply()">지원서 제출하기</button>
 			
 			<div id="chart-container">
         		<canvas id="chart"></canvas>
@@ -152,11 +154,44 @@
 	const dDay = document.querySelector("#dDay");
 	const targetDate = [[${jobad.receiptCloseDt}]];
 	const regDate = [[${jobad.regdate}]];
-	console.log(regDate);
+	
+	
 	
 	function scrapJobad(){
-		
+		 const xhttp = new XMLHttpRequest();
+		 xhttp.onload = function() {
+			 if(this.responseText == "added"){
+				 alert("성공적으로 공고를 찜했습니다")
+				 //버튼 색칠한거로 바꿔주기
+				  console.log(this.responseText)
+			 }else{
+				 if(confirm("정말 해당 공고를 찜 리스트에서 삭제하시겠습니까?")){
+					 //비어있는 버튼으로 바꿔주기
+					  console.log(this.responseText)
+				 }
+			 }
+		 }
+		  xhttp.open("GET", "/user/scrapJobad?jno="+[[${jobad.jno}]], true);
+		  xhttp.send();
 	}
+	function likeTheCom(){
+		 const xhttp = new XMLHttpRequest();
+		 xhttp.onload = function() {
+			 if(this.responseText == "added"){
+				 alert("성공적으로 해당기업을 구독 했습니다")
+				 //버튼 색칠한거로 바꿔주기
+				  console.log(this.responseText)
+			 }else{
+				 if(confirm("정말 해당 기업을 구독 리스트에서 삭제하시겠습니까?")){
+					 //비어있는 버튼으로 바꿔주기
+					  console.log(this.responseText)
+				 }
+			 }
+		 }
+		  xhttp.open("GET", "/user/likeTheCom?cid="+[[${jobad.company.cid}]], true);
+		  xhttp.send();
+	}
+	
 	
 	
 	  // 그래프 초기화
