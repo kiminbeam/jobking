@@ -43,7 +43,10 @@ public class JobAd extends BaseEntity {
 
 	@Column(name = "jobCont", nullable = false, columnDefinition = "TEXT")
 	private String jobCont;
-
+	
+	@Column(name = "yofExperiences", length = 10)
+	private String yofExperiences;
+	
 	@Column(name = "receiptCloseDt", nullable = false)
 	private LocalDate receiptCloseDt;
 
@@ -62,7 +65,7 @@ public class JobAd extends BaseEntity {
 	@Column(name = "maxEdubglcd", nullable = false, length = 10)
 	private String maxEdubglcd;
 
-	@Column(name = "mltsvcExcHope", nullable = false, length = 1)
+	@Column(name = "mltsvcExcHope", nullable = false, length = 10)
 	private String mltsvcExcHope;
 
 	@Column(name = "needskill", length = 20)

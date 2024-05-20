@@ -1,72 +1,129 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
 <body>
-    <div>마이페이지</div>
-    <div>이력서 관리</div>
-    <div>
-        <input type="button" value="대표 이력서 설정하기" onclick="f()">
-    </div>
+	<div>마이페이지</div>
+	<div>이력서 관리</div>
+	<div>
+		<input type="button" value="대표 이력서 설정하기" onclick="showSecondList()" id="btn1" style="display: block;">
+	</div>
 
-    <!-- 첫 번째 이력서 목록 -->
-    <div id="resumeListDiv" style="display: block">
-        <ul th:each="resume : ${resumeList}">
-            <li th:text="${resume.rtitle}"></li>
-            <li>
-                <img src="../../images/pen.png" width="50" height="50">
-            </li>
-            <li>
-                <img src="../../images/X.png" width="50" height="50">
-            </li>
-        </ul>
-    </div>
-    
-    <!-- 두 번째 이력서 목록, 초기에는 숨김 -->
-    <div id="resumeListDiv2" style="display: none">
-        <ul th:each="resume : ${resumeList}">
-            <li>
-                <span th:text="${resume.rtitle}"></span>
-                <div id="selfInfoDiv">
-                    <ul>
-                        <li th:if="${selfinfoMap[resume.rno]}" th:text="${selfinfoMap[resume.rno].content}"></li>
-                        <li th:unless="${selfinfoMap[resume.rno]}">No self information available</li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </div>
+	<!-- 첫 번째 이력서 목록 -->
+	<div id="resumeListDiv" style="display: block">
+		<ul th:each="resume, resumeIndex : ${resumeList}">
+			<li>
+				<span class="representative" style="display: none;">(대표	이력서)</span> 
+				<span th:text="${resume.rtitle}"></span>
+			</li>
+			<li>
+				<img src="../../images/pen.png" width="50" height="50">
+			</li>
+			<li>
+				<img src="../../images/X.png" width="50" height="50">
+			</li>
+		</ul>
+	</div>
+
+	<!-- 두 번째 이력서 목록, 초기에는 숨김 -->
+	<div id="resumeListDiv2" style="display: none">
+		<ul th:each="resume, resumeIndex : ${resumeList}">
+			<li>
+				<div id="selfInfoDiv">
+					<ul>
+						<!-- SelfInfo가 존재하는 경우 -->
+						<li th:if="${selfinfoMap.containsKey(resume.rno)}">
+							<input type="checkbox" th:id="'resumeCheckbox' + ${resumeIndex}" onclick="toggleCheck(this)"> 
+							<span th:text="${resume.rtitle}"></span>
+							<span th:text="${selfinfoMap[resume.rno].title}"></span><br> 
+							<span th:text="${selfinfoMap[resume.rno].content}"></span>
+						</li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div id="btn2" style="display: none">
+		<input type="button" value="대표 설정" onclick="setRepresentative()">
+	</div>
+
+	<script>
+		function toggleCheck(checkbox) {
+			// 모든 체크박스 가져오기
+			var checkboxes = document
+					.querySelectorAll('#resumeListDiv2 input[type="checkbox"]');
+
+			// 현재 클릭된 체크박스의 상태 확인
+			var isChecked = checkbox.checked;
+
+			// 모든 체크박스의 체크 상태 해제
+			checkboxes.forEach(function(cb) {
+				cb.checked = false;
+			});
+
+			// 현재 클릭된 체크박스만 체크 상태 설정
+			checkbox.checked = isChecked;
+		}
+
+		function showSecondList() {
+			// 첫 번째 이력서 목록 숨기기
+			document.getElementById('resumeListDiv').style.display = 'none';
+
+			// 두 번째 이력서 목록 보이기
+			document.getElementById('resumeListDiv2').style.display = 'block';
+
+			// 대표 이력서 설정하기 버튼 숨기기
+			document.getElementById('btn1').style.display = 'none';
+
+			// 대표 설정 버튼 보이기
+			document.getElementById('btn2').style.display = 'block';
+		}
+
+		function setRepresentative() {
+			// 선택된 이력서 확인
+			var checkboxes = document
+					.querySelectorAll('#resumeListDiv2 input[type="checkbox"]');
+			var selectedResumeIndex = -1;
+			for (var i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					selectedResumeIndex = i;
+					break;
+				}
+			}
+
+			if (selectedResumeIndex !== -1) {
+				// 모든 '대표 이력서' 문구 숨기기
+				var representativeLabels = document
+						.querySelectorAll('.representative');
+				representativeLabels.forEach(function(label) {
+					label.style.display = 'none';
+				});
+
+				// 첫 번째 목록의 해당 이력서에 '대표 이력서' 문구 추가
+				var firstListItems = document
+						.querySelectorAll('#resumeListDiv ul li');
+				var representativeLabel = firstListItems[selectedResumeIndex * 3]
+						.querySelector('.representative');
+				if (representativeLabel) {
+					representativeLabel.style.display = 'inline';
+				}
+
+				// 첫 번째 이력서 목록 보이기
+				document.getElementById('resumeListDiv').style.display = 'block';
+
+				// 두 번째 이력서 목록 숨기기
+				document.getElementById('resumeListDiv2').style.display = 'none';
+
+				// 대표 이력서 설정하기 버튼 보이기
+				document.getElementById('btn1').style.display = 'block';
+
+				// 대표 설정 버튼 숨기기
+				document.getElementById('btn2').style.display = 'none';
+			}
+		}
+	</script>
+
 </body>
-
-<script>
-
-	function toggleCheck(checkbox) {
-		// 모든 체크박스 가져오기
-		var checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-		// 현재 클릭된 체크박스의 상태 확인
-		var isChecked = checkbox.checked;
-
-		// 모든 체크박스의 체크 상태 해제
-		checkboxes.forEach(function (cb) {
-			cb.checked = false;
-		});
-
-		// 현재 클릭된 체크박스만 체크 상태 설정
-		checkbox.checked = isChecked;
-	}
-
-	function f() {
-        // 첫 번째 이력서 목록 숨기기
-        document.getElementById('resumeListDiv').style.display = 'none';
-        
-        // 두 번째 이력서 목록 보이기
-        document.getElementById('resumeListDiv2').style.display = 'block';
-    }
-
-
-</script>
-
 </html>
