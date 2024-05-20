@@ -52,6 +52,6 @@ public class School extends BaseEntity {
 	@Column(name = "score", precision = 3, scale = 2)
 	private BigDecimal score;
 
-	@Column(name = "status", nullable = false)
-	private String status;
+	@Column(name = "sstatus", nullable = false)
+	private String sstatus;
 }

@@ -11,7 +11,7 @@
     <div class="notice">
         <ul>
             <li>
-                <img src="../../images/reg.png" width="50" height="50">
+                <img src="../../../images/reg.png" width="50" height="50">
             </li>
             <li>
                 <em class="em1">[필수]</em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니 반드시 기입해 주세요.
@@ -30,8 +30,10 @@
     
     <form method="post" action="user_resume">
         
-        <div>이력서 제목 <input type="text" name="resumeTitle" placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요 :)"></div>
-        <div><input type="button" value="회원정보수정하기"></div>
+        <div>이력서 제목 <input type="text" name="rtitle" placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요 :)"></div>
+        <div>
+            <input type="button" value="회원정보수정하기" onclick="location.href='/user/user_information'">
+        </div>
         <hr>
         <table>
             <colgroup>
@@ -43,22 +45,30 @@
             <tbody>
                 <tr>
                     <th scope="row">이름</th>
-                    <td>입력하기 <!--  <input type="text" name="uname" th:value="${user.uname}"> --></td>
+                    <td><span th:text="${user.uname}"></span></td>
                     <th scope="row">성별, 출생년도</th>
-                    <td>입력하기</td>
+                    <td>
+                        <span>
+                            <span th:switch="${user.gender}">
+                                <span th:case="'0'">남자</span>
+                                <span th:case="'1'">여자</span>
+                            </span>
+                            , <span th:text="${user.birthDate}"></span>
+                        </span>
+                    </td>
                 </tr>
             </tbody>
         </table>
         <table>
             <thead>
-                <th colspan="6">주소</th>
-                <th colspan="6">전화번호</th>
-                <th colspan="6">이메일</th>
+                <th >주소</th>
+                <th >전화번호</th>
+                <th >이메일</th>
             </thead>
             <tbody>
-                <td colspan="6">입력하기</td>
-                <td colspan="6">입력하기</td>
-                <td colspan="6">입력하기</td>
+                <td ><span th:text="${user.uaddr}"></span></td>
+                <td ><span th:text="${user.tel}"></span></td>
+                <td ><span th:text="${user.email}"></span></td>
             </tbody>
         </table>
         <hr>
@@ -101,7 +111,7 @@
                     <td><input type="text" name="major"></td>
                     <td><input type="text" name="score"></td>
                     <td>
-                        <select class="gradEndList" name="status" title="선택">
+                        <select class="gradEndList" name="sstatus" title="선택">
                             <option value selected="selected">선택</option>
                             <option value="0">휴학</option>
                             <option value="1">재학</option>
@@ -238,7 +248,7 @@
             </thead>
             <tbody id="licenseTableBody">
                 <td>
-                    <select class="licenseList" name="status" title="구분">
+                    <select class="licenseList" name="type" title="구분">
                         <option value selected="selected">구분</option>
                         <option value="0">국가공인</option>
                         <option value="1">민간공인</option>
@@ -291,7 +301,7 @@
                     <input type="text" name="title" placeholder="항목명을 입력해주세요.">
                     <button type="button" class="deleteRowButton5">삭제</button>
                     <hr>
-                    <input type="text" name="content" placeholder="내용을 입력해주세요.">
+                    <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
                 </td>
             </tbody>
         </table>
@@ -332,7 +342,7 @@
             <td><input type="text" name="major"></td>
             <td><input type="text" name="score"></td>
             <td>
-                <select class="gradEndList" name="status" title="선택">
+                <select class="gradEndList" name="sstatus" title="선택">
                     <option value selected="selected">선택</option>
                     <option value="0">휴학</option>
                     <option value="1">재학</option>
@@ -455,7 +465,7 @@
         var newRow = document.createElement('tr');
         newRow.innerHTML = `
         <td>
-                    <select class="licenseList" name="status" title="구분">
+                    <select class="licenseList" name="type" title="구분">
                         <option value selected="selected">구분</option>
                         <option value="0">국가공인</option>
                         <option value="1">민간공인</option>
@@ -512,7 +522,7 @@
                     <input type="text" name="title" placeholder="항목명을 입력해주세요.">
                     <button type="button" class="deleteRowButton5">삭제</button>
                     <hr>
-                    <input type="text" name="content" placeholder="내용을 입력해주세요.">
+                    <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
                 </td>
         `;
         tbody.appendChild(newRow);
@@ -533,6 +543,8 @@
             }
         });
     });
+
+    
 
 </script>
 </body>

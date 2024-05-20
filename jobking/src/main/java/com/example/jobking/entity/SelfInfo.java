@@ -37,6 +37,6 @@ public class SelfInfo extends BaseEntity {
 	@Column(name = "title", length = 50, nullable = false)
 	private String title;
 
-	@Column(name = "content", columnDefinition = "TEXT", nullable = false)
-	private String content;
+	@Column(name = "scontent", columnDefinition = "TEXT", nullable = false)
+	private String scontent;
 }
