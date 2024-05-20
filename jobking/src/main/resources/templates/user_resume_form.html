@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<div>
+    <div>마이페이지</div>
+    <div>이력서 등록</div>
+    <div class="notice">
+        <ul>
+            <li>
+                <img src="../../images/reg.png" width="50" height="50">
+            </li>
+            <li>
+                <em class="em1">[필수]</em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니 반드시 기입해 주세요.
+            </li>
+            <li>
+                개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로 클릭하여 기입하신 정보를 저장하시기 바랍니다.
+            </li>
+            <li>
+                구직신청 후에는 기본으로 설정한 이력서와 자기소개서만 인재정보 검색서비스를 통해 구인업체에 공개됩니다.
+            </li>
+            <li>
+                기본으로 설정된 이력서와 자기소개서는 [미리보기] 기능을 통해 한 화면에서 조회·인쇄·파일로 저장할 수 있습니다.
+            </li>
+        </ul>
+    </div>
+    
+    <form method="post" action="user_resume">
+        
+        <div>이력서 제목 <input type="text" name="resumeTitle" placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요 :)"></div>
+        <div><input type="button" value="회원정보수정하기"></div>
+        <hr>
+        <table>
+            <colgroup>
+                <col style="width: 110px;">
+                <col>
+                <col style="width: 110px;">
+                <col>
+            </colgroup>
+            <tbody>
+                <tr>
+                    <th scope="row">이름</th>
+                    <td>입력하기 <!--  <input type="text" name="uname" th:value="${user.uname}"> --></td>
+                    <th scope="row">성별, 출생년도</th>
+                    <td>입력하기</td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <thead>
+                <th colspan="6">주소</th>
+                <th colspan="6">전화번호</th>
+                <th colspan="6">이메일</th>
+            </thead>
+            <tbody>
+                <td colspan="6">입력하기</td>
+                <td colspan="6">입력하기</td>
+                <td colspan="6">입력하기</td>
+            </tbody>
+        </table>
+        <hr>
+        학력사항
+        <input type="button" value="+ 항목추가" id="addRowButton">
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>학교명</th>
+                    <th>기간</th>
+                    <th>전공학과</th>
+                    <th>학점<em class="em1">[필수]</em></th>
+                    <th>상태</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody id="educationTableBody">
+                <tr>
+                    <td>
+                        <select class="gradeList_0" name="eduName" title="학력 선택">
+                            <option value selected="selected">학력 선택</option>
+                            <option value="0">무학</option>
+                            <option value="1">초등학교</option>
+                            <option value="2">중학교</option>
+                            <option value="3">고등학교</option>
+                            <option value="4">대학교(2/3년제)</option>
+                            <option value="5">대학교(4년제)</option>
+                            <option value="6">대학원(석사)</option>
+                            <option value="7">대학원(박사)</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="date" name="accDate" id="accDate" title="입학일자" placeholder="yyyy.mm.dd" maxlength="10">
+                    <!--    <button type="button" id="accDateBtn">입학일자 버튼</button> -->
+                        <span>~</span>
+                        <input type="date" name="gradDate" id="gradDate" title="졸업일자" placeholder="yyyy.mm.dd" maxlength="10">
+                    <!--    <button type="button" id="gradDateBtn">졸업일자 버튼</button> -->
+                    </td>
+                    <td><input type="text" name="major"></td>
+                    <td><input type="text" name="score"></td>
+                    <td>
+                        <select class="gradEndList" name="status" title="선택">
+                            <option value selected="selected">선택</option>
+                            <option value="0">휴학</option>
+                            <option value="1">재학</option>
+                            <option value="2">중퇴</option>
+                            <option value="3">졸업</option>
+                            <option value="4">졸업예정</option>
+                            <option value="5">검정(독학)</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="deleteRowButton">삭제</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        경력사항
+        <input type="button" value="+ 항목추가" id="addRowButton2">
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>회사명</th>
+                    <th>기간<em class="em1">[필수]</em></th>
+                    <th>직급/직책<em class="em1">[필수]</em></th>
+                    <th>상태</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody id="careerTableBody">
+                <tr>
+                    <td>
+                        <input type="text" name="cName">
+                    </td>
+                    <td>
+                        <input type="date" name="startDate" id="startDate" title="입사일자" placeholder="yyyy.mm.dd" maxlength="10">
+                        <span>~</span>
+                        <input type="date" name="endDate" id="endDate" title="퇴사일자" placeholder="yyyy.mm.dd" maxlength="10">
+                    </td>
+                    <td>
+                        <input type="text" name="rank" id="rank">
+                    </td>
+                    <td>
+                        <select class="careerList" name="status" title="상태선택">
+                            <option value selected="selected">상태선택</option>
+                            <option value="0">퇴직</option>
+                            <option value="1">재직</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="deleteRowButton2">삭제</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+                <tr>
+                    <th>직종</th>
+                        <td>
+                            <input type="text" >????직종 테이블이 뭐지?????
+                            <div>* '직종' 정보는 더 적합한 일자리 추천을 위한 분석 용도로만 사용되며, 기업회원에게 공개되지 않습니다.</div>
+                        </td>
+                    <th>주요직무 및 업무</th>
+                        <td>
+                            <input type="text" placeholder="내용을 입력해주세요.">
+                        </td>
+                </tr>
+        </table> 
+        <hr>
+        사회 활동
+        <input type="button" value="+ 항목추가" id="addRowButton3">
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        기관
+                    </th>
+                    <th>
+                        기간<em class="em1">[필수]</em>
+                    </th>
+                    <th>
+                        활동 내역<em class="em1">[필수]</em>
+                    </th>
+                    <th>
+                        삭제
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <td>
+                    <input type="text" name="org" id="org">
+                </td>
+                <td>
+                    <input type="date" name="startDay" id="startDay" title="시작일자" placeholder="yyyy.mm.dd" maxlength="10">
+                    <span>~</span>
+                    <input type="date" name="endDay" id="endDay" title="종료일자" placeholder="yyyy.mm.dd" maxlength="10">
+                </td>
+                <td>
+                    <input type="text" value="내용을 입력해주세요.">
+                </td>
+                <td>
+                    <button type="button" class="deleteRowButton3">삭제</button>
+                </td>
+            </tbody>
+        </table>
+
+        <input type="submit" value="이력서 저장">
+    </form>
+</div>
+<script>
+     document.getElementById('addRowButton').addEventListener('click', function() {
+        var tbody = document.getElementById('educationTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
+            <td>
+                <select class="gradeList_0" name="eduName" title="학력 선택">
+                    <option value selected="selected">학력 선택</option>
+                    <option value="0">무학</option>
+                    <option value="1">초등학교</option>
+                    <option value="2">중학교</option>
+                    <option value="3">고등학교</option>
+                    <option value="4">대학교(2/3년제)</option>
+                    <option value="5">대학교(4년제)</option>
+                    <option value="6">대학원(석사)</option>
+                    <option value="7">대학원(박사)</option>
+                </select>
+            </td>
+            <td>
+                <input type="date" name="accDate" title="입학일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <span>~</span>
+                <input type="date" name="gradDate" title="졸업일자" placeholder="yyyy.mm.dd" maxlength="10">
+            </td>
+            <td><input type="text" name="major"></td>
+            <td><input type="text" name="score"></td>
+            <td>
+                <select class="gradEndList" name="status" title="선택">
+                    <option value selected="selected">선택</option>
+                    <option value="0">휴학</option>
+                    <option value="1">재학</option>
+                    <option value="2">중퇴</option>
+                    <option value="3">졸업</option>
+                    <option value="4">졸업예정</option>
+                    <option value="5">검정(독학)</option>
+                </select>
+            </td>
+            <td><button type="button" class="deleteRowButton">삭제</button></td>
+        `;
+        tbody.appendChild(newRow);
+
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
+            }
+        });
+    });
+
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
+        });
+    });
+
+    document.getElementById('addRowButton2').addEventListener('click', function() {
+        var tbody = document.getElementById('careerTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
+        <td>
+                        <input type="text" name="cName">
+                    </td>
+                    <td>
+                        <input type="date" name="startDate" id="startDate" title="입사일자" placeholder="yyyy.mm.dd" maxlength="10">
+                        <span>~</span>
+                        <input type="date" name="endDate" id="endDate" title="퇴사일자" placeholder="yyyy.mm.dd" maxlength="10">
+                    </td>
+                    <td>
+                        <input type="text" name="rank" id="rank">
+                    </td>
+                    <td>
+                        <select class="careerList" name="status" title="상태선택">
+                            <option value selected="selected">상태선택</option>
+                            <option value="0">퇴직</option>
+                            <option value="1">재직</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="deleteRowButton2">삭제</button>
+                    </td>
+        `;
+        tbody.appendChild(newRow);
+
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton2').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
+            }
+        });
+    });
+
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton2').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
+        });
+    });
+
+
+</script>
+</body>
+</html>
