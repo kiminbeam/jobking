@@ -8,14 +8,19 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.jobking.entity.ApplyList;
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.User;
 import com.example.jobking.repository.ICompanyRepository;
+import com.example.jobking.repository.IUserApplyListRepository;
 import com.example.jobking.repository.IUserRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RequestMapping("/user")
 @Controller
@@ -26,6 +31,9 @@ public class YController {
 	
 	@Autowired
 	ICompanyRepository companyRepository;
+	
+	@Autowired
+	IUserApplyListRepository applyListRepo;
 	
 	@RequestMapping("/user_regForm")
 	public String regForm() {
@@ -87,5 +95,19 @@ public class YController {
 		return "/user/user_regForm";
 	}
 	
+	// 입사지원관리	
+	@RequestMapping("/user_apply_list")
+	public void userApplyList(HttpServletRequest request, Model model) {
+		String uid = (String)request.getSession().getAttribute("id");
+		List<ApplyList> applyList = applyListRepo.findByUid(uid);
+		model.addAttribute("apply", applyList);
+		System.out.println(applyList);
+	}
+	
+	@RequestMapping("/deleteUserApplyList")
+	public String deleteUserApplyList(@RequestParam("ano") String ano) {
+		applyListRepo.deleteById(Long.parseLong(ano));
+		return "redirect:/user/user_apply_list";
+	}
 	
 }
