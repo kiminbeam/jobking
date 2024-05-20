@@ -11,15 +11,28 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.jobking.entity.Career;
+import com.example.jobking.entity.Experience;
+import com.example.jobking.entity.Hope;
+import com.example.jobking.entity.License;
+import com.example.jobking.entity.Oa;
 import com.example.jobking.entity.Resume;
+import com.example.jobking.entity.School;
 import com.example.jobking.entity.SelfInfo;
 import com.example.jobking.entity.User;
+import com.example.jobking.repository.ICareerRepository;
+import com.example.jobking.repository.IExperienceRepository;
+import com.example.jobking.repository.IHopeRepository;
+import com.example.jobking.repository.ILicenseRepository;
+import com.example.jobking.repository.IOaRepository;
 import com.example.jobking.repository.IResumeRepository;
+import com.example.jobking.repository.ISchoolRepository;
 import com.example.jobking.repository.ISelfInfo;
 import com.example.jobking.repository.IUserRepository;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+@RequestMapping("/user")
 @Controller
 public class KHController {
 
@@ -29,15 +42,28 @@ public class KHController {
 	ISelfInfo SelfInfoRepository;
 	@Autowired
 	IUserRepository UserRepository;
+	@Autowired
+	ICareerRepository CareerReopsitory;
+	@Autowired
+	IHopeRepository HopeReository;
+	@Autowired
+	IOaRepository OaRepository;
+	@Autowired
+	ISchoolRepository SchoolRepository;
+	@Autowired
+	ILicenseRepository LicenseRepository;
+	@Autowired
+	IExperienceRepository ExperienceRepository;
+	
 	
 	
 	@RequestMapping("/user_mainPage")
 	public String mainPage() {
 
-		return "user_mainPage";
+		return "user/user_mainPage";
 	}
 
-	
+
 	@RequestMapping("/user_resumeList")
 	public void resumeList(Model model) {
 	    List<Resume> resumeList = ResumeRepository.findAll();
@@ -57,22 +83,29 @@ public class KHController {
 	
 	
 	@RequestMapping("/user_resume_form")
-	public String resumeForm(HttpServletRequest request, Model model) {
+	public void resumeForm(HttpServletRequest request, Model model) {
 		
-//		String uid = (String) request.getSession().getAttribute("id");
-//				
-//				Optional<User> user = UserRepository.findById(uid);
-//				user.ifPresent(u->{
-//					model.addAttribute("user", u );
-//				});	
-		
-		return "user_resume_form";
+		String uid = (String) request.getSession().getAttribute("id");
+				
+				Optional<User> user = UserRepository.findById(uid);
+				user.ifPresent(u->{
+					model.addAttribute("user", u );
+				});	
+
 	}
 	
 	@RequestMapping("/user_resume")
-	public String resume() {
+	public String resume(Resume resume, Hope hope, SelfInfo selfInfo, Oa oa, User user, Career career, School school, License license, Experience experience) {
 		
-			
+		ResumeRepository.save(resume);
+		SelfInfoRepository.save(selfInfo);
+		UserRepository.save(user);
+		CareerReopsitory.save(career);
+		HopeReository.save(hope);
+		OaRepository.save(oa);
+		SchoolRepository.save(school);
+		LicenseRepository.save(license);
+		ExperienceRepository.save(experience);
 		
 		return "redirect:user_resumeList";
 	}

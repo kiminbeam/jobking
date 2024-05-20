@@ -45,6 +45,6 @@ public class Experience extends BaseEntity {
     @Column(name = "org")
     private String org;
 
-    @Column(name = "content", columnDefinition = "TEXT")
-    private String content;
+    @Column(name = "econtent", columnDefinition = "TEXT")
+    private String econtent;
 }
