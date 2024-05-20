@@ -142,7 +142,7 @@ public class JController {
 			try {
 				
 				file.transferTo(destPath);
-				user.setPhoto(file.getOriginalFilename());
+//				user.setPhoto(file.getOriginalFilename());
 				userRepo.save(user);
 			} catch (IllegalStateException e) {
 				e.printStackTrace();

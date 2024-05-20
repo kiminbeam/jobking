@@ -46,6 +46,12 @@ public class User extends BaseEntity {
     @Column(name = "uaddr", nullable = false)
     private String uaddr;
     
-    @Column(name = "photo")
-    private MultipartFile photo;
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "file_path")
+    private String filePath;
+
+    @Column(name = "file_size")
+    private Long fileSize;
 }
