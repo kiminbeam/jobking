@@ -159,9 +159,12 @@ const sectorCateEl = document.querySelector(".sectorCategory");
 const sectorEl = document.querySelector(".sector");
 const jobCateEl = document.querySelector(".jobCategory");
 const positionEl = document.querySelector(".position");
-let guName;
-let sectorName;
-let jobName;
+let region1Name;
+let region2Name;
+let sector1Name;
+let sector2Name;
+let position1Name;
+let position2Name;
 let guEls;
 let sectorEls;
 let positionEls;
@@ -204,7 +207,7 @@ function loadRegionList() {
                     const cname = e.target.innerText;
                     const ccode = Number(e.target.id.slice(4));
                     const gu = Object.values(data.data[ccode])[0];
-
+					region1Name = e.target.innerText;
                     let j = 0;
                     while (j < gu.length) {
                         const guName = gu[j];
@@ -215,8 +218,7 @@ function loadRegionList() {
                     const guEls = document.querySelectorAll(".guEl");
                     guEls.forEach(guEl => {
                         guEl.addEventListener("click", function(e) {
-                            console.log(e.target);
-                            guName = e.target.innerText;
+                            region2Name = e.target.innerText;
                             // 구가 클릭되는 순간 탭이 업종으로 넘어가게
                             if (e.target.classList.contains("guEl")) {
                                 // region 탭과 content 비활성화
@@ -256,6 +258,7 @@ function loadSectorList() {
                 sectorCate.addEventListener("click", function(e) {
                     // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
                     sectorEl.innerHTML = "";
+                    sector1Name = e.target.innerText;
                     fetch('http://localhost:8093/json/sector.json')
                         .then(response => response.json())
                         .then(data => {
@@ -272,7 +275,7 @@ function loadSectorList() {
                             sectorEls.forEach(sectorEl => {
                                 sectorEl.addEventListener("click", function(e) {
                                     console.log(e.target);
-                                    sectorName = e.target.innerText;
+                                    sector2Name = e.target.innerText;
                                     // 섹터가 클릭되는 순간 탭이 직무로 넘어가게
                                     if (e.target.classList.contains("sectorEl")) {
                                         // sector 탭과 content 비활성화
@@ -313,6 +316,7 @@ function loadSectorList() {
                 jobCate.addEventListener("click", function(e) {
                     // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
                     positionEl.innerHTML = "";
+                    position1Name = e.target.innerText;
                     fetch('http://localhost:8093/json/job.json')
                         .then(response => response.json())
                         .then(data => {
@@ -329,7 +333,7 @@ function loadSectorList() {
                             positionEls.forEach(positionEl => {
                                 positionEl.addEventListener("click", function(e) {
                                     console.log(e.target);
-                                    jobName = e.target.innerText;
+                                    position2Name = e.target.innerText;
                                 });
                             });
                         })
@@ -345,9 +349,24 @@ function loadSectorList() {
 }
 
  function searchList(){
-		console.log(guName);
-		console.log(sectorName);
-		console.log(jobName);
+		//검색버튼 누르면 필터해서 리스트 받아와서 뿌리는 ajax콜
+	 const params = new URLSearchParams();
+	 	if (region1Name) params.append('region1Name', region1Name);
+	    if (region2Name) params.append('region2Name', region2Name);
+	    if (sector1Name) params.append('sector1Name', sector1Name);
+	    if (sector2Name) params.append('sector2Name', sector2Name);
+	    if (position1Name) params.append('position1Name', position1Name);
+	    if (position2Name) params.append('position2Name', position2Name);
+
+	    fetch(`/user/user_recruit_regionSearch?${params.toString()}`)
+	        .then(response => response.json())
+	        .then(data => {
+	            console.log(data);
+	            // 응답 데이터를 HTML에 업데이트하는 로직을 추가합니다.
+	        })
+	        .catch(error => {
+	            console.error('Error:', error);
+	        });
 	}
 
 
