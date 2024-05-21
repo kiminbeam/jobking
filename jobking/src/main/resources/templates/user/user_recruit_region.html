@@ -118,7 +118,7 @@ ul.tabs li.current{
 			</div>
 		</div>
 	</div>
-	
+	<button onclick="searchList()">검색</button>
 	
 	<div class="jobad">
 		<div th:each="jobad : ${jobadList}">
@@ -145,154 +145,210 @@ ul.tabs li.current{
 <script>
 
 const tabs = document.querySelectorAll(".tab-link");
+const regionTab = document.querySelector("#regionTab");
+const sectorTab = document.querySelector("#sectorTab");
+const jobTab = document.querySelector("#jobTab");
+const regionFilter = document.querySelector("#regionFilter");
+const sectorFilter = document.querySelector("#sectorFilter");
+const jobFilter = document.querySelector("#jobFilter");
 const contents = document.querySelectorAll(".tab-content")
 const cityEl = document.querySelector(".city");
-const guEl = document.querySelector(".gu");
+const guContainer = document.querySelector(".gu");
+
 const sectorCateEl = document.querySelector(".sectorCategory");
 const sectorEl = document.querySelector(".sector");
 const jobCateEl = document.querySelector(".jobCategory");
 const positionEl = document.querySelector(".position");
+let guName;
+let sectorName;
+let jobName;
+let guEls;
+let sectorEls;
+let positionEls;
 
-tabs.forEach(tab=>{
-	tab.addEventListener("click", function(e){
-		const id = e.target.getAttribute("data-tab")
-		tabs.forEach(t=>{t.classList.remove("current")})
-		contents.forEach(content=>{content.classList.remove("current")})
-		tab.classList.add("current");
-		document.querySelector("#"+id).classList.add("current")
-	})
-})
+// tabs.forEach(tab=>{
+// 	tab.addEventListener("click", function(e){
+// 		const id = e.target.getAttribute("data-tab")
+// 		tabs.forEach(t=>{t.classList.remove("current")})
+// 		contents.forEach(content=>{content.classList.remove("current")})
+// 		tab.classList.add("current");
+// 		document.querySelector("#"+id).classList.add("current")
+// 	})
+// })
 
 
-//지역리스트	
 document.addEventListener("DOMContentLoaded", function() {
-	fetch('http://localhost:8093/json/korea-administrative-district.json')
-	.then(response => response.json())
-	.then(data => {
-		let i = 0;
-	  while(i < data.data.length){
-		  //기본 도시 리스트 뿌려주기
-		  const city = Object.keys(data.data[i]);
-		  cityEl.innerHTML += "<li id='city"+ i +"'>"+city+"</li>";
-		  i++;
-		  //도시 이름 클릭시 도시 내 세부 행정구역 뿌려주기
-		  const cities = document.querySelectorAll(".city li");
-		  cities.forEach(city =>{
-		  	city.addEventListener("click", function(e){
-		  		//다른 도시 클릭시 마다 구 정보 칸 비워주기
-		  		guEl.innerHTML="";
-		  		const cname = e.target.innerText;
-		  		const ccode = Number(e.target.id.slice(4));
-		  		const gu = Object.values(data.data[ccode])[0];
-		  	let j = 0;
-			  	while(j<gu.length){
-			  		console.log(gu[j])
-			  		const guName = gu[j];
-			  		guEl.innerHTML += "<li id='gu"+ j +"'>"+guName+"</li>";
-			  		j++;
-			  	}
-		  	})
-		  })
-	  }
-	})
-	.catch(error => {
-	  console.error('Error fetching data:', error);
-	});
-})
+    loadRegionList();
+    loadSectorList();
+    loadJobList();
+});
 
+//지역리스트
+function loadRegionList() {
+    fetch('http://localhost:8093/json/korea-administrative-district.json')
+        .then(response => response.json())
+        .then(data => {
+            let i = 0;
+            while (i < data.data.length) {
+                // 기본 도시 리스트 뿌려주기
+                const city = Object.keys(data.data[i]);
+                cityEl.innerHTML += "<li class='city' id='city" + i + "'>" + city + "</li>";
+                i++;
+            }
+            // 도시 이름 클릭 시 도시 내 세부 행정구역 뿌려주기
+            const cities = document.querySelectorAll(".city");
+            cities.forEach(city => {
+                city.addEventListener("click", function(e) {
+                    // 다른 도시 클릭 시마다 구 정보 칸 비워주기
+                    guContainer.innerHTML = "";
+                    const cname = e.target.innerText;
+                    const ccode = Number(e.target.id.slice(4));
+                    const gu = Object.values(data.data[ccode])[0];
+
+                    let j = 0;
+                    while (j < gu.length) {
+                        const guName = gu[j];
+                        guContainer.innerHTML += "<li class='guEl' id='gu" + j + "'>" + guName + "</li>";
+                        j++;
+                    }
+                    // 모든 구 버튼에 클릭 이벤트 달기
+                    const guEls = document.querySelectorAll(".guEl");
+                    guEls.forEach(guEl => {
+                        guEl.addEventListener("click", function(e) {
+                            console.log(e.target);
+                            guName = e.target.innerText;
+                            // 구가 클릭되는 순간 탭이 업종으로 넘어가게
+                            if (e.target.classList.contains("guEl")) {
+                                // region 탭과 content 비활성화
+                                regionTab.classList.remove("current");
+                                regionFilter.classList.remove("current");
+                                // sector 탭과 content 활성화
+                                sectorTab.classList.add("current");
+                                sectorFilter.classList.add("current");
+                            }
+                        });
+                    });
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
 //업종리스트
-document.addEventListener("DOMContentLoaded", function() {
-	fetch('http://localhost:8093/json/sector_category.json')
-	.then(response => response.json())
-	.then(data => {
-		console.log(data)
-		let i = 0;
-		//업종 상위 카테고리 뿌려주기
-		while(i<data.length){
-				const sectorCateCode = data[i].코드;
-				const sectorCategory = (data[i])["산업/업종명"];
-					if(sectorCategory != null){
-						sectorCateEl.innerHTML+="<li id='sectorCategory"+ sectorCateCode +"'>"+sectorCategory+"</li>";
-					}
-				i++;
-		}
-		//상위 카테고리 클릭시 해당 카테고리 내 상세 직무 카테고리 뿌려주기
-		const sectorCategories = document.querySelectorAll(".sectorCategory li")
-		sectorCategories.forEach(sectorCate =>{
-		
-			sectorCate.addEventListener("click", function(e){
-				//상위카테고리 클릭시 세부 직무 카테고리칸 비워주기
-				sectorEl.innerHTML="";
-				fetch('http://localhost:8093/json/sector.json')
-				.then(response=> response.json())
-				.then(data=>{
-// 					console.log(data)
-					let j = 0;
-					while(j<data.length){
-						const sectorCode = (data[j])["코드"]
-						const sectorTitle = (data[j])["산업/업종명"];
-						if(Number(sectorCate.id.slice(14)) == (data[j])["상위코드"]){
-							sectorEl.innerHTML += "<li id='sectorTitle"+ sectorCode +"'>"+sectorTitle+"</li>"
-						}
-						j++;
-					}
-				})
-			})
-		})
-	})
-	.catch(error => {
-	  console.error('Error fetching data:', error);
-	});
-})
+function loadSectorList() {
+    fetch('http://localhost:8093/json/sector_category.json')
+        .then(response => response.json())
+        .then(data => {
+            let i = 0;
+            // 업종 상위 카테고리 뿌려주기
+            while (i < data.length) {
+                const sectorCateCode = data[i].코드;
+                const sectorCategory = data[i]["산업/업종명"];
+                if (sectorCategory != null) {
+                    sectorCateEl.innerHTML += "<li class='sectorCategory' id='sectorCategory" + sectorCateCode + "'>" + sectorCategory + "</li>";
+                }
+                i++;
+            }
+            // 상위 카테고리 클릭 시 해당 카테고리 내 상세 직무 카테고리 뿌려주기
+            const sectorCategories = document.querySelectorAll(".sectorCategory");
+            sectorCategories.forEach(sectorCate => {
+                sectorCate.addEventListener("click", function(e) {
+                    // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
+                    sectorEl.innerHTML = "";
+                    fetch('http://localhost:8093/json/sector.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            let j = 0;
+                            while (j < data.length) {
+                                const sectorCode = data[j]["코드"];
+                                const sectorTitle = data[j]["산업/업종명"];
+                                if (Number(e.target.id.slice(14)) == data[j]["상위코드"]) {
+                                    sectorEl.innerHTML += "<li class='sectorEl' id='sectorTitle" + sectorCode + "'>" + sectorTitle + "</li>";
+                                }
+                                j++;
+                            }
+                            const sectorEls = document.querySelectorAll(".sectorEl");
+                            sectorEls.forEach(sectorEl => {
+                                sectorEl.addEventListener("click", function(e) {
+                                    console.log(e.target);
+                                    sectorName = e.target.innerText;
+                                    // 섹터가 클릭되는 순간 탭이 직무로 넘어가게
+                                    if (e.target.classList.contains("sectorEl")) {
+                                        // sector 탭과 content 비활성화
+                                        sectorTab.classList.remove("current");
+                                        sectorFilter.classList.remove("current");
+                                        // job 탭과 content 활성화
+                                        jobTab.classList.add("current");
+                                        jobFilter.classList.add("current");
+                                    }
+                                });
+                            });
+                        });
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
 
 //직무리스트
-document.addEventListener("DOMContentLoaded", function() {
-	fetch('http://localhost:8093/json/job_category.json')
-	.then(response => response.json())
-	.then(data => {
-		
-		let i = 0;
-		//직무 상위 카테고리 뿌려주기
-		while(i<data.length){
-				const cateCode = data[i].코드;
-				const jobCategory = data[i].상위직무;
-					if(jobCategory != null){
-						jobCateEl.innerHTML+="<li id='jobCategory"+ cateCode +"'>"+jobCategory+"</li>";
-					}
-				i++;
-		}
-		//상위 카테고리 클릭시 해당 카테고리 내 상세 직무 카테고리 뿌려주기
-		const jobCategories = document.querySelectorAll(".jobCategory li")
-		jobCategories.forEach(jobCate =>{
-		
-			jobCate.addEventListener("click", function(e){
-				//상위카테고리 클릭시 세부 직무 카테고리칸 비워주기
-				positionEl.innerHTML="";
-				fetch('http://localhost:8093/json/job.json')
-				.then(response=> response.json())
-				.then(data=>{
-					let j = 0;
-					while(j<data.length){
-						const jobCode = (data[j])["직무 코드"]
-						const positionTitle = (data[j])["직무 키워드명"];
-						if(Number(jobCate.id.slice(11)) == (data[j])["직무 상위 코드"]){
-							console.log(positionTitle);
-							positionEl.innerHTML += "<li id='positionTitle"+ jobCode +"'>"+positionTitle+"</li>"
-						}
-						j++;
-					}
-				})
-			})
-		})
-	})
-	.catch(error => {
-	  console.error('Error fetching data:', error);
-	});
-})
+ function loadJobList() {
+    fetch('http://localhost:8093/json/job_category.json')
+        .then(response => response.json())
+        .then(data => {
+            // 직무 상위 카테고리 뿌려주기
+            data.forEach(item => {
+                const cateCode = item.코드;
+                const jobCategory = item.상위직무;
+                if (jobCategory != null) {
+                    jobCateEl.innerHTML += `<li class="jobCategory" id="jobCategory${cateCode}">${jobCategory}</li>`;
+                }
+            });
+            // 상위 카테고리 클릭 시 해당 카테고리 내 상세 직무 카테고리 뿌려주기
+            const jobCategories = document.querySelectorAll(".jobCategory");
+            jobCategories.forEach(jobCate => {
+                jobCate.addEventListener("click", function(e) {
+                    // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
+                    positionEl.innerHTML = "";
+                    fetch('http://localhost:8093/json/job.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            data.forEach(item => {
+                                const jobCode = item["직무 코드"];
+                                const positionTitle = item["직무 키워드명"];
+                                if (Number(e.target.id.slice(11)) === item["직무 상위 코드"]) {
+                                    positionEl.innerHTML += `<li class="positionEl" id="positionTitle${jobCode}">${positionTitle}</li>`;
+                                }
+                            });
 
+                            // 모든 포지션 버튼에 클릭 이벤트 달기
+                            const positionEls = document.querySelectorAll(".positionEl");
+                            positionEls.forEach(positionEl => {
+                                positionEl.addEventListener("click", function(e) {
+                                    console.log(e.target);
+                                    jobName = e.target.innerText;
+                                });
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching job data:', error);
+                        });
+                });
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching job category data:', error);
+        });
+}
 
-
-
+ function searchList(){
+		console.log(guName);
+		console.log(sectorName);
+		console.log(jobName);
+	}
 
 
 
