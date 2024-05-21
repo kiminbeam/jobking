@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -28,7 +28,7 @@
         </ul>
     </div>
     
-    <form method="post" action="user_resume">
+    <form method="post" th:action="@{/user/user_resume(rno=${rno})}">
         
         <div>이력서 제목 <input type="text" name="rtitle" placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요 :)"></div>
         <div>
@@ -83,7 +83,6 @@
                     <th>전공학과</th>
                     <th>학점<em class="em1">[필수]</em></th>
                     <th>상태</th>
-                    <th>등록</th>
                     <th>삭제</th>
                 </tr>
             </thead>
@@ -123,9 +122,6 @@
                         </select>
                     </td>
                     <td>
-                        <button type="button" class="regRowButton">등록</button>
-                    </td>
-                    <td>
                         <button type="button" class="deleteRowButton">삭제</button>
                     </td>
                 </tr>
@@ -143,7 +139,6 @@
                     <th>직급<em class="em1">[필수]</em></th>
                     <th>직책<em class="em1">[필수]</em></th>
                     <th>상태</th>
-                    <th>등록</th>
                     <th>삭제</th>
                 </tr>
             </thead>
@@ -169,9 +164,6 @@
                             <option value="0">퇴직</option>
                             <option value="1">재직</option>
                         </select>
-                    </td>
-                    <td>
-                        <button type="button" class="regRowButton2">등록</button>
                     </td>
                     <td>
                         <button type="button" class="deleteRowButton2">삭제</button>
@@ -279,7 +271,7 @@
         <hr>
         보유 스킬
         <hr>
-        <input type="text" placeholder="내용을 입력해주세요.">
+        <input type="text" name="content" placeholder="내용을 입력해주세요.">
         <hr>
         희망 직종
         <hr>
@@ -324,7 +316,8 @@
         <input type="submit" value="이력서 저장">
     </form>
 </div>
-<script>
+<script th:inline="javascript">
+
     document.getElementById('addRowButton').addEventListener('click', function() {
         var tbody = document.getElementById('educationTableBody');
         var newRow = document.createElement('tr');

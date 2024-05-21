@@ -8,43 +8,46 @@
 	<div>마이페이지</div>
 	<div>이력서 관리</div>
 	<div>
-		<input type="button" value="대표 이력서 설정하기" onclick="showSecondList()" id="btn1" style="display: block;">
+		<input type="button" value="대표 이력서 설정하기" onclick="showSecondList()"
+			id="btn1" style="display: block;">
 	</div>
-
+	<div>
+		<input type="hidden" id="resumeCount" th:value="${resumeCount}" />
+	</div>
 	<!-- 첫 번째 이력서 목록 -->
 	<div id="resumeListDiv" style="display: block">
-		<ul th:each="resume, resumeIndex : ${resumeList}">
-			<li>
-				<span class="representative" style="display: none;">(대표	이력서)</span> 
-				<span th:text="${resume.rtitle}"></span>
-			</li>
-			<li>
-				<img src="../../images/pen.png" width="50" height="50">
-			</li>
-			<li>
-				<img src="../../images/X.png" width="50" height="50">
-			</li>
-		</ul>
-	</div>
+    <input type="button" value="이력서 작성하기" onclick="showResumeForm()" id="btn5" style="display: block;">
+    <ul th:each="resume, resumeIndex : ${resumeList}">
+        <li>
+            <span class="representative" th:if="${#strings.equals(resume.def, '1')}" 
+                  style="display: inline;">(대표 이력서)</span> 
+            <span th:text="${resume.rtitle}"></span>
+        </li>
+        <li><img src="../../images/pen.png" width="50" height="50"></li>
+        <li><img src="../../images/X.png" width="50" height="50"></li>
+    </ul>
+</div>
 
 	<!-- 두 번째 이력서 목록, 초기에는 숨김 -->
 	<div id="resumeListDiv2" style="display: none">
-		<ul th:each="resume, resumeIndex : ${resumeList}">
-			<li>
-				<div id="selfInfoDiv">
-					<ul>
-						<!-- SelfInfo가 존재하는 경우 -->
-						<li th:if="${selfinfoMap.containsKey(resume.rno)}">
-							<input type="checkbox" th:id="'resumeCheckbox' + ${resumeIndex}" onclick="toggleCheck(this)"> 
-							<span th:text="${resume.rtitle}"></span>
-							<span th:text="${selfinfoMap[resume.rno].title}"></span><br> 
-							<span th:text="${selfinfoMap[resume.rno].content}"></span>
-						</li>
-					</ul>
-				</div>
-			</li>
-		</ul>
-	</div>
+    <ul th:each="resume, resumeIndex : ${resumeList}">
+        <li>
+            <div id="selfInfoDiv">
+                <div th:if="${selfinfoMap[resume.rno] != null}">
+                    <input type="checkbox" th:id="'resumeCheckbox' + ${resumeIndex}"
+                           th:data-resume-id="${resume.rno}"
+                           onclick="toggleCheck(this)">
+                    <span th:text="${resume.rtitle}"></span>
+                    <div th:each="selfInfo : ${selfinfoMap[resume.rno]}">
+                        <span th:text="${selfInfo.title}"></span><br>
+                        <span th:text="${selfInfo.scontent}"></span>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
 	<div id="btn2" style="display: none">
 		<input type="button" value="대표 설정" onclick="setRepresentative()">
 	</div>
@@ -83,8 +86,7 @@
 
 		function setRepresentative() {
 			// 선택된 이력서 확인
-			var checkboxes = document
-					.querySelectorAll('#resumeListDiv2 input[type="checkbox"]');
+			var checkboxes = document.querySelectorAll('#resumeListDiv2 input[type="checkbox"]');
 			var selectedResumeIndex = -1;
 			for (var i = 0; i < checkboxes.length; i++) {
 				if (checkboxes[i].checked) {
@@ -94,36 +96,29 @@
 			}
 
 			if (selectedResumeIndex !== -1) {
-				// 모든 '대표 이력서' 문구 숨기기
-				var representativeLabels = document
-						.querySelectorAll('.representative');
-				representativeLabels.forEach(function(label) {
-					label.style.display = 'none';
-				});
+				var selectedResumeId = checkboxes[selectedResumeIndex].getAttribute('data-resume-id');
+				var xhr = new XMLHttpRequest();
+				xhr.open("POST", "/user/setRepresentative", true);
+				xhr.setRequestHeader("Content-Type", "application/json");
+				xhr.onreadystatechange = function() {
+					if (xhr.readyState === 4 && xhr.status === 200) {
+						alert("대표 이력서 설정이 바뀌었습니다.");
+						// 요청이 성공하면 페이지 새로고침
+						window.location.reload();
+					}
+				};
+				xhr.send(JSON.stringify({ resumeId: selectedResumeId }));
+			}
+		}
 
-				// 첫 번째 목록의 해당 이력서에 '대표 이력서' 문구 추가
-				var firstListItems = document
-						.querySelectorAll('#resumeListDiv ul li');
-				var representativeLabel = firstListItems[selectedResumeIndex * 3]
-						.querySelector('.representative');
-				if (representativeLabel) {
-					representativeLabel.style.display = 'inline';
-				}
-
-				// 첫 번째 이력서 목록 보이기
-				document.getElementById('resumeListDiv').style.display = 'block';
-
-				// 두 번째 이력서 목록 숨기기
-				document.getElementById('resumeListDiv2').style.display = 'none';
-
-				// 대표 이력서 설정하기 버튼 보이기
-				document.getElementById('btn1').style.display = 'block';
-
-				// 대표 설정 버튼 숨기기
-				document.getElementById('btn2').style.display = 'none';
+		function showResumeForm() {
+			var resumeCount = parseInt(document.getElementById('resumeCount').value);
+			if (resumeCount >= 3) {
+				alert("이력서는 최대 3개까지 등록할 수 있습니다.");
+			} else {
+				window.location.href = "/user/user_resume_form";
 			}
 		}
 	</script>
-
 </body>
 </html>
