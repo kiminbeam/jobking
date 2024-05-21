@@ -1,65 +1,74 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <html>
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="/css/style.css">
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/userApplyListStyle.css">
 </head>
+
 <body>
-    <header>
-	    <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
-    </header>
-    
-    <div id="apply-wrap">
-		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-        <div>마이페이지</div>
-        <div>입사지원 관리</div>
-        <div>내가 지원한 기업 리스트</div>
-         <table border=1>
-            <thead>
-                <th>기업명</th>
-                <th>공고명</th>
-                <th>직무</th>
-                <th>업종</th>
-                <th>날짜</th>
-                <th>진행상황</th>
-                <th>지원철회</th>
-                <th>이력서</th>
-            </thead>
-            <tbody>
-                <tr th:each="apply:${apply}">
-                    <td>[[${apply.jobAd.company.cname}]]</td>
-                    <td>
-                        <a th:href="@{/user/user_recruitDetail(jno=${apply.jobAd.jno})}">
-                            [[${apply.jobAd.wantedTitle}]]
-                        </a>
-                    </td>
-                    <td>[[${apply.jobAd.position}]]</td>
-                    <td>[[${apply.jobAd.sectors}]]</td>
-                    <td>[[${apply.regdate}]]</td>
-                    <td>[[${apply.status}]]</td>
-<!--                     <td class="deleteBtn"><a th:href="@{/user/deleteUserApplyList(ano=${apply.ano})}">지원철회</a></td> -->
-                    <td class="deleteBtn">
-                        <span style="display:none;">[[${apply.ano}]]</span>
-                        ❌
-                    </td>
-                    <td><a href="../images/pen.png" name="_blank">🔍</a></td>
-                </tr>
-            </tbody>
-         </table>
-         <footer>
+    <div id="wrap">
+        <header>
+            <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+        </header>
+        <div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+        
+        <div id="apply-wrap">
+            <div id="title_wrap">
+                <div class="title1">마이페이지</div>
+                <div class="title2">입사지원 관리</div>
+                <div class="title3">내가 지원한 기업 리스트</div>
+            </div>
+            <table>
+                <thead>
+                    <th>기업명</th>
+                    <th>공고명</th>
+                    <th>직무</th>
+                    <th>업종</th>
+                    <th>날짜</th>
+                    <th>진행상황</th>
+                    <th>지원철회</th>
+                    <th>이력서</th>
+                </thead>
+                <tbody>
+                    <tr th:each="apply:${apply}">
+                        <td>[[${apply.jobAd.company.cname}]]</td>
+                        <td>
+                            <a th:href="@{/user/user_recruitDetail(jno=${apply.jobAd.jno})}">
+                                [[${apply.jobAd.wantedTitle}]]
+                            </a>
+                        </td>
+                        <td>[[${apply.jobAd.position}]]</td>
+                        <td>[[${apply.jobAd.sectors}]]</td>
+                        <td>[[${apply.regdate}]]</td>
+                        <td>[[${apply.status}]]</td>
+                        <!--                     <td class="deleteBtn"><a th:href="@{/user/deleteUserApplyList(ano=${apply.ano})}">지원철회</a></td> -->
+                        <td class="deleteBtn">
+                            <span style="display:none;">[[${apply.ano}]]</span>
+                            ❌
+                        </td>
+                        <td><a href="../images/pen.png" name="_blank">🔍</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <footer>
             <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
         </footer>
     </div>
-<script th:inline="javascript">
-	const deleteBtn = document.querySelector(".deleteBtn");
-    deleteBtn.addEventListener("click", function(e){
-        let ano = e.target.querySelector("span").innerText;
-        if(confirm("정말로 지원을 철회하시겠습니까?")){
-            location.href="/user/deleteUserApplyList?ano="+ano;
-        }
-    })
-</script>
+
+    <script th:inline="javascript">
+        const deleteBtn = document.querySelector(".deleteBtn");
+        deleteBtn.addEventListener("click", function (e) {
+            let ano = e.target.querySelector("span").innerText;
+            if (confirm("정말로 지원을 철회하시겠습니까?")) {
+                location.href = "/user/deleteUserApplyList?ano=" + ano;
+            }
+        })
+    </script>
 </body>
+
 </html>
