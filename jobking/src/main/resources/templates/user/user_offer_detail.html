@@ -39,7 +39,8 @@
 			</tr>
 			<tr>
 				<th>수락여부</th>
-				<td>[[${offer.accept}]]</td>
+			<td th:text="${offer.accept != null && offer.accept == '0' ? '거절' : (offer.accept != null && offer.accept == '1' ? '수락' : '')}"></td>
+				
 			</tr>
 			<tr>
 				<td class="btn"></td>
@@ -76,10 +77,12 @@ if([[${offer.accept}]].length ==0){
 		
 		if(e.target == document.querySelector("#acceptBtn")){
 			if(confirm("정말로 이 제안을 수락하시겠습니까?")){
+				//수락시 데이터는 1로 들어감
 				answer = 1;
 			}
 		}else{
 			if(confirm("정말로 이 제안을 거절하시겠습니까?")){
+				//거절시 데이터는 0으로 들어감
 				answer = 0;
 			}
 		}

@@ -24,6 +24,8 @@ import com.example.jobking.entity.JobScrap;
 import com.example.jobking.entity.OfferList;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
+import com.example.jobking.entity.UserBoard;
+import com.example.jobking.entity.UserReply;
 import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
@@ -32,6 +34,8 @@ import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IJobScrapRepository;
 import com.example.jobking.repository.IOfferListRepository;
 import com.example.jobking.repository.IResumeRepository;
+import com.example.jobking.repository.IUserBoardRepository;
+import com.example.jobking.repository.IUserReplyRepository;
 import com.example.jobking.repository.IUserRepository;
 import com.example.jobking.repository.IUserReviewRepository;
 
@@ -63,6 +67,10 @@ public class JController {
 	private IUserReviewRepository userReviewRepo;
 	@Autowired
 	private ICompanyReviewRepository companyReviewRepo;
+	@Autowired
+	private IUserBoardRepository userBoardRepo;
+	@Autowired
+	private IUserReplyRepository userReplyRepo;
 	private final Path rootLocation = Paths.get("/upload");
 	
 	
@@ -318,6 +326,32 @@ public class JController {
 		List<Resume> resumeList = resumeRepo.findByUid(uid);
 		System.out.println(resumeList);
 		model.addAttribute("resumeList", resumeList);
+	}
+	@RequestMapping("/user_myBoard_list")
+	public void userMyBoardList(HttpServletRequest request, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		List<UserBoard> userBoardList = userBoardRepo.findByUid(uid);
+		List<UserReply> userReplyList = userReplyRepo.findByUid(uid);
+		
+		model.addAttribute("userBoardList", userBoardList);
+		model.addAttribute("userReplyList", userReplyList);
+		System.out.println(userBoardList);
+		System.out.println(userReplyList);
+	}
+	@RequestMapping("/delete_board")
+	public void deleteBoard(@RequestParam("ubno") Long ubno, HttpServletRequest request, Model model) {
+
+		//해당 글에 달려있는 모든 댓글 먼저 다 지우기
+		userReplyRepo.deleteAllByUbno(ubno);
+	
+		//선택한 글 지우기
+		userBoardRepo.delete(userBoardRepo.findById(ubno).get());
+		
+		
+	}
+	@RequestMapping("/delete_reply")
+	public void deleteReply(@RequestParam("replyno") Long replyno, Model model) {
+		userReplyRepo.delete(userReplyRepo.findById(replyno).get());
 	}
 
 }

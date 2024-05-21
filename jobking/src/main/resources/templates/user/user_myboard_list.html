@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body>
+<header>
+	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+</header>
+<main>
+	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+	<div>
+		<h1>마이페이지</h1>
+		<h3>커뮤니티 활동 관리</h3>
+		
+		<h3>내가 쓴 글 보기</h3>
+		<table class="userBoard">
+			<tr>
+				<th>커뮤니티 글 제목</th>
+				<th>수정</th>
+				<th>삭제</th>
+			</tr>
+			<tr th:each="userBoard : ${userBoardList}">
+				<td>[[${userBoard.title}]]</td>
+				<td class="editBtn">📝<span style="display:none;">[[${userBoard.ubno}]]</span></td>
+				<td class="deleteBtn">❌<span style="display:none;">[[${userBoard.ubno}]]</span></td>
+			</tr>
+		</table>
+		
+		
+		<h3>내가 쓴 댓글 보기</h3>
+		<table class="userReply">
+			<tr>
+				<th>커뮤니티 글 제목</th>
+				<th>댓글 내용</th>
+				<th>수정</th>
+				<th>삭제</th>
+			</tr>
+			<tr th:each="userReply : ${userReplyList}">
+				<td>[[${userReply.userBoard.title}]]</td>
+				<td>[[${userReply.content}]]</td>
+				<td class="editBtn">📝<span style="display:none;">[[${userReply.replyno}]]</span></td>
+				<td class="deleteBtn">❌<span style="display:none;">[[${userReply.replyno}]]</span></td>
+			</tr>
+		</table>
+	</div>
+</main>
+	<footer>
+		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+	</footer>
+</body>
+
+
+
+<script th:inline="javascript">
+	const deleteBtns = document.querySelectorAll(".deleteBtn");
+	const editBtns = document.querySelectorAll(".editBtn");
+	deleteBtns.forEach(btn=>{
+		btn.addEventListener("click", function(e){
+			let table = e.target.parentElement.parentElement.parentElement.classList;
+			let no = e.target.querySelector("span").innerText;
+			
+			if(table =="userBoard"){
+				if(confirm("정말로 해당 글을 커뮤니티에서 삭제하시겠습니까?")){
+					location.href="/user/delete_board?ubno="+no;
+				};
+			}else if(table =="userReply"){
+				if(confirm("정말로 해당 댓글을 커뮤니티에서 삭제하시겠습니까?")){
+					location.href="/user/delete_reply?replyno="+no;
+				}
+			}
+		})
+	})
+	
+	editBtns.forEach(btn=>{
+		btn.addEventListener("click", function(e){
+			let table = e.target.parentElement.parentElement.parentElement.classList;
+			let no = e.target.querySelector("span").innerText;
+			
+			if(table =="userBoard"){
+				location.href="/user/edit_board?ubno="+no;
+			}else if(table =="userReply"){
+				location.href="/user/edit_reply?replyno="+no;
+			}
+		})
+	})
+
+	
+</script>
+</html>
