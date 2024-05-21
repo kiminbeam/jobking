@@ -33,11 +33,10 @@
 <!-- 4. 관심기업 구독(Button) -->
 <!-- 5. 채용공고 스크랩(B) -->
 <!-- 6. 채용공고 상세 정보(img도 가능 ) -->
-<!-- 7. 기업자체 이력서 존재시 => 이력서 다운로드 버튼/ 없을시 채용사이트에 저장된 이력서목록보이기 -->
+<!-- 7. 기업자체 이력서 존재시 => 이력서 다운로드 버튼/ 없을시 채용사이트에 저장된 이력서목록보이기 (url2)-->
 <!-- 8. 관련키워드(기업이 등록해놓은 관련업무) view -->
 <!-- 9. 지원자 현황 (그래프나 인원수만 보이도록) -->
 <!-- 10. 추천 일자리 (5개 표시;) -->
-
 			<div id="copyBtn" onclick="copyToClipboard()"><img style="width:30px; height:30px;" th:src="@{/images/icon/copy.png}" alt="copyBtn"></div>
 			<div>
 				<a id="btnTwitter" class="link-icon twitter" href="javascript:shareTwitter();">트위터</a>
@@ -49,7 +48,9 @@
 			</div>
 			<div id="scrapContainer">
 			</div>
-			<button onclick="openPopUp()">지원서 제출하기</button>
+			<div id="applyContainer">
+			</div>
+			
 
 			<div id="chart-container">
         		<canvas id="chart"></canvas>
@@ -161,21 +162,45 @@
 	const targetDate = [[${jobad.receiptCloseDt}]];
 	const regDate = [[${jobad.regdate}]];
 	
+	//스크랩버튼 처리
 	if([[${scrap == false}]]){
 		document.querySelector("#scrapContainer").innerHTML="<div onclick='scrapJobad()'><img style='width:30px; height:30px;' src='/images/icon/save.png' alt='saveBtn'></div>";
 	}else if([[${scrap == true}]]){
 		document.querySelector("#scrapContainer").innerHTML="<div onclick='scrapJobad()'><img style='width:30px; height:30px;' src='/images/icon/save_full.png' alt='saveFullBtn'></div>";
 	}
+	//구독버튼 처리
 	if([[${interest == false}]]){
 		document.querySelector("#likeContainer").innerHTML="<div onclick='likeTheCom()'><img style='width:30px; height:30px;' src='/images/icon/heart.png' alt='heartBtn'></div>";
 	}else if([[${interest == true}]]){
 		document.querySelector("#likeContainer").innerHTML="<div onclick='likeTheCom()'><img style='width:30px; height:30px;' src='/images/icon/heart_full.png' alt='heartFullBtn'></div>";
 	}
 	
+//자체 양식 없으면 사이트 내 지원서 제출, 있으면 양식다운받는 버튼 보여주기
+	if([[${jobad.attachFileUrl2 == ""}]]){
+		document.querySelector("#applyContainer").innerHTML="<button onclick='openPopUp()'>지원서 제출하기</button>"
+	}else{
+		document.querySelector("#applyContainer").innerHTML="<button id='downloadFormBtn'>지원서 양식 다운받기</button>"
+	}
+	//사이트내 지원서 제출시 팝업을 띄워서 어떤 이력서를 골라서 낼건지 선택하게 하기
 	function openPopUp(){
 		 window.open("http://localhost:8093/user/user_resumePick", "팝업 창", "width=600,height=400");
 	}
-	
+	// 자체 양식 다운로드 버튼 클릭 시 처리
+	document.querySelector("#downloadFormBtn").addEventListener("click", function() {
+	    // 만약 attachFileUrl2가 빈 문자열이 아니라면, 즉 양식이 존재한다면
+	    if ([[${jobad.attachFileUrl2 == ""}]]) {
+	        // 파일 다운로드 링크 생성
+	        const downloadLink = document.createElement("a");
+	        downloadLink.href = [[${jobad.attachFileUrl2}]];
+	        // 파일명 설정
+	        downloadLink.download = "지원서_양식.pdf"; // 다운로드되는 파일명
+	        // 링크 클릭하여 다운로드 시작
+	        downloadLink.click();
+	    } else {
+	        // 양식이 없을 경우에 대한 처리
+	        alert("양식이 존재하지 않습니다.");
+	    }
+	});
 	
 	function scrapJobad(){
 		 const xhttp = new XMLHttpRequest();
