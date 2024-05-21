@@ -17,19 +17,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jobking.entity.Company;
+import com.example.jobking.entity.CompanyReview;
 import com.example.jobking.entity.InterestCop;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.JobScrap;
 import com.example.jobking.entity.OfferList;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
+import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.ICompanyRepository;
+import com.example.jobking.repository.ICompanyReviewRepository;
 import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IJobScrapRepository;
 import com.example.jobking.repository.IOfferListRepository;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.IUserRepository;
+import com.example.jobking.repository.IUserReviewRepository;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
@@ -55,6 +59,10 @@ public class JController {
 	private IJobScrapRepository jobscrapRepo;
 	@Autowired
 	private IOfferListRepository offerListRepo;
+	@Autowired
+	private IUserReviewRepository userReviewRepo;
+	@Autowired
+	private ICompanyReviewRepository companyReviewRepo;
 	private final Path rootLocation = Paths.get("/upload");
 	
 	
@@ -293,8 +301,23 @@ public class JController {
 		return "done";
 	}
 	@RequestMapping("/user_review_list")
-	public void userReviewList() {
+	public void userReviewList(Model model) {
+		List<UserReview> userReviewList = userReviewRepo.findAll();
+		List<CompanyReview> companyReviewList = companyReviewRepo.findAll();
+		model.addAttribute("companyReviewList",companyReviewList);
+		model.addAttribute("userReviewList",userReviewList);
 		
+		System.out.println(userReviewList);
+		System.out.println(companyReviewList);
 	}
-	
+	@RequestMapping("/user_resumePick")
+	public void userResumePick(HttpServletRequest request, Model model) {
+		//해당 아이디로 등록된 이력서 몇개인지 받아오기
+		String uid = (String) request.getSession().getAttribute("id");
+		User user = userRepo.findById(uid).get();
+		List<Resume> resumeList = resumeRepo.findByUid(uid);
+		System.out.println(resumeList);
+		model.addAttribute("resumeList", resumeList);
+	}
+
 }
