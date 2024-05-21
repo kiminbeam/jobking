@@ -296,5 +296,14 @@ public class JController {
 	public void userReviewList() {
 		
 	}
-	
+	@RequestMapping("/user_resumePick")
+	public void userResumePick(HttpServletRequest request, Model model) {
+		//해당 아이디로 등록된 이력서 몇개인지 받아오기
+		String uid = (String) request.getSession().getAttribute("id");
+		User user = userRepo.findById(uid).get();
+		List<Resume> resumeList = resumeRepo.findByUid(uid);
+		System.out.println(resumeList);
+		model.addAttribute("resumeList", resumeList);
+	}
+
 }
