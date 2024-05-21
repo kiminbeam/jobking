@@ -128,17 +128,26 @@
 					<a href="">커뮤니티</a>
 				</div><!--sidebar end-->
 				
+				
+				<div class="companyReview">
+					<h3>기업평점</h3><span th:text="${CPaverage}"></span>
+					<div class="company" th:each="CPreview : ${CPreview}">
+						<div class="userReview" th:text="${CPreview.user.uname}"></div>
+						<div class="userfeedback" th:text="${CPreview.feedback}"></div>
+					</div>
+				</div><!--companyReview end-->
+				
+				
 				<div class="userReview">
-					<h3>기업평점</h3>
+					<h3>유저에 대한 평점</h3>
 					<div class="user" th:each="Ureview : ${Ureview}">
-						<div class="username" th:text="${Ureview.user.uname}"></div>
-						<div class="userfeedback" th:text="${Ureview.feedback}"></div>
+						<div class="reviewUser" th:text="${Ureview.user.uname}"></div>
+						
+						<div class="comfeedback" th:text="${Ureview.feedback}"></div>
 					</div>
 				</div><!-- userReview end -->
 				
-				<div class="companyReview">
-					<h3></h3>
-				</div><!--companyReview end-->
+				
 				
 			</div><!--maincontent end-->
 		

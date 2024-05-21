@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -98,14 +98,12 @@
 			.sidebar a:hover {
 				background-color: #ddd;
 			}
-			
-			
-			
-			
+		
 	</style>
+
 </head>
 <body>
-		<div class="top">
+	<div class="top">
 			<div class="navbar">
 				<a href="#home">home</a>
 				<div class="dropdown">
@@ -168,75 +166,9 @@
 					</div>
 					<a href="">커뮤니티</a>
 				</div><!--sidebar end-->
-				<div class="interview">
-					<h3>지원자 면접상태</h3>
-					<div id="applynow" th:each="interviews : ${interview}">
-						<div class="itvTarget" th:text="${interviews.user.uname}"></div>
-						<div class="itvNow" th:text="${interviews.interview}" th:id="'itvNow_' + ${interviews.interviewno}"></div>
-						<div class="targetP" th:text="${interviews.pass}" th:id="'targetP_' + ${interviews.interviewno}"></div>
-						
-						<button class="interviewcheck" th:onclick="'changeInterviewStatus(' + ${interviews.interviewno} + ')'" >면접완료</button>
-						<button class="pass" th:onclick="'changePass(' + ${interviews.interviewno} + ')' ">합격</button>
-						<div id="ratingBtnContainer" th:id="'ratingBtnContainer_' + ${interviews.interviewno}"></div>
-					</div>
-				</div>
-		</div>
-		
-		<script>
-			function changeInterviewStatus(interviewNo){
-				var xhr = new XMLHttpRequest();
-				var url = '/company/changeInterview?interviewno=' + interviewNo + '&status=2';
 				
 				
-				xhr.open('POST', url, true);
-				xhr.onreadystatechange = function() {
-					if(xhr.readyState === 4){
-						if(xhr.status === 200) {
-							alert('면접 상태가 성공적으로 변경되었습니다.');
-							
-							document.getElementById('itvNow_' + interviewno).innerText ='2';
-							
-							//평점평가 하기 버튼 생성
-							var ratingBtnContainer = document.getElementById('ratingBtnContainer_' + interviewno);
-							var ratingBtn = document.createElement('button');
-							ratingBtn.innerText = '평점평가 하기';
-							ratingBtn.onclick = function() {
-								alert('평점평가로 이동합니다.');
-								//여기서 평점평가 페이지로 이동하는 코드 작성가능
-							};
-							ratingBtnContainer.appendChild(ratingBtn);
-							
-						}else {
-							alert('요청이 실패하였습니다.');
-						}
-					}
-				};
-				xhr.send();
-				console.log("AJAX 요청 보냄" + url);
-			}
-			
-			function changePass(interviewno) {
-				var xhr = new XMLHttpRequest();
-				var url = '/company/updatePassStatus?interviewno=' + interviewno + '&pass=2';
 				
-				xhr.open('POST', url, true);
-				xhr.onreadystatechange = function() {
-					if(xhr.readyState === 4){
-						if(xhr.status === 200) {
-							alert("합격 여부가 변경되었습니다.");
-							
-							document.querySelector('.targetP').innerText = "합격";
-						}else{
-							alert("요청이 실패했습니다.");
-						}
-					}
-				};
-				xhr.send();
-				console.log("AJAX 요청 보냄" + url);
-			}
-			
-			
-		</script>	
-			
+		</div><!-- maincontent end -->
 </body>
 </html>

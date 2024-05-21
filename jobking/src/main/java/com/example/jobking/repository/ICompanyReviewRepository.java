@@ -12,4 +12,8 @@ public interface ICompanyReviewRepository extends JpaRepository<CompanyReview, L
 	
 	@Query(value="select * from company_review where cid= :cid", nativeQuery = true)
 	Optional <CompanyReview> findCpReview(@Param("cid") String cid);
+	
+	//평균 구하는 쿼리
+	@Query(value="select ((sum(q1) + sum(q2) + sum(q3))/3) / count(distinct uid) from company_review where cid= :cid", nativeQuery = true)
+	Double findAverageByCid(@Param("cid") String cid);
 }

@@ -278,16 +278,35 @@ public class CompanyController {
 	@Autowired
 	IUserReviewRepository uReviewRepository;
 	
-	@RequestMapping("/com_reviewList")
+	@RequestMapping("/com_reviewList") //수정기능 추가 o,x
 	public String findReviwer(@RequestParam("cid") String cid, Model model) {
-		//기업이 유저에게 남긴 리뷰들 가져오는 기능
-		Optional<CompanyReview> CPreviewlist = cReviewRepository.findCpReview(cid);
 		//유저가 기업에게 남긴 리뷰를 가져오는 기능
+		Optional<CompanyReview> CPreviewlist = cReviewRepository.findCpReview(cid);
+		CompanyReview cpreview = CPreviewlist.get();
+		 //기업이 유저에게 남긴 리뷰들 가져오는 기능
 		Optional<UserReview> Ureviewlist = uReviewRepository.findUserReview(cid);
+		UserReview userreview = Ureviewlist.get();
 		
-		model.addAttribute("CPreview", CPreviewlist);
-		model.addAttribute("Ureview", Ureviewlist);
+		Double average = cReviewRepository.findAverageByCid(cid);
 		
-		return "/company/com_reviewList?cid=" + cid;
+		model.addAttribute("CPreview", cpreview);
+		model.addAttribute("Ureview", userreview);
+		model.addAttribute("CPaverage", average);
+		
+		return "/company/com_reviewList";
 	}
+	
+	@RequestMapping("/com_reviewForm")
+	public String reviewForm() {
+		
+		return "/company/com_reviewForm";
+	}
+	
+	@RequestMapping("/saveUserReview")
+	public String saveUserReview(Model model) {
+		
+		return "redirect: /company/com_reviewList";
+	}
+	
+	
 }
