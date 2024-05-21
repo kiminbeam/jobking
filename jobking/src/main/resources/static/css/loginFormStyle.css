@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+
 .container{
     width: 1030px; height: 560px;
     background-color: #fff;
@@ -20,7 +21,10 @@
 }
 .tabs>li{
     width: 300px; height: 48px;
-    background-color: lightgray;
+    border: 1px solid lightgray;
+    border-bottom: 0;
+    box-sizing: border-box;
+    background-color: #f7f7f7;
     color: darkgray;
     float: left;
 }
