@@ -31,12 +31,10 @@
 		<table>
 			<tr>
 				<th>기업명</th>
-				<th>채용공고명</th>
 				<th>리뷰상세내용</th>
 			</tr>
 			<tr th:each="userReview : ${userReviewList}">
 				<td>[[${userReview.company.cname}]]</td>
-				<td>[[${userReview.jobAd.wantedTitle}]]</td>
 				<td>
 					<span>1️⃣</span><span th:each="star : ${#numbers.sequence(1, userReview.q1)}">⭐</span> <br>
 					<span>2️⃣</span><span th:each="star : ${#numbers.sequence(1, userReview.q2)}">⭐</span> <br>
@@ -62,12 +60,10 @@
 		<table>
 			<tr>
 				<th>기업명</th>
-				<th>채용공고명</th>
 				<th>리뷰상세내용</th>
 			</tr>
 			<tr th:each="companyReview : ${companyReviewList}">
 				<td>[[${companyReview.company.cname}]]</td>
-				<td>[[${companyReview.jobAd.wantedTitle}]]</td>
 				<td>
 					<span>1️⃣</span><span th:each="star : ${#numbers.sequence(1, companyReview.q1)}">⭐</span><br>
 					<span>2️⃣</span><span th:each="star : ${#numbers.sequence(1, companyReview.q2)}">⭐</span> <br>

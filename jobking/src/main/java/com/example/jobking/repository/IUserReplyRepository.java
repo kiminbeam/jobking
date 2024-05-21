@@ -16,4 +16,7 @@ public interface IUserReplyRepository extends JpaRepository<UserReply, Long> {
 	
 	@Query(value="delete from user_reply where ubno= :ubno", nativeQuery=true)
 	void deleteAllByUbno(@Param("ubno") Long ubno);
+	
+	@Query(value="Select * from user_reply where ubno= :ubno", nativeQuery=true)
+	List<UserReply> findAllByUbno(@Param("ubno") Long ubno);
 }
