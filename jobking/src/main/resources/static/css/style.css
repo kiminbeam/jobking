@@ -28,12 +28,14 @@ img {
 
 #wrap{
     width: 100%;
+    background-color: #f3f5f7;
 }
 
 header{
     width: 100%; height: 150px;
     box-shadow: 0 10px 20px rgba(0,0,0,0.01), 0 6px 6px rgba(0,0,0,0.05);
     z-index: 99;
+    background-color: #fff;
 }
 /* nav */
 nav{
@@ -106,6 +108,7 @@ footer{
     width: 100%; height: 120px;
     border-top: 1px solid lightgray;
     overflow: hidden;
+    background-color: #fff;
 }
 #footer{
     padding: 30px;
