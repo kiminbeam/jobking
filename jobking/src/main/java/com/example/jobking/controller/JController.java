@@ -198,9 +198,16 @@ public class JController {
 		model.addAttribute("jobadList", jobAdList);
 	}
 	@RequestMapping("/user_recruit_regionSearch")
-	public @ResponseBody String userRecruitRegionSearch(@RequestParam("guName") String guName, @RequestParam("sectorName") String sectorName, @RequestParam("jobName") String jobName) {
-		
-		
+	public @ResponseBody String userRecruitRegionSearch(  @RequestParam(required = false, name = "region1Name") String region1Name,
+	        @RequestParam(required = false, name = "region2Name") String region2Name,
+	        @RequestParam(required = false, name = "sector1Name") String sector1Name,
+	        @RequestParam(required = false, name = "sector2Name") String sector2Name,
+	        @RequestParam(required = false, name = "position1Name") String position1Name,
+	        @RequestParam(required = false, name = "position2Name") String position2Name) {
+	
+		 List<JobAd> list = jobadRepo.findJobad(region1Name, region2Name, sector1Name,sector2Name,position1Name,position2Name);
+		 
+		 //list를 json형태로 해서 화면단에 보여주고 화면단에서 뿌려주기
 		
 		return "donee";
 	}

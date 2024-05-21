@@ -45,7 +45,7 @@ public class JobAd extends BaseEntity {
 	private String sector1;
 	
 	@Column(name = "sector2", nullable = false, length = 30)
-	private String sector3;
+	private String sector2;
 
 	@Column(name = "wantedTitle", nullable = false, length = 50)
 	private String wantedTitle;
