@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.example.jobking.entity.Resume;
+import com.example.jobking.entity.User;
 
 public interface IResumeRepository extends JpaRepository<Resume, Long> {
 
@@ -20,4 +21,9 @@ public interface IResumeRepository extends JpaRepository<Resume, Long> {
 	
 	// 이력서가 특정 사용자에 의해 존재하는지 여부를 확인하는 메서드 추가
     boolean existsByUser_Uid(String uid);
+    
+    @Query("SELECT r FROM Resume r WHERE r.user = :user AND r.def = :def")
+    Resume findByUserAndDef(@Param("user") User user, @Param("def") String def);
+
+	long countByDef(String def); 
 }
