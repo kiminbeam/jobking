@@ -9,23 +9,25 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.InterestCop;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.JobScrap;
+import com.example.jobking.entity.OfferList;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IJobScrapRepository;
+import com.example.jobking.repository.IOfferListRepository;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.IUserRepository;
 
@@ -51,13 +53,16 @@ public class JController {
 	private ServletContext servletContext;
 	@Autowired
 	private IJobScrapRepository jobscrapRepo;
+	@Autowired
+	private IOfferListRepository offerListRepo;
 	private final Path rootLocation = Paths.get("/upload");
 	
 	
 	@RequestMapping("/index")
 	public String root() {
-		companyRepo.save(new Company("ccc","", "네이버", "12345", "12345", "james", "11111", "서울", 500, "", "11", "11", "11"));
+//		companyRepo.save(new Company("ccc","", "네이버", "12345", "12345", "james", "11111", "서울", 500, "", "11", "11", "11"));
 //		userRepo.save(new User("aab", "james","1234", LocalDate.now(), "M", "aaa1234@gmail.com","010-1111-1111", "서울","dog"));
+			
 		return "/user/index";
 	}
 	
@@ -167,7 +172,7 @@ public class JController {
 	@RequestMapping("/user_logout")
 	public String userLogout(HttpServletRequest request) {
 		request.getSession().invalidate();
-		return "redirect:/user/index";
+		return "/user/index";
 	}
 
 	
@@ -184,9 +189,57 @@ public class JController {
 	}
 
 	@RequestMapping("/user_recruitDetail")
-	public void userRecruitDetail(@RequestParam("jno") Long jno, Model model) {
+	public void userRecruitDetail(HttpServletRequest request, @RequestParam("jno") Long jno, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		
+		//해당 채용공고 정보 보내주기
 		JobAd jobad = jobadRepo.findById(jno).get();
 		model.addAttribute("jobad", jobad);
+		//스크랩 여부 정보 보내주기
+		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(jno,uid);
+		if(checkS.isEmpty()) {
+			model.addAttribute("scrap", false);
+		}else {
+			model.addAttribute("scrap", true);
+		}
+		//해당기업 찜 여부 정보 보내주기
+		Optional<InterestCop> checkI = interestRepo.findByUidNCid(uid,jobad.getCompany().getCid());
+		if(checkI.isEmpty()) {
+			model.addAttribute("interest", false);
+		}else {
+			model.addAttribute("interest", true);
+		}
+	
+	}
+	@RequestMapping("/scrapJobad")
+	public @ResponseBody String scrapJobad(HttpServletRequest request, @RequestParam("jno") String jno) {
+		String uid = (String) request.getSession().getAttribute("id");
+		Optional<JobScrap> check = jobscrapRepo.findByUidNJno(Long.parseLong(jno),uid);
+		//만약 이미 등록된 공고가 있다면 삭제하기
+		if(!check.isEmpty()) {
+			jobscrapRepo.delete(check.get());
+			return "deleted";
+		}else {
+			// 아니라면 더해주기
+			JobScrap jobScrap = new JobScrap(0L, userRepo.findById(uid).get(), jobadRepo.findById(Long.parseLong(jno)).get());
+			jobscrapRepo.save(jobScrap);
+			return "added";
+		}
+	}
+	@RequestMapping("/likeTheCom")
+	public @ResponseBody String likeTheCom(HttpServletRequest request, @RequestParam("cid") String cid) {
+		String uid = (String) request.getSession().getAttribute("id");
+		Optional<InterestCop> check = interestRepo.findByUidNCid(uid,cid);
+		//만약 이미 등록된 공고가 있다면 삭제하기
+		if(!check.isEmpty()) {
+			interestRepo.delete(check.get());
+			return "deleted";
+		}else {
+			// 아니라면 더해주기
+			InterestCop interestCop = new InterestCop(0L, userRepo.findById(uid).get(), companyRepo.findById(cid).get());
+			interestRepo.save(interestCop);
+			return "added";
+		}
 	}
 	@RequestMapping("/user_subNscrap_list")
 	public void userSubNscrapList(Model model) {
@@ -207,4 +260,41 @@ public class JController {
 		jobscrapRepo.deleteById(Long.parseLong(jno));
 		return"redirect:/user/user_subNscrap_list";
 	}
+	@RequestMapping("/user_offer_list")
+	public void userOfferList(HttpServletRequest request, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		System.out.println(uid);
+		List<OfferList> offerList = offerListRepo.findAllByUid(uid);
+		model.addAttribute("offerList", offerList);
+		System.out.println(offerList);
+	}
+	@RequestMapping("/delete_offerList")
+	public String deletOfferList(@RequestParam("ono") String ono) {
+		offerListRepo.deleteById(Long.parseLong(ono));
+		return"redirect:/user/user_offer_list";
+	}
+	@RequestMapping("/user_offer_detail")
+	public void userOfferDetail(@RequestParam("ono") String ono, Model model) {
+		OfferList offer = offerListRepo.findById(Long.parseLong(ono)).get();
+		System.out.println(offer); 
+		
+		model.addAttribute("offer", offer);
+	}
+	@RequestMapping("/delete_offer_detail")
+	public String deletOfferDetail(@RequestParam("ono") String ono) {
+		offerListRepo.deleteById(Long.parseLong(ono));
+		return"redirect:/user/user_offer_list";
+	}
+	@RequestMapping("/answerToOffer")
+	public @ResponseBody String answerToOffer(@RequestParam("answer") String answer, @RequestParam("ono") String ono) {
+		OfferList offer = offerListRepo.findById(Long.parseLong(ono)).get();
+		offer.setAccept(answer);
+		offerListRepo.save(offer);
+		return "done";
+	}
+	@RequestMapping("/user_review_list")
+	public void userReviewList() {
+		
+	}
+	
 }
