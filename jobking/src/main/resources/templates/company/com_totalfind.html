@@ -4,194 +4,181 @@
 <meta charset="UTF-8">
 <title>전체 구직자 리스트 화면</title>
 <style>
-body {
-	font-family: Arial, sans-serif;
-	background-color: #f8f8f8;
-	margin: 0;
-	padding: 0;
-}
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f8f8;
+        margin: 0;
+        padding: 0;
+    }
 
-.top {
-	width: 100%;
-	height: 60px;
-	background-color: #333;
-	display: flex;
-	align-items: center;
-	padding: 0 20px;
-	box-sizing: border-box;
-}
+    .top {
+        width: 100%;
+        height: 60px;
+        background-color: #333;
+        display: flex;
+        align-items: center;
+        padding: 0 20px;
+        box-sizing: border-box;
+    }
 
-.navbar a {
-	float: left;
-	display: block;
-	color: white;
-	text-align: center;
-	padding: 14px 20px;
-	text-decoration: none;
-}
+    .navbar a {
+        color: white;
+        text-align: center;
+        padding: 14px 20px;
+        text-decoration: none;
+    }
 
-.navbar a:hover {
-	background-color: #ddd;
-	color: black;
-}
+    .navbar a:hover {
+        background-color: #ddd;
+        color: black;
+    }
 
-#dropdown {
-	float: left;
-	overflow: hidden;
-}
+    .maincontent {
+        margin-top: 60px;
+        padding: 20px;
+        display: flex;
+    }
 
-#dropdown #dropbtn {
-	font-size: 16px;
-	border: none;
-	outline: none;
-	color: white;
-	padding: 14px 20px;
-	background-color: inherit;
-	font-family: inherit;
-	margin: 0;
-}
+    .sidebar {
+        width: 250px;
+        background-color: white;
+        padding-top: 20px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        margin-right: 20px;
+        position: sticky;
+        top: 60px;
+        height: calc(100vh - 60px);
+    }
 
-#dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f9f9f9;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-	z-index: 1;
-}
+    .sidebar a, .sidebar button {
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 18px;
+        color: black;
+        display: block;
+        background: none;
+        text-align: left;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
 
-#dropdown-content a {
-	float: none;
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-	text-align: left;
-}
+    .sidebar a:hover, .sidebar button:hover {
+        background-color: #ddd;
+    }
 
-#dropdown-content a:hover {
-	background-color: #ddd;
-}
+    .content {
+        flex: 1;
+    }
 
-#dropdown:hover #dropdown-content {
-	display: block;
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
 
-.maincontent {
-	margin-top: 60px;
-	display: flex;
-	padding: 20px; /* 내용 영역에 패딩 추가 */
-	justify-content: center;
-}
+    table, th, td {
+        border: 1px solid #ddd;
+    }
 
-.sidebar {
-	height: calc(100vh - 60px);
-	width: 250px;
-	position: fixed;
-	top: 60px;
-	left: 0;
-	background-color: white;
-	overflow-x: hidden;
-	padding-top: 20px;
-	box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
+    th, td {
+        padding: 8px;
+        text-align: left;
+    }
 
-.sidebar a, .sidebar button {
-	padding: 10px 15px;
-	text-decoration: none;
-	font-size: 18px;
-	color: black;
-	display: block;
-	background: none;
-	width: 100%;
-	text-align: left;
-	border: none;
-	cursor: pointer;
-	outline: none;
-}
+    th {
+        background-color: #f2f2f2;
+    }
 
-.sidebar a:hover, .sidebar button:hover {
-	background-color: #ddd;
-}
+    .button-group {
+        display: flex;
+        gap: 10px;
+    }
 
-.dropdown-container {
-	background-color: white;
-	padding-left: 15px;
-}
+    .button-group button {
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        background-color: white;
+        cursor: pointer;
+    }
+
+    .button-group button:hover {
+        background-color: #f2f2f2;
+    }
+
 </style>
 </head>
 <body>
 
-	<div class="top">
-		<div class="navbar">
-			<a href="#home">home</a>
-			<div id="dropdown">
-				<button id="dropbtn">공고*지원자관리</button>
-				<div id="dropdown-content">
-					<a href="" id="content">채용공고</a> <a href="" id="content">입사지원관리</a>
-				</div>
-			</div>
-			<div id="dropdown">
-				<button id="dropbtn">회사정보관리</button>
-				<div id="dropdown-content">
-					<a href=" " id="content">기본정보관리</a> <a href=" " id="content">내기업평점보기</a>
-				</div>
-			</div>
-			<div id="dropdown">
-				<button id="dropbtn">인재관리</button>
-				<div id="dropdown-content">
-					<a href=" " id="content">포지션제안인재</a> <a href=" " id="content">기업구독인재</a>
-					<a href=" " id="content">스크랩한인재</a> <a href=" " id="content">최근
-						본 인재</a>
-				</div>
-			</div>
-			<div id="dropdown">
-				<a href=" ">인재 검색</a>
-			</div>
+<div class="top">
+    <div class="navbar">
+        <a href="#home">Home</a>
+        <a href="#manage">공고*지원자관리</a>
+        <a href="#company">회사정보관리</a>
+        <a href="#talent">인재관리</a>
+        <a href="#search">인재 검색</a>
+        <a href="#login">로그인</a>
+        <a href="#service">유저서비스</a>
+    </div>
+</div>
 
-			<a href=" " id="content">로그인</a> <a href=" " id="content">유저서비스</a>
-		</div>
-	</div>
+<div class="maincontent">
+    <div class="sidebar">
+        <button class="dropdown-btn">공고*지원자관리</button>
+        <div class="dropdown-container">
+            <a href="#">채용공고</a>
+            <a href="#">입사지원관리</a>
+        </div>
+        <button class="dropdown-btn">회사정보관리</button>
+        <div class="dropdown-container">
+            <a href="#">기본정보관리</a>
+            <a href="#">내기업평점보기</a>
+        </div>
+        <button class="dropdown-btn">인재관리</button>
+        <div class="dropdown-container">
+            <a href="#">인재 검색</a>
+            <a href="#">포지션제안 인재</a>
+            <a href="#">기업구독 인재</a>
+            <a href="#">스크랩한 인재</a>
+            <a href="#">최근 본 인재</a>
+        </div>
+        <a href="#">커뮤니티</a>
+    </div>
 
+    <div class="content">
+        <p>전체: <span th:text="${defaultResumeCount}"></span></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>이력서 요약</th>
+                    <th>포지션 제안</th>
+                </tr>
+            </thead>
+            <tbody>
+    <th:block th:each="resume, resumeStat : ${defaultResumes}">
+        <tr th:if="${resumeStat.index} < ${defaultHopes.size()}"> 
+            <td th:text="${defaultHopes[resumeStat.index].user.uname}"></td>
+            <td>
+                <span th:each="career, careerStat : ${defaultCareers[resumeStat.index]}">
+                    <span th:if="${careerStat.first}">[[${career.careerDuration}]]  </span>
+                </span>
+                <span th:text="${defaultHopes[resumeStat.index].resume.rtitle}"></span>
 
-	<div class="maincontent">
-		<div class="sidebar">
-			<div>
-				<button class="dropdown-btn">공고*지원자관리</button>
-				<div class="dropdown-container">
-					<a href=" ">채용공고</a> <a href="">입사지원관리</a>
-				</div>
-			</div>
-			<div>
-				<button class="dropdown-btn">회사정보관리</button>
-				<div class="dropdown-container">
-					<a href="">기본정보관리</a> <a href="">내기업평점보기</a>
-				</div>
-			</div>
-			<div>
-				<button class="dropdown-btn">인재관리</button>
-				<div class="dropdown-container">
-					<a href="">인재 검색</a> <a href="">포지션제안 인재</a> <a href="">기업구독 인재</a>
-					<a href="">스크랩한 인재</a> <a href="">최근 본 인재</a>
-				</div>
-			</div>
-			<a href="">커뮤니티</a>
-		</div>
-		<div>
-		<p>전체: <span th:text="${defaultResumeCount}"></span></p>
-		</div>
-		<h1>모든 유저 대표 이력서 목록</h1>
-		<div th:each="resume : ${defaultResumes}">
-			<h2>
-				<span th:text="${resume.user.uname}"></span>
-			</h2>
-			<p th:text="'제목: ' + ${resume.rtitle}"></p>
-			<hr />
-		</div>
+                <p th:text="'희망 근무지: ' + ${defaultHopes[resumeStat.index].region1}"></p>
+                <span th:text="'희망 업종: ' + ${defaultHopes[resumeStat.index].sectors}"></span>
+                <span th:text="'희망 직무: ' + ${defaultHopes[resumeStat.index].job}"></span>
+            </td>
+            <td class="button-group">
+                <button>이력서 확인</button>
+                <button>포지션 제안</button>
+            </td>
+        </tr>
+    </th:block>
+</tbody>
+        </table>
+    </div>
+</div>
 
-
-
-
-	</div>
 </body>
 </html>
