@@ -197,6 +197,14 @@ public class JController {
 		List<JobAd> jobAdList = jobadRepo.findAll();
 		model.addAttribute("jobadList", jobAdList);
 	}
+	@RequestMapping("/user_recruit_regionSearch")
+	public @ResponseBody String userRecruitRegionSearch(@RequestParam("guName") String guName, @RequestParam("sectorName") String sectorName, @RequestParam("jobName") String jobName) {
+		
+		
+		
+		return "donee";
+	}
+
 	@RequestMapping("/user_recruit_job")
 	public void userRecruitJob() {
 	}
@@ -277,7 +285,7 @@ public class JController {
 		return"redirect:/user/user_subNscrap_list";
 	}
 	
-	/*
+	
 	@RequestMapping("/user_offer_list")
 	public void userOfferList(HttpServletRequest request, Model model) {
 		String uid = (String) request.getSession().getAttribute("id");
@@ -286,7 +294,7 @@ public class JController {
 		model.addAttribute("offerList", offerList);
 		System.out.println(offerList);
 	}
-	*/
+	
 	
 	@RequestMapping("/delete_offerList")
 	public String deletOfferList(@RequestParam("ono") String ono) {
@@ -411,5 +419,5 @@ public class JController {
 		userBoardRepo.deleteById(ubno);
 		return "redirect:/user/user_communityList";
 	}
-
+	
 }

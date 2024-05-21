@@ -41,14 +41,20 @@ public class JobAd extends BaseEntity {
 	@JoinColumn(name = "cid", referencedColumnName = "cid", nullable = false)
 	private Company company;
 
-	@Column(name = "sectors", nullable = false, length = 30)
-	private String sectors;
+	@Column(name = "sector1", nullable = false, length = 30)
+	private String sector1;
+	
+	@Column(name = "sector2", nullable = false, length = 30)
+	private String sector3;
 
 	@Column(name = "wantedTitle", nullable = false, length = 50)
 	private String wantedTitle;
 
-	@Column(name = "position", nullable = false, length = 30)
-	private String position;
+	@Column(name = "position1", nullable = false, length = 30)
+	private String position1;
+	
+	@Column(name = "position2", nullable = false, length = 30)
+	private String position2;
 
 	@Column(name = "jobCont", nullable = false, columnDefinition = "TEXT")
 	private String jobCont;
@@ -83,8 +89,11 @@ public class JobAd extends BaseEntity {
 	@Column(name = "rcptMthd", length = 10)
 	private String rcptMthd;
 
-	@Column(name = "regionCd", nullable = false, length = 10)
-	private String regionCd;
+	@Column(name = "region1", nullable = false, length = 10)
+	private String region1;
+	
+	@Column(name = "region2", nullable = false, length = 10)
+	private String region2;
 
 	@Column(name = "WkdWkhCnt", nullable = false, length = 2)
 	private String WkdWkhCnt;

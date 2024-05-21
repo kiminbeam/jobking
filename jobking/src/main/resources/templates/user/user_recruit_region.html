@@ -348,6 +348,15 @@ function loadSectorList() {
 		console.log(guName);
 		console.log(sectorName);
 		console.log(jobName);
+		
+		//검색버튼 누르면 필터해서 리스트 받아와서 뿌리는 ajax콜
+		const xhttp = new XMLHttpRequest();
+		  xhttp.onload = function() {
+// 		    document.getElementById("demo").innerHTML = this.responseText;
+			console.log(this.responseText);
+		    }
+		  xhttp.open("GET", "/user/user_recruit_regionSearch?guName="+guName+"&&sectorName="+sectorName+"&&jobName"+jobName, true);
+		  xhttp.send();
 	}
 
 
