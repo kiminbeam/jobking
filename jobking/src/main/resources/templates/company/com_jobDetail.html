@@ -131,7 +131,6 @@ body {
 .job-content { /* 메인 내용 영역 스타일 */
 	width: 1000px; /* 사이드바 너비 제외 */
 	margin-left: 270px;
-	
 	padding: 20px; /* 내용 영역에 패딩 추가 */
 	border: 1px solid black; /* 테두리 추가 */
 }
@@ -328,10 +327,8 @@ body {
 							<td th:text="${detail.regionCd}"></td>
 							<td>
 								<ul>
-									<li>- CS모니터링 업무</li>
-									<li>- 문서작성/보조</li>
-									<li>- 데이터수집 및 누적</li>
-									<li>- 자료산출/통계</li>
+									<li th:each="jobCont : ${jobContList}"><span
+										th:text="${jobCont}"></span></li>
 								</ul>
 							</td>
 							<td>
@@ -340,12 +337,15 @@ body {
 										[[${detail.minEdubglcd}]] 이상 </span> <span>-경력
 										[[${detail.yofExperiences}]]</span>
 								</div>
-								<div th:if="${detail.needskill != null}">
-									<strong>필요스킬</strong><br> <span>-
-										[[${detail.needskill}]]</span><br>
+								<div th:if="${not #lists.isEmpty(needskillList)}">
+									<strong>필요스킬</strong><br>
+									<ul>
+										<li th:each="skill : ${needskillList}"><span
+											th:text="${skill}"></span></li>
+									</ul>
 								</div>
 							</td>
-							<td>[[${detail.collectPsncnt}]]명</td>
+							<td th:text="${detail.collectPsncnt} + '명'"></td>
 						</tr>
 					</tbody>
 				</table>
@@ -364,6 +364,7 @@ body {
 			</div>
 		</div>
 	</div>
-	<!--maincontent end-->
+	<script
+		src="https://cdn.jsdelivr.net/npm/thymeleaf@3.1.1/thymeleaf.min.js"></script>
 </body>
 </html>

@@ -33,6 +33,10 @@ public class ApplyList extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "jno", referencedColumnName = "jno", nullable = false)
 	private JobAd jobAd;
+	
+	@ManyToOne
+    @JoinColumn(name = "cid", referencedColumnName = "cid", nullable = false)
+    private Company company;
 
 	@ManyToOne
 	@JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
@@ -43,4 +47,6 @@ public class ApplyList extends BaseEntity {
 
 	@Column(name = "save", nullable = false)
 	private String save;
+	
+	
 }
