@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -190,9 +189,57 @@ public class JController {
 	}
 
 	@RequestMapping("/user_recruitDetail")
-	public void userRecruitDetail(@RequestParam("jno") Long jno, Model model) {
+	public void userRecruitDetail(HttpServletRequest request, @RequestParam("jno") Long jno, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		
+		//해당 채용공고 정보 보내주기
 		JobAd jobad = jobadRepo.findById(jno).get();
 		model.addAttribute("jobad", jobad);
+		//스크랩 여부 정보 보내주기
+		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(jno,uid);
+		if(checkS.isEmpty()) {
+			model.addAttribute("scrap", false);
+		}else {
+			model.addAttribute("scrap", true);
+		}
+		//해당기업 찜 여부 정보 보내주기
+		Optional<InterestCop> checkI = interestRepo.findByUidNCid(uid,jobad.getCompany().getCid());
+		if(checkI.isEmpty()) {
+			model.addAttribute("interest", false);
+		}else {
+			model.addAttribute("interest", true);
+		}
+	
+	}
+	@RequestMapping("/scrapJobad")
+	public @ResponseBody String scrapJobad(HttpServletRequest request, @RequestParam("jno") String jno) {
+		String uid = (String) request.getSession().getAttribute("id");
+		Optional<JobScrap> check = jobscrapRepo.findByUidNJno(Long.parseLong(jno),uid);
+		//만약 이미 등록된 공고가 있다면 삭제하기
+		if(!check.isEmpty()) {
+			jobscrapRepo.delete(check.get());
+			return "deleted";
+		}else {
+			// 아니라면 더해주기
+			JobScrap jobScrap = new JobScrap(0L, userRepo.findById(uid).get(), jobadRepo.findById(Long.parseLong(jno)).get());
+			jobscrapRepo.save(jobScrap);
+			return "added";
+		}
+	}
+	@RequestMapping("/likeTheCom")
+	public @ResponseBody String likeTheCom(HttpServletRequest request, @RequestParam("cid") String cid) {
+		String uid = (String) request.getSession().getAttribute("id");
+		Optional<InterestCop> check = interestRepo.findByUidNCid(uid,cid);
+		//만약 이미 등록된 공고가 있다면 삭제하기
+		if(!check.isEmpty()) {
+			interestRepo.delete(check.get());
+			return "deleted";
+		}else {
+			// 아니라면 더해주기
+			InterestCop interestCop = new InterestCop(0L, userRepo.findById(uid).get(), companyRepo.findById(cid).get());
+			interestRepo.save(interestCop);
+			return "added";
+		}
 	}
 	@RequestMapping("/user_subNscrap_list")
 	public void userSubNscrapList(Model model) {
@@ -244,6 +291,9 @@ public class JController {
 		offer.setAccept(answer);
 		offerListRepo.save(offer);
 		return "done";
+	}
+	@RequestMapping("/user_review_list")
+	public void userReviewList() {
 		
 	}
 	
