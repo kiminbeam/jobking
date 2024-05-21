@@ -158,10 +158,13 @@
             <tbody>
     <th:block th:each="resume, resumeStat : ${defaultResumes}">
         <tr th:if="${resumeStat.index} < ${defaultHopes.size()}"> 
-            <td th:text="${defaultHopes[resumeStat.index].user.uname}"></td>
+            <td>
+                <span th:text="${defaultHopes[resumeStat.index].user.uname}"></span>
+                <p>([[${defaultHopes[resumeStat.index].user.genderString}]], 만 [[${defaultHopes[resumeStat.index].user.age}]]세)</p> 
+            </td>
             <td>
                 <span th:each="career, careerStat : ${defaultCareers[resumeStat.index]}">
-                    <span th:if="${careerStat.first}">[[${career.careerDuration}]]  </span>
+                    <span th:if="${careerStat.first}">[[${career.careerDuration}]] - </span>
                 </span>
                 <span th:text="${defaultHopes[resumeStat.index].resume.rtitle}"></span>
 
