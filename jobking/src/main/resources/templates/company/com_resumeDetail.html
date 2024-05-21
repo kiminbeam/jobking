@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 	<style>
 		body{
 				font-family: Arial, sans-serif;
@@ -106,7 +105,7 @@
 				padding:20px;
 			}
 			
-			.humanList h2{
+			.applyInfo h2{
 				border-bottom: 2px solid dimgray;
 				padding-bottom: 10px;
 				margin-bottom: 20px;
@@ -120,12 +119,6 @@
 				padding: 10px 0;
 			}
 			
-			#human-container .human img{
-				border-radius: 50%;
-				width: 50px;
-				height: 50px;
-				margin-right: 10px;
-			}
 			
 			#human-container .human:not(:last-child){
 				border-bottom: 1px solid #ddd;
@@ -134,7 +127,7 @@
 	</style>
 </head>
 <body>
-	<div class="top">
+		<div class="top">
 			<div class="navbar">
 				<a href="#home">home</a>
 				<div class="dropdown">
@@ -198,60 +191,33 @@
 					<a href="">커뮤니티</a>
 				</div><!--sidebar end-->
 				
-				<div class="humanList">
-					<h2>지원자 관리 목록</h2>
-					<div th:each="humanlist: ${hlist}" id="human-container">
-						<h3><a href="${humanlist.user.uname}"></a></h3>
-						<h3 th:text="${humanlist.resume.rtitle}"></h3>
-						<!-- <hidden th:text="${humanlist.userid}">  -->
-					</div>
-					</th:each>
-				</div><!--humanList end-->
-			</div><!--maincontent end-->
-			
-	<script>
-		document.addEventListener("DOMContentLoaded", function(){
-			var dropdownButtons = document.querySelectorAll(".dropdown-btn");
-			
-			dropdownButtons.forEach(function(button){
-				button.addEventListener("click",function(){
-					var dropdownContent = this.nextElementSibling;
-					dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
-				});
-			});
-		});
+				<div class="applyInfo">
+					<h2>지원자 상세 이력서</h2>
+					<h2>지원한 공고 제목</h2>
+					<div><!-- 지원자 이력서 이미지? --></div>
+					
+					<button class="portdown" onclick="">포트폴리오 다운</button>
+					<button class="propose" onclick="sendpro()">면접제안하기</button>
+				</div>
+				
+		</div>
 		
-		document.addEventListener("DOMContentLoaded",function(){
-			var humanContainer = document.getElementById("human-container");
+		<script>
+		
+			var	user = JSON.parse('${user}');
 			
-			//example data
-			var applicants = [
-				{name: "kim", img:"img.jpg"},
-				{name: "홍길동", img:"img2.jpg"}
-			];
+			function portdown(){
+				
+			}
 			
-			/*
-			applicants.forEach(function(applicant){
-				var humanDiv = document.createElement("div");
-				humanDiv.classList.add("human");
+			function sendpro(){
+				//페이지에 가져온 user 객체 정보를 다시 com_interviewList 페이지에 보내면?
+				var userData = encodeURIComponent(JSON.stringify(user));
+				var url = "/company/com_interviewList?userData=" + userData;
 				
-				var img = document.createElement("img");
-				img.scr = applicant.img;
-				img.alt = applicant.name + " Profile Image";
-				
-				var nameLink = document.createElement("a");
-				nameLink.href = "com_resumeDetail?id=" + applicant.id;
-				nameLink.textContent = applicant.name;
-				
-				var name = document.createElement("h3");
-				name.appendChild(nameLink);
-				
-				humanDiv.appendChild(img);
-				humanDiv.appendChild(name);
-				humanContainer.appendChild(humanDiv);
-			});
-			*/
-		});
-	</script>
+				window.location.href = url;
+			
+			}
+		</script>
 </body>
 </html>

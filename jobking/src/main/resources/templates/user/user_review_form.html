@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<style>
+    .rating>li{
+        display: inline;
+    }
+    
+ 	[type='radio'] {
+       appearance: none;
+    }
+    [type='submit']{
+        display: block;
+    }
+</style>
+</head>
+<body>
+    <header>
+	    <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+    </header>
+    <div id="review-form-wrap">
+		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+        <div>마이페이지</div>
+        <div>평점 작성하기</div>
+        <p>❗오직 우리 사이트를 통해 지원하고 면접을 완료한 지원자만 해당 기업에 대한 평점을 작성할 수 있습니다.</p>
+        
+        <div>지원한 기업 선택하기</div>
+        <select name="company1" id="mySelect">
+            <option th:each="apply:${apply}" th:value="${apply.jobAd.company.cid}">
+                [[${apply.jobAd.company.cname}]]
+            </option>
+        </select>
+
+        <div>포지션 제안 받은 기업 선택하기</div>
+        <select name="company2" id="mySelect2">
+            <option th:each="offer:${offer}" th:value="${offer.company.cid}">
+                [[${offer.company.cname}]]
+            </option>
+        </select>
+        
+        <form th:action="@{user_review_regist}" method="post">
+            <p>[면접 질문의 적절성]</p>
+            <p>
+                1. 면접에서 질문된 내용이 직무와 관련성이 높고 구직자의 역량을 평가하는 데 적합했습니까?
+            </p>
+            <ul class="rating">
+                <li>
+                    <label>
+                        <input type="radio" class="chk" name="q1" value="1"><span class="star">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk" name="q1" value="2"><span class="star">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk" name="q1" value="3"><span class="star">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk" name="q1" value="4"><span class="star">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk" name="q1" value="5"><span class="star">☆</span>
+                    </label>
+                </li>
+            </ul>
+            
+    
+            <p>[채용 공고와 조건 일치 여부]</p>
+            <p>
+                2. 채용 공고에 명시된 조건 및 직무 내용이 실제 면접 과정에서 설명된 내용과 일치했습니까?
+            </p>
+            <ul class="rating">
+                <li>
+                    <label>
+                        <input type="radio" class="chk2" name="q2" value="1"><span class="star2">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk2" name="q2" value="2"><span class="star2">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk2" name="q2" value="3"><span class="star2">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk2" name="q2" value="4"><span class="star2">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk2" name="q2" value="5"><span class="star2">☆</span>
+                    </label>
+                </li>
+            </ul>
+            
+    
+            <p>[면접자관의 태도]</p>
+            <p>
+                3. 면접관이 친절하고 존중하는 태도로 면접을 진행했으며, 공정하게 평가했다고 생각하십니까?
+            </p>
+            <ul class="rating">
+                <li>
+                    <label>
+                        <input type="radio" class="chk3" name="q3" value="1"><span class="star3">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk3" name="q3" value="2"><span class="star3">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk3" name="q3" value="3"><span class="star3">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk3" name="q3" value="4"><span class="star3">☆</span>
+                    </label>
+                </li>
+                <li>
+                    <label>
+                        <input type="radio" class="chk3" name="q3" value="5"><span class="star3">☆</span>
+                    </label>
+                </li>
+            </ul>
+    
+            <p>[한줄 피드백]</p>
+            <p>
+                4. 면접에 대한 전반적인 의견을 한 줄로 작성해 주십시오.
+            </p>
+            <input type="text" name="feedback" placeholder="내용을 입력해주세요.">
+            <input type="submit" value="리뷰 등록하기" onsubmit="register(event)">
+        </form>
+        <footer>
+            <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+        </footer>
+    </div>
+    <script>
+        // <select> 요소를 가져오기
+        var selectElement = document.getElementById("mySelect");
+
+        // <select> 요소에 change 이벤트 핸들러 추가
+        selectElement.addEventListener("change", function() {
+        // 선택된 옵션의 값을 가져오기
+        var selectedValue = selectElement.value;
+        // 값 출력
+        console.log("선택된 값: " + selectedValue);
+        });
+
+        // <select> 요소를 가져오기
+        var selectElement2 = document.getElementById("mySelect2");
+
+        // <select> 요소에 change 이벤트 핸들러 추가
+        selectElement2.addEventListener("change", function() {
+        // 선택된 옵션의 값을 가져오기
+        var selectedValue2 = selectElement2.value;
+        // 값 출력
+        console.log("선택된 값: " + selectedValue2);
+        });        
+
+
+        function register(event) {
+        event.preventDefault(); // 폼의 기본 제출 동작을 막음
+
+        // 선택된 옵션의 값을 가져오기
+
+        var selectedValue1 = selectElement1.value;
+
+        var selectElement2 = document.getElementById("mySelect2");
+        var selectedValue2 = selectElement2.value;
+
+        // 원하는 값 선택 (이 예제에서는 selectedValue1 사용)
+        var cid = selectedValue1 || selectedValue2; // 둘 중 하나라도 선택되었는지 확인
+
+        if (cid) {
+            // cid를 URL 파라미터로 추가하여 리디렉션
+            location.href = '@{user_review_regist}' + '?cid=' + cid;
+        } else {
+            alert('기업을 선택해주세요.');
+        }
+    }
+
+
+        // 첫번째 질문 평점
+        const chks = document.querySelectorAll('.chk');
+        const stars = document.querySelectorAll('.star');
+        
+        chks.forEach((chk) => {
+            chk.addEventListener('change', () => {
+                const value = parseInt(chk.value);
+                
+                stars.forEach((star, index) => {
+                    if (index < value) {
+                        star.textContent = '★';
+                    } else {
+                        star.textContent = '☆';
+                    }
+                });
+            });
+        });
+        
+        // 두번째 질문 평점
+        const chks2 = document.querySelectorAll('.chk2');
+        const stars2 = document.querySelectorAll('.star2');
+        
+        chks2.forEach((chk2) => {
+            chk2.addEventListener('change', () => {
+                const value2 = parseInt(chk2.value);
+                
+                stars2.forEach((star2, index) => {
+                    if (index < value2) {
+                        star2.textContent = '★';
+                    } else {
+                        star2.textContent = '☆';
+                    }
+                });
+            });
+        });
+        
+        // 세번째 질문 평점
+        const chks3 = document.querySelectorAll('.chk3');
+        const stars3 = document.querySelectorAll('.star3');
+        
+        chks3.forEach((chk3) => {
+            chk3.addEventListener('change', () => {
+                const value3 = parseInt(chk3.value);
+                
+                stars3.forEach((star3, index) => {
+                    if (index < value3) {
+                        star3.textContent = '★';
+                    } else {
+                        star3.textContent = '☆';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

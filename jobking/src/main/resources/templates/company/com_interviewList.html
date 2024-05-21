@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<title>Insert title here</title>
 	<style>
 		body{
 				font-family: Arial, sans-serif;
@@ -21,7 +20,6 @@
 				padding: 14px 20px;
 				text-decoration: none;
 				display: block;
-				
 			}
 			
 			.navbar a:hover, dropdown:hover .dropbtn{
@@ -101,40 +99,13 @@
 				background-color: #ddd;
 			}
 			
-			.humanList{
-				flex:1;
-				padding:20px;
-			}
 			
-			.humanList h2{
-				border-bottom: 2px solid dimgray;
-				padding-bottom: 10px;
-				margin-bottom: 20px;
-				
-			}
 			
-			#human-container .human{
-				display: flex;
-				align-items: center;
-				border-top: 1px solid #ddd;
-				padding: 10px 0;
-			}
-			
-			#human-container .human img{
-				border-radius: 50%;
-				width: 50px;
-				height: 50px;
-				margin-right: 10px;
-			}
-			
-			#human-container .human:not(:last-child){
-				border-bottom: 1px solid #ddd;
-			}
 			
 	</style>
 </head>
 <body>
-	<div class="top">
+		<div class="top">
 			<div class="navbar">
 				<a href="#home">home</a>
 				<div class="dropdown">
@@ -197,61 +168,64 @@
 					</div>
 					<a href="">커뮤니티</a>
 				</div><!--sidebar end-->
-				
-				<div class="humanList">
-					<h2>지원자 관리 목록</h2>
-					<div th:each="humanlist: ${hlist}" id="human-container">
-						<h3><a href="${humanlist.user.uname}"></a></h3>
-						<h3 th:text="${humanlist.resume.rtitle}"></h3>
-						<!-- <hidden th:text="${humanlist.userid}">  -->
+				<div class="interview">
+					<h3>지원자 면접상태</h3>
+					<div id="applynow" th:each="interviews : ${interview}">
+						<div class="itvTarget" th:text="${interviews.user.uname}"></div>
+						<div class="itvNow" th:text="${interviews.interview}"></div>
+						<div class="targetP" th:text="${interviews.pass}"></div>
+						
+						<button class="interviewcheck" th:onclick="'changeInterviewStatus(' + ${interviews.interviewno} + ')'" >면접완료</button>
+						<button class="pass" th:onclick="'changePass(' + ${interviews.interviewno} + ')' ">합격</button>
 					</div>
-					</th:each>
-				</div><!--humanList end-->
-			</div><!--maincontent end-->
-			
-	<script>
-		document.addEventListener("DOMContentLoaded", function(){
-			var dropdownButtons = document.querySelectorAll(".dropdown-btn");
-			
-			dropdownButtons.forEach(function(button){
-				button.addEventListener("click",function(){
-					var dropdownContent = this.nextElementSibling;
-					dropdownContent.style.display = dropdownContent.style.display === "block" ? "none" : "block";
-				});
-			});
-		});
+				</div>
+		</div>
 		
-		document.addEventListener("DOMContentLoaded",function(){
-			var humanContainer = document.getElementById("human-container");
+		<script>
+			function changeInterviewStatus(interviewNo){
+				var xhr = new XMLHttpRequest();
+				var url = '/company/changeInterview?interviewno=' + interviewNo + '&status=2';
+				
+				
+				xhr.open('POST', url, true);
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState === 4){
+						if(xhr.status === 200) {
+							alert('면접 상태가 성공적으로 변경되었습니다.');
+							
+							document.querySelector('.itvNow').innerText = '2';
+							
+						}else {
+							alert('요청이 실패하였습니다.');
+						}
+					}
+				};
+				xhr.send();
+				console.log("AJAX 요청 보냄" + url);
+			}
 			
-			//example data
-			var applicants = [
-				{name: "kim", img:"img.jpg"},
-				{name: "홍길동", img:"img2.jpg"}
-			];
+			function changePass(interviewno) {
+				var xhr = new XMLHttpRequest();
+				var url = '/company/updatePassStatus?interviewno=' + interviewno + '&pass=2';
+				
+				xhr.open('POST', url, true);
+				xhr.onreadystatechange = function() {
+					if(xhr.readyState === 4){
+						if(xhr.status === 200) {
+							alert("합격 여부가 변경되었습니다.");
+							
+							document.querySelector('.targetP').innerText = "합격";
+						}else{
+							alert("요청이 실패했습니다.");
+						}
+					}
+				};
+				xhr.send();
+				console.log("AJAX 요청 보냄" + url);
+			}
 			
-			/*
-			applicants.forEach(function(applicant){
-				var humanDiv = document.createElement("div");
-				humanDiv.classList.add("human");
-				
-				var img = document.createElement("img");
-				img.scr = applicant.img;
-				img.alt = applicant.name + " Profile Image";
-				
-				var nameLink = document.createElement("a");
-				nameLink.href = "com_resumeDetail?id=" + applicant.id;
-				nameLink.textContent = applicant.name;
-				
-				var name = document.createElement("h3");
-				name.appendChild(nameLink);
-				
-				humanDiv.appendChild(img);
-				humanDiv.appendChild(name);
-				humanContainer.appendChild(humanDiv);
-			});
-			*/
-		});
-	</script>
+			
+		</script>	
+			
 </body>
 </html>

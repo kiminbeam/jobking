@@ -3,18 +3,31 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link rel="stylesheet" href="/style/style.css">
 </head>
 <body>
 <div th:fragment="fragment-nav">
 	<nav class="navbar">
+		<div id="logo"><img src="../images/logo.png" alt=""></div>
 		<ul>
 			<li><a href="/user/user_recruit_region">채용정보</a></li>
 			<li><a>커뮤니티</a></li>
 			<li><a>포지션매치</a></li>
-			<li><input type="text" value="검색창"> </li>
-			<li><a href="/user/login_form">로그인</a></li>
-			<li><a>회원가입</a></li>
+			<li><input type="text" value="검색창" id="search"> </li>
+			<th:block th:if="${session.id == null}">
+				<ul id="main_login_section">
+					<li><a href="/user/login_form">로그인</a></li>
+					<li><a>회원가입</a></li>	
+				</ul>
+			</th:block>
+			<th:block th:if="${session.id != null}">
+				<ul id="main_login_section2">
+					<li><a href="/user/user_logout">로그아웃</a></li>
+					<li><a href="/user/user_myPage">마이페이지</a></li>
+				</ul>
+			</th:block>
+			<li>
+				<div id="serviceBox">기업서비스</div>
+			</li>
 		</ul>
 	</nav>
 </div>

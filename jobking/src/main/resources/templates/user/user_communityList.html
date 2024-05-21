@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<style>
+*{
+	list-style:none;
+}
+body{
+	margin-top: 100px;
+	line-height: 1.6
+}
+.container{
+	width: 1200px;
+	margin: 0 auto;
+}
+ul.tabs{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.tabs li{
+	background: none;
+	color: #222;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+}
+
+ul.tabs li.current{
+	background: #ededed;
+	color: #222;
+}
+
+.tab-content{
+	display: none;
+	background: #ededed;
+	padding: 15px;
+}
+
+.tab-content.current{
+	display:flex;
+}
+.tab-content .topCateogory{
+	display: flex;
+	flex-wrap: wrap;
+	width: 300px; /* 너비 조절 */ 
+    max-height: 150px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 수직 스크롤바 추가 */ 
+    padding: 10px; /* 패딩 추가 */ 
+ } 
+.topCateogory li{
+	margin: 10px; /* 아이템 간 간격 */
+} 
+.tab-content .category{
+	display: flex; 
+	flex-wrap: wrap; 
+	width: 800px; /* 너비 조절 */ 
+    max-height: 150px; /* 최대 높이 설정 */ 
+    overflow-y: auto; /* 수직 스크롤바 추가 */ 
+    padding: 10px; /* 패딩 추가 */ 
+ } 
+/*  .gu li{ */
+/* 		margin-right: 15px; /* 아이템 간 간격 */ */
+/*              color: black; /* 글자색 설정 */  */
+/*  } */
+#seekerBoard, #workBoard, #alertBoard,#allBoard {
+	display:flex;
+} 
+.tab-content .category li{
+	margin-right:15px;
+}
+</style>
+</head>
+<body>
+<header>
+	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+</header>
+<main>
+	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+		<div>
+			<div class="container">
+			<div>
+				<span>📢 공지사항  </span>
+				<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
+			</div>
+			<ul class="tabs">
+				<li id="seekerTab" class="tab-link current" data-tab="seekerBoard" >구직자</li>
+				<li id="workerTab" class="tab-link" data-tab="workerBoard">재직자</li>
+				<li id="alertTab" class="tab-link" data-tab="alertBoard">공지사항</li>
+				<li id="allTab" class="tab-link" data-tab="allBoard">전체</li>
+			</ul>
+			<div id="seekerBoard" class="tab-content current">
+				<table>
+					<tr><h2>총  [[${#lists.size(t1List)}]] 건</h2></tr>
+					<tr  th:each="t1List, t1ListStat : ${t1List}">
+					 <th><a th:href="@{/user/user_community_detail(ubno=${t1List.ubno})}">[[${t1List.title}]]</a></th>
+					 <td>[[${t1List.content}]]</td>
+					 <td>[[${t1List.regdate}]]</td>
+					</tr>
+				</table>
+			</div>
+			<div id="workerBoard" class="tab-content">
+				<table>
+				    <tr><h2>총  [[${#lists.size(t2List)}]] 건</h2></tr>
+					<tr th:each="t2List, t2ListStat : ${t2List}">
+					 <th><a th:href="@{/user/user_community_detail(ubno=${t2List.ubno})}">[[${t2List.title}]]</a></th>
+					 <td>[[${t2List.content}]]</td>
+					 <td>[[${t2List.regdate}]]</td>
+					</tr>
+				</table>
+			</div>
+			<div id="alertBoard" class="tab-content">
+			
+				<table >
+					<tr><h2>총  [[${#lists.size(t3List)}]] 건</h2></tr>
+					<tr th:each="t3List, t3ListStat : ${t3List}">
+						 <th><a th:href="@{/user/user_community_detail(ubno=${t3List.ubno})}">[[${t3List.title}]]</a></th>
+						 <td>[[${t3List.content}]]</td>
+						 <td>[[${t3List.regdate}]]</td>
+					</tr>
+				</table>
+			</div>
+			<div id="allBoard" class="tab-content">
+				<table >
+				<tr><h2>총  [[${#lists.size(allList)}]] 건</h2></tr>
+					<tr th:each="allList, allListStat : ${allList}">
+						 <th><a th:href="@{/user/user_community_detail(ubno=${allList.ubno})}">[[${allList.title}]]</a></th>
+						 <td>[[${allList.content}]]</td>
+						 <td>[[${allList.regdate}]]</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	
+    </div>
+</main>
+	<footer>
+		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+	</footer>
+
+
+<script>
+
+const tabs = document.querySelectorAll(".tab-link");
+const contents = document.querySelectorAll(".tab-content")
+
+
+tabs.forEach(tab=>{
+	tab.addEventListener("click", function(e){
+		const id = e.target.getAttribute("data-tab")
+		tabs.forEach(t=>{t.classList.remove("current")})
+		contents.forEach(content=>{content.classList.remove("current")})
+		tab.classList.add("current");
+		document.querySelector("#"+id).classList.add("current")
+	})
+})
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

@@ -1,21 +1,28 @@
 package com.example.jobking.controller;
 
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.example.jobking.entity.ApplyList;
 import com.example.jobking.entity.Company;
+import com.example.jobking.entity.OfferList;
 import com.example.jobking.entity.User;
+import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.ICompanyRepository;
+import com.example.jobking.repository.IOfferListRepository;
+import com.example.jobking.repository.IUserApplyListRepository;
 import com.example.jobking.repository.IUserRepository;
+import com.example.jobking.repository.IUserReviewRepository;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RequestMapping("/user")
 @Controller
@@ -26,6 +33,15 @@ public class YController {
 	
 	@Autowired
 	ICompanyRepository companyRepository;
+	
+	@Autowired
+	IUserApplyListRepository applyListRepo;
+	
+	@Autowired
+	IOfferListRepository offerListRepo;
+	
+	@Autowired
+	IUserReviewRepository reviewRepo;
 	
 	@RequestMapping("/user_regForm")
 	public String regForm() {
@@ -87,5 +103,49 @@ public class YController {
 		return "/user/user_regForm";
 	}
 	
+	// 입사지원관리	
+	@RequestMapping("/user_apply_list")
+	public void userApplyList(HttpServletRequest request, Model model) {
+		String uid = (String)request.getSession().getAttribute("id");
+		List<ApplyList> applyList = applyListRepo.findByUid(uid);
+		model.addAttribute("apply", applyList);
+		System.out.println(applyList);
+	}
+	
+	@RequestMapping("/deleteUserApplyList")
+	public String deleteUserApplyList(@RequestParam("ano") String ano) {
+		applyListRepo.deleteById(Long.parseLong(ano));
+		return "redirect:/user/user_apply_list";
+	}
+	
+	// 평점관리 폼
+	@RequestMapping("/user_review_form")
+	public void userReviewForm(HttpServletRequest request, Model model) {
+		String uid = (String)request.getSession().getAttribute("id");
+		
+		List<ApplyList> applyList = applyListRepo.findByUid(uid);
+		List<OfferList> offerList= offerListRepo.findByUid(uid);
+		model.addAttribute("apply", applyList);
+		model.addAttribute("offer", offerList);
+	}
+	
+	@RequestMapping("/user_review_regist")
+	public String user_review_regist(UserReview userReivew, HttpServletRequest request){
+		
+		// uid 저장
+		String uid = (String)request.getSession().getAttribute("id");
+		User user = userRepository.findById(uid).get();
+		userReivew.setUser(user);
+		
+		// cid 저장
+		String cid = request.getParameter("cid");
+		Company company = companyRepository.findById(cid).get();
+		userReivew.setCompany(company);
+		
+		System.out.println(userReivew);
+		//reviewRepo.save(userReivew);
+		
+		return "redirect:/user/user_review_list";
+	}
 	
 }
