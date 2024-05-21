@@ -3,12 +3,13 @@ package com.example.jobking.controller;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.jobking.entity.Career;
@@ -65,21 +66,23 @@ public class KHController {
 
 
 	@RequestMapping("/user_resumeList")
-	public void resumeList(Model model) {
-	    List<Resume> resumeList = ResumeRepository.findAll();
-	    List<SelfInfo> selfList = SelfInfoRepository.findAll();
+	public void resumeList(HttpServletRequest request, Model model) {
+	    String uid = (String) request.getSession().getAttribute("id");
+
+	    // 현재 사용자의 이력서만 가져오도록 수정
+	    List<Resume> resumeList = ResumeRepository.findByUser_uid(uid);
+	    List<SelfInfo> selfList = SelfInfoRepository.findByUser_uid(uid);
 
 	    // SelfInfo를 Resume ID를 키로 하여 매핑
-	    Map<Long, SelfInfo> selfinfoMap = selfList.stream()
-	        .collect(Collectors.toMap(
-	            selfInfo -> selfInfo.getResume().getRno(),
-	            Function.identity(),
-	            (existing, replacement) -> existing  // 키가 중복될 경우 기존 값을 유지
-	        ));
+	    Map<Long, List<SelfInfo>> selfinfoMap = selfList.stream()
+	        .collect(Collectors.groupingBy(selfInfo -> selfInfo.getResume().getRno()));
 
 	    model.addAttribute("resumeList", resumeList);
 	    model.addAttribute("selfinfoMap", selfinfoMap);
+	    model.addAttribute("resumeCount", resumeList.size());
 	}
+
+
 	
 	
 	@RequestMapping("/user_resume_form")
@@ -88,14 +91,52 @@ public class KHController {
 		String uid = (String) request.getSession().getAttribute("id");
 				
 				Optional<User> user = UserRepository.findById(uid);
+				
 				user.ifPresent(u->{
 					model.addAttribute("user", u );
 				});	
-
+				
+				Resume resume = new Resume();
+				resume.setUser(user.get());
+				
+				
+				Long rno = ResumeRepository.findlatestRno(uid);
+				
+				model.addAttribute("rno", rno);
 	}
 	
 	@RequestMapping("/user_resume")
-	public String resume(Resume resume, Hope hope, SelfInfo selfInfo, Oa oa, User user, Career career, School school, License license, Experience experience) {
+	public String resume(HttpServletRequest request, Resume resume, School school, Career career, Hope hope, SelfInfo selfInfo, Oa oa, License license, Experience experience) {
+		System.out.println("컨트롤러 실행");
+		System.out.println(request.getParameter("rno"));
+		String uid = (String) request.getSession().getAttribute("id");
+		
+		User user = UserRepository.findById(uid).get();
+		System.out.println(resume);
+		school.setUser(user);
+		career.setUser(user);
+		hope.setUser(user);
+		selfInfo.setUser(user);
+		oa.setUser(user);
+		license.setUser(user);
+		experience.setUser(user);
+		resume.setUser(user);
+		school.setResume(resume);
+		career.setResume(resume);
+		hope.setResume(resume);
+		selfInfo.setResume(resume);
+		oa.setResume(resume);
+		license.setResume(resume);
+		experience.setResume(resume);
+		
+		System.out.println(school);
+		System.out.println(career);
+		System.out.println(hope);
+		System.out.println(selfInfo);
+		System.out.println(oa);
+		System.out.println(license);
+		System.out.println(experience);
+		System.out.println(resume);
 		
 		ResumeRepository.save(resume);
 		SelfInfoRepository.save(selfInfo);
@@ -109,4 +150,26 @@ public class KHController {
 		
 		return "redirect:user_resumeList";
 	}
+	
+	@PostMapping("/setRepresentative")
+	public String setRepresentative(@RequestBody Map<String, Long> payload) {
+	    Long resumeId = payload.get("resumeId");
+	    List<Resume> allResumes = ResumeRepository.findAll();
+	    
+	    // 모든 이력서의 def 필드를 "0"으로 설정
+	    for (Resume resume : allResumes) {
+	        resume.setDef("0");
+	        ResumeRepository.save(resume);
+	    }
+
+	    // 선택된 이력서의 def 필드를 "1"으로 설정
+	    Optional<Resume> optionalResume = ResumeRepository.findById(resumeId);
+	    if (optionalResume.isPresent()) {
+	        Resume resume = optionalResume.get();
+	        resume.setDef("1"); // 대표 이력서로 설정
+	        ResumeRepository.save(resume);
+	    }
+	    return "redirect:/user/user_resumeList";
+	}
+
 }
