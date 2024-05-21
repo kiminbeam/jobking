@@ -1,0 +1,53 @@
+@charset "UTF-8";
+
+form{
+    width: 900px; height: 500px;
+    background-color: #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.01), 0 6px 6px rgba(0,0,0,0.05);
+    border-radius: 30px;
+    border-top: 4px solid blue;
+    font: 500 15px/30px 'Pretendard-Regular';
+    margin: 0 auto;
+}
+
+
+[type='text'], [type='password']{
+    margin-bottom: 3px;
+    width: 100px; height: 30px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+    
+}
+[type='password']{
+    width: 300px;
+}
+[type='submit']{
+    width: 115px; height: 30px;
+    font: 500 15px/30px 'Pretendard-Regular';
+    border: 0;
+    color: #fff;
+    background-color: #0057ff;
+    border-radius: 10px;
+}
+#edit{
+    width: 500px; height: 100%;
+    margin: 0 auto;
+}
+#edit>li{
+    float: left;
+}
+
+#edit>li>img{
+    width: 30%;
+    margin: 0 auto;
+    border-radius: 50%;
+}
+
+#photo{
+    width: 100%;
+}
+.strongPassword-message{
+    width: 500px; height: 30px;
+    position: absolute; top: 500px; left: 500px;
+}
+
