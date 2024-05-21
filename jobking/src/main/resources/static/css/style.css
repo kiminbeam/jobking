@@ -116,7 +116,6 @@ footer{
     z-index: 99;
 }
 #footer{
-	width: 100%;
     padding: 30px;
     font: 500 15px/30px 'Pretendard-Regular';
     color: darkgray;
@@ -142,3 +141,13 @@ footer{
     font: 900 16px/32px 'Pretendard-Regular';
 }
 /* sidebar END */
+
+.title1{
+    font: 900 20px/40px 'Pretendard-Regular';
+}
+.title2{
+    font: 900 16px/40px 'Pretendard-Regular';
+}
+.title3{
+    font: 900 14px/40px 'Pretendard-Regular';
+}
