@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body>
+
+
+<h1>이력서 선택하기</h1>
+<th:block th:each="resume : ${resumeList}">
+	<a th:href="@{/user/user_resume_detail(rno=${resume.rno})}">[[${resume.rtitle}]]</a>
+</th:block>	
+
+
+</body>
+
+
+
+<script th:inline="javascript">
+	
+
+	
+</script>
+</html>

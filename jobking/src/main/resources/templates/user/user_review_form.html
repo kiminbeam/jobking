@@ -27,10 +27,17 @@
         <div>마이페이지</div>
         <div>평점 작성하기</div>
         <p>❗오직 우리 사이트를 통해 지원하고 면접을 완료한 지원자만 해당 기업에 대한 평점을 작성할 수 있습니다.</p>
-        <div>평점 작성 대상 기업 선택</div>
-
-        <select name="company" id="mySelect">
+        
+        <div>지원한 기업 선택하기</div>
+        <select name="company1" id="mySelect">
             <option th:each="apply:${apply}" th:value="${apply.jobAd.company.cid}">
+                [[${apply.jobAd.company.cname}]]
+            </option>
+        </select>
+
+        <div>포지션 제안 받은 기업 선택하기</div>
+        <select name="company2" id="mySelect2">
+            <option th:each="offer:${offer}" th:value="${offer.jobAd.company.cid}">
                 [[${apply.jobAd.company.cname}]]
             </option>
         </select>
@@ -154,6 +161,16 @@
         console.log("선택된 값: " + selectedValue);
         });
 
+        // <select> 요소를 가져오기
+        var selectElement2 = document.getElementById("mySelect2");
+
+        // <select> 요소에 change 이벤트 핸들러 추가
+        selectElement2.addEventListener("change", function() {
+        // 선택된 옵션의 값을 가져오기
+        var selectedValue2 = selectElement2.value;
+        // 값 출력
+        console.log("선택된 값: " + selectedValue2);
+        });        
 
         // 첫번째 질문 평점
         const chks = document.querySelectorAll('.chk');
