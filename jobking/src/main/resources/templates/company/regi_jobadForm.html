@@ -86,7 +86,7 @@ input[type="submit"]:hover {
 <body>
 <h1>채용공고 등록</h1>
 <hr>
-<form action="/company/regi_jobad" method="post">
+<form action="/company/regi_jobad" method="post" onsubmit="convertInputsToJson()">
 	<div class="form-group">
 		<label for="wantedTitle">공고 제목</label>
 		<input type="text" id="wantedTitle" name="wantedTitle">
@@ -110,10 +110,11 @@ input[type="submit"]:hover {
 	<div class="form-group">
 		근무지역코드(임시)<input type="text" name="regionCd">
 	</div>
-	<div class="form-group">
-		<label for="jobCont">직무내용</label>
-		<textarea rows="5" cols="50" id="jobCont" name="jobCont" placeholder="구직자모집 직무내용을 입력하세요."></textarea>
-	</div>
+	<div class="form-group" id="jobContContainer">
+        <label for="jobCont">직무내용</label>
+        <input type="text" class="jobContInput" name="jobCont">
+        <button type="button" onclick="addInput('jobContContainer', 'jobContInput')">추가</button>
+    </div>
 	<div class="form-group">
 		<label for="empTpNm">고용형태</label>
 		<select id="empTpNm" name="empTpNm">
@@ -142,10 +143,11 @@ input[type="submit"]:hover {
 		<label for="maxEdubglcd">최대학력조건</label>
 		<input type="text" id="maxEdubglcd" name="maxEdubglcd">
 	</div>
-	<div class="form-group">
-		<label for="needskill">필요스킬</label>
-		<textarea id="needskill" name="needskill" placeholder="최대 20자까지..."></textarea>
-	</div>
+	<div class="form-group" id="needskillContainer">
+        <label for="needskill">필요스킬</label>
+        <input type="text" class="needskillInput" name="needskill">
+        <button type="button" onclick="addInput('needskillContainer', 'needskillInput')">추가</button>
+    </div>
 	<div class="form-group">
 		<label for="rcptMthd">접수방법</label>
 		<input type="text" id="rcptMthd" name="rcptMthd">
@@ -180,13 +182,15 @@ input[type="submit"]:hover {
 		<input type="checkbox" id="mltsvcExcHope" name="mltsvcExcHope">
 	</div>
 	<div class="form-group">
-		<label for="srchKeywordNm">채용공고 관련키워드</label>
-		<select id="srchKeywordNm" name="srchKeywordNm">
-			<option value="1">1</option>
-			<option value="2">2</option>
-			<option value="3">3</option>
-		</select>
-	</div>
+    <label for="keywordSearch">키워드 검색:</label>
+    <input type="text" id="keywordSearch" onkeyup="filterKeywords()"> <br>
+    <label for="srchKeywordNm">채용공고 관련 키워드:</label>
+    <select id="keywordSelect" onchange="addKeyword()">
+    </select>
+    <div id="selectedKeywords">
+    </div>
+</div>
+    <input type="hidden" id="srchKeywordNmJson" name="srchKeywordNm">
 	<div class="form-group">
 		<label for="empName">담당자명</label>
 		<input type="text" id="empName" name="empName">
@@ -201,5 +205,124 @@ input[type="submit"]:hover {
 	</div>
 	<input type="submit" value="등록하기">
 </form>
+<script>
+    function addInput(containerId, inputClass) {
+        const container = document.getElementById(containerId);
+
+        // 입력 필드 생성
+        const newInput = document.createElement('input');
+        newInput.type = 'text';
+        newInput.classList.add(inputClass);
+        newInput.name = containerId.replace('Container', '');
+
+        // 삭제 버튼 생성
+        const deleteButton = document.createElement('button');
+        deleteButton.type = 'button';
+        deleteButton.textContent = '삭제';
+        deleteButton.onclick = function() {
+            container.removeChild(newInput);
+            container.removeChild(deleteButton);
+        };
+
+        // 컨테이너에 입력 필드와 삭제 버튼 추가
+        container.appendChild(newInput);
+        container.appendChild(deleteButton);
+    }
+    
+    function convertInputsToJson() {
+        const jobContInputs = document.querySelectorAll('.jobContInput');
+        const needskillInputs = document.querySelectorAll('.needskillInput');
+        const srchKeywordNmInputs = document.querySelectorAll('.srchKeywordNmInput');
+
+        const jobContArray = Array.from(jobContInputs).map(input => input.value);
+        const needskillArray = Array.from(needskillInputs).map(input => input.value);
+        const srchKeywordNmArray = Array.from(srchKeywordNmInputs).map(input => input.value);
+
+        const jobContJson = JSON.stringify(jobContArray);
+        const needskillJson = JSON.stringify(needskillArray);
+        const srchKeywordNmJson = document.getElementById('srchKeywordNmJson').value;
+
+        document.getElementById('jobContJson').value = jobContJson;
+        document.getElementById('needskillJson').value = needskillJson;
+        document.getElementById('srchKeywordNmJson').value = srchKeywordNmJson;
+    }
+    
+    
+ // JSON 데이터 불러오기 (job.json 파일 경로 확인 필요)
+    fetch('/json/job.json')
+        .then(response => response.json())
+        .then(data => {
+            const select = document.getElementById('keywordSelect');
+            const keywordSet = new Set(); // 중복 키워드 방지
+
+            data.forEach(item => {
+                if (!keywordSet.has(item["직무 키워드명"])) {
+                    const option = document.createElement('option');
+                    option.value = item["직무 키워드명"];
+                    option.text = item["직무 키워드명"];
+                    select.add(option);
+                    keywordSet.add(item["직무 키워드명"]);
+                }
+            });
+        });
+
+    const selectedKeywords = [];
+
+    function addKeyword() {
+        const select = document.getElementById('keywordSelect');
+        const selectedKeyword = select.value;
+        if (selectedKeyword && !selectedKeywords.includes(selectedKeyword)) {
+            selectedKeywords.push(selectedKeyword);
+            updateKeywordDisplay();
+        }
+    }
+
+    function removeKeyword(keyword) {
+        const index = selectedKeywords.indexOf(keyword);
+        if (index > -1) {
+            selectedKeywords.splice(index, 1);
+            updateKeywordDisplay();
+        }
+    }
+    
+    function filterKeywords() {
+        const searchTerm = document.getElementById('keywordSearch').value.toLowerCase();
+        const select = document.getElementById('keywordSelect');
+        const options = select.options;
+
+        for (let i = 0; i < options.length; i++) {
+            const optionText = options[i].text.toLowerCase();
+            if (optionText.includes(searchTerm)) {
+                options[i].style.display = 'block';
+            } else {
+                options[i].style.display = 'none';
+            }
+        }
+    }
+
+    function updateKeywordDisplay() {
+        const keywordsContainer = document.getElementById('selectedKeywords');
+        keywordsContainer.innerHTML = ''; // 기존 키워드 초기화
+
+        selectedKeywords.forEach(keyword => {
+            const keywordSpan = document.createElement('span');
+            keywordSpan.textContent = keyword;
+
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'x';
+            deleteButton.onclick = () => removeKeyword(keyword);
+
+            keywordsContainer.appendChild(keywordSpan);
+            keywordsContainer.appendChild(deleteButton);
+        });
+
+        // 선택된 키워드 JSON 업데이트
+        document.getElementById('srchKeywordNmJson').value = JSON.stringify(selectedKeywords);
+    }
+</script>
+
+<input type="hidden" id="jobContJson" name="jobCont">
+<input type="hidden" id="needskillJson" name="needskill">
+<input type="hidden" id="srchKeywordNmJson" name="srchKeywordNm">
 </body>
 </html>

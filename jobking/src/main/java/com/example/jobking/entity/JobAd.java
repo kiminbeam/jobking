@@ -1,6 +1,13 @@
 package com.example.jobking.entity;
 
+
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,12 +21,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
+@Slf4j
 @Table(name = "jobad")
 public class JobAd extends BaseEntity {
 
@@ -109,4 +118,32 @@ public class JobAd extends BaseEntity {
 
 	@Column(name = "empTel", nullable = false, length = 20)
 	private String empTel;
+	
+	public List<String> getJobContList() {
+	    try {
+	        return new ObjectMapper().readValue(jobCont, new TypeReference<List<String>>() {});
+	    } catch (JsonProcessingException e) {
+	        log.error("Error parsing jobCont JSON: {}", e.getMessage());
+	        return Collections.emptyList(); // or throw an exception
+	    }
+	}
+
+	public List<String> getNeedskillList() {
+	    try {
+	        return new ObjectMapper().readValue(needskill, new TypeReference<List<String>>() {});
+	    } catch (JsonProcessingException e) {
+	        log.error("Error parsing needskill JSON: {}", e.getMessage());
+	        return Collections.emptyList(); // or throw an exception
+	    }
+	}
+
+	public List<String> getSrchKeywordNmList() {
+	    try {
+	        return new ObjectMapper().readValue(srchKeywordNm, new TypeReference<List<String>>() {});
+	    } catch (JsonProcessingException e) {
+	        log.error("Error parsing srchKeywordNm JSON: {}", e.getMessage());
+	        return Collections.emptyList(); // or throw an exception
+	    }
+	}
+	
 }
