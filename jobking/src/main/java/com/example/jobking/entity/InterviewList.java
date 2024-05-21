@@ -37,6 +37,11 @@ public class InterviewList extends BaseEntity {
 	@ManyToOne
 	@JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
 	private User user;
+	
+	@ManyToOne
+    @JoinColumn(name = "cid", referencedColumnName = "cid", nullable = false)
+    private Company company;
+
 
 	@Column(name = "interview")
 	private String interview;

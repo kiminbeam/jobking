@@ -4,20 +4,32 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.jobking.dto.Humanlist;
 import com.example.jobking.entity.ApplyList;
 import com.example.jobking.entity.Company;
+import com.example.jobking.entity.CompanyReview;
+import com.example.jobking.entity.InterviewList;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.User;
+import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.IApplyListRepository;
 import com.example.jobking.repository.ICompanyRepository;
+import com.example.jobking.repository.ICompanyReviewRepository;
+import com.example.jobking.repository.IInterviewListRepository;
 import com.example.jobking.repository.IJobAdRepository;
+import com.example.jobking.repository.IUserReviewRepository;
 
 @RequestMapping("/company")
 @Controller
@@ -31,6 +43,9 @@ public class CompanyController {
 	
 	@Autowired
 	IApplyListRepository applyListRepository;
+	
+	@Autowired
+	IInterviewListRepository interviewRepository;
 
 	@RequestMapping("/cpmain")
 	public String main() {
@@ -42,26 +57,28 @@ public class CompanyController {
 		return "/company/regi_jobadForm";
 	}
 
-	/*
-	 * @RequestMapping("/regi_jobad") public String regiAD(@ModelAttribute JobAd jobad) {
-	 * 
-	 * //로그인 미구현으로 임시 코딩 
-	 * //데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
-	 * //*반드시 company테이블에 데이터가 있어야됨! 
-	 * String cid = "1"; Optional<Company> com = comrepository.findById(cid);
-	 * if (com.isPresent()) {
-	 * jobad.setCompany(com.get());
-	 * 
-	 * //jobad.setEmpEmail("default@example.com");
-	 * //jobad.setEmpTel("010-0000-0000"); //jobad.setEmpName("testname");
-	 * //jobad.setEnterTpCd("testCD"); //jobad.setMaxEdubglcd("1");
-	 * jobad.setMltsvcExcHope("1"); //jobad.setRegionCd("1");
-	 * //jobad.setSalTpCd("1"); //jobad.setMinEdubglcd("1"); repository.save(jobad);
-	 * } 
-	 * 
-	 * return "redirect:/company/jobadList"; 
-	 * }
-	 */
+	
+	 @RequestMapping("/regi_jobad") public String regiAD(@ModelAttribute JobAd jobad) {
+	 
+	 //로그인 미구현으로 임시 코딩 
+	 //데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
+	 //*반드시 company테이블에 데이터가 있어야됨! 
+	 String cid = "aaaa"; 
+	 Optional<Company> com = comrepository.findById(cid);
+	 if (com.isPresent()) {
+	 jobad.setCompany(com.get());
+	  
+	 //jobad.setEmpEmail("default@example.com");
+	 //jobad.setEmpTel("010-0000-0000"); //jobad.setEmpName("testname");
+	 //jobad.setEnterTpCd("testCD"); //jobad.setMaxEdubglcd("1");
+	 jobad.setMltsvcExcHope("1"); //jobad.setRegionCd("1");
+	 //jobad.setSalTpCd("1"); //jobad.setMinEdubglcd("1"); 
+	 repository.save(jobad);
+	 } 
+	  
+	 return "redirect:/company/jobadList"; 
+	 }
+	 
 
 	@RequestMapping("/jobadList")
 	public String jobadList(Model model) {
@@ -131,10 +148,13 @@ public class CompanyController {
 	//지원자 리스트 불러오기
 	@RequestMapping("/com_applicantList")
 	public String applicantList (@RequestParam("cid") String cid, Model model) {
+		//cid = "aaaa";
+		
 		
 		//지원내역 테이블의 공고구분번호 데이터 가져오기
 		List<ApplyList> list = applyListRepository.findAll();
 		
+		/*
 		//공고 제목들이 들어간 리스트 jadtitle 
 		List<Humanlist> hlist = null;
 		
@@ -192,11 +212,11 @@ public class CompanyController {
 					hlist.add(humanlist);
 					
 				}
-				*/
+				
 			}
 		}
-		
-		model.addAttribute("hlist", hlist);
+		*/
+		model.addAttribute("hlist", list);
 		
 		return "/company/com_applicantList";
 	}
@@ -220,10 +240,54 @@ public class CompanyController {
 	
 	//면접자 합격여부 리스트 페이지
 	@RequestMapping("/com_interviewList")
-	public String interviewList(@RequestParam("cid") String cid) {
-		//applyListRepository.findByJno(null)
+	public String interviewList(@RequestParam("cid") String cid, Model model) {
+		Optional <InterviewList> interviewlist = interviewRepository.findByCid(cid);
+		InterviewList interviewe = interviewlist.get();
+		model.addAttribute("interview", interviewe);
 		
 		return "/company/com_interviewList";
 	}
-
+	
+	
+	@PostMapping("/changeInterview")
+	@ResponseBody
+	public String changeInterviewStatus(@RequestParam("interviewno") Long interviewno, @RequestParam("status")String newStatus) {
+	    try {
+	        interviewRepository.updateInterview(newStatus, interviewno);
+	        return "면접 상태가 성공적으로 변경되었습니다.";
+	    } catch (Exception e) {
+	        return "면접 상태 변경 중 오류 발생.";
+	    }
+	}
+	
+	@PostMapping("/updatePassStatus")
+	@ResponseBody
+	public String updatePassStatus(@RequestParam("interviewno") Long interviewno, @RequestParam("pass") String pass) {
+		
+		try {
+			interviewRepository.updatePass(pass, interviewno);
+			return "지원자의 합격여부가 성공적으로 변경되었습니다.";
+		}catch (Exception e){
+			return "지원자 합격여부 변경 중 오류 발생.";
+		}
+	}
+	
+	@Autowired
+	ICompanyReviewRepository cReviewRepository;
+	
+	@Autowired
+	IUserReviewRepository uReviewRepository;
+	
+	@RequestMapping("/com_reviewList")
+	public String findReviwer(@RequestParam("cid") String cid, Model model) {
+		//기업이 유저에게 남긴 리뷰들 가져오는 기능
+		Optional<CompanyReview> CPreviewlist = cReviewRepository.findCpReview(cid);
+		//유저가 기업에게 남긴 리뷰를 가져오는 기능
+		Optional<UserReview> Ureviewlist = uReviewRepository.findUserReview(cid);
+		
+		model.addAttribute("CPreview", CPreviewlist);
+		model.addAttribute("Ureview", Ureviewlist);
+		
+		return "/company/com_reviewList?cid=" + cid;
+	}
 }

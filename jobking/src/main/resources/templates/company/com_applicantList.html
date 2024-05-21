@@ -201,9 +201,9 @@
 				<div class="humanList">
 					<h2>지원자 관리 목록</h2>
 					<div th:each="humanlist: ${hlist}" id="human-container">
-						<h3><a href="${humanlist.username}"></a></h3>
-						<h3 th:text="${humanlist.title"></h3>
-						<hidden th:text="${humanlist.userid}">
+						<h3><a href="${humanlist.user.uname}"></a></h3>
+						<h3 th:text="${humanlist.resume.rtitle}"></h3>
+						<!-- <hidden th:text="${humanlist.userid}">  -->
 					</div>
 					</th:each>
 				</div><!--humanList end-->
@@ -230,6 +230,7 @@
 				{name: "홍길동", img:"img2.jpg"}
 			];
 			
+			/*
 			applicants.forEach(function(applicant){
 				var humanDiv = document.createElement("div");
 				humanDiv.classList.add("human");
@@ -249,6 +250,7 @@
 				humanDiv.appendChild(name);
 				humanContainer.appendChild(humanDiv);
 			});
+			*/
 		});
 	</script>
 </body>

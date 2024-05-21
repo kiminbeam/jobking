@@ -260,6 +260,8 @@ public class JController {
 		jobscrapRepo.deleteById(Long.parseLong(jno));
 		return"redirect:/user/user_subNscrap_list";
 	}
+	
+	/*
 	@RequestMapping("/user_offer_list")
 	public void userOfferList(HttpServletRequest request, Model model) {
 		String uid = (String) request.getSession().getAttribute("id");
@@ -268,6 +270,8 @@ public class JController {
 		model.addAttribute("offerList", offerList);
 		System.out.println(offerList);
 	}
+	*/
+	
 	@RequestMapping("/delete_offerList")
 	public String deletOfferList(@RequestParam("ono") String ono) {
 		offerListRepo.deleteById(Long.parseLong(ono));
