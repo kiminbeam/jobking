@@ -31,13 +31,13 @@ public class Resume extends BaseEntity {
 	private User user;
 
 
-    @Column(name = "rtitle", nullable = false)
+    @Column(name = "rtitle")
     private String rtitle;
 
     @Column(name = "def")
     private String def;
 
-    @Column(name = "disclo", nullable = false)
+    @Column(name = "disclo")
     private String disclo;
 
     @Column(name = "portfolioUrl")
