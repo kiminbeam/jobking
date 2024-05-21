@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+.container{
+    width: 1030px; height: 560px;
+    background-color: #fff;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#tab_wrap{
+    width: 600px; height: 230px;
+}
+
+.tabs{
+    width: 600px; height: 48px;
+    text-align: center;
+    font: 500 16px/48px 'Pretendard-Regular';
+}
+.tabs>li{
+    width: 300px; height: 48px;
+    background-color: lightgray;
+    color: darkgray;
+    float: left;
+}
+
+#user_login, #company_login{
+    position: relative; top: 40px; left: 55px;
+}
+[type='text']{
+    margin-bottom: 3px;
+    width: 274px; height: 46px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+}
+
+[type='password']{
+    width: 274px; height: 46px;
+    border: 1px solid darkgray;
+    border-radius: 5px;
+}
+
+[type='submit']{
+    position: relative; top: -100px; left: 280px;
+    width: 100px; height: 100px;
+    border: 0;
+    font: 500 16px/50px 'Pretendard-Regular';
+    color: #fff;
+    background-color: #0057ff;
+    border-radius: 10px;
+}
+
+[type='button']{
+    position: relative; top: -100px; left: 280px;
+    width: 100px; height: 100px;
+    border: 0;
+    font: 500 16px/50px 'Pretendard-Regular';
+    color: #fff;
+    background-color: #0057ff;
+    border-radius: 10px;
+}
+
+ul.tabs li.current{
+    color: #333;
+    border: 1px solid black;
+    border-bottom: 0;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+
+.tab-content{
+	display: none;
+}
+
+.tab-content.current{
+	display: inherit;
+}

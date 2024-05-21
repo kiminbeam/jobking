@@ -1,115 +1,92 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-body{
-	margin-top: 100px;
-	line-height: 1.6
-}
-.container{
-	width: 500px;
-	margin: 0 auto;
-}
-
-
-
-ul.tabs{
-	margin: 0px;
-	padding: 0px;
-	list-style: none;
-}
-ul.tabs li{
-	background: none;
-	color: #222;
-	display: inline-block;
-	padding: 10px 15px;
-	cursor: pointer;
-}
-
-ul.tabs li.current{
-	background: #ededed;
-	color: #222;
-}
-
-.tab-content{
-	display: none;
-	background: #ededed;
-	padding: 15px;
-}
-
-.tab-content.current{
-	display: inherit;
-}
-
-</style>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/loginFormStyle.css">
 </head>
+
 <body>
-<div class="container">
-	<ul class="tabs">
-		<li id="userTab" class="tab-link current" data-tab="user_login" >개인회원</li>
-		<li id="companyTab" class="tab-link" data-tab="company_login">기업회원</li>
-	</ul>
-	<div id="user_login" class="tab-content current">
-		<form action="/user/user_login" method="post">
-			<input type="text" name="uid" placeholder="아이디"> <br>
-			<input class="pw" type="password" name="upw" placeholder="비밀번호"> <span class="pwShowBtn">👁</span><br>
-			<input type="submit" value="로그인">
-			<input class="regBtn" type="button" value="회원가입">
-		</form>
+	<div id="wrap">
+		<header>
+            <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+        </header>
+		<div class="container">
+			<div id="tab_wrap">
+				<ul class="tabs">
+					<li id="userTab" class="tab-link current" data-tab="user_login">개인회원</li>
+					<li id="companyTab" class="tab-link" data-tab="company_login">기업회원</li>
+				</ul>
+				<div id="user_login" class="tab-content current">
+					<form action="/user/user_login" method="post">
+						<input type="text" name="uid" placeholder="아이디"> <br>
+						<input class="pw" type="password" name="upw" placeholder="비밀번호"> <span
+							class="pwShowBtn">👁</span><br>
+						<input type="submit" value="로그인">
+						<input class="regBtn" type="button" value="회원가입">
+					</form>
+				</div>
+				<div id="company_login" class="tab-content">
+					<form action="/user/company_login" method="post">
+						<input type="text" name="cid" placeholder="아이디"><br>
+						<input class="pw" type="password" name="cpw" placeholder="비밀번호"> <span
+							class="pwShowBtn">👁</span><br>
+						<input type="submit" value="로그인">
+						<input class="regBtn" type="button" value="회원가입">
+					</form>
+				</div>
+			</div>
+		</div>
+		<footer>
+			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+		</footer>
 	</div>
-	<div id="company_login"  class="tab-content">
-		<form action="/user/company_login" method="post">
-			<input type="text" name="cid" placeholder="아이디"><br>
-			<input  class="pw"  type="password" name="cpw" placeholder="비밀번호"> <span class="pwShowBtn">👁</span><br>
-			<input type="submit" value="로그인">
-			<input class="regBtn" type="button" value="회원가입">
-		</form>
-	</div>
-</div>
 
 
-<script th:inline="javascript">
 
-	const tabs = document.querySelectorAll(".tab-link");
-	const contents = document.querySelectorAll(".tab-content")
-	const regBtns = document.querySelectorAll(".regBtn")
-	const pwShowBtns = document.querySelectorAll(".pwShowBtn");
+	<script th:inline="javascript">
 
-	
-	tabs.forEach(tab=>{
-		tab.addEventListener("click", function(e){
-			const id = e.target.getAttribute("data-tab")
-			tabs.forEach(t=>{t.classList.remove("current")})
-			contents.forEach(content=>{content.classList.remove("current")})
-			tab.classList.add("current");
-			document.querySelector("#"+id).classList.add("current")
-			
+		const tabs = document.querySelectorAll(".tab-link");
+		const contents = document.querySelectorAll(".tab-content")
+		const regBtns = document.querySelectorAll(".regBtn")
+		const pwShowBtns = document.querySelectorAll(".pwShowBtn");
+
+
+		tabs.forEach(tab => {
+			tab.addEventListener("click", function (e) {
+				const id = e.target.getAttribute("data-tab")
+				tabs.forEach(t => { t.classList.remove("current") })
+				contents.forEach(content => { content.classList.remove("current") })
+				tab.classList.add("current");
+				document.querySelector("#" + id).classList.add("current")
+
+			})
 		})
-	})
-	regBtns.forEach(btn=>{
-		btn.addEventListener("click", function(){
-			///회원가입폼으로 가기
-			location.href="/user/user_regForm";
+		regBtns.forEach(btn => {
+			btn.addEventListener("click", function () {
+				///회원가입폼으로 가기
+				location.href = "/user/user_regForm";
+			})
 		})
-	})
-	pwShowBtns.forEach(btn=>{
-		btn.addEventListener("click", function(e){
-			const pwElement = e.target.previousElementSibling;
-			pwElement.classList.toggle("active");
-			if(pwElement.classList.contains("active")){
-				pwElement.setAttribute("type", "text")
-			}else{
-				pwElement.setAttribute("type", "password")
+		pwShowBtns.forEach(btn => {
+			btn.addEventListener("click", function (e) {
+				const pwElement = e.target.previousElementSibling;
+				pwElement.classList.toggle("active");
+				if (pwElement.classList.contains("active")) {
+					pwElement.setAttribute("type", "text")
+				} else {
+					pwElement.setAttribute("type", "password")
+				}
+			})
+		})
+		if ([[${ result }]] != null) {
+			if ([[${ result }]] == false) {
+				alert("입력하신 아이디와 비밀번호와 일치하는 회원이 없습니다. 다시 시도해주세요");
 			}
-		})
-	})
-	if([[${result}]] != null ){
-		if([[${result}]] == false){
-			alert("입력하신 아이디와 비밀번호와 일치하는 회원이 없습니다. 다시 시도해주세요");
 		}
-	}
-</script>
+	</script>
 </body>
+
 </html>

@@ -27,15 +27,22 @@
         <div>마이페이지</div>
         <div>평점 작성하기</div>
         <p>❗오직 우리 사이트를 통해 지원하고 면접을 완료한 지원자만 해당 기업에 대한 평점을 작성할 수 있습니다.</p>
-        <div>평점 작성 대상 기업 선택</div>
-
-        <select name="company" id="mySelect">
+        
+        <div>지원한 기업 선택하기</div>
+        <select name="company1" id="mySelect">
             <option th:each="apply:${apply}" th:value="${apply.jobAd.company.cid}">
                 [[${apply.jobAd.company.cname}]]
             </option>
         </select>
+
+        <div>포지션 제안 받은 기업 선택하기</div>
+        <select name="company2" id="mySelect2">
+            <option th:each="offer:${offer}" th:value="${offer.company.cid}">
+                [[${offer.company.cname}]]
+            </option>
+        </select>
         
-        <form th:action="@{user_review_regist(cid=${cid})}">
+        <form th:action="@{user_review_regist}" method="post">
             <p>[면접 질문의 적절성]</p>
             <p>
                 1. 면접에서 질문된 내용이 직무와 관련성이 높고 구직자의 역량을 평가하는 데 적합했습니까?
@@ -139,8 +146,11 @@
                 4. 면접에 대한 전반적인 의견을 한 줄로 작성해 주십시오.
             </p>
             <input type="text" name="feedback" placeholder="내용을 입력해주세요.">
-            <input type="submit" value="리뷰 등록하기">
+            <input type="submit" value="리뷰 등록하기" onsubmit="register(event)">
         </form>
+        <footer>
+            <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+        </footer>
     </div>
     <script>
         // <select> 요소를 가져오기
@@ -153,6 +163,39 @@
         // 값 출력
         console.log("선택된 값: " + selectedValue);
         });
+
+        // <select> 요소를 가져오기
+        var selectElement2 = document.getElementById("mySelect2");
+
+        // <select> 요소에 change 이벤트 핸들러 추가
+        selectElement2.addEventListener("change", function() {
+        // 선택된 옵션의 값을 가져오기
+        var selectedValue2 = selectElement2.value;
+        // 값 출력
+        console.log("선택된 값: " + selectedValue2);
+        });        
+
+
+        function register(event) {
+        event.preventDefault(); // 폼의 기본 제출 동작을 막음
+
+        // 선택된 옵션의 값을 가져오기
+
+        var selectedValue1 = selectElement1.value;
+
+        var selectElement2 = document.getElementById("mySelect2");
+        var selectedValue2 = selectElement2.value;
+
+        // 원하는 값 선택 (이 예제에서는 selectedValue1 사용)
+        var cid = selectedValue1 || selectedValue2; // 둘 중 하나라도 선택되었는지 확인
+
+        if (cid) {
+            // cid를 URL 파라미터로 추가하여 리디렉션
+            location.href = '@{user_review_regist}' + '?cid=' + cid;
+        } else {
+            alert('기업을 선택해주세요.');
+        }
+    }
 
 
         // 첫번째 질문 평점

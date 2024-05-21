@@ -5,26 +5,34 @@
 </head>
 <body>
     <div th:fragment="fragment-sidebar">
-        <div class="sidebar">
+        <div id="sidebar">
             <ul>
-            	<li><h2>채용정보</h2></li>
+            	<li class="sidebar_title">채용정보</li>
                 <li><a href="/user/user_recruit_region">지역별</a></li>
                 <li><a href="/user/user_recruit_job">직무별</a></li>
                 <li><a href="/user/user_recruit_sector">업종별</a></li>
-                <li><a href=""><h2>커뮤니티</h2></a></li>
+            </ul>
+            <ul>
+                <li class="sidebar_title"><a href="">커뮤니티</a></li>
                 <li><a href="">공지사항</a></li>
                 <li><a href="">구직자</a></li>
                 <li><a href="">재직자</a></li>
-                <li><a href=""><h2>포지션매치</h2></a></li>
-                <li><a href="/user/user_myPage"><h2>마이페이지</h2></a></li>
+            </ul>
+            <ul>
+                <li class="sidebar_title"><a href="">포지션매치</a></li>
+            </ul>
+            <ul>
+                <li class="sidebar_title">
+                    <a href="/user/user_myPage">마이페이지</a>
+                </li>
                 <li><a href="/user/user_information">회원정보 수정</a></li>
                 <li><a href="">이력서 관리</a></li>
                 <li><a href="/user/user_subNscrap_list">구독 및 스크랩</a></li>
-                <li><a href="">입사지원관리</a></li>
+                <li><a href="/user/user_apply_list">입사지원관리</a></li>
                 <li><a href="/user/user_offer_list">받은제안 관리</a></li>
                 <li><a href="">최근 본 공고</a></li>
                 <li><a href="/user/user_review_list">평점관리</a></li>
-                <li><a href="">커뮤니티 활동 관리</a></li>
+                <li><a href="/user/user_myBoard_list">커뮤니티 활동 관리</a></li>
             </ul>
         </div>
     </div>

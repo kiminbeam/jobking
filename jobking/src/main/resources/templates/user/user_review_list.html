@@ -18,7 +18,7 @@
 		
 		<h3>내가 받은 리뷰리스트</h3>
 		<h3>기업이 면접자에게 남길 수 있는 리뷰에 관한 필수 질문 항목</h3>
-		<paragragh>
+		<div>
 		[직무 이해도] <br>
 		1. 지원자가 해당 직무에 대해 얼마나 깊이 이해하고 있는지 평가해 주십시오. <br>
 		[이력서 관련 진실성] <br>
@@ -27,24 +27,27 @@
 		3. 지원자가 면접 과정에서 보인 태도, 예의, 그리고 전문성은 어떠했습니까? <br>
 		[한줄 피드백] <br>
 		4. 면접에 대한 전반적인 의견을 한 줄로 작성해 주십시오. <br>
-		</paragragh>
+		</div>
 		<table>
 			<tr>
 				<th>기업명</th>
-				<th>채용공고명</th>
 				<th>리뷰상세내용</th>
 			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
+			<tr th:each="userReview : ${userReviewList}">
+				<td>[[${userReview.company.cname}]]</td>
+				<td>
+					<span>1️⃣</span><span th:each="star : ${#numbers.sequence(1, userReview.q1)}">⭐</span> <br>
+					<span>2️⃣</span><span th:each="star : ${#numbers.sequence(1, userReview.q2)}">⭐</span> <br>
+					<span>3️⃣</span><span th:each="star : ${#numbers.sequence(1, userReview.q3)}">⭐</span> <br>
+					<span>4️⃣</span><span style="font-weight:bold;">[[${userReview.feedback}]]</span> <br>
+				</td>
 			</tr>
 		</table>
 		
 		
 		<h3>내가 쓴 리뷰리스트</h3>
 		<h3>면접자가 기업에 남길 수 있는 리뷰에 관한 필수 질문 항목</h3>
-		<paragragh>
+		<div>
 		[면접 질문의 적절성] <br>
 		1. 면접에서 질문된 내용이 직무와 관련성이 높고 구직자의 역량을 평가하는 데 적합했습니까? <br>
 		[채용 공고와 조건 일치 여부] <br>
@@ -53,17 +56,20 @@
 		3. 면접관이 친절하고 존중하는 태도로 면접을 진행했으며, 공정하게 평가했다고 생각하십니까? <br>
 		[한줄 피드백] <br>
 		4. 면접에 대한 전반적인 의견을 한 줄로 작성해 주십시오. <br>
-		</paragragh>
+		</div>
 		<table>
 			<tr>
 				<th>기업명</th>
-				<th>채용공고명</th>
 				<th>리뷰상세내용</th>
 			</tr>
-			<tr>
-				<td></td>
-				<td></td>
-				<td></td>
+			<tr th:each="companyReview : ${companyReviewList}">
+				<td>[[${companyReview.company.cname}]]</td>
+				<td>
+					<span>1️⃣</span><span th:each="star : ${#numbers.sequence(1, companyReview.q1)}">⭐</span><br>
+					<span>2️⃣</span><span th:each="star : ${#numbers.sequence(1, companyReview.q2)}">⭐</span> <br>
+					<span>3️⃣</span><span th:each="star : ${#numbers.sequence(1, companyReview.q3)}">⭐</span> <br>
+					<span>4️⃣</span><span style="font-weight:bold;">[[${companyReview.feedback}]]</span> <br>
+				</td>
 			</tr>
 		</table>
 	</div>
@@ -76,8 +82,6 @@
 
 
 <script th:inline="javascript">
-	
 
-	
 </script>
 </html>

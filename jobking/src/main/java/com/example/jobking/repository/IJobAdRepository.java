@@ -12,7 +12,4 @@ public interface IJobAdRepository extends JpaRepository<JobAd, Long> {
 	
 	@Query(value="SELECT * FROM jobAd where cid= :cid ORDER BY regDate DESC LIMIT 1;", nativeQuery=true)
 	Optional<JobAd> findLatestJobAd(@Param("cid") String cid);
-	
-	@Query(value="SELECT * FROM jobAd WHERE jno= :jno", nativeQuery=true)
-	JobAd findByJno(@Param("jno") Long jno);
 }
