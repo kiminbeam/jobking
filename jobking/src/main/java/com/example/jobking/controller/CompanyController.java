@@ -226,6 +226,7 @@ public class CompanyController {
 		return "/company/com_resumeDetail?uid=" + uid;
 	}
 	
+	//면접자 합격여부 리스트 페이지
 	@RequestMapping("/com_interviewList")
 	public String interviewList(@RequestParam("cid") String cid) {
 		//applyListRepository.findByJno(null)
