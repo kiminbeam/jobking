@@ -111,11 +111,14 @@ input[type="submit"]:hover {
 			근무지역코드(임시)<input type="text" name="regionCd"
 				th:value="${modify.regionCd}">
 		</div>
-		<div class="form-group">
-			<label for="jobCont">직무내용</label>
-			<textarea rows="5" cols="50" id="jobCont" name="jobCont"
-				placeholder="구직자모집 직무내용을 입력하세요.">[[${modify.jobCont}]]</textarea>
-		</div>
+		<div class="form-group" id="jobContContainer">
+    <label for="jobCont">직무내용</label>
+    <div th:each="jobCont, iterStat : ${#strings.arraySplit(modify.jobCont, ',')}" class="jobContInputContainer">
+        <input type="text" class="jobContInput" name="jobCont" th:value="${#strings.replace(jobCont, '\"', '')}">
+        <button type="button" class="deleteButton" th:if="${iterStat.index > 0}">삭제</button>
+    </div>
+    <button type="button" onclick="addInput('jobContContainer', 'jobContInput', 'deleteButton')">추가</button>
+</div>
 		<div class="form-group">
 			<label for="empTpNm">고용형태</label> <select id="empTpNm" name="empTpNm">
 				<option value="정규직" th:selected="${modify.empTpNm == '정규직'}">정규직</option>
@@ -226,5 +229,34 @@ input[type="submit"]:hover {
 		</div>
 		<input type="submit" value="수정하기">
 	</form>
+	<script>
+	function addInput(containerId, inputClass, buttonClass) {
+	    const container = document.getElementById(containerId);
+
+	    // 입력 필드 생성
+	    const newInput = document.createElement('input');
+	    newInput.type = 'text';
+	    newInput.classList.add(inputClass);
+	    newInput.name = containerId.replace('Container', '');
+
+	    // 삭제 버튼 생성
+	    const deleteButton = document.createElement('button');
+	    deleteButton.type = 'button';
+	    deleteButton.textContent = '삭제';
+	    deleteButton.classList.add(buttonClass);
+	    deleteButton.onclick = function() {
+	        container.removeChild(newInput);
+	        container.removeChild(deleteButton);
+	    };
+
+	    // 컨테이너에 입력 필드와 삭제 버튼을 감싸는 div 생성
+	    const inputContainer = document.createElement('div');
+	    inputContainer.classList.add(inputClass + 'Container');
+	    inputContainer.appendChild(newInput);
+	    inputContainer.appendChild(deleteButton);
+
+	    container.appendChild(inputContainer);
+	}
+	</script>
 </body>
 </html>
