@@ -39,8 +39,8 @@ public class Company extends BaseEntity {
 	    @Column(name = "caddr", nullable = false)
 	    private String caddr;
 
-	    @Column(name = "jobsCd", nullable = false)
-	    private String jobsCd;
+	    @Column(name = "sector", nullable = false)
+	    private String sector;
 
 	    @Column(name = "employees", nullable = false)
 	    private int employees;

@@ -119,19 +119,7 @@ ul.tabs li.current{
 		</div>
 	</div>
 	<button onclick="searchList()">검색</button>
-	
-	<div class="jobad">
-		<div th:each="jobad : ${jobadList}">
-			<h1 th:text="${jobad.company.cname}"></h1>
-			<span>❤️</span>
-			공고제목 : <span><a th:href="@{/user/user_recruitDetail(jno=${jobad.jno})}">[[${jobad.wantedTitle}]]</a></span>
-			마감 날짜 : <span th:text="${jobad.receiptCloseDt}"></span>
-			<span>⭐</span>
-		</div>
-	</div>
-	
-	
-	
+	<div id="listContainer"></div>
     </div>
 </main>
 	<footer>
@@ -169,15 +157,15 @@ let guEls;
 let sectorEls;
 let positionEls;
 
-// tabs.forEach(tab=>{
-// 	tab.addEventListener("click", function(e){
-// 		const id = e.target.getAttribute("data-tab")
-// 		tabs.forEach(t=>{t.classList.remove("current")})
-// 		contents.forEach(content=>{content.classList.remove("current")})
-// 		tab.classList.add("current");
-// 		document.querySelector("#"+id).classList.add("current")
-// 	})
-// })
+tabs.forEach(tab=>{
+	tab.addEventListener("click", function(e){
+		const id = e.target.getAttribute("data-tab")
+		tabs.forEach(t=>{t.classList.remove("current")})
+		contents.forEach(content=>{content.classList.remove("current")})
+		tab.classList.add("current");
+		document.querySelector("#"+id).classList.add("current")
+	})
+})
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -334,6 +322,8 @@ function loadSectorList() {
                                 positionEl.addEventListener("click", function(e) {
                                     console.log(e.target);
                                     position2Name = e.target.innerText;
+                                    //마지막요소이니 클릭되는 순간 검색 버튼 누른것 처럼 실행해주기
+                                    searchList();
                                 });
                             });
                         })
@@ -362,11 +352,29 @@ function loadSectorList() {
 	        .then(response => response.json())
 	        .then(data => {
 	            console.log(data);
-	            // 응답 데이터를 HTML에 업데이트하는 로직을 추가합니다.
+	            //받아온 데이터를 리스트로 뿌려주기
+	            updateList(data); 
 	        })
 	        .catch(error => {
 	            console.error('Error:', error);
 	        });
+	}
+ 
+ function updateList(data) {
+	    const listContainer = document.getElementById('listContainer');
+	    listContainer.innerHTML = '';
+	    data.forEach(jobad => {
+	        const listItem = document.createElement('div');
+	        listItem.className = 'jobad';
+	        listItem.innerHTML = `
+	            <h1>${jobad.company.cname}</h1>
+	            <span>❤️</span>
+	            공고제목 : <span><a href="/user/user_recruitDetail?jno=${jobad.jno}">${jobad.wantedTitle}</a></span>
+	            마감 날짜 : <span>${jobad.receiptCloseDt}</span>
+	            <span>⭐</span>
+	        `;
+	        listContainer.appendChild(listItem);
+	    });
 	}
 
 

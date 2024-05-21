@@ -38,15 +38,17 @@
 <!-- 9. 지원자 현황 (그래프나 인원수만 보이도록) -->
 <!-- 10. 추천 일자리 (5개 표시;) -->
 
-			<button id="copyBtn" onclick="copyToClipboard()">주소 복사하기</button>
-			<a id="btnTwitter" class="link-icon twitter" href="javascript:shareTwitter();">트위터</a>
-			<a id="btnFacebook" class="link-icon facebook" href="javascript:shareFacebook();">페이스북</a>    
-			<a id="btnKakao" class="link-icon kakao" href="javascript:shareKakao();">카카오톡</a>
-			<h1 >접수기간 d-day : <span id="dDay"></span></h1>
-			<button th:if="${interest == false}" onclick="likeTheCom()">관심기업구독하기</button>
-			<button th:if="${interest == true}" onclick="likeTheCom()">해당기업구독취소하기</button>
-			<button th:if="${scrap == false}" onclick="scrapJobad()">공고스크랩하기</button>
-			<button th:if="${scrap == true}" onclick="scrapJobad()">스크랩취소하기</button>
+			<div id="copyBtn" onclick="copyToClipboard()"><img style="width:30px; height:30px;" th:src="@{/images/icon/copy.png}" alt="copyBtn"></div>
+			<div>
+				<a id="btnTwitter" class="link-icon twitter" href="javascript:shareTwitter();">트위터</a>
+				<a id="btnFacebook" class="link-icon facebook" href="javascript:shareFacebook();">페이스북</a>    
+				<a id="btnKakao" class="link-icon kakao" href="javascript:shareKakao();">카카오톡</a>
+			</div>
+			<h1>접수기간 d-day : <span id="dDay"></span></h1>
+			<div id="likeContainer">
+			</div>
+			<div id="scrapContainer">
+			</div>
 			<button onclick="openPopUp()">지원서 제출하기</button>
 
 			<div id="chart-container">
@@ -62,8 +64,8 @@
 					<tr>
 						<th>대표자명</th>
 						<td>[[${jobad.company.ceo}]]</td>
-						<th>업종코드</th>
-						<td>[[${jobad.company.jobsCd}]]</td>
+						<th>업종</th>
+						<td>[[${jobad.company.sector}]]</td>
 					</tr>
 					<tr>
 						<th>기업규모</th>
@@ -76,6 +78,7 @@
 						<td>[[${jobad.company.yrSales}]]</td>
 						<th>기업주소</th>
 						<td>[[${jobad.company.caddr}]]</td>
+						
 					</tr>
 				</table>
 			</div>
@@ -83,7 +86,9 @@
 				<table>
 					<tr>
 						<th>직무</th>
-						<td>[[${jobad.position}]]</td>
+						<td>[[${jobad.position1}]], [[${jobad.position2}]]</td>
+						<th>업종</th>
+						<td>[[${jobad.sector1}]], [[${jobad.sector2}]]</td>
 						<th>상세공고</th>
 						<td>[[${jobad.jobCont}]]</td>
 					</tr>
@@ -115,7 +120,7 @@
 						<th>접수방법</th>
 						<td>[[${jobad.rcptMthd}]]</td>
 						<th>근무지역</th>
-						<td>[[${jobad.regionCd}]]</td>
+						<td>[[${jobad.region1}]], [[${jobad.region2}]]</td>
 					</tr>
 					<tr>
 						<th>근무시간</th>
@@ -156,6 +161,17 @@
 	const targetDate = [[${jobad.receiptCloseDt}]];
 	const regDate = [[${jobad.regdate}]];
 	
+	if([[${scrap == false}]]){
+		document.querySelector("#scrapContainer").innerHTML="<div onclick='scrapJobad()'><img style='width:30px; height:30px;' src='/images/icon/save.png' alt='saveBtn'></div>";
+	}else if([[${scrap == true}]]){
+		document.querySelector("#scrapContainer").innerHTML="<div onclick='scrapJobad()'><img style='width:30px; height:30px;' src='/images/icon/save_full.png' alt='saveFullBtn'></div>";
+	}
+	if([[${interest == false}]]){
+		document.querySelector("#likeContainer").innerHTML="<div onclick='likeTheCom()'><img style='width:30px; height:30px;' src='/images/icon/heart.png' alt='heartBtn'></div>";
+	}else if([[${interest == true}]]){
+		document.querySelector("#likeContainer").innerHTML="<div onclick='likeTheCom()'><img style='width:30px; height:30px;' src='/images/icon/heart_full.png' alt='heartFullBtn'></div>";
+	}
+	
 	function openPopUp(){
 		 window.open("http://localhost:8093/user/user_resumePick", "팝업 창", "width=600,height=400");
 	}
@@ -167,11 +183,11 @@
 			 if(this.responseText == "added"){
 				 alert("성공적으로 공고를 찜했습니다")
 				 //버튼 색칠한거로 바꿔주기
-				  console.log(this.responseText)
+				 document.querySelector("#scrapContainer").innerHTML="<div onclick='scrapJobad()'><img style='width:30px; height:30px;' src='/images/icon/save_full.png' alt='saveFullBtn'></div>";
 			 }else{
 				 if(confirm("정말 해당 공고를 찜 리스트에서 삭제하시겠습니까?")){
 					 //비어있는 버튼으로 바꿔주기
-					  console.log(this.responseText)
+					 document.querySelector("#scrapContainer").innerHTML="<div onclick='scrapJobad()'><img style='width:30px; height:30px;' src='/images/icon/save.png' alt='saveBtn'></div>";
 				 }
 			 }
 		 }
@@ -184,11 +200,12 @@
 			 if(this.responseText == "added"){
 				 alert("성공적으로 해당기업을 구독 했습니다")
 				 //버튼 색칠한거로 바꿔주기
-				  console.log(this.responseText)
+				 document.querySelector("#likeContainer").innerHTML="<div onclick='likeTheCom()'><img style='width:30px; height:30px;' src='/images/icon/heart_full.png' alt='heartFullBtn'></div>";
+				
 			 }else{
 				 if(confirm("정말 해당 기업을 구독 리스트에서 삭제하시겠습니까?")){
 					 //비어있는 버튼으로 바꿔주기
-					  console.log(this.responseText)
+					 document.querySelector("#likeContainer").innerHTML="<div onclick='likeTheCom()'><img style='width:30px; height:30px;' src='/images/icon/heart.png' alt='heartBtn'></div>";
 				 }
 			 }
 		 }
