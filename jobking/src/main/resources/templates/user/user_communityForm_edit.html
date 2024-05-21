@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+<style>
+*{
+	list-style:none;
+}
+body{
+	margin-top: 100px;
+	line-height: 1.6
+}
+.container{
+	width: 1200px;
+	margin: 0 auto;
+}
+ul.tabs{
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+ul.tabs li{
+	background: none;
+	color: #222;
+	display: inline-block;
+	padding: 10px 15px;
+	cursor: pointer;
+}
+
+ul.tabs li.current{
+	background: #ededed;
+	color: #222;
+}
+
+.tab-content{
+	display: none;
+	background: #ededed;
+	padding: 15px;
+}
+
+.tab-content.current{
+	display:flex;
+}
+.tab-content .topCateogory{
+	display: flex;
+	flex-wrap: wrap;
+	width: 300px; /* 너비 조절 */ 
+    max-height: 150px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 수직 스크롤바 추가 */ 
+    padding: 10px; /* 패딩 추가 */ 
+ } 
+.topCateogory li{
+	margin: 10px; /* 아이템 간 간격 */
+} 
+.tab-content .category{
+	display: flex; 
+	flex-wrap: wrap; 
+	width: 800px; /* 너비 조절 */ 
+    max-height: 150px; /* 최대 높이 설정 */ 
+    overflow-y: auto; /* 수직 스크롤바 추가 */ 
+    padding: 10px; /* 패딩 추가 */ 
+ } 
+/*  .gu li{ */
+/* 		margin-right: 15px; /* 아이템 간 간격 */ */
+/*              color: black; /* 글자색 설정 */  */
+/*  } */
+#seekerBoard, #workBoard, #alertBoard,#allBoard {
+	display:flex;
+} 
+.tab-content .category li{
+	margin-right:15px;
+}
+</style>
+</head>
+<body>
+<header>
+	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+</header>
+<main>
+	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+		<div>
+			<div class="container">
+			<div>
+				<span>📢 공지사항  </span>
+				<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
+			</div>
+				<form action="/user/user_communityForm_update" method="post">
+					<fieldset>
+					  <legend>게시판 타입 선택</legend>
+					  <div>
+					    <input type="radio" name="type" value="1"/>
+					    <label for="type">구직자</label>
+					  </div>
+					
+					  <div>
+					    <input type="radio" name="type" value="2" />
+					    <label for="type">재직자</label>
+					  </div>
+					
+					  <div>
+					    <input type="radio" name="type" value="3" checked/>
+					    <label for="type">전체</label>
+					  </div>
+					</fieldset>
+					<input type="text" name="title" th:value="${userBoard.title}">
+					<input type="text" name="content" th:value="${userBoard.content}">
+					<input type="submit" value="글 등록하기">
+				</form>
+			</div>
+		</div>
+</main>
+	<footer>
+		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+	</footer>
+
+
+<script>
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

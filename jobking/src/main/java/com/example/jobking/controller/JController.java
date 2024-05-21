@@ -24,6 +24,8 @@ import com.example.jobking.entity.JobScrap;
 import com.example.jobking.entity.OfferList;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
+import com.example.jobking.entity.UserBoard;
+import com.example.jobking.entity.UserReply;
 import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
@@ -32,6 +34,8 @@ import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IJobScrapRepository;
 import com.example.jobking.repository.IOfferListRepository;
 import com.example.jobking.repository.IResumeRepository;
+import com.example.jobking.repository.IUserBoardRepository;
+import com.example.jobking.repository.IUserReplyRepository;
 import com.example.jobking.repository.IUserRepository;
 import com.example.jobking.repository.IUserReviewRepository;
 
@@ -63,6 +67,10 @@ public class JController {
 	private IUserReviewRepository userReviewRepo;
 	@Autowired
 	private ICompanyReviewRepository companyReviewRepo;
+	@Autowired
+	private IUserBoardRepository userBoardRepo;
+	@Autowired
+	private IUserReplyRepository userReplyRepo;
 	private final Path rootLocation = Paths.get("/upload");
 	
 	
@@ -318,6 +326,86 @@ public class JController {
 		List<Resume> resumeList = resumeRepo.findByUid(uid);
 		System.out.println(resumeList);
 		model.addAttribute("resumeList", resumeList);
+	}
+	@RequestMapping("/user_myBoard_list")
+	public void userMyBoardList(HttpServletRequest request, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		List<UserBoard> userBoardList = userBoardRepo.findByUid(uid);
+		List<UserReply> userReplyList = userReplyRepo.findByUid(uid);
+		
+		model.addAttribute("userBoardList", userBoardList);
+		model.addAttribute("userReplyList", userReplyList);
+		System.out.println(userBoardList);
+		System.out.println(userReplyList);
+	}
+	@RequestMapping("/delete_board")
+	public void deleteBoard(@RequestParam("ubno") Long ubno, HttpServletRequest request, Model model) {
+		//해당 글에 달려있는 모든 댓글 먼저 다 지우기
+		userReplyRepo.deleteAllByUbno(ubno);
+		//선택한 글 지우기
+		userBoardRepo.delete(userBoardRepo.findById(ubno).get());
+	}
+	@RequestMapping("/delete_reply")
+	public void deleteReply(@RequestParam("replyno") Long replyno, Model model) {
+		userReplyRepo.delete(userReplyRepo.findById(replyno).get());
+	}
+	@RequestMapping("/user_communityList")
+	public void userCommunityList(Model model) {
+		List<UserBoard> allList = userBoardRepo.findAll();
+		List<UserBoard> t1List = userBoardRepo.findAllByType("1");
+		List<UserBoard> t2List = userBoardRepo.findAllByType("2");
+		List<UserBoard> t3List = userBoardRepo.findAllByType("3");
+		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
+		model.addAttribute("allList",allList);
+		model.addAttribute("t1List",t1List);
+		model.addAttribute("t2List",t2List);
+		model.addAttribute("t3List",t3List);
+		model.addAttribute("latestAlertBoard",latestAlertBoard);
+	}
+	@RequestMapping("/user_community_detail")
+	public void userCommunityDetail(@RequestParam("ubno") Long ubno, Model model) {
+		UserBoard userBoard = userBoardRepo.findById(ubno).get();
+		//가장 최신 공지사항 가져오기
+		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
+		model.addAttribute("latestAlertBoard",latestAlertBoard);
+		//해당글에 대한 정보가져오기
+		model.addAttribute("userBoard", userBoard);
+		//해당글에 대한 댓글 정보 가져오기
+		List<UserReply> userReplyList = userReplyRepo.findAllByUbno(ubno);
+		model.addAttribute("userReplyList", userReplyList);
+	}
+	@RequestMapping("/user_communityForm_insert")
+	public void userCommunityFormInsert(UserBoard userBoard, Model model) {
+		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
+		model.addAttribute("latestAlertBoard",latestAlertBoard);
+	}
+	@RequestMapping("/user_board_regist")
+	public void userBoardRegist(HttpServletRequest request, UserBoard userBoard) {
+		String uid = (String) request.getSession().getAttribute("id");
+		userBoard.setUser(userRepo.findById(uid).get());
+		userBoardRepo.save(userBoard);
+	}
+	@RequestMapping("/user_communityForm_edit")
+	public void userCommunityFormEdit(@RequestParam("ubno") Long ubno, Model model) {
+		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
+		model.addAttribute("latestAlertBoard",latestAlertBoard);
+		
+		UserBoard userBoard = userBoardRepo.findById(ubno).get();
+		model.addAttribute(userBoard);
+	}
+	@RequestMapping("/user_communityForm_update")
+	public void userCommunityFormUpdate(HttpServletRequest request, UserBoard userBoard, Model model) {
+		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
+		model.addAttribute("latestAlertBoard",latestAlertBoard);
+		
+		String uid = (String) request.getSession().getAttribute("id");
+		userBoard.setUser(userRepo.findById(uid).get());
+		userBoardRepo.save(userBoard);
+	}
+	@RequestMapping("/user_communityForm_delete")
+	public String userCommunityFormDelete(@RequestParam("ubno") Long ubno) {
+		userBoardRepo.deleteById(ubno);
+		return "redirect:/user/user_communityList";
 	}
 
 }
