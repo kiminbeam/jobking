@@ -11,4 +11,7 @@ public interface ICompanyRepository extends JpaRepository<Company,String> {
 	@Query(value="select * from company where cid= :cid", nativeQuery = true)
 	Company findByCid(@Param("cid") String cid);
 	
+	@Query(value="select cpw from company where cid= :cid", nativeQuery = true)
+	Company findPW(@Param("cid") String cid);
+	
 }

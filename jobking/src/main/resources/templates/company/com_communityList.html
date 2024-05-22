@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	 <style>
-	 	body{
+	<style>
+		body{
 				font-family: Arial, sans-serif;
 			}
 			
@@ -99,11 +99,11 @@
 			.sidebar a:hover {
 				background-color: #ddd;
 			}
-	 	
-	 </style>
+		
+	</style>
 </head>
 <body>
-	<div class="top">
+		<div class="top">
 			<div class="navbar">
 				<a href="#home">home</a>
 				<div class="dropdown">
@@ -137,7 +137,7 @@
 				<a href=" " class="content">유저서비스</a>
 			</div>
 		</div><!-- top end-->
-		
+	
 		<div class="maincontent">
 				<div class="sidebar">
 					<div>
@@ -167,28 +167,12 @@
 					<a href="">커뮤니티</a>
 				</div><!--sidebar end-->
 				
-				<div class="form">
-				<div class="cid" th:text="${session.id}"></div>
-					<form action="/company/updateComInfo" method="post">
-						<ul>
-							<li>아이디 <input type="text" name="cid" placeholder="${com.cid}" th:value="${com.cid}" readonly></li>
-							<li>비밀번호 <input type="password" name="cpw" placeholder="${com.cpw}" th:value="${com.cpw}" readonly><li>
-							<li>기업명 <input type="text" name="cname" placeholder="${com.cname}" th:value="${com.cname}"></li>
-							<li>대표자명 <input type="text" name="ceo" placeholder="${com.ceo}" th:value="${com.ceo}"></li>
-                       		<li>사업자번호 <input type="text" name="cnum" placeholder="${com.cnum}" th:value="${com.cnum}"></li>
-                        	<li>기업주소 <input type="text" name="caddr" placeholder="${com.caddr}" th:value="${com.caddr}"></li>
-                        	<li>업종 <input type="text" name="sector" placeholder="${com.sector}" th:value="${com.sector}"></li>
-                        	<li>사원수 <input type="text" name="employees" placeholder="${com.employees}" th:value="${com.employees}"></li>
-                    		<li>로고이미지 <input type="file" name="logo" placeholder="사진 첨부하기"></li>
-                        	<li>기업홈페이지 <input type="text" name="url" placeholder="${com.url}" th:value="${com.url}"></li>
-                        	<li>기업규모 <input type="text" name="size" placeholder="${com.size}" th:value="${com.size}"></li>
-                        	<li>주요사업 <input type="text" name="major" placeholder="${com.major}" th:value="${com.major}"></li>
-                        	<li>연매출액 <input type="text" name="yrSales" placeholder="${com.yrSales}" th:value="${com.yrSales}"></li>
-                        	
-						</ul>
-						<input type="submit" value="수정하기">
-					</form>
+				<div class="board">
+					
 				</div>
+				
+				
 			</div><!--maincontent end-->
+	
 </body>
 </html>
