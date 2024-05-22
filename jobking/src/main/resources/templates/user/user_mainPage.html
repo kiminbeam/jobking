@@ -1,76 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-    #nav1{
-    	text-align:center;
-    }
-    #nav1>ul{display:inline-block}
-    #nav1>ul li{float:left;padding:0 30px;line-height:80px}
-    
-    ul, li{
-        list-style-type: none;
-        display: inline
-    }
-    
-    #div1>ul li{
-    	text-align:center;
-    	
-    }
-	
-</style>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/userMainStyle.css">
 </head>
+
 <body>
-<nav id="nav1">
-	<a href="user_mainPage">logo</a>
-	<ul>
-		<li><a href="user_recruitDetail">채용공고</a></li>
-		<li><a href="user_communityList">커뮤니티</a></li>
-		<li><a href="user_positionMatch">포지션매치</a></li>
-		<li><input type="text"></li>
-		<li><a href="login_form">로그인</a></li>
-        <li><a href="user_regForm">회원가입</a></li>
-        <li><a href="com_mainPage">기업서비스</a></li>
-		
-	</ul>
-</nav>
+    <div id="wrap">
+        <header>
+            <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+        </header>
+        <div id="ad">
+            <ul>
+                <li>광고</li>
+                <li>광고</li>
+                <li>광고</li>
+            </ul>
+        </div>
 
+        <div id="ai">
+            <ul>
+                <li><a href="">ai추천채용공고</a></li>
+                <li><a href="">ai추천채용공고</a></li>
+                <li><a href="">ai추천채용공고</a></li>
+                <li><a href="">ai추천채용공고</a></li>
+                <li><a href="">ai추천채용공고</a></li>
+            </ul>
+        </div>
 
-<div>
-    <ul>
-        <li>광고</li>
-        <li>광고</li>
-        <li>광고</li>
-    </ul>
-</div>
+        <section>
+            <ul id="lastest">
+                <li><a href="">최신등록공고출력란</a></li>
+                <li><a href="">최신등록공고출력란</a></li>
+                <li><a href="">최신등록공고출력란</a></li>
+                <li><a href="">최신등록공고출력란</a></li>
+            </ul>
 
-<div>
-    <ul>
-        <li><a href="">ai추천채용공고</a></li>
-        <li><a href="">ai추천채용공고</a></li>
-        <li><a href="">ai추천채용공고</a></li>
-        <li><a href="">ai추천채용공고</a></li>
-        <li><a href="">ai추천채용공고</a></li>
-    </ul>
-</div>
+            <ul id="button">
+                <li><a href="user_recruit_region">지역별</a></li>
+                <li><a href="user_recruit_job">직무별</a></li>
+                <li><a href="user_recruit_type">업종별</a></li>
+            </ul>
+        </section>
 
-<div>
-    <ul>
-        <li><a href="">최신등록공고출력란</a></li>
-        <li><a href="">최신등록공고출력란</a></li>
-        <li><a href="">최신등록공고출력란</a></li>
-        <li><a href="">최신등록공고출력란</a></li>
-    </ul>
-</div>
-
-<div id="div1">
-    <ul>
-        <li><a href="user_recruit_region">지역별</a></li>
-        <li><a href="user_recruit_job">직무별</a></li>
-        <li><a href="user_recruit_type">업종별</a></li>
-    </ul>
-</div>
+        <footer>
+            <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+        </footer>
+    </div>
 </body>
+
 </html>
