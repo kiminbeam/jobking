@@ -9,21 +9,30 @@
 	<div>이력서 등록</div>
 	<div class="notice">
 		<ul>
-			<li><img src="../../../images/reg.png" width="50" height="50">
+			<li>
+				<img src="../../../images/reg.png" width="50" height="50">
 			</li>
-			<li><em class="em1">[필수]</em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
-				반드시 기입해 주세요.</li>
-			<li>개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로
-				클릭하여 기입하신 정보를 저장하시기 바랍니다.</li>
-			<li>구직신청 후에는 기본으로 설정한 이력서와 자기소개서만 인재정보 검색서비스를 통해 구인업체에 공개됩니다.</li>
-			<li>기본으로 설정된 이력서와 자기소개서는 [미리보기] 기능을 통해 한 화면에서 조회·인쇄·파일로 저장할 수
-				있습니다.</li>
+			<li>
+				<em class="em1">[필수]</em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
+				반드시 기입해 주세요.
+			</li>
+			<li>
+				개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로
+				클릭하여 기입하신 정보를 저장하시기 바랍니다.
+			</li>
+			<li>
+				구직신청 후에는 기본으로 설정한 이력서와 자기소개서만 인재정보 검색서비스를 통해 구인업체에 공개됩니다.
+			</li>
+			<li>
+				기본으로 설정된 이력서와 자기소개서는 [미리보기] 기능을 통해 한 화면에서 조회·인쇄·파일로 저장할 수
+				있습니다.
+			</li>
 		</ul>
 	</div>
 
 	<form method="post" th:action="@{/user/user_resume(rno=${rno})}">
 		<div>
-			이력서 제목 <input type ="text" name ="rtitle"
+			이력서 제목 <em class="em1">[필수] </em><input type ="text" name ="rtitle"
 				placeholder ="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요)">
 		</div>
         <div>
@@ -31,12 +40,18 @@
         </div>
         <hr>
         <table>
-            <colgroup>
-                <col style="width: 110px;">
-                <col>
-                <col style="width: 110px;">
-                <col>
-            </colgroup>
+            <thead>
+                <tr>
+                    <th>포트폴리오</th>
+                    <th><input type="button" value="+ 항목추가" id="addRowButton6"></th>
+                </tr>
+            </thead>
+            <tbody id="portTableBody">
+	            
+            </tbody>
+        </table>
+        <hr>
+        <table>
             <tbody>
                 <tr>
                     <th scope="row">이름</th>
@@ -56,27 +71,30 @@
         </table>
         <table>
             <thead>
-                <th >주소</th>
-                <th >전화번호</th>
-                <th >이메일</th>
+            	<tr>
+	                <th >주소</th>
+	                <th >전화번호</th>
+	                <th >이메일</th>
+                </tr>
             </thead>
             <tbody>
-                <td ><span th:text="${user.uaddr}"></span></td>
-                <td ><span th:text="${user.tel}"></span></td>
-                <td ><span th:text="${user.email}"></span></td>
+            	<tr>
+	                <td ><span th:text="${user.uaddr}"></span></td>
+	                <td ><span th:text="${user.tel}"></span></td>
+	                <td ><span th:text="${user.email}"></span></td>
+                </tr>
             </tbody>
         </table>
         <hr>
-        학력사항
+        학력사항 <em class="em1">[필수]</em>
         <input type="button" value="+ 항목추가" id="addRowButton">
-        <hr>
         <table>
             <thead>
                 <tr>
-                    <th>학교명</th>
+                    <th>학력</th>
                     <th>기간</th>
                     <th>전공학과</th>
-                    <th>학점<em class="em1">[필수]</em></th>
+                    <th>학점</th>
                     <th>상태</th>
                     <th>삭제</th>
                 </tr>
@@ -98,13 +116,11 @@
                     </td>
                     <td>
                         <input type="date" name="accDate" id="accDate" title="입학일자" placeholder="yyyy.mm.dd" maxlength="10">
-                    <!--    <button type="button" id="accDateBtn">입학일자 버튼</button> -->
                         <span>~</span>
                         <input type="date" name="gradDate" id="gradDate" title="졸업일자" placeholder="yyyy.mm.dd" maxlength="10">
-                    <!--    <button type="button" id="gradDateBtn">졸업일자 버튼</button> -->
                     </td>
-                    <td><input type="text" name="major"></td>
-                    <td><input type="text" name="score"></td>
+                    <td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
+                    <td><input type="text" name="score" placeholder="내용을 입력해주세요."></td>
                     <td>
                         <select class="gradEndList" name="sstatus" title="선택">
                             <option value selected="selected">선택</option>
@@ -125,15 +141,17 @@
         <hr>
         경력사항
         <input type="button" value="+ 항목추가" id="addRowButton2">
-        <hr>
         <table>
             <thead>
                 <tr>
                     <th>회사명</th>
-                    <th>기간<em class="em1">[필수]</em></th>
-                    <th>직급<em class="em1">[필수]</em></th>
-                    <th>직책<em class="em1">[필수]</em></th>
+                    <th>기간</th>
+                    <th>직급</th>
+                    <th>직책</th>
                     <th>상태</th>
+                    <th>업종</th>
+                    <th>주요직무</th>
+                    <th>업무</th>
                     <th>삭제</th>
                 </tr>
             </thead>
@@ -141,38 +159,20 @@
                
             </tbody>
         </table>
-        <table>
-                <tr>
-                    <th>직종</th>
-                        <td>
-                            <input type="text" >업종
-                            <div>* '직종' 정보는 더 적합한 일자리 추천을 위한 분석 용도로만 사용되며, 기업회원에게 공개되지 않습니다.</div>
-                        </td>
-                    <th>주요직무 및 업무</th>
-                        <td>
-                            <input type="text" placeholder="내용을 입력해주세요.">
-                        </td>
-                </tr>
-        </table> 
-        <hr>
+	    <hr>
         사회 활동
         <input type="button" value="+ 항목추가" id="addRowButton3">
-        <hr>
         <table>
             <thead>
                 <tr>
+                    <th>기관</th>
                     <th>
-                        기관
+                        기간
                     </th>
                     <th>
-                        기간<em class="em1">[필수]</em>
+                        활동 내역
                     </th>
-                    <th>
-                        활동 내역<em class="em1">[필수]</em>
-                    </th>
-                    <th>
-                        삭제
-                    </th>
+                    <th>삭제</th>
                 </tr>
             </thead>
             <tbody id="experienceTableBody">
@@ -182,18 +182,15 @@
         <hr>
         보유자격 및 면허
         <input type="button" value="+ 항목추가" id="addRowButton4">
-        <hr>
         <table>
             <thead>
                 <tr>
+                    <th>구분</th>
                     <th>
-                        구분
+                        자격면허
                     </th>
                     <th>
-                        자격면허<em class="em1">[필수]</em>
-                    </th>
-                    <th>
-                        발급기관<em class="em1">[필수]</em>
+                        발급기관
                     </th>
                     <th>
                         취득일
@@ -209,10 +206,9 @@
         </table>
         <hr>
         보유 스킬
-        <hr>
         <input type="text" name="content" placeholder="내용을 입력해주세요.">
         <hr>
-        희망 직종
+        희망 직종 <em class="em1">[필수]</em>
         <hr>
         <ul>
             <li>
@@ -223,28 +219,28 @@
             </li>
             <li>
                 관심업종
-                <input type="text" name="sectors">    
+                <input type="text" name="sectors" placeholder="내용을 입력해주세요.">    
             </li>
             <li>
                 관심직무
-                <input type="text" name="job">
+                <input type="text" name="job" placeholder="내용을 입력해주세요.">
             </li>
         </ul>
         <hr>
-        자기소개서
+        자기소개서 <em class="em1">[필수]</em>
         <input type="button" value="+ 항목추가" id="addRowButton5">
-        <hr>
         <table>
             <tbody id="selfInfoTableBody">
-                <td>
-                    <input type="text" name="title" placeholder="항목명을 입력해주세요.">
-                    <button type="button" class="deleteRowButton5">삭제</button>
-                    <hr>
-                    <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
-                </td>
+                <tr>
+	                <td>
+	                    <input type="text" name="title" placeholder="제목을 입력해주세요.">
+	                    <button type="button" class="deleteRowButton5">삭제</button><br>
+	                    <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
+	                </td>
+                </tr>
             </tbody>
         </table>
-        
+        <hr>
         <div>
             <label for="openResume">이력서 공개 여부</label>
             <input type="checkbox" id="openResume" name="openResume">
@@ -253,7 +249,7 @@
         <input type="hidden" name="disclo" id="disclo" value="0">
 
         <input type="submit" value="이력서 저장">
-</form>
+	</form>
 <script th:inline="javascript">
 
     document.getElementById('addRowButton').addEventListener('click', function() {
@@ -278,8 +274,8 @@
                 <span>~</span>
                 <input type="date" name="gradDate" title="졸업일자" placeholder="yyyy.mm.dd" maxlength="10">
             </td>
-            <td><input type="text" name="major"></td>
-            <td><input type="text" name="score"></td>
+            <td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
+            <td><input type="text" name="score" placeholder="내용을 입력해주세요."></td>
             <td>
                 <select class="gradEndList" name="sstatus" title="선택">
                     <option value selected="selected">선택</option>
@@ -317,7 +313,7 @@
         var newRow = document.createElement('tr');
         newRow.innerHTML = `
             <td>
-                <input type="text" name="cName">
+                <input type="text" name="cName" placeholder="내용을 입력해주세요.">
             </td>
             <td>
                 <input type="date" name="startDate" id="startDate" title="입사일자" placeholder="yyyy.mm.dd" maxlength="10">
@@ -325,18 +321,27 @@
                 <input type="date" name="endDate" id="endDate" title="퇴사일자" placeholder="yyyy.mm.dd" maxlength="10">
             </td>
             <td>
-                <input type="text" name="rank" id="rank">
+                <input type="text" name="rank" id="rank" placeholder="내용을 입력해주세요.">
             </td>
             <td>
-                <input type="text" name="position" id="position">
+                <input type="text" name="position" id="position" placeholder="내용을 입력해주세요.">
             </td>
             <td>
                 <select class="careerList" name="status" title="상태선택">
                     <option value selected="selected">상태선택</option>
-                    <option value="0">퇴직</option>
-                    <option value="1">재직</option>
+                    <option value="퇴직">퇴직</option>
+                    <option value="재직">재직</option>
                 </select>
             </td>
+            <td>
+         		<input type="text" name="type" placeholder="내용을 입력해주세요.">
+  			</td>
+  			<td>
+     			<input type="text" name="position" placeholder="내용을 입력해주세요.">
+			</td>
+			<td>
+  				<input type="text" name="work" placeholder="내용을 입력해주세요.">
+			</td>
             <td>
                 <button type="button" class="deleteRowButton2">삭제</button>
             </td>
@@ -365,7 +370,7 @@
         var newRow = document.createElement('tr');
         newRow.innerHTML = `
             <td>
-                <input type="text" name="org" id="org">
+                <input type="text" name="org" id="org" placeholder="내용을 입력해주세요.">
             </td>
             <td>
                 <input type="date" name="startDay" id="startDay" title="시작일자" placeholder="yyyy.mm.dd" maxlength="10">
@@ -373,7 +378,7 @@
                 <input type="date" name="endDay" id="endDay" title="종료일자" placeholder="yyyy.mm.dd" maxlength="10">
             </td>
             <td>
-                <input type="text" placeholder="내용을 입력해주세요.">
+                <input type="text" name="econtent" placeholder="내용을 입력해주세요.">
             </td>
             <td>
                 <button type="button" class="deleteRowButton3">삭제</button>
@@ -406,15 +411,15 @@
         <td>
                     <select class="licenseList" name="type" title="구분">
                     	<option value selected="selected">구분</option>
-                        <option value="0">국가공인</option>
-                        <option value="1">민간공인</option>
+                        <option value="국가공인">국가공인</option>
+                        <option value="민간공인">민간공인</option>
                     </select>
                 </td>
                 <td>
-                    <input type="text" name="lname">
+                    <input type="text" name="lname" placeholder="내용을 입력해주세요.">
                 </td>
                 <td>
-                    <input type="text" name="lorg">
+                    <input type="text" name="lorg" placeholder="내용을 입력해주세요.">
                 </td>
                 <td>
                     <input type="date" name="getDate" id="getDate" title="취득일" placeholder="yyyy.mm.dd" maxlength="10">
@@ -457,12 +462,11 @@
         var tbody = document.getElementById('selfInfoTableBody');
         var newRow = document.createElement('tr');
         newRow.innerHTML = `
-                <td>
-                    <input type="text" name="title" placeholder="항목명을 입력해주세요.">
-                    <button type="button" class="deleteRowButton5">삭제</button>
-                    <hr>
-                    <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
-                </td>
+        	<td>
+	            <input type="text" name="title" placeholder="제목을 입력해주세요.">
+	            <button type="button" class="deleteRowButton5">삭제</button><br>
+	            <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
+        	</td>
         `;
         tbody.appendChild(newRow);
 
@@ -482,6 +486,38 @@
             }
         });
     });
+    
+    document.getElementById('addRowButton6').addEventListener('click', function() {
+        var tbody = document.getElementById('portTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
+        	<td>
+        		<input type="text" name="Field" placeholder="포트폴리오 url을 입력 하세요.">
+    		</td>
+    		<td>
+        		<button type="button" class="deleteRowButton6">삭제</button><br>
+    		</td>
+        `;
+        tbody.appendChild(newRow);
+
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton6').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
+            }
+        });
+    });
+
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton6').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
+        });
+    });
+    
+    
 
     
      function checkRequiredFields() {
@@ -491,7 +527,6 @@
          'sectors',
          'job',
          'rtitle',
-//         'disclo',
          'accDate',
          'gradDate',
          'eduName',
@@ -506,27 +541,27 @@
             return false;
         } 
     }
-    return true; // 모든 필수 입력 필드가 입력되었을 경우 
-}
+    	return true; // 모든 필수 입력 필드가 입력되었을 경우 
+	}
 
-// 제출 버튼 상태 업데이트 함수
-function updateSubmitButtonState() {
-    var submitButton = document.querySelector('input[type="submit"]');
-    if (checkRequiredFields()) {
-        submitButton.disabled = false; // 필수 입력 필드가 모두 입력되었을 경우 버튼 활성화
-    } else {
-        submitButton.disabled = true; // 필수 입력 필드 중 하나라도 입력되지 않았을 경우 버튼 비활성화
-    }
-}
-
-// 페이지 로드 시 제출 버튼 상태 업데이트
-updateSubmitButtonState();
-
-// 필수 입력 필드 값이 변경될 때마다 제출 버튼 상태 업데이트
-var requiredFields = document.querySelectorAll('[name="region1"], [name="sectors"], [name="job"], [name="rtitle"], [name="accDate"], [name="gradDate"], [name="eduName"], [name="title"], [name="scontent"]');
-requiredFields.forEach(function(field) {
-    field.addEventListener('input', updateSubmitButtonState);
-});
+	// 제출 버튼 상태 업데이트 함수
+	function updateSubmitButtonState() {
+	    var submitButton = document.querySelector('input[type="submit"]');
+	    if (checkRequiredFields()) {
+	        submitButton.disabled = false; // 필수 입력 필드가 모두 입력되었을 경우 버튼 활성화
+	    } else {
+	        submitButton.disabled = true; // 필수 입력 필드 중 하나라도 입력되지 않았을 경우 버튼 비활성화
+	    }
+	}
+	
+	// 페이지 로드 시 제출 버튼 상태 업데이트
+	updateSubmitButtonState();
+	
+	// 필수 입력 필드 값이 변경될 때마다 제출 버튼 상태 업데이트
+	var requiredFields = document.querySelectorAll('[name="region1"], [name="sectors"], [name="job"], [name="rtitle"], [name="accDate"], [name="gradDate"], [name="eduName"], [name="title"], [name="scontent"]');
+	requiredFields.forEach(function(field) {
+	    field.addEventListener('input', updateSubmitButtonState);
+	});
 
 </script>
 </body>
