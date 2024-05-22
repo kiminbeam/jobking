@@ -58,6 +58,7 @@
 			
 			<div class="jobad header">
 				<h3>[[${jobad.company.cname}]]</h3>
+				<h3>[[${avgReview}]]</h3>
 				<h1>[[${jobad.wantedTitle}]]</h1>
 			</div>
 			<div class="jobad company_info">
@@ -91,7 +92,11 @@
 						<th>업종</th>
 						<td>[[${jobad.sector1}]], [[${jobad.sector2}]]</td>
 						<th>상세공고</th>
-						<td>[[${jobad.jobCont}]]</td>
+						<td>
+							<ul>
+								<li th:each="jobCont : ${jobCont}">📌 [[${jobCont}]] </li>
+							</ul>
+						</td>
 					</tr>
 					<tr>
 						<th>채용 마감</th>
@@ -115,7 +120,11 @@
 						<th>병역특례채용희망</th>
 						<td>[[${jobad.mltsvcExcHope}]]</td>
 						<th>필요스킬</th>
-						<td>[[${jobad.needskill}]]</td>
+						<td>
+							<ul>
+								<li th:each="jobCont : ${jobSkill}">📌 [[${jobSkill}]] </li>
+							</ul>
+						</td>
 					</tr>
 					<tr>
 						<th>접수방법</th>
@@ -154,6 +163,7 @@
 						<td>[[${jobad.empTel}]]</td>
 					</tr>
 				</table>
+				키워드 : <ul><li th:each="jobKeyword : ${jobKeyword}">📌 [[${jobKeyword}]] </li></ul>
 			</div>
 		</div>
 	</main>
