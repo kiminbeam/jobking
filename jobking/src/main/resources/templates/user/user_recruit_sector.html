@@ -196,9 +196,9 @@
                 .then(response => response.json())
                 .then(data => {
                     let i = 0;
-                    while (i < data.data.length) {
+                    while (i < data.length) {
                         // 기본 도시 리스트 뿌려주기
-                        const city = Object.keys(data.data[i]);
+                        const city = Object.keys(data[i]);
                         cityEl.innerHTML += "<li class='cities' id='city" + i + "'>" + city + "</li>";
                         i++;
                     }
@@ -213,7 +213,7 @@
                             guContainer.innerHTML = "";
                             const cname = e.target.innerText;
                             const ccode = Number(e.target.id.slice(4));
-                            const gu = Object.values(data.data[ccode])[0];
+                            const gu = Object.values(data[ccode])[0];
                             region1Name = e.target.innerText;
 
                             // 이전에 클릭된 도시의 스타일을 원래대로 되돌리기
