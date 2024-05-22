@@ -1,22 +1,21 @@
 package com.example.jobking.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.example.jobking.dto.Humanlist;
 import com.example.jobking.entity.ApplyList;
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.CompanyReview;
@@ -27,12 +26,12 @@ import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.IApplyListRepository;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
-import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IInterviewListRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IUserRepository;
 import com.example.jobking.repository.IUserReviewRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,13 +58,47 @@ public class CompanyController {
 	}
 
 	@RequestMapping("/regi_jobadForm")
-	public String regiForm() {
+	public String regiForm(Model model) throws IOException {
+		
+		// job_category.json 데이터 읽어오기
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<Map<String, Object>> jobCategories = objectMapper.readValue(
+				new ClassPathResource("static/json/job_category.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+		model.addAttribute("jobCategories", jobCategories);
+
+		// job.json 데이터 읽어오기
+		List<Map<String, Object>> allJobs = objectMapper.readValue(
+				new ClassPathResource("static/json/job.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+		model.addAttribute("allJobs", allJobs);
+		
+		// sector_category.json 데이터 읽어오기
+        List<Map<String, Object>> sectorCategories = objectMapper.readValue(
+            new ClassPathResource("static/json/sector_category.json").getFile(),
+            new TypeReference<List<Map<String, Object>>>() {}
+        );
+        
+     // sector.json 데이터 읽어오기
+        List<Map<String, Object>> allSectors = objectMapper.readValue(
+            new ClassPathResource("static/json/sector.json").getFile(),
+            new TypeReference<List<Map<String, Object>>>() {}
+        );
+        
+        model.addAttribute("sectorCategories", sectorCategories);
+        model.addAttribute("allSectors", allSectors);
+		
+
 		return "/company/regi_jobadForm";
 	}
 
 	@RequestMapping("/regi_jobad")
 	public String regiAD(@RequestParam("jobCont") List<String> jobCont,
 			@RequestParam("needskill") List<String> needskill, @RequestParam("srchKeywordNm") String srchKeywordNm,
+			@RequestParam("startHour") int startHour, @RequestParam("startMinute") int startMinute,
+			@RequestParam("endHour") int endHour, @RequestParam("endMinute") int endMinute,
 			@ModelAttribute JobAd jobad) {
 
 		// 로그인 미구현으로 임시 코딩
@@ -73,6 +106,7 @@ public class CompanyController {
 		// *반드시 company테이블에 데이터가 있어야됨!
 		String cid = "1";
 		Optional<Company> com = comrepository.findById(cid);
+
 		if (com.isPresent()) {
 			jobad.setCompany(com.get());
 			jobad.setMltsvcExcHope("1");
@@ -88,6 +122,18 @@ public class CompanyController {
 			} catch (JsonProcessingException e) {
 				// 예외 처리
 			}
+			
+			Map<String, String> workTime = new HashMap<>();
+		    workTime.put("근무시작시간", String.format("%02d:%02d", startHour, startMinute));
+		    workTime.put("근무종료시간", String.format("%02d:%02d", endHour, endMinute));
+
+		    try {
+		        String workTimeJson = objectMapper.writeValueAsString(workTime);
+		        jobad.setWkdWkhCnt(workTimeJson); // WkdWkhCnt 필드에 JSON 저장
+		    } catch (JsonProcessingException e) {
+		        // 예외 처리
+		    }
+			
 			repository.save(jobad);
 		}
 
