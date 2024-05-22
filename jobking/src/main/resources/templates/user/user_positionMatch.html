@@ -16,16 +16,16 @@
 		<h1>마이페이지</h1>
 		<h3>포지션 매치</h3>
 		
-<!-- 		<table> -->
-			
-<!-- 			<tr th:each="offerList, offerListStat : ${offerList}"> -->
-<!-- 				<th>[[${offerListStat.count}]]</th> -->
-<!-- 				<td><a th:href="@{/user/user_offer_detail(ono=${offerList.ono})}">[[${offerList.title}]]</a></td> -->
-<!-- 				<td>[[${offerList.copName}]]</td> -->
-<!-- 				<td>[[${offerList.regdate}]]</td> -->
-<!-- 				<td>[[${offerList.accept}]]</td> -->
-<!-- 			</tr> -->
-<!-- 		</table> -->
+		<table>
+			<tr th:each="recentList : ${recentList}">
+				<th>[[${recentList.company.logo}]]</th>
+				<th>[[${recentList.company.cname}]]</th>
+				<th>[[${recentList.wantedTitle}]]</th>
+				<th>[[${recentList.receiptCloseDt}]]</th>
+			</tr>
+		</table>
+		
+
 	</div>
 </main>
 	<footer>

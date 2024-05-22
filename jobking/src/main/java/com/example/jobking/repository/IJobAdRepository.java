@@ -28,4 +28,7 @@ public interface IJobAdRepository extends JpaRepository<JobAd, Long> {
 	                                   @Param("sector2") String sector2,
 	                                   @Param("position1") String position1,
 	                                   @Param("position2") String position2);
+	 
+	 	@Query(value="SELECT * FROM jobAd where region1= :region1 and sectors= :sectors and job= :job", nativeQuery=true)
+	    List<JobAd> findMatchingAd(@Param("region1") String region1, @Param("sectors") String sectors,@Param("job") String job);
 }

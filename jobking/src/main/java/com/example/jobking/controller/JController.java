@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.CompanyReview;
+import com.example.jobking.entity.Hope;
 import com.example.jobking.entity.InterestCop;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.JobScrap;
@@ -442,8 +443,17 @@ public class JController {
 		return "redirect:/user/user_communityList";
 	}
 	@RequestMapping("/user_positionMatch")
-	public void userPositionMatch() {
-	
+	public void userPositionMatch(HttpServletRequest request, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		Resume defResume = resumeRepo.findDefByUid(uid);
+		Long rno = defResume.getRno();
+		Hope hope = hopeRepo.findByUidAndRno(uid, rno);
+		String job = hope.getJob();
+		String region1 = hope.getRegion1();
+		String sectors = hope.getSectors();
+		List<JobAd> list = jobadRepo.findMatchingAd(region1,sectors,job);
+        model.addAttribute("recentList", list);
+ 
 	}
 	
 }
