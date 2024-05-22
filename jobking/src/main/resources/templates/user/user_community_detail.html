@@ -4,75 +4,8 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
-<style>
-*{
-	list-style:none;
-}
-body{
-	margin-top: 100px;
-	line-height: 1.6
-}
-.container{
-	width: 1200px;
-	margin: 0 auto;
-}
-ul.tabs{
-	margin: 0px;
-	padding: 0px;
-	list-style: none;
-}
-ul.tabs li{
-	background: none;
-	color: #222;
-	display: inline-block;
-	padding: 10px 15px;
-	cursor: pointer;
-}
+<link rel="stylesheet" type="text/css" href="/css/user_community_detail.css">
 
-ul.tabs li.current{
-	background: #ededed;
-	color: #222;
-}
-
-.tab-content{
-	display: none;
-	background: #ededed;
-	padding: 15px;
-}
-
-.tab-content.current{
-	display:flex;
-}
-.tab-content .topCateogory{
-	display: flex;
-	flex-wrap: wrap;
-	width: 300px; /* 너비 조절 */ 
-    max-height: 150px; /* 최대 높이 설정 */
-    overflow-y: auto; /* 수직 스크롤바 추가 */ 
-    padding: 10px; /* 패딩 추가 */ 
- } 
-.topCateogory li{
-	margin: 10px; /* 아이템 간 간격 */
-} 
-.tab-content .category{
-	display: flex; 
-	flex-wrap: wrap; 
-	width: 800px; /* 너비 조절 */ 
-    max-height: 150px; /* 최대 높이 설정 */ 
-    overflow-y: auto; /* 수직 스크롤바 추가 */ 
-    padding: 10px; /* 패딩 추가 */ 
- } 
-/*  .gu li{ */
-/* 		margin-right: 15px; /* 아이템 간 간격 */ */
-/*              color: black; /* 글자색 설정 */  */
-/*  } */
-#regionFilter, #sectorFilter, #jobFilter {
-	display:flex;
-} 
-.tab-content .category li{
-	margin-right:15px;
-}
-</style>
 </head>
 <body>
 <header>
@@ -82,23 +15,24 @@ ul.tabs li.current{
 	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 		<div>
 			<div class="container">
-			<div>
-				<span>📢 공지사항  </span>
-				<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
-			</div>
-			<table>
+					<div class="alertTab">
+						<span>📢 [공지사항]  </span>
+						<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
+					</div>
+			<table class="content_container">
 				<tr> 
-					<th>[[${userBoard.title}]]</th>
+					<th id="title">[[${userBoard.title}]]</th>
 				</tr>
-				<tr> 
-					<td><span>[[${userBoard.regdate}]]</span><span>[[${userBoard.user.uname}]]</span> <a th:href="@{/user/user_communityForm_edit(ubno=${userBoard.ubno})}">수정하기</a>
-					<a th:href="@{/user/user_communityForm_delete(ubno=${userBoard.ubno})}">삭제하기</a></td>
+				<tr class="detail_container"> 
+					<td><span>[[${userBoard.regdate}]]</span><span>[[${userBoard.user.uname}]]</span> 
+					<a th:href="@{/user/user_communityForm_edit(ubno=${userBoard.ubno})}">✏️수정하기</a>
+					<a th:href="@{/user/user_communityForm_delete(ubno=${userBoard.ubno})}">❌삭제하기</a></td>
 				</tr>
 				<tr> 
 					<td>[[${userBoard.content}]]</td>
 				</tr>
 			</table>
-			<table>
+			<table class="reply_container">
 				<tr> 
 					<input type="text" placeholder="댓글을 작성해보세요">
 					<button onclick="">등록</button>

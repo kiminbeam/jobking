@@ -3,7 +3,12 @@
     margin: 0;
     padding: 0;
 }
-
+:root {
+   accent-color: red;
+    accent-color:#5729e9;
+    accent-color: rgb(0,200,0);
+    accent-color: hsl(228,4%,24%);
+}
 a {
     text-decoration: none;
     color: #333;
