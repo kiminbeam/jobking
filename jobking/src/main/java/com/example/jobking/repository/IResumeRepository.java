@@ -1,6 +1,7 @@
 package com.example.jobking.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,4 +30,7 @@ public interface IResumeRepository extends JpaRepository<Resume, Long> {
     Resume findByUserAndDef(@Param("user") User user, @Param("def") String def);
 
 	long countByDef(String def); 
+	
+	@Query("SELECT r FROM Resume r JOIN FETCH r.user WHERE r.user.uid = :uid AND r.rno = :rno")
+	Optional<Resume> findResumeWithUserById(@Param("uid") String uid, @Param("rno") Long rno);
 }
