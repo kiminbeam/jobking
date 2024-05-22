@@ -4,42 +4,58 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jobking.entity.AbgLoginTime;
+import com.example.jobking.entity.ApplyList;
+import com.example.jobking.entity.Career;
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.CompanyReview;
+import com.example.jobking.entity.Experience;
 import com.example.jobking.entity.Hope;
 import com.example.jobking.entity.InterestCop;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.JobScrap;
+import com.example.jobking.entity.License;
+import com.example.jobking.entity.Oa;
 import com.example.jobking.entity.OfferList;
 import com.example.jobking.entity.Resume;
+import com.example.jobking.entity.School;
+import com.example.jobking.entity.SelfInfo;
 import com.example.jobking.entity.User;
 import com.example.jobking.entity.UserBoard;
 import com.example.jobking.entity.UserReply;
 import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.IAbgLoginTimeRepository;
+import com.example.jobking.repository.IApplyListRepository;
+import com.example.jobking.repository.ICareerRepository;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
+import com.example.jobking.repository.IExperienceRepository;
 import com.example.jobking.repository.IHopeRepository;
 import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IJobScrapRepository;
+import com.example.jobking.repository.ILicenseRepository;
+import com.example.jobking.repository.IOaRepository;
 import com.example.jobking.repository.IOfferListRepository;
 import com.example.jobking.repository.IResumeRepository;
+import com.example.jobking.repository.ISchoolRepository;
+import com.example.jobking.repository.ISelfInfo;
 import com.example.jobking.repository.IUserBoardRepository;
 import com.example.jobking.repository.IUserReplyRepository;
 import com.example.jobking.repository.IUserRepository;
@@ -81,6 +97,20 @@ public class JController {
 	private IHopeRepository hopeRepo;
 	@Autowired
 	private IAbgLoginTimeRepository abgLoginRepo;
+	@Autowired
+	ISelfInfo selfinfoRepo;
+	@Autowired
+	ICareerRepository careerRepo;
+	@Autowired
+	IOaRepository oaRepo;
+	@Autowired
+	ISchoolRepository schoolRepo;
+	@Autowired
+	ILicenseRepository licenseRepo;
+	@Autowired
+	IExperienceRepository experienceRepo;
+	@Autowired
+	IApplyListRepository applyRepo;
 	private final Path rootLocation = Paths.get("/upload");
 	
 	
@@ -384,7 +414,7 @@ public class JController {
 		String uid = (String) request.getSession().getAttribute("id");
 		User user = userRepo.findById(uid).get();
 		List<Resume> resumeList = resumeRepo.findByUid(uid);
-		System.out.println(resumeList);
+		model.addAttribute("jno", request.getParameter("jno"));
 		model.addAttribute("resumeList", resumeList);
 	}
 	@RequestMapping("/user_myBoard_list")
@@ -478,6 +508,55 @@ public class JController {
 		String sectors = hope.getSectors();
 		List<JobAd> list = jobadRepo.findMatchingAd(region1,sectors,job);
         model.addAttribute("recentList", list);
+	}
+	@GetMapping("/user_resume_detailApply")
+	public void userResumeDetail(HttpServletRequest request, Model model, @RequestParam("rno") Long rno) {
+		String uid = (String) request.getSession().getAttribute("id");
+
+		Optional<Resume> resumeOpt = resumeRepo.findResumeWithUserById(uid, rno);
+		if (resumeOpt.isPresent()) {
+			Resume resume = resumeOpt.get();
+			model.addAttribute("resume", resume);
+
+			User user = resume.getUser();
+			model.addAttribute("user", user);
+
+			List<Career> careerList = careerRepo.findByResumeRno(rno);
+			model.addAttribute("careerList", careerList);
+
+			List<Experience> experienceList = experienceRepo.findByResumeRno(rno);
+			model.addAttribute("experienceList", experienceList);
+			
+			List<Hope> hopeList = hopeRepo.findByResumeRno(rno);
+	        model.addAttribute("hopeList", hopeList);
+
+	        List<License> licenseList = licenseRepo.findByResumeRno(rno);
+	        model.addAttribute("licenseList", licenseList);
+
+	        List<Oa> oaList = oaRepo.findByResumeRno(rno);
+	        model.addAttribute("oaList", oaList);
+
+	        List<SelfInfo> selfInfoList = selfinfoRepo.findByResumeRno(rno);
+	        model.addAttribute("selfInfoList", selfInfoList);
+
+	        List<School> schoolList = schoolRepo.findByResumeRno(rno);
+	        model.addAttribute("schoolList", schoolList);
+	        model.addAttribute("jno", request.getParameter("jno"));
+		}
+	}
+	
+	@RequestMapping("/user_apply")
+	public void userApply(HttpServletRequest request, @RequestBody String imgData) {
+		String uid = (String) request.getSession().getAttribute("id");
+		ApplyList al = new ApplyList();
+		request.getParameter("jno");
+		System.out.println(request.getParameter("jno"));
+//		al.setJobAd(null);
+//		al.setCid();
+//		al.setUser(userRepo.findById(uid).get());
+//		al.setStatus(0);
+//		al.setSave(imgData);
+//		applyRepo.save(al);
 	}
 	
 }

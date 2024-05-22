@@ -113,8 +113,6 @@
 					<tr>
 						<th>최소학력</th>
 						<td>[[${jobad.minEdubglcd}]]</td>
-						<th>최대학력</th>
-						<td>[[${jobad.maxEdubglcd}]]</td>
 					</tr>
 					<tr>
 						<th>병역특례채용희망</th>
@@ -145,8 +143,6 @@
 						<td>[[${jobad.attachFileUrl}]]</td>
 					</tr>
 					<tr>
-						<th>근무형태</th>
-						<td>[[${jobad.enterTpCd}]]</td>
 						<th>제출서류양식첨부</th>
 						<td>[[${jobad.attachFileUrl2}]]</td>
 					</tr>
@@ -193,7 +189,7 @@
 	}
 	//사이트내 지원서 제출시 팝업을 띄워서 어떤 이력서를 골라서 낼건지 선택하게 하기
 	function openPopUp(){
-		 window.open("http://localhost:8093/user/user_resumePick", "팝업 창", "width=600,height=400");
+		 window.open("http://localhost:8093/user/user_resumePick?jno="+[[${jobad.jno}]], "팝업 창", "width=600,height=400");
 	}
 	// 자체 양식 다운로드 버튼 클릭 시 처리
 	document.querySelector("#downloadFormBtn").addEventListener("click", function() {

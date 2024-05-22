@@ -45,7 +45,7 @@ public class ApplyList extends BaseEntity {
 	@Column(name = "status", nullable = false)
 	private int status;
 
-	@Column(name = "save", nullable = false)
+	@Column(name = "save", nullable = false, columnDefinition="TEXT")
 	private String save;
 	
 	
