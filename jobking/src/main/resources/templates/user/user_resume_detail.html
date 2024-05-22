@@ -38,8 +38,8 @@
       <div th:each="hope : ${hopeList}">
         <p>희망 지역: 
           <span th:text="${hope.region1}"></span>
-          <span th:if="${hope.region2 != null}">, </span><span th:text="${hope.region2}"></span>
-          <span th:if="${hope.region3 != null}">, </span><span th:text="${hope.region3}"></span>
+          <span th:if="${hope.region2 != null ? ', ${hope.region2}' : ''}"></span>
+          <span th:if="${hope.region3 != null ? ', ${hope.region3}' : ''}"></span>
         </p>
         <p>희망 직무: <span th:text="${hope.sectors}"></span></p>
         <p>희망 직종: <span th:text="${hope.job}"></span></p>
