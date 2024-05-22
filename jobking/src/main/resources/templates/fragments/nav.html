@@ -21,6 +21,9 @@
 			</th:block>
 			<th:block th:if="${session.id != null}">
 				<ul id="main_login_section2">
+					<th:block th:if="${session.newJobAd != null || session.offerList !=null}">
+						<li>🔔</li>
+					</th:block>
 					<li><a href="/user/user_logout">로그아웃</a></li>
 					<li><a href="/user/user_myPage">마이페이지</a></li>
 				</ul>
