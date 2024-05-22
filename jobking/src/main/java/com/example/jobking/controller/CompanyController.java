@@ -232,9 +232,9 @@ public class CompanyController {
 	// 면접자 합격여부 리스트 페이지
 	@RequestMapping("/com_interviewList")
 	public String interviewList(@RequestParam("cid") String cid, Model model) {
-		Optional<InterviewList> interviewlist = interviewRepository.findByCid(cid);
-		InterviewList interviewe = interviewlist.get();
-		model.addAttribute("interview", interviewe);
+		List<InterviewList> interviewlist = interviewRepository.findByCid(cid);
+		//InterviewList interviewe = interviewlist.get();
+		model.addAttribute("interview", interviewlist);
 
 		return "/company/com_interviewList";
 	}
@@ -268,7 +268,8 @@ public class CompanyController {
 
 	@Autowired
 	IUserReviewRepository uReviewRepository;
-
+	
+	//구직자에게 받은 기업 평점 + 지원자 평가 평점 보는 페이지
 	@RequestMapping("/com_reviewList")
 	public String findReviwer(@RequestParam("cid") String cid, Model model) {
 		// 기업이 유저에게 남긴 리뷰들 가져오는 기능
@@ -281,4 +282,13 @@ public class CompanyController {
 
 		return "/company/com_reviewList?cid=" + cid;
 	}
+	
+	
+	@RequestMapping("/com_reviewForm")
+	public String reviewForm(@RequestParam("uid") String uid, Model model) {
+		
+		model.addAttribute("uid", uid);
+		return "/company/com_reviewForm";
+	}
+	
 }

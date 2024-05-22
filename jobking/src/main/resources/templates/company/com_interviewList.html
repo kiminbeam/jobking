@@ -175,7 +175,7 @@
 						<div class="itvNow" th:text="${interviews.interview}" th:id="'itvNow_' + ${interviews.interviewno}"></div>
 						<div class="targetP" th:text="${interviews.pass}" th:id="'targetP_' + ${interviews.interviewno}"></div>
 						
-						<button class="interviewcheck" th:onclick="'changeInterviewStatus(' + ${interviews.interviewno} + ')'" >면접완료</button>
+						<button class="interviewcheck" th:data-interviewno="${interviews.interviewno}" th:data-uid="${interviews.user.uid}" onclick="changeInterviewStatus(this)">면접완료</button>
 						<button class="pass" th:onclick="'changePass(' + ${interviews.interviewno} + ')' ">합격</button>
 						<div id="ratingBtnContainer" th:id="'ratingBtnContainer_' + ${interviews.interviewno}"></div>
 					</div>
@@ -183,7 +183,9 @@
 		</div>
 		
 		<script>
-			function changeInterviewStatus(interviewNo){
+			function changeInterviewStatus(button){
+				var interviewNo = button.getAttribute('data-interviewno');
+				var uid = button.getAttribute('data-uid');
 				var xhr = new XMLHttpRequest();
 				var url = '/company/changeInterview?interviewno=' + interviewNo + '&status=2';
 				
@@ -194,18 +196,21 @@
 						if(xhr.status === 200) {
 							alert('면접 상태가 성공적으로 변경되었습니다.');
 							
-							document.getElementById('itvNow_' + interviewno).innerText ='2';
+							document.getElementById('itvNow_' + interviewNo).innerText ='2';
 							
 							//평점평가 하기 버튼 생성
-							var ratingBtnContainer = document.getElementById('ratingBtnContainer_' + interviewno);
-							var ratingBtn = document.createElement('button');
-							ratingBtn.innerText = '평점평가 하기';
-							ratingBtn.onclick = function() {
-								alert('평점평가로 이동합니다.');
-								//여기서 평점평가 페이지로 이동하는 코드 작성가능
-							};
-							ratingBtnContainer.appendChild(ratingBtn);
-							
+							var ratingBtnContainer = document.getElementById('ratingBtnContainer_' + interviewNo);
+							var existingBtn = document.getElementById('ratingBtn_' + interviewNo);
+							if(!existingBtn){ //버튼이 이미 없을 때만 생성
+								var ratingBtn = document.createElement('button');
+								ratingBtn.id = 'ratingBtn_' + interviewNo;
+								ratingBtn.innerText = '평점평가 하기';
+								ratingBtn.onclick = function() {
+									
+									window.location.href="/company/com_reviewForm?uid=" + uid;
+								};
+								ratingBtnContainer.appendChild(ratingBtn);
+							}
 						}else {
 							alert('요청이 실패하였습니다.');
 						}
