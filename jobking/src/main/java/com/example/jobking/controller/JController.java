@@ -117,26 +117,6 @@ public class JController {
 				abgLoginTime.setUser(userRepo.findById(uid).get());
 				abgLoginTime.setStartTime(new Date());
 				abgLoginRepo.save(abgLoginTime);
-				System.out.println("로그인 컨트롤러 실행~~~~~~~~~~~~~");
-				//구독기업이 유저가 마지막 로그인한 이후에 새 공고올렸는지 체크 후 알림보내주기
-				List<InterestCop> copList = interestRepo.findByUid(uid);
-				List<String> cidList = new ArrayList<>();
-				for(InterestCop ic : copList) {
-					String cid = ic.getCompany().getCid();
-					cidList.add(cid);
-					//유저가 마지막으로 로그인한 시간 이후로 구독한 기업이 새로 올린 공고가 있는지 체크
-					if(lastLogin != null) {
-						List<JobAd> newJobAd = jobadRepo.findNewAdAfterLastLogin(cid, lastLogin);
-						request.getSession().setAttribute("newJobAd", newJobAd);
-					}
-				}
-				//포지션제안받은게 있는지 체크 후 알림보내주기
-				if(lastLogin !=null) {
-					List<OfferList> offerList = offerListRepo.findOfferByUidAfterLastLogin(uid, lastLogin);
-					request.getSession().setAttribute("offerList", offerList);
-					System.out.println(offerList);
-					System.out.println(" --------------------------- ");
-				}
 			}
 		}else {
 			model.addAttribute("result", false);
@@ -156,8 +136,6 @@ public class JController {
 				request.getSession().setAttribute("name", company.get().getCname());
 				result = true;
 				model.addAttribute("result", true);
-				//먼저 기업유의 지난마지막 로그인 시간 구하기
-				Date lastLogin = abgLoginRepo.findLatestAbgLoginTime(cid).get().getEndTime();
 				////로그인시 avg_loginTime에 로그인 startTime넣어주기
 				AbgLoginTime abgLoginTime = new AbgLoginTime();
 				abgLoginTime.setCompany(companyRepo.findById(cid).get());
@@ -165,13 +143,6 @@ public class JController {
 				abgLoginRepo.save(abgLoginTime);
 				System.out.println("로그인 컨트롤러 실행~~~~~~~~~~~~~");
 				
-				//기업 유저가 마지막으로 로그인 한 후에 포지션제안한 것 중에 답이 온것이 있는지 체크 후 알림보내주기
-				if(lastLogin !=null) {
-					List<OfferList> offerList = offerListRepo.findReactedOfferByCidAfterLastLogin(cid, lastLogin);
-					request.getSession().setAttribute("offerList", offerList);
-					System.out.println(offerList);
-					System.out.println(" --------------------------- ");
-				}
 			}
 			
 		}else {
