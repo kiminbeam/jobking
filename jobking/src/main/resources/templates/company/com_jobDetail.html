@@ -282,14 +282,13 @@ body {
 						<div>
 							<h3>지원 자격</h3>
 							<p>경력: [[${detail.yofExperiences}]]</p>
-							<p>학력: [[${detail.minEdubglcd}]] 이상 ~
-								[[${detail.maxEdubglcd}]] 이하</p>
+							<p>학력: [[${detail.minEdubglcd}]] 이상
 						</div>
 						<div>
 							<h3>근무 조건</h3>
 							<p>고용 형태: [[${detail.empTpNm}]]</p>
-							<p>급여: [[${detail.salTpCd}]] [[${detail.salTpNm}]]</p>
-							<p>지역: [[${detail.regionCd}]]</p>
+							<p>급여: [[${detail.salTpCd}]] [[${detail.salTpNm}]] 만원</p>
+							<p>지역: [[${detail.region1}]] [[${detail.region2}]]</p>
 							<p>시간: [[${detail.WkdWkhCnt}]]</p>
 						</div>
 					</div>
@@ -301,7 +300,8 @@ body {
 					</div>
 					<div id="comsimpleinfo">
 						<h3>기업정보</h3>
-						<div>산업(업종) [[${detail.company.jobsCd}]]</div>
+						<div>[[${detail.company.cname}]]</div>
+						<div>산업(업종) [[${detail.company.sector}]]</div>
 						<div>사원수 [[${detail.company.employees}]]</div>
 						<div th:if="${detail.company.url != null}">홈페이지
 							[[${detail.company.url}]]</div>
@@ -323,8 +323,8 @@ body {
 					</thead>
 					<tbody>
 						<tr>
-							<td th:text="${detail.position}"></td>
-							<td th:text="${detail.regionCd}"></td>
+							<td th:text="${detail.position1}"></td>
+							<td th:text="${detail.region1}"></td>
 							<td>
 								<ul>
 									<li th:each="jobCont : ${jobContList}"><span
@@ -359,7 +359,7 @@ body {
 			</div>
 			<div>
 				<h3>근무 환경</h3>
-				<p>근무 지역 [[${detail.regionCd}]]</p>
+				<p>근무 지역 [[${detail.region1}]] [[${detail.region2}]]</p>
 				<p>복리 후생 [[${detail.etcWelfare}]]</p>
 			</div>
 		</div>

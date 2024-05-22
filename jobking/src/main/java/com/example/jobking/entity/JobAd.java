@@ -47,7 +47,7 @@ public class JobAd extends BaseEntity {
 	@Column(name = "sector2", nullable = false, length = 30)
 	private String sector2;
 
-	@Column(name = "wantedTitle", nullable = false, length = 50)
+	@Column(name = "wantedTitle", nullable = false, length = 100)
 	private String wantedTitle;
 
 	@Column(name = "position1", nullable = false, length = 30)
@@ -77,13 +77,10 @@ public class JobAd extends BaseEntity {
 	@Column(name = "minEdubglcd", nullable = false, length = 10)
 	private String minEdubglcd;
 
-	@Column(name = "maxEdubglcd", nullable = false, length = 10)
-	private String maxEdubglcd;
-
 	@Column(name = "mltsvcExcHope", nullable = false, length = 10)
 	private String mltsvcExcHope;
 
-	@Column(name = "needskill", length = 20)
+	@Column(name = "needskill", columnDefinition = "TEXT")
 	private String needskill;
 
 	@Column(name = "rcptMthd", length = 10)
@@ -95,7 +92,7 @@ public class JobAd extends BaseEntity {
 	@Column(name = "region2", nullable = false, length = 10)
 	private String region2;
 
-	@Column(name = "WkdWkhCnt", nullable = false, length = 2)
+	@Column(name = "WkdWkhCnt", nullable = false, length = 50)
 	private String WkdWkhCnt;
 
 	@Column(name = "retirepay", length = 30)
@@ -112,9 +109,6 @@ public class JobAd extends BaseEntity {
 
 	@Column(name = "srchKeywordNm", length = 30)
 	private String srchKeywordNm;
-
-	@Column(name = "enterTpCd", nullable = false, length = 20, columnDefinition = "VARCHAR(20)")
-	private String enterTpCd;
 
 	@Column(name = "salTpCd", nullable = false, length = 20, columnDefinition = "VARCHAR(20)")
 	private String salTpCd;
