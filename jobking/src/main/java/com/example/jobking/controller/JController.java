@@ -111,7 +111,7 @@ public class JController {
 				result = true;
 				model.addAttribute("result", true);
 				//먼저 유저의 지난마지막 로그인 시간 구하기
-				Date lastLogin = abgLoginRepo.findLatestAbgLoginTime(uid).get().getEndTime();
+//				Date lastLogin = abgLoginRepo.findLatestAbgLoginTime(uid).get().getEndTime();
 				////로그인시 avg_loginTime에 로그인 startTime넣어주기
 				AbgLoginTime abgLoginTime = new AbgLoginTime();
 				abgLoginTime.setUser(userRepo.findById(uid).get());
