@@ -23,10 +23,6 @@ public class CompanyReview extends BaseEntity {
     private Company company;
 
     @ManyToOne
-    @JoinColumn(name = "jno", referencedColumnName = "jno", nullable = false)
-    private JobAd jobAd;
-
-    @ManyToOne
     @JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
     private User user;
 

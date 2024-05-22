@@ -29,9 +29,12 @@ import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
 import com.example.jobking.repository.IInterviewListRepository;
 import com.example.jobking.repository.IJobAdRepository;
+import com.example.jobking.repository.IUserRepository;
 import com.example.jobking.repository.IUserReviewRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RequestMapping("/company")
 @Controller
@@ -289,6 +292,36 @@ public class CompanyController {
 		
 		model.addAttribute("uid", uid);
 		return "/company/com_reviewForm";
+	}
+	
+	@Autowired
+	IUserRepository userRepository;
+	
+	@RequestMapping("/saveUserReview")
+	public String saveUserReview(
+			@RequestParam("q1") String q1,
+			@RequestParam("q2") String q2,
+			@RequestParam("q3") String q3,
+			@RequestParam("feedback") String feedback,
+			HttpServletRequest request) {
+		
+		String cid = (String)request.getSession().getAttribute("id");
+		Company com = comrepository.findByCid(cid);
+		
+		String uid = request.getParameter("uid");
+		User user = userRepository.findByUid(uid);
+		
+		CompanyReview review = new CompanyReview();
+		review.setCompany(com);
+		review.setUser(user);
+		review.setQ1(q1);
+		review.setQ2(q2);
+		review.setQ3(q3);
+		review.setFeedback(feedback);
+		
+		
+		cReviewRepository.save(review);
+		return "redirect: /company/com_reviewList";
 	}
 	
 }
