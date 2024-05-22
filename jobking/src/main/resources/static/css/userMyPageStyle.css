@@ -101,6 +101,10 @@ table {
     background: #fff;
   }
 
+table a {
+  color: #3399ff;
+}  
+
   #group{
     position: absolute; top: 1000px; left: 560px;
     width: 1000px; height: 160px;
