@@ -41,8 +41,8 @@ form{
     margin-bottom: 10px;
 }
 #edit>li>img{
-    width: 30%;
-    margin: 0 auto;
+    width: 100px;
+    position: relative; left: 150px; 
     border-radius: 50%;
 }
 
