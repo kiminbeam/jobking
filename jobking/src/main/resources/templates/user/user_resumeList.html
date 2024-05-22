@@ -21,7 +21,9 @@
         <li>
             <span class="representative" th:if="${#strings.equals(resume.def, '1')}" 
                   style="display: inline;">(대표 이력서)</span> 
-            <span th:text="${resume.rtitle}"></span>
+            <a th:href="@{/user/user_resume_detail(rno=${resume.rno}, uid=${resume.user.uid})}">
+    			<span th:text="${resume.rtitle}"></span>
+			</a>
         </li>
         <li><img src="../../images/pen.png" width="50" height="50"></li>
         <li><img src="../../images/X.png" width="50" height="50"></li>
@@ -37,9 +39,7 @@
                     <input type="checkbox" th:id="'resumeCheckbox' + ${resumeIndex}"
                            th:data-resume-id="${resume.rno}"
                            onclick="toggleCheck(this)">
-                    <a th:href="@{/user/user_resume_detail(rno=${resume.rno}, uid=${resume.user.uid})}">
-    <span th:text="${resume.rtitle}"></span>
-</a>
+                   	<span th:text="${resume.rtitle}"></span>
                     <div th:each="selfInfo : ${selfinfoMap[resume.rno]}">
                         <span th:text="${selfInfo.title}"></span><br>
                         <span th:text="${selfInfo.scontent}"></span>
