@@ -250,4 +250,43 @@ public class KHController {
 		return "/user/user_resume_detail";
 	}
 
+	@RequestMapping("/user_resume_edit")
+    public String userResumeEdit(HttpServletRequest request, Model model, @RequestParam("rno") Long rno) {
+        String uid = (String) request.getSession().getAttribute("id");
+
+        Optional<Resume> resumeOpt = ResumeRepository.findResumeWithUserById(uid, rno);
+        if (resumeOpt.isPresent()) {
+            Resume resume = resumeOpt.get();
+            model.addAttribute("resume", resume);
+
+            User user = resume.getUser();
+            model.addAttribute("user", user);
+
+            List<Career> careerList = CareerRepository.findByResumeRno(rno);
+            model.addAttribute("careerList", careerList);
+
+            List<Experience> experienceList = ExperienceRepository.findByResumeRno(rno);
+            model.addAttribute("experienceList", experienceList);
+            
+            List<Hope> hopeList = HopeReository.findByResumeRno(rno);
+            model.addAttribute("hopeList", hopeList);
+
+            List<License> licenseList = LicenseRepository.findByResumeRno(rno);
+            model.addAttribute("licenseList", licenseList);
+
+            List<Oa> oaList = OaRepository.findByResumeRno(rno);
+            model.addAttribute("oaList", oaList);
+
+            List<SelfInfo> selfInfoList = SelfInfoRepository.findByResumeRno(rno);
+            model.addAttribute("selfInfoList", selfInfoList);
+
+            List<School> schoolList = SchoolRepository.findByResumeRno(rno);
+            model.addAttribute("schoolList", schoolList);
+        }
+
+        return "/user/user_resume_edit";
+    }
+
+	
+	
 }
