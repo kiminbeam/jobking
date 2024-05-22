@@ -168,7 +168,12 @@
 				</div><!--sidebar end-->
 				
 				<div class="board">
-					
+					<h3>기업 커뮤니티</h3>
+					<hr>
+					<div class="boardtab" th:each="list : ${list}">
+						<span th:text="${list.title}"></span>
+						<span th:text="${list.company.cname}"></span>
+					</div>
 				</div>
 				
 				
