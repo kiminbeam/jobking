@@ -5,19 +5,7 @@
     float: left;
     overflow: hidden;
 }
-#title_wrap{
-    width: 100%;
-    position: relative; top: 0; left: 180px;
-}
-.title1{
-    font: 900 20px/40px 'Pretendard-Regular';
-}
-.title2{
-    font: 900 16px/40px 'Pretendard-Regular';
-}
-.title3{
-    font: 900 14px/40px 'Pretendard-Regular';
-}
+
 table {
     border: 1px #c3c3c4 solid;
     font-size: .9em;
