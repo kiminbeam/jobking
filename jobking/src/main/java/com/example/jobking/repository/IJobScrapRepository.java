@@ -11,5 +11,5 @@ import com.example.jobking.entity.JobScrap;
 public interface IJobScrapRepository extends JpaRepository<JobScrap, Long> {
 
 	@Query(value="SELECT * FROM job_scrap where uid= :uid and jno = :jno", nativeQuery=true)
-	Optional<JobScrap> findByUidNJno(@Param("jno") Long jno, @Param("uid") String uid);
+	Optional<JobScrap> findByUidNJno(@Param("uid") String uid,@Param("jno") Long jno);
 }
