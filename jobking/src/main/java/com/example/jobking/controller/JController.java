@@ -190,7 +190,6 @@ public class JController {
 		request.getSession().invalidate();
 		return "/user/index";
 	}
-
 	
 	@RequestMapping("/user_recruit_region")
 	public void userRecruitRegion(Model model) {
@@ -198,7 +197,7 @@ public class JController {
 		model.addAttribute("jobadList", jobAdList);
 	}
 	@RequestMapping("/user_recruit_regionSearch")
-	public @ResponseBody String userRecruitRegionSearch(  @RequestParam(required = false, name = "region1Name") String region1Name,
+	public @ResponseBody List<JobAd> userRecruitRegionSearch(  @RequestParam(required = false, name = "region1Name") String region1Name,
 	        @RequestParam(required = false, name = "region2Name") String region2Name,
 	        @RequestParam(required = false, name = "sector1Name") String sector1Name,
 	        @RequestParam(required = false, name = "sector2Name") String sector2Name,
@@ -208,8 +207,9 @@ public class JController {
 		 List<JobAd> list = jobadRepo.findJobad(region1Name, region2Name, sector1Name,sector2Name,position1Name,position2Name);
 		 
 		 //list를 json형태로 해서 화면단에 보여주고 화면단에서 뿌려주기
-		
-		return "donee";
+		System.out.println(list);
+		System.out.println(list.size());
+		return list;
 	}
 
 	@RequestMapping("/user_recruit_job")
@@ -226,6 +226,7 @@ public class JController {
 		//해당 채용공고 정보 보내주기
 		JobAd jobad = jobadRepo.findById(jno).get();
 		model.addAttribute("jobad", jobad);
+		System.out.println(jobad);
 		//스크랩 여부 정보 보내주기
 		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(jno,uid);
 		if(checkS.isEmpty()) {
@@ -243,7 +244,7 @@ public class JController {
 	
 	}
 	@RequestMapping("/scrapJobad")
-	public @ResponseBody String scrapJobad(HttpServletRequest request, @RequestParam("jno") String jno) {
+	public @ResponseBody String scrapJobad(HttpServletRequest request, @RequestParam("jno") String jno, Model model) {
 		String uid = (String) request.getSession().getAttribute("id");
 		Optional<JobScrap> check = jobscrapRepo.findByUidNJno(Long.parseLong(jno),uid);
 		//만약 이미 등록된 공고가 있다면 삭제하기
