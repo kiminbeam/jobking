@@ -186,17 +186,28 @@ function loadSectorList() {
                 const sectorCateCode = data[i].코드;
                 const sectorCategory = data[i]["산업/업종명"];
                 if (sectorCategory != null) {
-                    sectorCateEl.innerHTML += "<li class='sectorCategory' id='sectorCategory" + sectorCateCode + "'>" + sectorCategory + "</li>";
+                    sectorCateEl.innerHTML += "<li class='sectorCategories' id='sectorCategory" + sectorCateCode + "'>" + sectorCategory + "</li>";
                 }
                 i++;
             }
+            let lastClickedSector1 = null;
+            let lastClickedSector2 = null;
             // 상위 카테고리 클릭 시 해당 카테고리 내 상세 직무 카테고리 뿌려주기
-            const sectorCategories = document.querySelectorAll(".sectorCategory");
+            const sectorCategories = document.querySelectorAll(".sectorCategories");
             sectorCategories.forEach(sectorCate => {
                 sectorCate.addEventListener("click", function(e) {
                     // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
                     sectorEl.innerHTML = "";
                     sector1Name = e.target.innerText;
+                    
+                 	// 이전에 클릭된 섹터의 스타일을 원래대로 되돌리기
+                    if (lastClickedSector1) {
+                    	lastClickedSector1.style.fontWeight = "normal";
+                    }
+
+                    // 현재 클릭된 섹터 폰트를 두껍게 설정
+                    e.target.style.fontWeight = "bold";
+                    lastClickedSector1 = e.target; // 현재 클릭된 도시를 추적
                     fetch('http://localhost:8093/json/sector.json')
                         .then(response => response.json())
                         .then(data => {
@@ -214,6 +225,15 @@ function loadSectorList() {
                                 sectorEl.addEventListener("click", function(e) {
                                     console.log(e.target);
                                     sector2Name = e.target.innerText;
+                                    // 이전에 클릭된 섹터의 스타일을 원래대로 되돌리기
+                                    if (lastClickedSector2) {
+                                    	lastClickedSector2.style.fontWeight = "normal";
+                                    }
+
+                                    // 현재 클릭된 섹터 폰트를 두껍게 설정
+                                    e.target.style.fontWeight = "bold";
+                                    lastClickedSector2 = e.target; // 현재 클릭된 섹터를 추적
+                                    
                                     // 섹터가 클릭되는 순간 탭이  지역로 넘어가게
                                     if (e.target.classList.contains("sectorEl")) {
                                         // sector 탭과 content 비활성화
@@ -244,11 +264,14 @@ function loadRegionList() {
             while (i < data.data.length) {
                 // 기본 도시 리스트 뿌려주기
                 const city = Object.keys(data.data[i]);
-                cityEl.innerHTML += "<li class='city' id='city" + i + "'>" + city + "</li>";
+                cityEl.innerHTML += "<li class='cities' id='city" + i + "'>" + city + "</li>";
                 i++;
             }
+            let lastClickedRegion1 = null;
+            let lastClickedRegion2 = null;
+
             // 도시 이름 클릭 시 도시 내 세부 행정구역 뿌려주기
-            const cities = document.querySelectorAll(".city");
+            const cities = document.querySelectorAll(".cities");
             cities.forEach(city => {
                 city.addEventListener("click", function(e) {
                     // 다른 도시 클릭 시마다 구 정보 칸 비워주기
@@ -257,6 +280,16 @@ function loadRegionList() {
                     const ccode = Number(e.target.id.slice(4));
                     const gu = Object.values(data.data[ccode])[0];
 					region1Name = e.target.innerText;
+					
+					 // 이전에 클릭된 도시의 스타일을 원래대로 되돌리기
+                    if (lastClickedRegion1) {
+                    	lastClickedRegion1.style.fontWeight = "normal";
+                    }
+
+                    // 현재 클릭된 도시의 폰트를 두껍게 설정
+                    e.target.style.fontWeight = "bold";
+                    lastClickedRegion1 = e.target; // 현재 클릭된 도시를 추적
+
                     let j = 0;
                     while (j < gu.length) {
                         const guName = gu[j];
@@ -268,6 +301,14 @@ function loadRegionList() {
                     guEls.forEach(guEl => {
                         guEl.addEventListener("click", function(e) {
                             region2Name = e.target.innerText;
+                            // 이전에 클릭된 구의 스타일을 원래대로 되돌리기
+                            if (lastClickedRegion2) {
+                            	lastClickedRegion2.style.fontWeight = "normal";
+                            }
+
+                            // 현재 클릭된 구의 폰트를 두껍게 설정
+                            e.target.style.fontWeight = "bold";
+                            lastClickedRegion2 = e.target; // 현재 클릭된 구를 추적
                             // 구가 클릭되는 순간 탭이 직무으로 넘어가게
                             if (e.target.classList.contains("guEl")) {
                                 // region 탭과 content 비활성화
@@ -298,16 +339,27 @@ function loadJobList() {
               const cateCode = item.코드;
               const jobCategory = item.상위직무;
               if (jobCategory != null) {
-                  jobCateEl.innerHTML += `<li class="jobCategory" id="jobCategory${cateCode}">${jobCategory}</li>`;
+                  jobCateEl.innerHTML += `<li class="jobCategories" id="jobCategory${cateCode}">${jobCategory}</li>`;
               }
           });
+          let lastClickedPosition1 = null;
+          let lastClickedPosition2 = null;
           // 상위 카테고리 클릭 시 해당 카테고리 내 상세 직무 카테고리 뿌려주기
-          const jobCategories = document.querySelectorAll(".jobCategory");
+          const jobCategories = document.querySelectorAll(".jobCategories");
           jobCategories.forEach(jobCate => {
               jobCate.addEventListener("click", function(e) {
                   // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
                   positionEl.innerHTML = "";
                   position1Name = e.target.innerText;
+                  // 이전에 클릭된 포지션의 스타일을 원래대로 되돌리기
+                  if (lastClickedPosition1) {
+                  	lastClickedPosition1.style.fontWeight = "normal";
+                  }
+
+                  // 현재 클릭된 포지션 폰트를 두껍게 설정
+                  e.target.style.fontWeight = "bold";
+                  lastClickedPosition1 = e.target; // 현재 클릭된 포지션을 추적
+                  
                   fetch('http://localhost:8093/json/job.json')
                       .then(response => response.json())
                       .then(data => {
@@ -325,6 +377,15 @@ function loadJobList() {
                               positionEl.addEventListener("click", function(e) {
                                   console.log(e.target);
                                   position2Name = e.target.innerText;
+                                  // 이전에 클릭된 포지션의 스타일을 원래대로 되돌리기
+                                  if (lastClickedPosition2) {
+                                  	lastClickedPosition2.style.fontWeight = "normal";
+                                  }
+
+                                  // 현재 클릭된 포지션 폰트를 두껍게 설정
+                                  e.target.style.fontWeight = "bold";
+                                  lastClickedPosition2 = e.target; // 현재 클릭된 포지션을 추적
+                                  
                                   //마지막요소이니 클릭되는 순간 검색 버튼 누른것 처럼 실행해주기
                                   searchList();
                               });

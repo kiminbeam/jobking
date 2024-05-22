@@ -29,6 +29,7 @@ import com.example.jobking.entity.UserReply;
 import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
+import com.example.jobking.repository.IHopeRepository;
 import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IJobScrapRepository;
@@ -71,6 +72,8 @@ public class JController {
 	private IUserBoardRepository userBoardRepo;
 	@Autowired
 	private IUserReplyRepository userReplyRepo;
+	@Autowired
+	private IHopeRepository hopeRepo;
 	private final Path rootLocation = Paths.get("/upload");
 	
 	
@@ -141,6 +144,9 @@ public class JController {
 		}else {
 			model.addAttribute("result", "false");
 		}
+		//개인평균평점 
+		Double avgReview = userReviewRepo.findAverageByUid(uid);
+		model.addAttribute("avgReview", String.format("%.2f", avgReview));
 	}
 	@RequestMapping("/user_information")
 	public void userInformation(HttpServletRequest request, Model model) {
@@ -226,7 +232,16 @@ public class JController {
 		//해당 채용공고 정보 보내주기
 		JobAd jobad = jobadRepo.findById(jno).get();
 		model.addAttribute("jobad", jobad);
-		System.out.println(jobad);
+		//해당 채용공고 직무설명 리스트 보내주기
+		model.addAttribute("jobCont", jobad.getJobContList());
+		//해당 채용공고 스킬리스트 보내주기
+		model.addAttribute("jobSkill", jobad.getNeedskillList());
+		//해당 채용공고 키워드리스트 보내주기
+		model.addAttribute("jobKeyword", jobad.getSrchKeywordNmList());
+		
+		//해당기업 별점 정보보내주기
+		Double avgReview = companyReviewRepo.findAverageByCid(jobad.getCompany().getCid());
+		model.addAttribute("avgReview", String.format("%.2f", avgReview));
 		//스크랩 여부 정보 보내주기
 		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(jno,uid);
 		if(checkS.isEmpty()) {
@@ -241,7 +256,6 @@ public class JController {
 		}else {
 			model.addAttribute("interest", true);
 		}
-	
 	}
 	@RequestMapping("/scrapJobad")
 	public @ResponseBody String scrapJobad(HttpServletRequest request, @RequestParam("jno") String jno, Model model) {
@@ -426,6 +440,10 @@ public class JController {
 	public String userCommunityFormDelete(@RequestParam("ubno") Long ubno) {
 		userBoardRepo.deleteById(ubno);
 		return "redirect:/user/user_communityList";
+	}
+	@RequestMapping("/user_positionMatch")
+	public void userPositionMatch() {
+	
 	}
 	
 }

@@ -15,6 +15,7 @@
 	<div>
 		<div>
 		<h1>마이페이지</h1>
+		<h2>[[${user.uname}]] 님의 평균 평점 : [[${avgReview}]]</h2>
 		<h3>회원정보</h3>
 			<img th:src="@{|/images/user/${user.fileName}|}" alt=""/>
 			<h2 th:text="${user.uname}"></h2>
