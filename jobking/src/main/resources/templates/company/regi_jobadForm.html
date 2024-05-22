@@ -134,9 +134,17 @@ input[type="submit"]:hover {
 		<input type="date" id="receiptCloseDt" name="receiptCloseDt" required>
 	</div>
 	<div class="form-group">
-		근무지역코드(임시)<input type="text" name="region1">
-		<input type="text" name="region2">
-	</div>
+        <label for="region1">근무 지역</label>
+        <select id="region1" name="region1" onchange="updateRegion2Options()">
+            <option value="">선택</option>
+            <option th:each="regionEntry : ${regions}"
+                    th:value="${regionEntry.key}"
+                    th:text="${regionEntry.key}"></option>
+        </select>
+        <select id="region2" name="region2">
+            <option value="">선택</option>
+        </select>
+    </div>
 	<div class="form-group" id="jobContContainer">
         <label for="jobCont">직무내용</label>
         <input type="text" class="jobContInput" name="jobCont">
@@ -162,18 +170,25 @@ input[type="submit"]:hover {
 	</div>
 	
 	<div class="form-group">
-		<label for="minEdubglcd">최소학력</label>
-		<input type="text" id="minEdubglcd" name="minEdubglcd">
-	</div>
+        <label for="minEdubglcd">학력제한</label>
+        <select id="minEdubglcd" name="minEdubglcd">
+            <option value="">선택</option>
+            <option th:each="eduCode : ${eduCodes}" th:value="${eduCode.학력}" th:text="${eduCode.학력}"></option>
+        </select>
+    </div>
 	<div class="form-group" id="needskillContainer">
         <label for="needskill">필요스킬</label>
         <input type="text" class="needskillInput" name="needskill">
         <button type="button" onclick="addInput('needskillContainer', 'needskillInput')">추가</button>
     </div>
-	<div class="form-group">
-		<label for="rcptMthd">접수방법</label>
-		<input type="text" id="rcptMthd" name="rcptMthd">
-	</div>
+	<div>
+			<p><strong>접수방법</strong></p>
+			<label for="option1">잡왕 이력서 지원</label>
+			<input type="radio" id="option1" name="rcptMthd" value="잡왕이력서지원">
+			<label for="option2">홈페이지 방문 지원</label> 
+			<input type="radio" id="option2" name="rcptMthd" value="홈페이지방문지원"> 
+			
+		</div><br>
 	<div class="form-group">
     <label for="startTime">근무 시작 시간:</label>
     <select id="startHour" name="startHour">
@@ -256,6 +271,7 @@ input[type="submit"]:hover {
     }
     
     function convertInputsToJson() {
+    	
         const jobContInputs = document.querySelectorAll('.jobContInput');
         const needskillInputs = document.querySelectorAll('.needskillInput');
         const srchKeywordNmInputs = document.querySelectorAll('.srchKeywordNmInput');
@@ -349,7 +365,8 @@ input[type="submit"]:hover {
     /*<![CDATA[*/
     const allJobs = /*[[${allJobs}]]*/ {};  
     const allSectors = /*[[${allSectors}]]*/ {};
-
+    const allRegions = /*[[${regions}]]*/ {};
+    
     function updatePosition2Options() {
         const position1Select = document.getElementById('position1');
         const position2Select = document.getElementById('position2');
@@ -390,6 +407,27 @@ input[type="submit"]:hover {
             });
         }
     }
+ 	
+    function updateRegion2Options() {
+        const region1Select = document.getElementById('region1');
+        const region2Select = document.getElementById('region2');
+        const selectedRegion1 = region1Select.value;
+
+        // region2 옵션 초기화
+        region2Select.innerHTML = '<option value="">선택</option>';
+
+        // region1에 해당하는 region2 옵션 추가
+        if (selectedRegion1) {
+            const districts = allRegions[selectedRegion1];
+            districts.forEach(district => {
+                const option = document.createElement('option');
+                option.value = district;
+                option.text = district;
+                region2Select.add(option);
+            });
+        }
+    }
+ 	
     /*]]>*/
     
     

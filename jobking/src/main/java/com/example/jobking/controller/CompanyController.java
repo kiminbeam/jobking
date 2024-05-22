@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,7 +61,7 @@ public class CompanyController {
 
 	@RequestMapping("/regi_jobadForm")
 	public String regiForm(Model model) throws IOException {
-		
+
 		// job_category.json 데이터 읽어오기
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<Map<String, Object>> jobCategories = objectMapper.readValue(
@@ -74,22 +76,39 @@ public class CompanyController {
 				new TypeReference<List<Map<String, Object>>>() {
 				});
 		model.addAttribute("allJobs", allJobs);
-		
+
 		// sector_category.json 데이터 읽어오기
-        List<Map<String, Object>> sectorCategories = objectMapper.readValue(
-            new ClassPathResource("static/json/sector_category.json").getFile(),
-            new TypeReference<List<Map<String, Object>>>() {}
-        );
-        
-     // sector.json 데이터 읽어오기
-        List<Map<String, Object>> allSectors = objectMapper.readValue(
-            new ClassPathResource("static/json/sector.json").getFile(),
-            new TypeReference<List<Map<String, Object>>>() {}
-        );
-        
-        model.addAttribute("sectorCategories", sectorCategories);
-        model.addAttribute("allSectors", allSectors);
-		
+		List<Map<String, Object>> sectorCategories = objectMapper.readValue(
+				new ClassPathResource("static/json/sector_category.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+
+		// sector.json 데이터 읽어오기
+		List<Map<String, Object>> allSectors = objectMapper.readValue(
+				new ClassPathResource("static/json/sector.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+
+		// korea-administrative-district.json 데이터 읽어오기
+		List<Map<String, Object>> regionData = objectMapper.readValue(
+				new ClassPathResource("static/json/korea-administrative-district.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+		Map<String, List<String>> regions = regionData.stream()
+				.collect(Collectors.toMap(map -> map.keySet().iterator().next(), // key 값 (서울특별시, 부산광역시 등)
+						map -> (List<String>) map.values().iterator().next() // value 값 (구, 군 리스트)
+				));
+
+		// eduCode.json 데이터 읽어오기
+		List<Map<String, Object>> eduCodes = objectMapper.readValue(
+				new ClassPathResource("static/json/eduCode.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+
+		model.addAttribute("eduCodes", eduCodes);
+		model.addAttribute("regions", regions);
+		model.addAttribute("sectorCategories", sectorCategories);
+		model.addAttribute("allSectors", allSectors);
 
 		return "/company/regi_jobadForm";
 	}
@@ -122,18 +141,20 @@ public class CompanyController {
 			} catch (JsonProcessingException e) {
 				// 예외 처리
 			}
-			
-			Map<String, String> workTime = new HashMap<>();
-		    workTime.put("근무시작시간", String.format("%02d:%02d", startHour, startMinute));
-		    workTime.put("근무종료시간", String.format("%02d:%02d", endHour, endMinute));
 
-		    try {
-		        String workTimeJson = objectMapper.writeValueAsString(workTime);
-		        jobad.setWkdWkhCnt(workTimeJson); // WkdWkhCnt 필드에 JSON 저장
-		    } catch (JsonProcessingException e) {
-		        // 예외 처리
-		    }
-			
+			Map<String, String> workTime = new HashMap<>();
+			workTime.put("근무시작시간", String.format("%02d:%02d", startHour, startMinute));
+			workTime.put("근무종료시간", String.format("%02d:%02d", endHour, endMinute));
+
+			try {
+				String workTimeJson = objectMapper.writeValueAsString(workTime);
+				jobad.setWkdWkhCnt(workTimeJson); // WkdWkhCnt 필드에 JSON 저장
+			} catch (JsonProcessingException e) {
+				// 예외 처리
+			}
+			// minEdubglcd 값 설정 (변경된 부분)
+			jobad.setMinEdubglcd(jobad.getMinEdubglcd());
+
 			repository.save(jobad);
 		}
 
@@ -151,21 +172,21 @@ public class CompanyController {
 	}
 
 	// 공고정보 상세보기
-		@RequestMapping("/com_jobDetail")
-		public String jobadDetail(@RequestParam("jno") Long jno, Model model) {
-		    Optional<JobAd> option = repository.findById(jno);
-		    if (option.isPresent()) {
-		        JobAd jobad = option.get();
-		        model.addAttribute("detail", jobad);
-		        model.addAttribute("jobContList", jobad.getJobContList()); 
-		        model.addAttribute("needskillList", jobad.getNeedskillList());
-		        model.addAttribute("srchKeywordNmList", jobad.getSrchKeywordNmList());
-		        return "/company/com_jobDetail";
-		    } else {
-		        // 해당하는 채용 공고가 없는 경우 처리
-		        return "redirect:/company/jobadList"; // 예시: 채용 공고 목록 페이지로 리다이렉트
-		    }
+	@RequestMapping("/com_jobDetail")
+	public String jobadDetail(@RequestParam("jno") Long jno, Model model) {
+		Optional<JobAd> option = repository.findById(jno);
+		if (option.isPresent()) {
+			JobAd jobad = option.get();
+			model.addAttribute("detail", jobad);
+			model.addAttribute("jobContList", jobad.getJobContList());
+			model.addAttribute("needskillList", jobad.getNeedskillList());
+			model.addAttribute("srchKeywordNmList", jobad.getSrchKeywordNmList());
+			return "/company/com_jobDetail";
+		} else {
+			// 해당하는 채용 공고가 없는 경우 처리
+			return "redirect:/company/jobadList"; // 예시: 채용 공고 목록 페이지로 리다이렉트
 		}
+	}
 
 	// 공고삭제
 	@RequestMapping("/com_jobdelete")
@@ -177,36 +198,134 @@ public class CompanyController {
 	}
 
 	// 공고수정폼
-	@RequestMapping("/com_modifyForm")
-	public String jobadModifyForm(@RequestParam("jno") Long jno, Model model) {
+	@GetMapping("/com_modifyForm")
+	public String jobadModifyForm(@RequestParam("jno") Long jno, Model model) throws IOException {
 
 		Optional<JobAd> option = repository.findById(jno);
-		JobAd jobad = option.get();
+		if (option.isPresent()) {
+			JobAd jobAd = option.get();
+			model.addAttribute("modify", jobAd);
 
-		model.addAttribute("modify", jobad);
+			// 근무 시간 JSON 파싱 및 시간, 분 추출
+			String workTimeJson = jobAd.getWkdWkhCnt();
+			if (workTimeJson != null) {
+				try {
+					Map<String, String> workTime = new ObjectMapper().readValue(workTimeJson, new TypeReference<>() {
+					});
+					String startTime = workTime.get("근무시작시간");
+					String endTime = workTime.get("근무종료시간");
+					model.addAttribute("startHour", startTime.split(":")[0]);
+					model.addAttribute("startMinute", startTime.split(":")[1]);
+					model.addAttribute("endHour", endTime.split(":")[0]);
+					model.addAttribute("endMinute", endTime.split(":")[1]);
+				} catch (JsonProcessingException e) {
+					// JSON 파싱 오류 처리
+				}
+			}
 
-		return "/company/com_modifyForm";
+			// job_category.json 데이터 읽어오기
+			ObjectMapper objectMapper = new ObjectMapper();
+			List<Map<String, Object>> jobCategories = objectMapper.readValue(
+					new ClassPathResource("static/json/job_category.json").getFile(),
+					new TypeReference<List<Map<String, Object>>>() {
+					});
+			model.addAttribute("jobCategories", jobCategories);
+
+			// job.json 데이터 읽어오기
+			List<Map<String, Object>> allJobs = objectMapper.readValue(
+					new ClassPathResource("static/json/job.json").getFile(),
+					new TypeReference<List<Map<String, Object>>>() {
+					});
+			model.addAttribute("allJobs", allJobs);
+
+			// sector_category.json 데이터 읽어오기
+			List<Map<String, Object>> sectorCategories = objectMapper.readValue(
+					new ClassPathResource("static/json/sector_category.json").getFile(),
+					new TypeReference<List<Map<String, Object>>>() {
+					});
+
+			// sector.json 데이터 읽어오기
+			List<Map<String, Object>> allSectors = objectMapper.readValue(
+					new ClassPathResource("static/json/sector.json").getFile(),
+					new TypeReference<List<Map<String, Object>>>() {
+					});
+
+			// korea-administrative-district.json 데이터 읽어오기
+			List<Map<String, Object>> regionData = objectMapper.readValue(
+					new ClassPathResource("static/json/korea-administrative-district.json").getFile(),
+					new TypeReference<List<Map<String, Object>>>() {
+					});
+			Map<String, List<String>> regions = regionData.stream()
+					.collect(Collectors.toMap(map -> map.keySet().iterator().next(), // key 값 (서울특별시, 부산광역시 등)
+							map -> (List<String>) map.values().iterator().next() // value 값 (구, 군 리스트)
+					));
+
+			// eduCode.json 데이터 읽어오기
+			List<Map<String, Object>> eduCodes = objectMapper.readValue(
+					new ClassPathResource("static/json/eduCode.json").getFile(),
+					new TypeReference<List<Map<String, Object>>>() {
+					});
+
+			model.addAttribute("eduCodes", eduCodes);
+			model.addAttribute("regions", regions);
+			model.addAttribute("sectorCategories", sectorCategories);
+			model.addAttribute("allSectors", allSectors);
+
+			model.addAttribute("modify", jobAd);
+
+		}
+			return "/company/com_modifyForm";
+		
 	}
 
 	// 공고수정
 	@RequestMapping("/com_modify")
-	public String jobadModify(@RequestParam("jno") Long jno, @ModelAttribute JobAd jobad) {
+	public String jobadModify(@RequestParam("jno") Long jno, @RequestParam("jobCont") List<String> jobCont,
+			@RequestParam("needskill") List<String> needskill, @RequestParam("srchKeywordNm") String srchKeywordNm,
+			@RequestParam("startHour") int startHour, @RequestParam("startMinute") int startMinute,
+			@RequestParam("endHour") int endHour, @RequestParam("endMinute") int endMinute,
+			@ModelAttribute JobAd jobad) {
+
 		// 로그인 미구현으로 임시 코딩
 		// 데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
 		// *반드시 company테이블에 데이터가 있어야됨!
 		String cid = "1";
 		Optional<Company> com = comrepository.findById(cid);
+
 		if (com.isPresent()) {
 			jobad.setCompany(com.get());
-			jobad.setJno(jno);
+			jobad.setMltsvcExcHope("1");
+			ObjectMapper objectMapper = new ObjectMapper();
+			try {
+				String jobContJson = objectMapper.writeValueAsString(jobCont);
+				String needskillJson = objectMapper.writeValueAsString(needskill);
+
+				// JobAd 객체에 JSON 문자열 설정
+				jobad.setJobCont(jobContJson);
+				jobad.setNeedskill(needskillJson);
+				jobad.setSrchKeywordNm(srchKeywordNm);
+			} catch (JsonProcessingException e) {
+				// 예외 처리
+			}
+
+			Map<String, String> workTime = new HashMap<>();
+			workTime.put("근무시작시간", String.format("%02d:%02d", startHour, startMinute));
+			workTime.put("근무종료시간", String.format("%02d:%02d", endHour, endMinute));
+
+			try {
+				String workTimeJson = objectMapper.writeValueAsString(workTime);
+				jobad.setWkdWkhCnt(workTimeJson); // WkdWkhCnt 필드에 JSON 저장
+			} catch (JsonProcessingException e) {
+				// 예외 처리
+			}
+			// minEdubglcd 값 설정 (변경된 부분)
+			jobad.setMinEdubglcd(jobad.getMinEdubglcd());
 
 			repository.save(jobad);
-
 		}
 
 		return "redirect:/company/jobadList";
 	}
-
 	// 지원자 리스트 불러오기
 	@RequestMapping("/com_applicantList")
 	public String applicantList(@RequestParam("cid") String cid, Model model) {
@@ -262,28 +381,27 @@ public class CompanyController {
 
 		return "/company/com_applicantList";
 	}
-/*
-	// 입사 지원자 상세 페이지
-	@RequestMapping("/com_resumeDetail")
-	public String resumeDetail(@RequestParam("uid") String uid, @RequestParam("jno") Long jno, Model model) {
-		ApplyList list = applyListRepository.findByUidAndJno(uid, jno);
-		JobAd jobad = repository.findByJno(jno);
 
-		User user = list.getUser();
-		String saveSelfIntro = list.getSave();
-
-		model.addAttribute("jobad", jobad);
-		model.addAttribute("user", user);
-		model.addAttribute("save", saveSelfIntro);
-
-		return "/company/com_resumeDetail?uid=" + uid;
-	}
-*/
+	/*
+	 * // 입사 지원자 상세 페이지
+	 * 
+	 * @RequestMapping("/com_resumeDetail") public String
+	 * resumeDetail(@RequestParam("uid") String uid, @RequestParam("jno") Long jno,
+	 * Model model) { ApplyList list = applyListRepository.findByUidAndJno(uid,
+	 * jno); JobAd jobad = repository.findByJno(jno);
+	 * 
+	 * User user = list.getUser(); String saveSelfIntro = list.getSave();
+	 * 
+	 * model.addAttribute("jobad", jobad); model.addAttribute("user", user);
+	 * model.addAttribute("save", saveSelfIntro);
+	 * 
+	 * return "/company/com_resumeDetail?uid=" + uid; }
+	 */
 	// 면접자 합격여부 리스트 페이지
 	@RequestMapping("/com_interviewList")
 	public String interviewList(@RequestParam("cid") String cid, Model model) {
 		List<InterviewList> interviewlist = interviewRepository.findByCid(cid);
-		//InterviewList interviewe = interviewlist.get();
+		// InterviewList interviewe = interviewlist.get();
 		model.addAttribute("interview", interviewlist);
 
 		return "/company/com_interviewList";
@@ -318,8 +436,8 @@ public class CompanyController {
 
 	@Autowired
 	IUserReviewRepository uReviewRepository;
-	
-	//구직자에게 받은 기업 평점 + 지원자 평가 평점 보는 페이지
+
+	// 구직자에게 받은 기업 평점 + 지원자 평가 평점 보는 페이지
 	@RequestMapping("/com_reviewList")
 	public String findReviwer(@RequestParam("cid") String cid, Model model) {
 		// 기업이 유저에게 남긴 리뷰들 가져오는 기능
@@ -332,33 +450,28 @@ public class CompanyController {
 
 		return "/company/com_reviewList?cid=" + cid;
 	}
-	
-	
+
 	@RequestMapping("/com_reviewForm")
 	public String reviewForm(@RequestParam("uid") String uid, Model model) {
-		
+
 		model.addAttribute("uid", uid);
 		return "/company/com_reviewForm";
 	}
-	
+
 	@Autowired
 	IUserRepository userRepository;
-	
+
 	@RequestMapping("/saveUserReview")
-	public String saveUserReview(
-			@RequestParam("q1") String q1,
-			@RequestParam("q2") String q2,
-			@RequestParam("q3") String q3,
-			@RequestParam("feedback") String feedback,
-			HttpServletRequest request) {
-		
-		//구현 단계 기업 로그인 기능 구현 X 
-		String cid = (String)request.getSession().getAttribute("id");
+	public String saveUserReview(@RequestParam("q1") String q1, @RequestParam("q2") String q2,
+			@RequestParam("q3") String q3, @RequestParam("feedback") String feedback, HttpServletRequest request) {
+
+		// 구현 단계 기업 로그인 기능 구현 X
+		String cid = (String) request.getSession().getAttribute("id");
 		Company com = comrepository.findByCid(cid);
-		
+
 		String uid = request.getParameter("uid");
 		User user = userRepository.findByUid(uid);
-		
+
 		CompanyReview review = new CompanyReview();
 		review.setCompany(com);
 		review.setUser(user);
@@ -366,32 +479,31 @@ public class CompanyController {
 		review.setQ2(q2);
 		review.setQ3(q3);
 		review.setFeedback(feedback);
-		
-		
+
 		cReviewRepository.save(review);
 		return "redirect: /company/com_reviewList";
 	}
-	
-	// 회사가 로그인 되어있는 상태에서 cid를 받아올려면 servletRequest 사용?? 
+
+	// 회사가 로그인 되어있는 상태에서 cid를 받아올려면 servletRequest 사용??
 	@RequestMapping("/com_info")
 	public String comInfo(@RequestParam("cid") String cid, Model model) {
-		
-		//String cid = (String)request.getSession().getAttribute("id");
-		
+
+		// String cid = (String)request.getSession().getAttribute("id");
+
 		Company com = comrepository.findByCid(cid);
-		
+
 		model.addAttribute("com", com);
-		
+
 		return "/company/com_info";
 	}
-	
+
 	@RequestMapping("/com_infoMod")
 	public String comInfoMod(@RequestParam("cid") String cid, Model model) {
-		
+
 		Company com = comrepository.findByCid(cid);
-		
+
 		model.addAttribute("com", com);
-		
+
 		return "/company/com_infoMod";
 	}
 }
