@@ -85,14 +85,16 @@ if([[${offer.accept}]].length ==0){
 		if(e.target == document.querySelector("#acceptBtn")){
 			if(confirm("정말로 이 제안을 수락하시겠습니까?")){
 				answer = 1;
+				document.querySelector("#acceptBtn").style.display="none";
+				document.querySelector("#rejectBtn").style.display="none";
 			}
 		}else{
 			if(confirm("정말로 이 제안을 거절하시겠습니까?")){
 				answer = 0;
+				document.querySelector("#acceptBtn").style.display="none";
+				document.querySelector("#rejectBtn").style.display="none";
 			}
 		}
-			document.querySelector("#acceptBtn").style.display="none";
-			document.querySelector("#rejectBtn").style.display="none";
 		  xhttp.open("GET", "answerToOffer?answer=" + answer+"&&ono="+ [[${offer.ono}]], true);
 		  xhttp.send();
 	})

@@ -35,7 +35,9 @@
 						</td>
 						<td>[[${offerList.copName}]]</td>
 						<td>[[${offerList.regdate}]]</td>
-						<td>[[${offerList.accept}]]</td>
+						<td th:if="${offerList.accept == '0'}">거절</td>
+						<td th:if="${offerList.accept == '1'}">수락</td>
+						<td th:unless="${offerList.accept == '0' or offerList.accept == '1'}">미답변</td>
 					</tr>
 				</table>
 			</div>
@@ -46,11 +48,5 @@
 	</div>
 </body>
 
-
-
-<script th:inline="javascript">
-
-
-</script>
 
 </html>
