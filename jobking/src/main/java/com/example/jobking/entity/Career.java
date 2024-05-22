@@ -1,6 +1,7 @@
 package com.example.jobking.entity;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,4 +60,22 @@ public class Career extends BaseEntity {
 
     @Column(name = "work")
     private String work;
+    
+    public String getCareerDuration() {
+        Period period = Period.between(startDate, endDate);
+        int years = period.getYears();
+        int months = period.getMonths();
+
+        StringBuilder sb = new StringBuilder();
+        if (years > 0) {
+            sb.append(years).append("년 ");
+        }
+        if (months > 0) {
+            sb.append(months).append("개월");
+        }
+
+        return sb.toString().trim(); // 불필요한 공백 제거
+    }
+    
+    
 }
