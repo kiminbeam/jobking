@@ -11,7 +11,7 @@
 
 <h1>이력서 선택하기</h1>
 <th:block th:each="resume : ${resumeList}">
-	<a th:href="@{/user/user_resume_detail(rno=${resume.rno})}">[[${resume.rtitle}]]</a>
+	<a th:href="@{/user/user_resume_detailApply(rno=${resume.rno},(jno=${jno}))}">[[${resume.rtitle}]]</a>
 </th:block>	
 
 

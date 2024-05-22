@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>이력서 상세</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body id="capture">
+  <button onclick="location.href='/user/user_resumePick'">뒤로가기</button>
+  <h2>이력서 상세</h2>
+
+  <div th:if="${resume != null}">
+    <h3 th:text="${resume.rtitle}"></h3>
+    <p>지원자: <span th:text="${user.uname}"></span> (<span th:text="${user.genderString}"></span>, <span th:text="${user.age}"></span>세)</p>
+    <p>이메일: <span th:text="${user.email}"></span></p>
+    <p>연락처: <span th:text="${user.tel}"></span></p>
+    <p>포트폴리오: <span th:text="${resume.portfolioUrl}"></span></p>
+
+    <div th:if="${not #lists.isEmpty(careerList)}">
+      <h3>경력</h3>
+      <div th:each="career : ${careerList}">
+        <p>회사명: <span th:text="${career.cName}"></span></p>
+        <p>재직기간: <span th:text="${career.careerDuration}"></span></p> 
+        <p>직급: <span th:text="${career.rank}"></span></p>
+        <p>직무: <span th:text="${career.position}"></span></p>
+        <p>담당업무: <span th:text="${career.work}"></span></p>
+      </div>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(experienceList)}">
+      <h3>경험</h3>
+      <div th:each="experience : ${experienceList}">
+        <p>기관/단체명: <span th:text="${experience.org}"></span></p>
+        <p>활동 기간: <span th:text="${#temporals.format(experience.startDay, 'yyyy-MM-dd')}"></span> ~ <span th:text="${#temporals.format(experience.endDay, 'yyyy-MM-dd')}"></span></p>
+        <p>내용: <span th:text="${experience.econtent}"></span></p>
+      </div>
+    </div>
+    
+    <div th:if="${not #lists.isEmpty(hopeList)}">
+      <h3>희망 근무 조건</h3>
+      <div th:each="hope : ${hopeList}">
+        <p>희망 지역: 
+          <span th:text="${hope.region1}"></span>
+          <span th:if="${hope.region2 != null ? ', ${hope.region2}' : ''}"></span>
+          <span th:if="${hope.region3 != null ? ', ${hope.region3}' : ''}"></span>
+        </p>
+        <p>희망 직무: <span th:text="${hope.sectors}"></span></p>
+        <p>희망 직종: <span th:text="${hope.job}"></span></p>
+      </div>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(licenseList)}">
+      <h3>자격증</h3>
+      <div th:each="license : ${licenseList}">
+        <p>자격증 종류: <span th:text="${license.type}"></span></p>
+        <p>자격증명: <span th:text="${license.lname}"></span></p>
+        <p>발행처: <span th:text="${license.org}"></span></p>
+        <p>취득일: <span th:text="${#temporals.format(license.getDate, 'yyyy-MM-dd')}"></span></p> 
+      </div>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(oaList)}">
+      <h3>수상 및 활동</h3>
+      <div th:each="oa : ${oaList}">
+        <p>활동 종류: <span th:text="${oa.type}"></span></p>
+        <p>활동 내용: <span th:text="${oa.content}"></span></p>
+      </div>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(selfInfoList)}">
+      <h3>자기소개</h3>
+      <div th:each="selfInfo : ${selfInfoList}">
+        <p>제목: <span th:text="${selfInfo.title}"></span></p>
+        <p>내용: <span th:text="${selfInfo.scontent}"></span></p>
+      </div>
+    </div>
+
+    <div th:if="${not #lists.isEmpty(schoolList)}">
+      <h3>학력</h3>
+      <div th:each="school : ${schoolList}">
+        <p>입학일: <span th:text="${#temporals.format(school.accDate, 'yyyy-MM-dd')}"></span></p>
+        <p>졸업일: <span th:text="${#temporals.format(school.gradDate, 'yyyy-MM-dd')}"></span></p>
+        <p>학력: <span th:text="${school.eduName} + ' 졸업'"></span></p>
+        <p>전공: <span th:text="${school.major}"></span></p>
+        <p>학점: <span th:text="${school.score}"></span></p>
+        <p>졸업 상태: <span th:text="${school.sstatus}"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <div th:if="${resume == null}">
+    <p>이력서를 찾을 수 없습니다.</p>
+  </div>
+  <button id="submit" >이력서 제출하기</button>
+  <button onclick="location.href='/user/user_resumePick'">뒤로가기</button>
+  
+  
+  <script th:inline="javascript">
+  document.getElementById('submit').addEventListener('click', function () {
+	  console.log("실행")
+	    html2canvas(document.getElementById('capture'), {
+	        onrendered: function(canvas) {
+	            const imgData = canvas.toDataURL('image/png');
+	           
+	            const link = document.createElement('a');
+	            link.download = 'capture.png';
+	            link.href = imgData;
+	            console.log(imgData)
+	            link.click();
+	            //ajax통해서 imgData보내주기
+	            //컨트롤러에서 받아서 지원내역테이블에 넣어주기
+	        }
+	    });
+	});
+
+  </script>
+</body>
+</html>
