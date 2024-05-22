@@ -15,6 +15,88 @@
 		</header>
 		<main>
 			<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+<<<<<<< HEAD
+			<aside></aside>
+
+			<div id="title_wrap">
+				<div class="title1 t">마이페이지</div>
+				<div class="title2 t">[[${user.uname}]] 님의 평균 평점 : [[${avgReview}]]</div>
+			</div>
+			<div id="userInfo">
+				<div class="title1 t1">회원정보</div>
+				<div id="info_wrap">
+					<img th:src="@{|/images/user/${user.fileName}|}" alt="" />
+					<div class="title2 uname" th:text="${user.uname}"></div>
+					<span class="title4">생년월일</span>
+					<span class="t4_detail" th:text="${user.birthDate}"></span>
+					<br>
+					<span class="title4">전화번호</span>
+					<span class="t4_detail" th:text="${user.tel}"></span>
+					<br>
+					<span class="title4">주소</span>
+					<span class="t4_detail" th:text="${user.uaddr}"></span>
+					<div id="button">
+						<a href="user_information">회원정보 수정</a>
+					</div>
+				</div>
+			</div>
+			<div>
+				<div class="title2 t2">이력서 관리</div>
+				<table>
+					<tr>
+						<th>번호</th>
+						<th>제목</th>
+						<th>대표</th>
+					</tr>
+					<tr th:each="resumeList, stat :${resumeList}">
+						<td>[[${stat.count}]]</td>
+						<td>[[${resumeList.rtitle}]]</td>
+						<td>[[${resumeList.def}]]</td>
+					</tr>
+				</table>
+			</div>
+
+			<ul id="group">
+				<li><img src="/images/구독기업.png" alt="">
+					<a>구독기업</a>
+				</li>
+				<li>
+					<img src="/images/스크랩공고.png" alt="">
+					<a>스크랩공고</a>
+				</li>
+				<li>
+					<img src="/images/받은제안관리.png" alt="">
+					<a>받은제안 관리</a>
+				</li>
+				<li>
+					<img src="/images/입사지원관리.png" alt="">
+					<a>입사지원 관리</a>
+				</li>
+				<li>
+					<img src="/images/희망근무조건.png" alt="">
+					<a>희망근무조건</a>
+				</li>
+				<li>
+					<img src="/images/최근본공고.png" alt="">
+					<a>최근 본 공고</a>
+				</li>
+				<li>
+					<img src="/images/평점관리.png" alt="">
+					<a>평점관리</a>
+				</li>
+				<li>
+					<img src="/images/커뮤니티관리.png" alt="">
+					<a>커뮤니티 관리</a>
+				</li>
+			</ul>
+	</div>
+	</div>
+	</main>
+	<footer>
+		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+	</footer>
+	</div>
+=======
 
 				<div id="title_wrap">
 					<div class="title1 t">마이페이지</div>
@@ -74,6 +156,7 @@
 			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 		</footer>
 	</div>
+>>>>>>> 2718be46ecdc3b0592f2ff4a4944583b659fdf61
 </body>
 
 
