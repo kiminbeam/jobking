@@ -143,8 +143,9 @@ footer{
 /* sidebar END */
 
 #title_wrap{
-    width: 100%;
-    position: relative; top: 0; left: 180px;
+    width: 500px;
+    position: absolute; top: 170px; left: 250px;
+    z-index: 99;
 }
 
 .title1{

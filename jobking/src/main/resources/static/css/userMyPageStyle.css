@@ -1,0 +1,99 @@
+
+#title_wrap{
+  width: 700px;
+}
+
+#userInfo{
+    width: 1000px; height: 250px;
+    background-color: #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.01), 0 6px 6px rgba(0,0,0,0.05);
+    border-radius: 30px;
+    border-top: 4px solid blue;
+    font: 500 15px/30px 'Pretendard-Regular';
+    position: relative; top: 140px; left: 560px;
+}
+
+
+.t1{
+  width: 100px; height: 30px;
+  position: absolute; top: 20px; left: 55px;
+  float: left;
+}
+
+.uname{
+  position: relative; top: 60px; left: 0;
+  font: 900 18px/40px 'Pretendard-Regular';
+}
+
+.t2{
+  width: 100px; height: 30px;
+  position: absolute; top: 580px ; left: 560px;
+}
+
+.title4{
+  position: relative; top: 60px;
+  font: 900 15px/30px 'Pretendard-Regular';
+  float: left;
+}
+
+.t4_detail{
+  position: relative; top: 60px; left: 20px; 
+}
+
+#info_wrap>img{
+  position: absolute; top: 70px; left: 30px;
+  width: 120px;
+  border-radius: 50%;
+}
+
+
+#button{
+    position: absolute; top: 200px; left: 865px;
+    width: 115px; height: 30px;
+    font: 500 15px/30px 'Pretendard-Regular';
+    border: 0;
+    background-color: #0057ff;
+    border-radius: 10px;
+}
+#button>a{
+	height: 30px;
+    text-align: center;
+    color: #fff;
+}
+  
+
+table {
+    border: 1px #c3c3c4 solid;
+    font-size: .9em;
+    width: 1000px;
+    border-collapse: collapse;
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative; top: 230px; left: 350px;
+  }
+  
+  th {
+    text-align: center;
+  }
+    
+  tr {
+    font-weight: bold;
+    color: #fff;
+    background: #3399ff;
+    font: 900 15px/30px 'Pretendard-Regular';
+  }
+    
+   td, th {
+    padding: 1em .5em;
+    vertical-align: middle;
+    text-align: center;
+    font: 500 15px/30px 'Pretendard-Regular';
+  }
+    
+   td {
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    background: #fff;
+  }
+
+
+

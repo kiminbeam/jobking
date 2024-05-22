@@ -1,65 +1,79 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/userMyPageStyle.css">
 </head>
 
 <body>
-<header>
-	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
-</header>
-<main>
-	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-	<div>
-		<div>
-		<h1>마이페이지</h1>
-		<h2>[[${user.uname}]] 님의 평균 평점 : [[${avgReview}]]</h2>
-		<h3>회원정보</h3>
-			<img th:src="@{|/images/user/${user.fileName}|}" alt=""/>
-			<h2 th:text="${user.uname}"></h2>
-			<span>생년월일</span> <span th:text="${user.birthDate}"></span>
-			<span>전화번호</span> <span th:text="${user.tel}"></span>
-			<span>주소</span> <span th:text="${user.uaddr}"></span>
-			<a href="user_information">회원정보 수정하기</a>
-		</div>
-		<div>
-			<h3>이력서 관리</h3>
-			<table>
-				<tr>
-					<th>번호</th>
-					<th>제목</th>
-					<th>대표</th>
-				</tr>
-				<tr th:each="resumeList, stat :${resumeList}">
-					<td>[[${stat.count}]]</td>
-					<td>[[${resumeList.rtitle}]]</td>
-					<td>[[${resumeList.def}]]</td>
-				</tr>
-			</table>
-		</div>
-		<div>
-		<table>
-			<tr>
-				<a>구독기업</a>
-				<a>스크랩공고</a>
-				<a>받은제안 관리</a>
-				<a>입사지원 관리</a>
-			</tr>
-			<tr>
-				<a>희망근무조건</a>
-				<a>최근 본 공고</a>
-				<a>평점관리</a>
-				<a>커뮤니티 관리</a>
-			</tr>
-		</table>
-		</div>
+	<div id="wrap">
+		<header>
+			<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+		</header>
+		<main>
+			<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+
+				<div id="title_wrap">
+					<div class="title1 t">마이페이지</div>
+					<div class="title2 t">[[${user.uname}]] 님의 평균 평점 : [[${avgReview}]]</div>
+				</div>
+				<div id="userInfo">
+					<div class="title1 t1">회원정보</div>
+					<div id="info_wrap">
+						<img th:src="@{|/images/user/${user.fileName}|}" alt="" />
+						<div class="uname" th:text="${user.uname}"></div>
+						<span class="title4">생년월일</span>
+						<span class="t4_detail" th:text="${user.birthDate}"></span>
+						<br>
+						<span class="title4">전화번호</span>
+						<span class="t4_detail" th:text="${user.tel}"></span>
+						<br>
+						<span class="title4">주소</span>
+						<span class="t4_detail" th:text="${user.uaddr}"></span>
+						<div id="button">
+							<a href="user_information">회원정보 수정</a>
+						</div>
+					</div>
+				</div>
+				<div>
+					<div class="title2 t2">이력서 관리</div>
+					<table>
+						<tr>
+							<th>번호</th>
+							<th>제목</th>
+							<th>대표</th>
+						</tr>
+						<tr th:each="resumeList, stat :${resumeList}">
+							<td>[[${stat.count}]]</td>
+							<td>[[${resumeList.rtitle}]]</td>
+							<td>[[${resumeList.def}]]</td>
+						</tr>
+					</table>
+				</div>
+					<table>
+						<tr>
+							<a>구독기업</a>
+							<a>스크랩공고</a>
+							<a>받은제안 관리</a>
+							<a>입사지원 관리</a>
+						</tr>
+						<tr>
+							<a>희망근무조건</a>
+							<a>최근 본 공고</a>
+							<a>평점관리</a>
+							<a>커뮤니티 관리</a>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</main>
+		<footer>
+			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+		</footer>
 	</div>
-</main>
-	<footer>
-		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
-	</footer>
 </body>
 
 
@@ -68,9 +82,10 @@
 
 
 
-// 	if([[${result}]] == "false"){
-// 		alert("등록된 이력서가 없습니다. 빠른 구직을 위하여 이력서를 등록해주세요");
-// 	}
-	
+	// 	if([[${result}]] == "false"){
+	// 		alert("등록된 이력서가 없습니다. 빠른 구직을 위하여 이력서를 등록해주세요");
+	// 	}
+
 </script>
+
 </html>
