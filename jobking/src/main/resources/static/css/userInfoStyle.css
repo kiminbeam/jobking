@@ -7,7 +7,7 @@ form{
     border-radius: 30px;
     border-top: 4px solid blue;
     font: 500 15px/30px 'Pretendard-Regular';
-    margin: 0 auto;
+    margin: 100px auto;
 }
 [type='text']{
     width: 100px;
@@ -41,8 +41,8 @@ form{
     margin-bottom: 10px;
 }
 #edit>li>img{
-    width: 30%;
-    margin: 0 auto;
+    width: 100px;
+    position: relative; left: 150px; 
     border-radius: 50%;
 }
 
