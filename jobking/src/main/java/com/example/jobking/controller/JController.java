@@ -6,14 +6,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.hibernate.internal.build.AllowSysOut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -260,18 +263,16 @@ public class JController {
 		model.addAttribute("jobadList", jobAdList);
 	}
 	@RequestMapping("/user_recruit_regionSearch")
-	public @ResponseBody List<JobAd> userRecruitRegionSearch(  @RequestParam(required = false, name = "region1Name") String region1Name,
+	public @ResponseBody List<JobAd> userRecruitRegionSearch(HttpServletRequest request, @RequestParam(required = false, name = "region1Name") String region1Name,
 	        @RequestParam(required = false, name = "region2Name") String region2Name,
 	        @RequestParam(required = false, name = "sector1Name") String sector1Name,
 	        @RequestParam(required = false, name = "sector2Name") String sector2Name,
 	        @RequestParam(required = false, name = "position1Name") String position1Name,
 	        @RequestParam(required = false, name = "position2Name") String position2Name) {
-	
+		String uid = (String) request.getSession().getAttribute("id");
+		System.out.println(uid);
 		 List<JobAd> list = jobadRepo.findJobad(region1Name, region2Name, sector1Name,sector2Name,position1Name,position2Name);
-		 
-		 //list를 json형태로 해서 화면단에 보여주고 화면단에서 뿌려주기
-		System.out.println(list);
-		System.out.println(list.size());
+
 		return list;
 	}
 
@@ -300,7 +301,7 @@ public class JController {
 		Double avgReview = companyReviewRepo.findAverageByCid(jobad.getCompany().getCid());
 		model.addAttribute("avgReview", String.format("%.2f", avgReview));
 		//스크랩 여부 정보 보내주기
-		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(jno,uid);
+		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(uid,jno);
 		if(checkS.isEmpty()) {
 			model.addAttribute("scrap", false);
 		}else {
@@ -317,7 +318,7 @@ public class JController {
 	@RequestMapping("/scrapJobad")
 	public @ResponseBody String scrapJobad(HttpServletRequest request, @RequestParam("jno") String jno, Model model) {
 		String uid = (String) request.getSession().getAttribute("id");
-		Optional<JobScrap> check = jobscrapRepo.findByUidNJno(Long.parseLong(jno),uid);
+		Optional<JobScrap> check = jobscrapRepo.findByUidNJno(uid, Long.parseLong(jno));
 		//만약 이미 등록된 공고가 있다면 삭제하기
 		if(!check.isEmpty()) {
 			jobscrapRepo.delete(check.get());
@@ -545,18 +546,23 @@ public class JController {
 		}
 	}
 	
-	@RequestMapping("/user_apply")
-	public void userApply(HttpServletRequest request, @RequestBody String imgData) {
-		String uid = (String) request.getSession().getAttribute("id");
+
+	@PostMapping("/user_apply")
+    public ResponseEntity<String> receiveData(HttpServletRequest request, @RequestBody Map<String, Object> payload) {
+        String imgData = (String) payload.get("imgData");
+        String sJno = (String) payload.get("jno");
+        Long jno = Long.parseLong(sJno);
+        String uid = (String) request.getSession().getAttribute("id");
 		ApplyList al = new ApplyList();
-		request.getParameter("jno");
-		System.out.println(request.getParameter("jno"));
-//		al.setJobAd(null);
-//		al.setCid();
-//		al.setUser(userRepo.findById(uid).get());
-//		al.setStatus(0);
-//		al.setSave(imgData);
-//		applyRepo.save(al);
-	}
-	
+		
+		al.setJobAd(jobadRepo.findById(jno).get());
+		al.setResume(resumeRepo.findById(jno).get());
+		al.setCompany(jobadRepo.findById(jno).get().getCompany());
+		al.setUser(userRepo.findById(uid).get());
+		al.setStatus(0);
+		al.setSave(imgData);
+		applyRepo.save(al);
+
+        return ResponseEntity.ok("Data received successfully");
+    }
 }

@@ -2,7 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>이력서 상세</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body id="capture">
@@ -97,21 +98,29 @@
   
   <script th:inline="javascript">
   document.getElementById('submit').addEventListener('click', function () {
-	  console.log("실행")
-	    html2canvas(document.getElementById('capture'), {
-	        onrendered: function(canvas) {
-	            const imgData = canvas.toDataURL('image/png');
-	           
-	            const link = document.createElement('a');
-	            link.download = 'capture.png';
-	            link.href = imgData;
-	            console.log(imgData)
-	            link.click();
-	            //ajax통해서 imgData보내주기
-	            //컨트롤러에서 받아서 지원내역테이블에 넣어주기
-	        }
-	    });
-	});
+      html2canvas(document.getElementById('capture')).then(function (canvas) {
+          const imgData = canvas.toDataURL('image/png');
+          const jno = [[${jno}]]; // 여기에 실제 jno 값을 넣어주세요.
+
+          // Ajax를 통해 imgData와 jno를 POST 방식으로 전송
+          $.ajax({
+              type: 'POST',
+              url: '/user/user_apply',
+              data: JSON.stringify({ imgData: imgData, jno: jno }),
+              contentType: 'application/json; charset=utf-8',
+              dataType: 'json',
+              success: function (response) {
+                  alert("성공적으로 지원이 완료되었습니다.");
+                  window.close();
+              },
+              error: function (error) {
+            	  alert("성공적으로 지원이 완료되었습니다.");
+            	  window.close();
+              }
+          });
+      });
+      
+  });
 
   </script>
 </body>
