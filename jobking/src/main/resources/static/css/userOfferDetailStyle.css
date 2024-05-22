@@ -1,0 +1,42 @@
+main{
+    height: 1000px;
+}
+
+table {
+    width: 1200px;
+    border-collapse: collapse;
+    border-top: 2px #c3c3c4 solid;
+    border-bottom: 2px #c3c3c4 solid;
+    position: relative; top: 150px; left: 200px;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px #c3c3c4 solid;
+}
+
+th {
+    font: 900 15px/30px 'Pretendard-Regular';
+    width: 30%;
+}
+td{
+    font: 500 15px/30px 'Pretendard-Regular';
+}
+
+#button{
+    width: 115px; height: 35px;
+    font: 500 15px/35px 'Pretendard-Regular';
+    border: 0;
+    color: #fff;
+    background-color: #0057ff;
+    border-radius: 10px;
+    position: absolute; top: 250px; left: 1500px;
+}
+
+#button>a{
+	color: #fff;
+	text-align: center;
+
+}
