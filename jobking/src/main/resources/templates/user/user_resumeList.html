@@ -37,7 +37,9 @@
                     <input type="checkbox" th:id="'resumeCheckbox' + ${resumeIndex}"
                            th:data-resume-id="${resume.rno}"
                            onclick="toggleCheck(this)">
-                    <span th:text="${resume.rtitle}"></span>
+                    <a th:href="@{/user/user_resume_detail(rno=${resume.rno}, uid=${resume.user.uid})}">
+    <span th:text="${resume.rtitle}"></span>
+</a>
                     <div th:each="selfInfo : ${selfinfoMap[resume.rno]}">
                         <span th:text="${selfInfo.title}"></span><br>
                         <span th:text="${selfInfo.scontent}"></span>

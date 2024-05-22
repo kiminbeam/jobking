@@ -9,4 +9,6 @@ import com.example.jobking.entity.SelfInfo;
 public interface ISelfInfo extends JpaRepository<SelfInfo, Integer> {
 
 	List<SelfInfo> findByUser_uid(String uid);
+	
+	List<SelfInfo> findByResumeRno(Long rno);
 }

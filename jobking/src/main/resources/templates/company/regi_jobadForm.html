@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>채용공고 등록</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> </head>
 <style>
 	body {
     font-family: Arial, sans-serif;
@@ -82,7 +83,6 @@ input[type="submit"]:hover {
 }
 
 </style>
-</head>
 <body>
 <h1>채용공고 등록</h1>
 <hr>
@@ -92,13 +92,39 @@ input[type="submit"]:hover {
 		<input type="text" id="wantedTitle" name="wantedTitle">
 	</div>
 	<div class="form-group">
-		<label for="position">모집직무</label>
-		<input type="text" id="position" name="position">
-	</div>
+            <label for="position1">모집직무</label>
+            <select id="position1" name="position1" onchange="updatePosition2Options()">
+                <option value="">선택</option>
+                <option th:each="jobCategory : ${jobCategories}" 
+                        th:value="${jobCategory.상위직무}" 
+                        th:text="${jobCategory.상위직무}"
+                        th:data-code="${jobCategory.코드}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="position2">상세모집직무</label>
+            <select id="position2" name="position2">
+                <option value="">선택</option>
+            </select>
+        </div>
 	<div class="form-group">
-		<label for="sectors">모집업종</label>
-		<input type="text" id="sectors" name="sectors">
-	</div>
+            <label for="sector1">모집업종</label>
+            <select id="sector1" name="sector1" onchange="updateSector2Options()">
+                <option value="">선택</option>
+                <option th:each="sectorCategory : ${sectorCategories}"
+                        th:value="${sectorCategory['산업/업종명']}"
+                        th:text="${sectorCategory['산업/업종명']}"
+                        th:data-code="${sectorCategory.코드}"></option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="sector2">상세모집업종</label>
+            <select id="sector2" name="sector2">
+                <option value="">선택</option>
+            </select>
+        </div>
 	<div class="form-group">
 		<label for="collectPsncnt">모집 인원</label>
 		<input type="number" id="collectPsncnt" name="collectPsncnt">
@@ -108,7 +134,8 @@ input[type="submit"]:hover {
 		<input type="date" id="receiptCloseDt" name="receiptCloseDt" required>
 	</div>
 	<div class="form-group">
-		근무지역코드(임시)<input type="text" name="regionCd">
+		근무지역코드(임시)<input type="text" name="region1">
+		<input type="text" name="region2">
 	</div>
 	<div class="form-group" id="jobContContainer">
         <label for="jobCont">직무내용</label>
@@ -123,7 +150,6 @@ input[type="submit"]:hover {
 			<option value="계약직">계약직</option>
 			<option value="파견직">파견직</option>
 		</select><br>
-		근무형태코드(임시) <input type="text" name="enterTpCd">
 	</div>
 	
 	<div class="form-group">
@@ -136,12 +162,8 @@ input[type="submit"]:hover {
 	</div>
 	
 	<div class="form-group">
-		<label for="minEdubglcd">최소학력조건</label>
+		<label for="minEdubglcd">최소학력</label>
 		<input type="text" id="minEdubglcd" name="minEdubglcd">
-	</div>
-	<div class="form-group">
-		<label for="maxEdubglcd">최대학력조건</label>
-		<input type="text" id="maxEdubglcd" name="maxEdubglcd">
 	</div>
 	<div class="form-group" id="needskillContainer">
         <label for="needskill">필요스킬</label>
@@ -153,13 +175,17 @@ input[type="submit"]:hover {
 		<input type="text" id="rcptMthd" name="rcptMthd">
 	</div>
 	<div class="form-group">
-		<label for="WkdWkhCnt">근무시간</label>
-		<select id="WkdWkhCnt" name="WkdWkhCnt">
-			<option value="1">1시간</option>
-			<option value="2">2시간</option>
-			<option value="3">3시간</option>
-		</select>
-	</div>
+    <label for="startTime">근무 시작 시간:</label>
+    <select id="startHour" name="startHour">
+        </select>
+    <select id="startMinute" name="startMinute">
+        </select>
+    <label for="endTime">근무 종료 시간:</label>
+    <select id="endHour" name="endHour">
+        </select>
+    <select id="endMinute" name="endMinute">
+        </select>
+</div>
 	<div class="form-group">
 		<label for="salTpCd">급여조건</label>
 		<select id="salTpCd" name="salTpCd">
@@ -205,7 +231,7 @@ input[type="submit"]:hover {
 	</div>
 	<input type="submit" value="등록하기">
 </form>
-<script>
+<script th:inline="javascript">
     function addInput(containerId, inputClass) {
         const container = document.getElementById(containerId);
 
@@ -319,6 +345,82 @@ input[type="submit"]:hover {
         // 선택된 키워드 JSON 업데이트
         document.getElementById('srchKeywordNmJson').value = JSON.stringify(selectedKeywords);
     }
+    
+    /*<![CDATA[*/
+    const allJobs = /*[[${allJobs}]]*/ {};  
+    const allSectors = /*[[${allSectors}]]*/ {};
+
+    function updatePosition2Options() {
+        const position1Select = document.getElementById('position1');
+        const position2Select = document.getElementById('position2');
+        const selectedPosition1Name = position1Select.value; // 선택된 산업/업종명
+        const selectedPosition1Code = position1Select.options[position1Select.selectedIndex].getAttribute('data-code');
+
+        // position2 옵션 초기화
+        position2Select.innerHTML = '<option value="">선택</option>';
+
+        // position1에 해당하는 position2 옵션 추가 (비교 연산 수정)
+        if (selectedPosition1Code) {
+            const filteredJobs = allJobs.filter(job => String(job["직무 상위 코드"]) === selectedPosition1Code); // 엄격한 비교(===) 사용
+            filteredJobs.forEach(job => {
+                const option = document.createElement('option');
+                option.value = job["직무 키워드명"];
+                option.text = job["직무 키워드명"];
+                position2Select.add(option);
+            });
+        }
+    }
+ 	// sector2 옵션 업데이트 함수
+    function updateSector2Options() {
+        const sector1Select = document.getElementById('sector1');
+        const sector2Select = document.getElementById('sector2');
+        const selectedSector1Name = sector1Select.value; // 선택된 산업/업종명
+        const selectedSector1Code = sector1Select.options[sector1Select.selectedIndex].getAttribute('data-code');
+        // sector2 옵션 초기화
+        sector2Select.innerHTML = '<option value="">선택</option>';
+
+        // sector1에 해당하는 sector2 옵션 추가
+        if (selectedSector1Code) {
+            const filteredSectors = allSectors.filter(sector => sector["상위코드"] == parseInt(selectedSector1Code, 10));
+            filteredSectors.forEach(sector => {
+                const option = document.createElement('option');
+                option.value = sector["산업/업종명"];
+                option.text = sector["산업/업종명"];
+                sector2Select.add(option);
+            });
+        }
+    }
+    /*]]>*/
+    
+    
+    // 근무 시간 옵션 생성 함수
+    function createHourOptions(selectId) {
+        const select = document.getElementById(selectId);
+        for (let i = 0; i <= 23; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i + '시';
+            select.add(option);
+        }
+    }
+
+    function createMinuteOptions(selectId) {
+        const select = document.getElementById(selectId);
+        for (let i = 0; i <= 59; i++) {
+            const option = document.createElement('option');
+            option.value = i;
+            option.text = i + '분';
+            select.add(option);
+        }
+    }
+
+    // 페이지 로드 시 옵션 생성
+    createHourOptions('startHour');
+    createMinuteOptions('startMinute');
+    createHourOptions('endHour');
+    createMinuteOptions('endMinute');
+
+    
 </script>
 
 <input type="hidden" id="jobContJson" name="jobCont">

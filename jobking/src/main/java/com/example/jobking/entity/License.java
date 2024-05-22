@@ -42,8 +42,8 @@ public class License extends BaseEntity {
 	@Column(name = "lname")
 	private String lname;
 
-	@Column(name = "org")
-	private String org;
+	@Column(name = "lorg")
+	private String lorg;
 
 	@Column(name = "getDate")
 	private LocalDate getDate;
