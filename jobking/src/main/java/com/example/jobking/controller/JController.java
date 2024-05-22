@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.jobking.entity.AbgLoginTime;
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.CompanyReview;
+import com.example.jobking.entity.Hope;
 import com.example.jobking.entity.InterestCop;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.JobScrap;
@@ -27,8 +31,10 @@ import com.example.jobking.entity.User;
 import com.example.jobking.entity.UserBoard;
 import com.example.jobking.entity.UserReply;
 import com.example.jobking.entity.UserReview;
+import com.example.jobking.repository.IAbgLoginTimeRepository;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
+import com.example.jobking.repository.IHopeRepository;
 import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IJobScrapRepository;
@@ -71,6 +77,10 @@ public class JController {
 	private IUserBoardRepository userBoardRepo;
 	@Autowired
 	private IUserReplyRepository userReplyRepo;
+	@Autowired
+	private IHopeRepository hopeRepo;
+	@Autowired
+	private IAbgLoginTimeRepository abgLoginRepo;
 	private final Path rootLocation = Paths.get("/upload");
 	
 	
@@ -100,6 +110,13 @@ public class JController {
 				request.getSession().setAttribute("name", user.get().getUname());
 				result = true;
 				model.addAttribute("result", true);
+				//먼저 유저의 지난마지막 로그인 시간 구하기
+				Date lastLogin = abgLoginRepo.findLatestAbgLoginTime(uid).get().getEndTime();
+				////로그인시 avg_loginTime에 로그인 startTime넣어주기
+				AbgLoginTime abgLoginTime = new AbgLoginTime();
+				abgLoginTime.setUser(userRepo.findById(uid).get());
+				abgLoginTime.setStartTime(new Date());
+				abgLoginRepo.save(abgLoginTime);
 			}
 		}else {
 			model.addAttribute("result", false);
@@ -119,7 +136,15 @@ public class JController {
 				request.getSession().setAttribute("name", company.get().getCname());
 				result = true;
 				model.addAttribute("result", true);
+				////로그인시 avg_loginTime에 로그인 startTime넣어주기
+				AbgLoginTime abgLoginTime = new AbgLoginTime();
+				abgLoginTime.setCompany(companyRepo.findById(cid).get());
+				abgLoginTime.setStartTime(new Date());
+				abgLoginRepo.save(abgLoginTime);
+				System.out.println("로그인 컨트롤러 실행~~~~~~~~~~~~~");
+				
 			}
+			
 		}else {
 			model.addAttribute("result", false);
 		}
@@ -141,6 +166,9 @@ public class JController {
 		}else {
 			model.addAttribute("result", "false");
 		}
+		//개인평균평점 
+		Double avgReview = userReviewRepo.findAverageByUid(uid);
+		model.addAttribute("avgReview", String.format("%.2f", avgReview));
 	}
 	@RequestMapping("/user_information")
 	public void userInformation(HttpServletRequest request, Model model) {
@@ -187,6 +215,11 @@ public class JController {
 	}
 	@RequestMapping("/user_logout")
 	public String userLogout(HttpServletRequest request) {
+		String uid = (String) request.getSession().getAttribute("id");
+	   //로그아웃시간 abgLoginTime에 넣어주기
+		AbgLoginTime alt = abgLoginRepo.findLatestAbgLoginTime(uid).get();
+		alt.setEndTime(new Date());
+		abgLoginRepo.save(alt);
 		request.getSession().invalidate();
 		return "/user/index";
 	}
@@ -226,7 +259,16 @@ public class JController {
 		//해당 채용공고 정보 보내주기
 		JobAd jobad = jobadRepo.findById(jno).get();
 		model.addAttribute("jobad", jobad);
-		System.out.println(jobad);
+		//해당 채용공고 직무설명 리스트 보내주기
+		model.addAttribute("jobCont", jobad.getJobContList());
+		//해당 채용공고 스킬리스트 보내주기
+		model.addAttribute("jobSkill", jobad.getNeedskillList());
+		//해당 채용공고 키워드리스트 보내주기
+		model.addAttribute("jobKeyword", jobad.getSrchKeywordNmList());
+		
+		//해당기업 별점 정보보내주기
+		Double avgReview = companyReviewRepo.findAverageByCid(jobad.getCompany().getCid());
+		model.addAttribute("avgReview", String.format("%.2f", avgReview));
 		//스크랩 여부 정보 보내주기
 		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(jno,uid);
 		if(checkS.isEmpty()) {
@@ -241,7 +283,6 @@ public class JController {
 		}else {
 			model.addAttribute("interest", true);
 		}
-	
 	}
 	@RequestMapping("/scrapJobad")
 	public @ResponseBody String scrapJobad(HttpServletRequest request, @RequestParam("jno") String jno, Model model) {
@@ -313,7 +354,6 @@ public class JController {
 	public void userOfferDetail(@RequestParam("ono") String ono, Model model) {
 		OfferList offer = offerListRepo.findById(Long.parseLong(ono)).get();
 		System.out.println(offer); 
-		
 		model.addAttribute("offer", offer);
 	}
 	@RequestMapping("/delete_offer_detail")
@@ -426,6 +466,18 @@ public class JController {
 	public String userCommunityFormDelete(@RequestParam("ubno") Long ubno) {
 		userBoardRepo.deleteById(ubno);
 		return "redirect:/user/user_communityList";
+	}
+	@RequestMapping("/user_positionMatch")
+	public void userPositionMatch(HttpServletRequest request, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		Resume defResume = resumeRepo.findDefByUid(uid);
+		Long rno = defResume.getRno();
+		Hope hope = hopeRepo.findByUidAndRno(uid, rno);
+		String job = hope.getJob();
+		String region1 = hope.getRegion1();
+		String sectors = hope.getSectors();
+		List<JobAd> list = jobadRepo.findMatchingAd(region1,sectors,job);
+        model.addAttribute("recentList", list);
 	}
 	
 }

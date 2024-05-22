@@ -43,7 +43,7 @@ public class NCompanyController {
     @Autowired
     private IHopeRepository hopeRepository;
 	
-	
+	/*
 	@RequestMapping("com_totalfind")
 	public String totalFind(Model model) {
 		
@@ -74,7 +74,7 @@ public class NCompanyController {
 		
 		return "company/com_totalfind";
 	}
-	
+	*/
 	
 	
 	

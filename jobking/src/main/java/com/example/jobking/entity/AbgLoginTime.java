@@ -38,6 +38,6 @@ public class AbgLoginTime {
     @Column(name = "startTime", nullable = false)
     private Date startTime;
 
-    @Column(name = "endTime", nullable = false)
+    @Column(name = "endTime")
     private Date endTime;
 }

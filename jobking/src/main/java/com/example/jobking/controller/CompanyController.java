@@ -29,9 +29,12 @@ import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
 import com.example.jobking.repository.IInterviewListRepository;
 import com.example.jobking.repository.IJobAdRepository;
+import com.example.jobking.repository.IUserRepository;
 import com.example.jobking.repository.IUserReviewRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 @RequestMapping("/company")
 @Controller
@@ -232,9 +235,9 @@ public class CompanyController {
 	// 면접자 합격여부 리스트 페이지
 	@RequestMapping("/com_interviewList")
 	public String interviewList(@RequestParam("cid") String cid, Model model) {
-		Optional<InterviewList> interviewlist = interviewRepository.findByCid(cid);
-		InterviewList interviewe = interviewlist.get();
-		model.addAttribute("interview", interviewe);
+		List<InterviewList> interviewlist = interviewRepository.findByCid(cid);
+		//InterviewList interviewe = interviewlist.get();
+		model.addAttribute("interview", interviewlist);
 
 		return "/company/com_interviewList";
 	}
@@ -268,7 +271,8 @@ public class CompanyController {
 
 	@Autowired
 	IUserReviewRepository uReviewRepository;
-
+	
+	//구직자에게 받은 기업 평점 + 지원자 평가 평점 보는 페이지
 	@RequestMapping("/com_reviewList")
 	public String findReviwer(@RequestParam("cid") String cid, Model model) {
 		// 기업이 유저에게 남긴 리뷰들 가져오는 기능
@@ -281,4 +285,43 @@ public class CompanyController {
 
 		return "/company/com_reviewList?cid=" + cid;
 	}
+	
+	
+	@RequestMapping("/com_reviewForm")
+	public String reviewForm(@RequestParam("uid") String uid, Model model) {
+		
+		model.addAttribute("uid", uid);
+		return "/company/com_reviewForm";
+	}
+	
+	@Autowired
+	IUserRepository userRepository;
+	
+	@RequestMapping("/saveUserReview")
+	public String saveUserReview(
+			@RequestParam("q1") String q1,
+			@RequestParam("q2") String q2,
+			@RequestParam("q3") String q3,
+			@RequestParam("feedback") String feedback,
+			HttpServletRequest request) {
+		
+		String cid = (String)request.getSession().getAttribute("id");
+		Company com = comrepository.findByCid(cid);
+		
+		String uid = request.getParameter("uid");
+		User user = userRepository.findByUid(uid);
+		
+		CompanyReview review = new CompanyReview();
+		review.setCompany(com);
+		review.setUser(user);
+		review.setQ1(q1);
+		review.setQ2(q2);
+		review.setQ3(q3);
+		review.setFeedback(feedback);
+		
+		
+		cReviewRepository.save(review);
+		return "redirect: /company/com_reviewList";
+	}
+	
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+
+<body>
+<header>
+	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+</header>
+<main>
+	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+	<div>
+		<h1>마이페이지</h1>
+		<h3>포지션 매치</h3>
+		
+		<table>
+			<tr th:each="recentList : ${recentList}">
+				<th>[[${recentList.company.logo}]]</th>
+				<th>[[${recentList.company.cname}]]</th>
+				<th>[[${recentList.wantedTitle}]]</th>
+				<th>[[${recentList.receiptCloseDt}]]</th>
+			</tr>
+		</table>
+		
+
+	</div>
+</main>
+	<footer>
+		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+	</footer>
+</body>
+
+
+
+<script th:inline="javascript">
+
+	
+</script>
+</html>
