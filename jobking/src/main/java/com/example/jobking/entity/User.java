@@ -1,6 +1,7 @@
 package com.example.jobking.entity;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,4 +55,14 @@ public class User extends BaseEntity {
 
     @Column(name = "file_size")
     private Long fileSize;
+    
+    public String getGenderString() {
+        return gender.equals("1") ? "여성" : "남성";
+    }
+
+    public int getAge() {
+        LocalDate currentDate = LocalDate.now(); // 현재 날짜
+        return Period.between(birthDate, currentDate).getYears(); // 나이 계산
+    }
+    
 }
