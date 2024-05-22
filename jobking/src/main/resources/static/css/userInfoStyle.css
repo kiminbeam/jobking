@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 form{
-    width: 900px; height: 500px;
+    width: 900px; height: 600px;
     background-color: #fff;
     box-shadow: 0 10px 20px rgba(0,0,0,0.01), 0 6px 6px rgba(0,0,0,0.05);
     border-radius: 30px;
@@ -9,45 +9,52 @@ form{
     font: 500 15px/30px 'Pretendard-Regular';
     margin: 0 auto;
 }
-
+[type='text']{
+    width: 100px;
+}
 
 [type='text'], [type='password']{
     margin-bottom: 3px;
-    width: 100px; height: 30px;
+    height: 30px;
     border: 1px solid darkgray;
     border-radius: 5px;
-    
+    text-align: center;
 }
 [type='password']{
-    width: 300px;
+    width: 200px;
 }
 [type='submit']{
-    width: 115px; height: 30px;
-    font: 500 15px/30px 'Pretendard-Regular';
+    position: relative; top: 10px;left: 150px;
+    width: 115px; height: 50px;
+    font: 500 15px/50px 'Pretendard-Regular';
     border: 0;
     color: #fff;
     background-color: #0057ff;
     border-radius: 10px;
 }
 #edit{
-    width: 500px; height: 100%;
-    margin: 0 auto;
+    width: 400px; height: 100%;
+    margin: 20px auto;
 }
 #edit>li{
     float: left;
+    margin-bottom: 10px;
 }
-
 #edit>li>img{
     width: 30%;
     margin: 0 auto;
     border-radius: 50%;
 }
 
+#uname, #gender, #birthDate, #uid, #submit{
+    width: 200px;
+}
+
 #photo{
     width: 100%;
 }
-.strongPassword-message{
-    width: 500px; height: 30px;
-    position: absolute; top: 500px; left: 500px;
+#photo>input{
+    font: 500 15px/50px 'Pretendard-Regular';
+    margin: 0 auto;
+    text-align: center;
 }
-

@@ -25,19 +25,37 @@
                         <li><img th:src="@{|/images/user/${user.fileName}|}" alt="" /></li>
                         <li style="display:none;"><a th:href="@{|/images/${user.fileName}|}">[[${user.fileName}]]</a>
                         </li>
-                        <li id="photo"><input type="file" name="photo"></li>
-                        <li>이름 <input type="text" name="uname" th:value="${user.uname}"></li>
-                        <li>성별 <input type="text" name="gender" th:value="${user.gender}" disabled> </li>
-                        <li>생년월일 <input type="text" name="birthDate" th:value="${user.birthDate}" disabled> </li>
-                        <li>아이디 <input type="text" name="uid" th:value="${user.uid}" disabled></li>
-                        <li>비밀번호 <input type="password" name="upw" placeholder="비밀번호*" id="upw"></li>
-                        <div class="strongPassword-message hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요</div>
-                        <li>비밀번호 확인 <input type="password" name="upw2" placeholder="비밀번호확인*" id="upw2"></li>
-                        <li id="upw-msg"></li>
-                        <li>주소 <input type="text" name="uaddr" th:value="${user.uaddr}"></li>
-                        <li>전화번호 <input type="text" name="tel" th:value="${user.tel}"></li>
-                        <li>이메일 <input type="text" name="email" th:value="${user.email}"></li>
-                        <li><input type="submit" value="수정하기"></li>
+                        <li id="photo">
+                            <input type="file" name="photo">
+                        </li>
+                        <li id="uname">
+                            이름 <input type="text" name="uname" th:value="${user.uname}">
+                        </li>
+                        <li id="gender">
+                            성별 <input type="text" name="gender" th:value="${user.gender}" disabled>
+                        </li>
+                        <li id="birthDate">
+                            생년월일 <input type="text" name="birthDate" th:value="${user.birthDate}" disabled>
+                        </li>
+                        <li id="uid">
+                            아이디 <input type="text" name="uid" th:value="${user.uid}" disabled>
+                        </li>
+                        <li id="upw_wrap">
+                            비밀번호 <input type="password" name="upw" placeholder="비밀번호*" id="upw">
+                        </li>
+                        <li id="upw2_wrap">
+                            비밀번호 확인 <input type="password" name="upw2" placeholder="비밀번호확인*" id="upw2">
+                        </li>
+                        <li id="uaddr">
+                            주소 <input type="text" name="uaddr" th:value="${user.uaddr}" style="width: 200px;">
+                        </li>
+                        <li id="tel">
+                            전화번호 <input type="text" name="tel" th:value="${user.tel}" style="width: 200px;">
+                        </li>
+                        <li id="email">
+                            이메일 <input type="text" name="email" th:value="${user.email}" style="width: 200px;">
+                        </li>
+                        <li id="submit"><input type="submit" value="수정하기"></li>
                     </ul>
                 </form>
             </div>
@@ -46,52 +64,6 @@
             <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
         </footer>
     </div>
-
-    <script>
-        // 	 비밀번호 1과 2와 같은지 확인하는 코드
-        const upw = document.getElementById("upw");
-        const upw2 = document.getElementById("upw2");
-
-        upw2.addEventListener('input', function () {
-            const upwInput = upw.value;
-            const upw2Input = upw2.value;
-
-            if (upwInput === upw2Input) {
-                document.getElementById("upw-msg").innerText = "비밀번호 입력이 완료되었습니다."
-            } else {
-                document.getElementById("upw-msg").innerText = "비밀번호가 같지 않습니다."
-            }
-        });
-
-
-
-        // 실패 메시지 정보 가져오기 (8글자 이상, 영문, 숫자, 특수문자 미사용)
-        let elStrongPasswordMessage = document.querySelector('.strongPassword-message');
-
-        function strongPassword(str) {
-            return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
-        }
-
-        upw.onkeyup = function () {
-            console.log(upw.value);
-            // 값을 입력한 경우
-            if (upw.value.length !== 0) {
-                if (strongPassword(upw.value)) {
-                    elStrongPasswordMessage.classList.add('hide'); // 실패 메시지가 가려져야 함
-                }
-                else {
-                    elStrongPasswordMessage.classList.remove('hide'); // 실패 메시지가 보여야 함
-                }
-            }
-            // 값을 입력하지 않은 경우 (지웠을 때)
-            // 모든 메시지를 가린다.
-            else {
-                elStrongPasswordMessage.classList.add('hide');
-            }
-        };
-
-
-    </script>
 </body>
 
 </html>
