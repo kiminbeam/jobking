@@ -27,6 +27,7 @@ import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.IApplyListRepository;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
+import com.example.jobking.repository.IInterestCopRepository;
 import com.example.jobking.repository.IInterviewListRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IUserRepository;
@@ -305,6 +306,7 @@ public class CompanyController {
 			@RequestParam("feedback") String feedback,
 			HttpServletRequest request) {
 		
+		//구현 단계 기업 로그인 기능 구현 X 
 		String cid = (String)request.getSession().getAttribute("id");
 		Company com = comrepository.findByCid(cid);
 		
@@ -324,4 +326,26 @@ public class CompanyController {
 		return "redirect: /company/com_reviewList";
 	}
 	
+	// 회사가 로그인 되어있는 상태에서 cid를 받아올려면 servletRequest 사용?? 
+	@RequestMapping("/com_info")
+	public String comInfo(@RequestParam("cid") String cid, Model model) {
+		
+		//String cid = (String)request.getSession().getAttribute("id");
+		
+		Company com = comrepository.findByCid(cid);
+		
+		model.addAttribute("com", com);
+		
+		return "/company/com_info";
+	}
+	
+	@RequestMapping("/com_infoMod")
+	public String comInfoMod(@RequestParam("cid") String cid, Model model) {
+		
+		Company com = comrepository.findByCid(cid);
+		
+		model.addAttribute("com", com);
+		
+		return "/company/com_infoMod";
+	}
 }
