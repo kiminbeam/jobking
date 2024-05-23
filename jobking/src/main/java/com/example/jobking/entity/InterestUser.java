@@ -18,30 +18,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Data
-@Table(name = "selfInfo")
-public class SelfInfo extends BaseEntity {
+@Table(name = "interest_user")
+public class InterestUser extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "sino", nullable = false)
-	private Long sino;
-
-	@ManyToOne
-	@JoinColumn(name = "rno", referencedColumnName = "rno", nullable = false)
-	private Resume resume;
+	@Column(name = "inteuno", nullable = false)
+	private Long inteuno;
 
 	@ManyToOne
 	@JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
 	private User user;
 
-	@Column(name = "title", length = 50, nullable = false)
-	private String title;
-
-	@Column(name = "scontent", columnDefinition = "TEXT", nullable = false)
-	private String scontent;
+	@ManyToOne
+	@JoinColumn(name = "cid", referencedColumnName = "cid", nullable = false)
+	private Company company;
 	
-	public void update(SelfInfo newSelfInfo) {
-        this.title = newSelfInfo.getTitle();
-        this.scontent = newSelfInfo.getScontent();
-    }
 }

@@ -5,14 +5,14 @@
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
 <link rel="stylesheet" type="text/css" href="/css/user_community_detail.css">
-
 </head>
 <body>
+<div id="wrap">
 <header>
 	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
 </header>
+<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 <main>
-	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 		<div>
 			<div class="container">
 					<div class="alertTab">
@@ -54,6 +54,7 @@
 		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 	</footer>
 
+<<<<<<< HEAD
 
 <script th:inline="javascript">
 var userBoardUbno = /*[[${userBoard.ubno}]]*/ '0';
@@ -69,5 +70,8 @@ function addReply(){
 
 
 </script>
+=======
+</div>
+>>>>>>> kiminbeom/yoojia
 </body>
 </html>

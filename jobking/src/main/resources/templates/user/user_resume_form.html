@@ -1,276 +1,261 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
 <head>
-    <meta charset="UTF-8">
-    <title>Insert title here</title>
-    <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/css/userResumeForm.css">
+<meta charset="UTF-8">
+<title>Insert title here</title>
 </head>
-
 <body>
-    <div id="wrap">
-        <header>
-            <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
-        </header>
-        <div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-        <div id="title_wrap">
-            <div class="title1">마이페이지</div>
-            <div class="title2">이력서 등록</div>
+	<div>마이페이지</div>
+	<div>이력서 등록</div>
+	<div class="notice">
+		<ul>
+			<li>
+				<img src="../../../images/reg.png" width="50" height="50">
+			</li>
+			<li>
+				<em class="em1">[필수] </em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
+				반드시 기입해 주세요.
+			</li>
+			<li>
+				개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로
+				클릭하여 기입하신 정보를 저장하시기 바랍니다.
+			</li>
+			<li>
+				구직신청 후에는 기본으로 설정한 이력서와 자기소개서만 인재정보 검색서비스를 통해 구인업체에 공개됩니다.
+			</li>
+			<li>
+				기본으로 설정된 이력서와 자기소개서는 [미리보기] 기능을 통해 한 화면에서 조회·인쇄·파일로 저장할 수
+				있습니다.
+			</li>
+		</ul>
+	</div>
+
+	<form method="post" th:action="@{/user/user_resume}">
+		<div>
+			이력서 제목 <em class="em1">[필수] </em><input type ="text" name ="rtitle"
+				placeholder ="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요)">
+		</div>
+        <div>
+            <input type="button" value="회원정보수정하기" onclick="location.href='/user/user_information'">
         </div>
-        <div class="notice">
-            <ul>
-                <li><img src="/images/이력서.png" width="50" height="50" class="logo"></li>
-                <li>
-                    <em class="em1">[필수] </em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
-                    반드시 기입해 주세요.
-                </li>
-                <li>
-                    개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로
-                    클릭하여 기입하신 정보를 저장하시기 바랍니다.
-                </li>
-                <li>
-                    구직신청 후에는 기본으로 설정한 이력서와 자기소개서만 인재정보 검색서비스를 통해 구인업체에 공개됩니다.
-                </li>
-                <li>
-                    기본으로 설정된 이력서와 자기소개서는 [미리보기] 기능을 통해 한 화면에서 조회·인쇄·파일로 저장할 수
-                    있습니다.
-                </li>
-            </ul>
+        <hr>
+        <table>
+            <thead>
+                <tr>
+                    <th>포트폴리오</th>
+                    <th><input type="button" value="+ 항목추가" id="addRowButton6"></th>
+                </tr>
+            </thead>
+            <tbody id="portTableBody">
+	            
+            </tbody>
+        </table>
+        <hr>
+        <table>
+            <tbody>
+                <tr>
+                    <th scope="row">이름</th>
+                    <td><span th:text="${user.uname}"></span></td>
+                    <th scope="row">성별, 출생년도</th>
+                    <td>
+                        <span>
+                            <span th:switch="${user.gender}">
+                                <span th:case="'0'">남자</span>
+                                <span th:case="'1'">여자</span>
+                            </span>
+                            , <span th:text="${user.birthDate}"></span>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table>
+            <thead>
+            	<tr>
+	                <th >주소</th>
+	                <th >전화번호</th>
+	                <th >이메일</th>
+                </tr>
+            </thead>
+            <tbody>
+            	<tr>
+	                <td ><span th:text="${user.uaddr}"></span></td>
+	                <td ><span th:text="${user.tel}"></span></td>
+	                <td ><span th:text="${user.email}"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        학력사항 <em class="em1">[필수]</em>
+        <input type="button" value="+ 항목추가" id="addRowButton">
+        <table>
+            <thead>
+                <tr>
+                    <th>학력</th>
+                    <th>기간</th>
+                    <th>전공학과</th>
+                    <th>학점</th>
+                    <th>상태</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody id="educationTableBody">
+                <tr>
+                    <td>
+                        <select class="gradeList_0" name="eduName" title="학력 선택">
+                            <option value selected="selected">학력 선택</option>
+                            <option value="무학">무학</option>
+                            <option value="초등학교">초등학교</option>
+                            <option value="중학교">중학교</option>
+                            <option value="고등학교">고등학교</option>
+                            <option value="대학교(2/3년제)">대학교(2/3년제)</option>
+                            <option value="대학교(4년제)">대학교(4년제)</option>
+                            <option value="대학원(석사)">대학원(석사)</option>
+                            <option value="대학원(박사)">대학원(박사)</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="date" name="accDate" id="accDate" title="입학일자">
+                        <span>~</span>
+                        <input type="date" name="gradDate" id="gradDate" title="졸업일자">
+                    </td>
+                    <td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
+                    <td><input type="text" name="score" placeholder="내용을 입력해주세요."></td>
+                    <td>
+                        <select class="gradEndList" name="sstatus" title="선택">
+                            <option value selected="selected">선택</option>
+                            <option value="휴학">휴학</option>
+                            <option value="재학">재학</option>
+                            <option value="중퇴">중퇴</option>
+                            <option value="졸업">졸업</option>
+                            <option value="졸업예정">졸업예정</option>
+                            <option value="검정(독학)">검정(독학)</option>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="button" class="deleteRowButton">삭제</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        경력사항
+        <input type="button" value="+ 항목추가" id="addRowButton2">
+        <table>
+            <thead>
+                <tr>
+                    <th>회사명</th>
+                    <th>기간</th>
+                    <th>직급</th>
+                    <th>직책</th>
+                    <th>상태</th>
+                    <th>업종</th>
+                    <th>주요직무</th>
+                    <th>업무</th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody id="careerTableBody">
+               
+            </tbody>
+        </table>
+	    <hr>
+        사회 활동
+        <input type="button" value="+ 항목추가" id="addRowButton3">
+        <table>
+            <thead>
+                <tr>
+                    <th>기관</th>
+                    <th>
+                        기간
+                    </th>
+                    <th>
+                        활동 내역
+                    </th>
+                    <th>삭제</th>
+                </tr>
+            </thead>
+            <tbody id="experienceTableBody">
+                
+            </tbody>
+        </table>
+        <hr>
+        보유자격 및 면허
+        <input type="button" value="+ 항목추가" id="addRowButton4">
+        <table>
+            <thead>
+                <tr>
+                    <th>구분</th>
+                    <th>
+                        자격면허
+                    </th>
+                    <th>
+                        발급기관
+                    </th>
+                    <th>
+                        취득일
+                    </th>
+                    <th>
+                        삭제
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="licenseTableBody">
+              
+            </tbody>
+        </table>
+        <hr>
+        보유 스킬
+        <input type="text" name="content" placeholder="내용을 입력해주세요.">
+        <hr>
+        희망 직종 <em class="em1">[필수]</em>
+        <hr>
+        <ul>
+            <li>
+                희망근무지역
+                <input type="text" name="region1" placeholder="희망근무지역1">
+                <input type="text" name="region2" placeholder="희망근무지역2">
+                <input type="text" name="region3" placeholder="희망근무지역3">
+            </li>
+            <li>
+                관심업종
+                <input type="text" name="sectors" placeholder="내용을 입력해주세요.">    
+            </li>
+            <li>
+                관심직무
+                <input type="text" name="job" placeholder="내용을 입력해주세요.">
+            </li>
+        </ul>
+        <hr>
+        자기소개서 <em class="em1">[필수]</em>
+        <input type="button" value="+ 항목추가" id="addRowButton5">
+        <table>
+            <tbody id="selfInfoTableBody">
+                <tr>
+	                <td>
+	                    <input type="text" name="title" placeholder="제목을 입력해주세요.">
+	                    <button type="button" class="deleteRowButton5">삭제</button><br>
+	                    <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
+	                </td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <div>
+            <label for="openResume">이력서 공개 여부</label>
+            <input type="checkbox" id="openResume" name="openResume">
         </div>
+        <hr>
+        <input type="hidden" name="disclo" id="disclo" value="0">
 
-        <div id="resumeForm">
-            <form method="post" th:action="@{/user/user_resume(rno=${rno})}">
-                <div id="">
-                    이력서 제목 <em class="em1">[필수] </em><input type="text" name="rtitle"
-                        placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요)">
-                </div>
-                <hr>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>포트폴리오</th>
-                            <th><input type="button" value="+ 항목추가" id="addRowButton6"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="portTableBody">
+        <input type="submit" value="이력서 저장">
+	</form>
+<script th:inline="javascript">
 
-                    </tbody>
-                </table>
-                <hr>
-                <table>
-                    <tbody>
-                        <tr>
-                            <th scope="row">이름</th>
-                            <td><span th:text="${user.uname}"></span></td>
-                            <th scope="row">성별, 출생년도</th>
-                            <td>
-                                <span>
-                                    <span th:switch="${user.gender}">
-                                        <span th:case="'0'">남자</span>
-                                        <span th:case="'1'">여자</span>
-                                    </span>
-                                    , <span th:text="${user.birthDate}"></span>
-                                </span>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>주소</th>
-                            <th>전화번호</th>
-                            <th>이메일</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><span th:text="${user.uaddr}"></span></td>
-                            <td><span th:text="${user.tel}"></span></td>
-                            <td><span th:text="${user.email}"></span></td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr>
-                학력사항 <em class="em1">[필수]</em>
-                <input type="button" value="+ 항목추가" id="addRowButton">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>학력</th>
-                            <th>기간</th>
-                            <th>전공학과</th>
-                            <th>학점</th>
-                            <th>상태</th>
-                            <th>삭제</th>
-                        </tr>
-                    </thead>
-                    <tbody id="educationTableBody">
-                        <tr>
-                            <td>
-                                <select class="gradeList_0" name="eduName" title="학력 선택">
-                                    <option value selected="selected">학력 선택</option>
-                                    <option value="무학">무학</option>
-                                    <option value="초등학교">초등학교</option>
-                                    <option value="중학교">중학교</option>
-                                    <option value="고등학교">고등학교</option>
-                                    <option value="대학교(2/3년제)">대학교(2/3년제)</option>
-                                    <option value="대학교(4년제)">대학교(4년제)</option>
-                                    <option value="대학원(석사)">대학원(석사)</option>
-                                    <option value="대학원(박사)">대학원(박사)</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input type="date" name="accDate" id="accDate" title="입학일자" placeholder="yyyy.mm.dd"
-                                    maxlength="10">
-                                <span>~</span>
-                                <input type="date" name="gradDate" id="gradDate" title="졸업일자" placeholder="yyyy.mm.dd"
-                                    maxlength="10">
-                            </td>
-                            <td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
-                            <td><input type="text" name="score" placeholder="내용을 입력해주세요."></td>
-                            <td>
-                                <select class="gradEndList" name="sstatus" title="선택">
-                                    <option value selected="selected">선택</option>
-                                    <option value="휴학">휴학</option>
-                                    <option value="재학">재학</option>
-                                    <option value="중퇴">중퇴</option>
-                                    <option value="졸업">졸업</option>
-                                    <option value="졸업예정">졸업예정</option>
-                                    <option value="검정(독학)">검정(독학)</option>
-                                </select>
-                            </td>
-                            <td>
-                                <button type="button" class="deleteRowButton">삭제</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr>
-                경력사항
-                <input type="button" value="+ 항목추가" id="addRowButton2">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>회사명</th>
-                            <th>기간</th>
-                            <th>직급</th>
-                            <th>직책</th>
-                            <th>상태</th>
-                            <th>업종</th>
-                            <th>주요직무</th>
-                            <th>업무</th>
-                            <th>삭제</th>
-                        </tr>
-                    </thead>
-                    <tbody id="careerTableBody">
-
-                    </tbody>
-                </table>
-                <hr>
-                사회 활동
-                <input type="button" value="+ 항목추가" id="addRowButton3">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>기관</th>
-                            <th>
-                                기간
-                            </th>
-                            <th>
-                                활동 내역
-                            </th>
-                            <th>삭제</th>
-                        </tr>
-                    </thead>
-                    <tbody id="experienceTableBody">
-
-                    </tbody>
-                </table>
-                <hr>
-                보유자격 및 면허
-                <input type="button" value="+ 항목추가" id="addRowButton4">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>구분</th>
-                            <th>
-                                자격면허
-                            </th>
-                            <th>
-                                발급기관
-                            </th>
-                            <th>
-                                취득일
-                            </th>
-                            <th>
-                                삭제
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="licenseTableBody">
-
-                    </tbody>
-                </table>
-                <hr>
-                보유 스킬
-                <input type="text" name="content" placeholder="내용을 입력해주세요.">
-                <hr>
-                희망 직종 <em class="em1">[필수]</em>
-                <hr>
-                <ul>
-                    <li>
-                        희망근무지역
-                        <input type="text" name="region1" placeholder="희망근무지역1">
-                        <input type="text" name="region2" placeholder="희망근무지역2">
-                        <input type="text" name="region3" placeholder="희망근무지역3">
-                    </li>
-                    <li>
-                        관심업종
-                        <input type="text" name="sectors" placeholder="내용을 입력해주세요.">
-                    </li>
-                    <li>
-                        관심직무
-                        <input type="text" name="job" placeholder="내용을 입력해주세요.">
-                    </li>
-                </ul>
-                <hr>
-                자기소개서 <em class="em1">[필수]</em>
-                <input type="button" value="+ 항목추가" id="addRowButton5">
-                <table>
-                    <tbody id="selfInfoTableBody">
-                        <tr>
-                            <td>
-                                <input type="text" name="title" placeholder="제목을 입력해주세요.">
-                                <button type="button" class="deleteRowButton5">삭제</button><br>
-                                <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <hr>
-                <div>
-                    <label for="openResume">이력서 공개 여부</label>
-                    <input type="checkbox" id="openResume" name="openResume">
-                </div>
-                <hr>
-                <input type="hidden" name="disclo" id="disclo" value="0">
-
-                <input type="submit" value="이력서 저장">
-            </form>
-        </div>
-        <footer>
-            <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
-        </footer>
-    </div>
-
-    <script th:inline="javascript">
-
-        document.getElementById('addRowButton').addEventListener('click', function () {
-            var tbody = document.getElementById('educationTableBody');
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
+    document.getElementById('addRowButton').addEventListener('click', function() {
+        var tbody = document.getElementById('educationTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
             <td>
                 <select class="gradeList_0" name="eduName" title="학력 선택">
                     <option value selected="selected">학력 선택</option>
@@ -304,29 +289,29 @@
             </td>
             <td><button type="button" class="deleteRowButton">삭제</button></td>
         `;
-            tbody.appendChild(newRow);
+        tbody.appendChild(newRow);
 
-            // 새로운 삭제 버튼에 이벤트 리스너 추가
-            newRow.querySelector('.deleteRowButton').addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    newRow.remove();
-                }
-            });
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
+            }
         });
+    });
 
-        // 기존의 삭제 버튼에 이벤트 리스너 추가
-        document.querySelectorAll('.deleteRowButton').forEach(function (button) {
-            button.addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    button.closest('tr').remove();
-                }
-            });
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
         });
+    });
 
-        document.getElementById('addRowButton2').addEventListener('click', function () {
-            var tbody = document.getElementById('careerTableBody');
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
+    document.getElementById('addRowButton2').addEventListener('click', function() {
+        var tbody = document.getElementById('careerTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
             <td>
                 <input type="text" name="cName" placeholder="내용을 입력해주세요.">
             </td>
@@ -361,29 +346,29 @@
                 <button type="button" class="deleteRowButton2">삭제</button>
             </td>
         `;
-            tbody.appendChild(newRow);
+        tbody.appendChild(newRow);
 
-            // 새로운 삭제 버튼에 이벤트 리스너 추가
-            newRow.querySelector('.deleteRowButton2').addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    newRow.remove();
-                }
-            });
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton2').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
+            }
         });
+    });
 
-        // 기존의 삭제 버튼에 이벤트 리스너 추가
-        document.querySelectorAll('.deleteRowButton2').forEach(function (button) {
-            button.addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    button.closest('tr').remove();
-                }
-            });
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton2').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
         });
+    });
 
-        document.getElementById('addRowButton3').addEventListener('click', function () {
-            var tbody = document.getElementById('experienceTableBody');
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
+    document.getElementById('addRowButton3').addEventListener('click', function() {
+        var tbody = document.getElementById('experienceTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
             <td>
                 <input type="text" name="org" id="org" placeholder="내용을 입력해주세요.">
             </td>
@@ -399,30 +384,30 @@
                 <button type="button" class="deleteRowButton3">삭제</button>
             </td>
         `;
-            tbody.appendChild(newRow);
+        tbody.appendChild(newRow);
 
-            // 새로운 삭제 버튼에 이벤트 리스너 추가
-            newRow.querySelector('.deleteRowButton3').addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    newRow.remove();
-                }
-            });
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton3').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
+            }
         });
+    });
 
-        // 기존의 삭제 버튼에 이벤트 리스너 추가
-        document.querySelectorAll('.deleteRowButton3').forEach(function (button) {
-            button.addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    button.closest('tr').remove();
-                }
-            });
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton3').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
         });
+    });
 
 
-        document.getElementById('addRowButton4').addEventListener('click', function () {
-            var tbody = document.getElementById('licenseTableBody');
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
+    document.getElementById('addRowButton4').addEventListener('click', function() {
+        var tbody = document.getElementById('licenseTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
         <td>
                     <select class="licenseList" name="type" title="구분">
                     	<option value selected="selected">구분</option>
@@ -443,142 +428,145 @@
                     <button type="button" class="deleteRowButton4">삭제</button>
                 </td>
         `;
-            tbody.appendChild(newRow);
+        tbody.appendChild(newRow);
 
-            // 새로운 삭제 버튼에 이벤트 리스너 추가
-            newRow.querySelector('.deleteRowButton4').addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    newRow.remove();
-                }
-            });
-        });
-
-        // 기존의 삭제 버튼에 이벤트 리스너 추가
-        document.querySelectorAll('.deleteRowButton4').forEach(function (button) {
-            button.addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    button.closest('tr').remove();
-                }
-            });
-        });
-
-        document.querySelector('#openResume').addEventListener('click', function (event) {
-            var openResumeCheckbox = document.getElementById('openResume');
-            var discloInput = document.getElementById('disclo');
-            if (openResumeCheckbox.checked) {
-                discloInput.value = '1';
-
-            } else {
-                discloInput.value = '0';
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton4').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
             }
         });
+    });
 
-        document.getElementById('addRowButton5').addEventListener('click', function () {
-            var tbody = document.getElementById('selfInfoTableBody');
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton4').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
+        });
+    });
+
+    document.querySelector('#openResume').addEventListener('click', function(event) {
+        var openResumeCheckbox = document.getElementById('openResume');
+        var discloInput = document.getElementById('disclo');
+        if (openResumeCheckbox.checked) {
+            discloInput.value = '1';
+        
+        } else {
+            discloInput.value = '0';
+        }
+    });
+
+    document.getElementById('addRowButton5').addEventListener('click', function() {
+        var tbody = document.getElementById('selfInfoTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
         	<td>
 	            <input type="text" name="title" placeholder="제목을 입력해주세요.">
 	            <button type="button" class="deleteRowButton5">삭제</button><br>
 	            <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
         	</td>
         `;
-            tbody.appendChild(newRow);
+        tbody.appendChild(newRow);
 
-            // 새로운 삭제 버튼에 이벤트 리스너 추가
-            newRow.querySelector('.deleteRowButton5').addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    newRow.remove();
-                }
-            });
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton5').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
+            }
         });
+    });
 
-        // 기존의 삭제 버튼에 이벤트 리스너 추가
-        document.querySelectorAll('.deleteRowButton5').forEach(function (button) {
-            button.addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    button.closest('tr').remove();
-                }
-            });
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton5').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
         });
-
-        document.getElementById('addRowButton6').addEventListener('click', function () {
-            var tbody = document.getElementById('portTableBody');
-            var newRow = document.createElement('tr');
-            newRow.innerHTML = `
+    });
+    
+    document.getElementById('addRowButton6').addEventListener('click', function() {
+        var tbody = document.getElementById('portTableBody');
+        var newRow = document.createElement('tr');
+        newRow.innerHTML = `
         	<td>
-        		<input type="text" name="Field" placeholder="포트폴리오 url을 입력 하세요.">
+        		<input type="text" name="portfolioUrl" placeholder="포트폴리오 url을 입력 하세요.">
     		</td>
     		<td>
         		<button type="button" class="deleteRowButton6">삭제</button><br>
     		</td>
         `;
-            tbody.appendChild(newRow);
+        tbody.appendChild(newRow);
 
-            // 새로운 삭제 버튼에 이벤트 리스너 추가
-            newRow.querySelector('.deleteRowButton6').addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    newRow.remove();
-                }
-            });
-        });
-
-        // 기존의 삭제 버튼에 이벤트 리스너 추가
-        document.querySelectorAll('.deleteRowButton6').forEach(function (button) {
-            button.addEventListener('click', function () {
-                if (confirm('삭제하시겠습니까?')) {
-                    button.closest('tr').remove();
-                }
-            });
-        });
-
-
-
-
-        function checkRequiredFields() {
-            // 필수 입력 필드 목록
-            var requiredFields = [
-                'region1',
-                'sectors',
-                'job',
-                'rtitle',
-                'accDate',
-                'gradDate',
-                'eduName',
-                'title',
-                'scontent'
-            ];
-
-            // 필수 입력 필드 중 하나라도 입력되지 않은 경우
-            for (var i = 0; i < requiredFields.length; i++) {
-                var field = document.getElementsByName(requiredFields[i])[0];
-                if (!field || field.value.trim() === '') {
-                    return false;
-                }
+        // 새로운 삭제 버튼에 이벤트 리스너 추가
+        newRow.querySelector('.deleteRowButton6').addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                newRow.remove();
             }
-            return true; // 모든 필수 입력 필드가 입력되었을 경우 
-        }
-
-        // 제출 버튼 상태 업데이트 함수
-        function updateSubmitButtonState() {
-            var submitButton = document.querySelector('input[type="submit"]');
-            if (checkRequiredFields()) {
-                submitButton.disabled = false; // 필수 입력 필드가 모두 입력되었을 경우 버튼 활성화
-            } else {
-                submitButton.disabled = true; // 필수 입력 필드 중 하나라도 입력되지 않았을 경우 버튼 비활성화
-            }
-        }
-
-        // 페이지 로드 시 제출 버튼 상태 업데이트
-        updateSubmitButtonState();
-
-        // 필수 입력 필드 값이 변경될 때마다 제출 버튼 상태 업데이트
-        var requiredFields = document.querySelectorAll('[name="region1"], [name="sectors"], [name="job"], [name="rtitle"], [name="accDate"], [name="gradDate"], [name="eduName"], [name="title"], [name="scontent"]');
-        requiredFields.forEach(function (field) {
-            field.addEventListener('input', updateSubmitButtonState);
         });
+    });
 
-    </script>
+    // 기존의 삭제 버튼에 이벤트 리스너 추가
+    document.querySelectorAll('.deleteRowButton6').forEach(function(button) {
+        button.addEventListener('click', function() {
+            if (confirm('삭제하시겠습니까?')) {
+                button.closest('tr').remove();
+            }
+        });
+    });
+    
+    
+
+    
+     function checkRequiredFields() {
+     // 필수 입력 필드 목록
+     var requiredFields = [
+         'region1',
+         'sectors',
+         'job',
+         'rtitle',
+         'accDate',
+         'gradDate',
+         'eduName',
+         'title',
+         'scontent'
+     ];
+
+    // 필수 입력 필드 중 하나라도 입력되지 않은 경우
+     for (var i = 0; i < requiredFields.length; i++) {
+        var field = document.getElementsByName(requiredFields[i])[0];
+        if (!field || field.value.trim() === '') {
+            return false;
+        } 
+    }
+    	return true; // 모든 필수 입력 필드가 입력되었을 경우 
+	}
+
+	// 제출 버튼 상태 업데이트 함수
+	function updateSubmitButtonState() {
+	    var submitButton = document.querySelector('input[type="submit"]');
+	    if (checkRequiredFields()) {
+	        submitButton.disabled = false; // 필수 입력 필드가 모두 입력되었을 경우 버튼 활성화
+	    } else {
+	        submitButton.disabled = true; // 필수 입력 필드 중 하나라도 입력되지 않았을 경우 버튼 비활성화
+	    }
+	}
+	
+	// 페이지 로드 시 제출 버튼 상태 업데이트
+	updateSubmitButtonState();
+	
+	// 필수 입력 필드 값이 변경될 때마다 제출 버튼 상태 업데이트
+	var requiredFields = document.querySelectorAll('[name="region1"], [name="sectors"], [name="job"], [name="rtitle"], [name="accDate"], [name="gradDate"], [name="eduName"], [name="title"], [name="scontent"]');
+	requiredFields.forEach(function(field) {
+	    field.addEventListener('input', updateSubmitButtonState);
+	});
+
+</script>
 </body>
-
 </html>
+
+
+
+

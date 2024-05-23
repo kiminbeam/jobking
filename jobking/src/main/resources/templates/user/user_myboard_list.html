@@ -13,11 +13,11 @@
 </header>
 <div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 <main>
-	<div id="managingCommuWrap">
+	<div id="managingCommuWrap" class="review-section">
 		<h1>마이페이지</h1>
 		<h3>커뮤니티 활동 관리</h3>
 		
-		<h3>내가 쓴 글 보기</h3>
+		<h3 class="title">내가 쓴 글 보기</h3>
 		<table class="userBoard">
 			<tr>
 				<th>커뮤니티 글 제목</th>
@@ -32,7 +32,7 @@
 		</table>
 		
 		
-		<h3>내가 쓴 댓글 보기</h3>
+		<h3 class="title">내가 쓴 댓글 보기</h3>
 		<table class="userReply">
 			<tr>
 				<th>커뮤니티 글 제목</th>
@@ -82,7 +82,7 @@
 			let no = e.target.querySelector("span").innerText;
 			
 			if(table =="userBoard"){
-				location.href="/user/edit_board?ubno="+no;
+				location.href="/user/user_communityForm_edit?ubno="+no;
 			}else if(table =="userReply"){
 				location.href="/user/edit_reply?replyno="+no;
 			}

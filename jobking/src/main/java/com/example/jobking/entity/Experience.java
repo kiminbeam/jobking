@@ -47,4 +47,13 @@ public class Experience extends BaseEntity {
 
     @Column(name = "econtent", columnDefinition = "TEXT")
     private String econtent;
+    
+    public void update(Experience newExperience) {
+        this.startDay = newExperience.getStartDay();
+        this.endDay = newExperience.getEndDay();
+        this.org = newExperience.getOrg();
+        this.econtent = newExperience.getEcontent();
+        // 필요에 따라 다른 필드도 업데이트
+    }
+    
 }

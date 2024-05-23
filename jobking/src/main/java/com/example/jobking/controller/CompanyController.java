@@ -57,7 +57,16 @@ public class CompanyController {
 
 	@Autowired
 	IInterviewListRepository interviewRepository;
+	
+	
+	@RequestMapping("/pageTest")
+	public String pageTest() {
+		return "/company/pageTest";
+	}
+	
 
+	
+	
 	@RequestMapping("/cpmain")
 	public String main() {
 		return "/company/cpmain";
