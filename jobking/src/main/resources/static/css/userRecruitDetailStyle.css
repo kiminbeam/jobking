@@ -1,45 +1,87 @@
-
 *{
     font-family: 'Pretendard-Regular';
 }
+
+#icon_wrap{
+    width: 200px; height: 40px;
+    position: absolute; top: 235px; left: 1350px;
+    z-index: 99;
+}
 .link-icon {
-    position: relative;
-    display: inline-block;
-    width: auto;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333;
-    margin-right: 10px;
-    padding-top: 50px;
+    float: left;
+    margin: 3px;
 }
 
-.link-icon.twitter {
-    background-image: url(/images/icon/icon-twitter.png);
-    background-repeat: no-repeat;
+.link-icon img{
+    width: 30px;
 }
 
-.link-icon.facebook {
-    background-image: url(/images/icon/icon-facebook.png);
-    background-repeat: no-repeat;
+#icon_wrap2{
+    width: 100px; height: 25px;
+    position: absolute; top: 170px; left: 1400px;
+    opacity: 70%;
+    z-index: 99;
 }
 
-.link-icon.kakao {
-    background-image: url(/images/icon/icon-kakao.png);
-    background-repeat: no-repeat;
+#icon_wrap2>div{
+    float: left;
+}
+#icon_wrap2>div:nth-child(2){
+    margin: 0 10px;
 }
 
-#chart-container {
-    height: 500px;
+button{
+    width: 200px; height: 50px;
+    font: 900 18px/50px 'Pretendard-Regular';
+    border: 0;
+    color: #fff;
+    background-color: #3399ff;
+    text-align: center;
+    position: relative; top: 280px; left: 670px;
+    margin: 20px;
 }
+.header>div{
+    margin-left: 30px;
+}
+.t1{
+    position: absolute; top: 160px; left: 500px;
+    font: 900 20px/40px 'Pretendard-Regular';
+    width: 200px;
+}
+
+.t2{
+    position: absolute; top: 160px; left: 580px;
+    width: 200px;
+    font: 200 14px/40px 'Pretendard-Regular';
+}
+.t3{
+    font: 900 18px/40px 'Pretendard-Regular';
+    margin-left: 20px;
+}
+.t3_cont{
+    margin-left: 20px;
+}
+#dDay{
+    color: #3399ff;
+    font: 200 14px/40px 'Pretendard-Regular';
+}
+
+#info_tbl{
+    margin-left: 20px;
+}
+
+#main_tbl{
+    margin: 10px auto;
+}
+
 #jtop{
     width: 1000px;
-    border: 1px solid lightgray;
-    position: absolute; top: 200px; left: 500px;
+    border: 1px solid rgb(145, 121, 121);
+    position: absolute; top: 210px; left: 500px;
 }
 .jobad{
     width: 1000px;
     background-color: rgba(255, 255, 255, 0.5);
-
 }
 .header{
     border-top: 2px solid #333;
@@ -50,5 +92,29 @@
 .main{
     border-top: 2px solid #333;
     border: 1px solid lightgray;
-    position: absolute; top: 400px; left: 500px;
+    position: absolute; top: 470px; left: 450px;
+    margin: 50px;
+}
+th{
+    font: 900 15px/30px 'Pretendard-Regular';
+    margin-right: 20px;
+}
+tr{
+}
+td{
+    font: 500 15px/30px 'Pretendard-Regular';
+
+}
+
+
+
+#chart-container {
+    border-top: 2px solid #333;
+    position: relative; top: 130px; left: 500px;
+    width: 1000px; height: 200px;
+    clear: both;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+canvas{
+    margin: 20px;
 }
