@@ -24,9 +24,9 @@
 	<form method="post" th:action="@{/user/user_resume(rno=${rno})}">
 		<!-- 이력서 제목 -->
 		<div>
-			이력서 제목 <em class="em1">[필수] </em><input type="text" name="rtitle"
-				placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요)">
-		</div>
+        이력서 제목 <em class="em1">[필수] </em>
+        	<input type="text" name="rtitle" placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요" th:value="${resume.rtitle}">
+    	</div>
 		<!-- 회원정보수정하기 버튼 -->
 		<div>
 			<input type="button" value="회원정보수정하기"
@@ -87,39 +87,45 @@
 					<th>삭제</th>
 				</tr>
 			</thead>
-			<tbody id="educationTableBody">
-				<tr>
-					<td><select class="gradeList_0" name="eduName" title="학력 선택">
-							<option value selected="selected" >학력 선택</option>
-							<option value="무학">무학</option>
-							<option value="초등학교">초등학교</option>
-							<option value="중학교">중학교</option>
-							<option value="고등학교">고등학교</option>
-							<option value="대학교(2/3년제)">대학교(2/3년제)</option>
-							<option value="대학교(4년제)">대학교(4년제)</option>
-							<option value="대학원(석사)">대학원(석사)</option>
-							<option value="대학원(박사)">대학원(박사)</option>
-					</select></td>
-					<td><input type="date" name="accDate" title="입학일자"
-						placeholder="yyyy.mm.dd" maxlength="10"  > <span>~</span> <input
-						type="date" name="gradDate" title="졸업일자" placeholder="yyyy.mm.dd"
-						maxlength="10"></td>
-					<td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
-					<td><input type="text" name="score" placeholder="내용을 입력해주세요."></td>
-					<td><select class="gradEndList" name="sstatus" title="선택">
-							<option value selected="selected">선택</option>
-							<option value="휴학">휴학</option>
-							<option value="재학">재학</option>
-							<option value="중퇴">중퇴</option>
-							<option value="졸업">졸업</option>
-							<option value="졸업예정">졸업예정</option>
-							<option value="검정(독학)">검정(독학)</option>
-					</select></td>
-					<td>
-						<button type="button" class="deleteRowButton">삭제</button>
-					</td>
-				</tr>
-			</tbody>
+			<th:block th:each="schoolList : ${schoolList}">
+				<tbody id="educationTableBody">
+					<tr>
+						<td>
+							<select class="gradeList_0" name="eduName" title="학력 선택" >
+								<option selected="selected" th:text="${schoolList.eduName}"></option>
+								<option value="무학">무학</option>
+								<option value="초등학교" >초등학교</option>
+								<option value="중학교">중학교</option>
+								<option value="고등학교">고등학교</option>
+								<option value="대학교(2/3년제)">대학교(2/3년제)</option>
+								<option value="대학교(4년제)">대학교(4년제)</option>
+								<option value="대학원(석사)">대학원(석사)</option>
+								<option value="대학원(박사)">대학원(박사)</option>
+							</select>
+						</td>
+						<td><input type="date" name="accDate" title="입학일자" th:value="${schoolList.accDate}" > 
+							<span>~</span> 
+							<input type="date" name="gradDate" title="졸업일자" th:value="${schoolList.gradDate}">
+						</td>
+						<td><input type="text" name="major" th:value="${schoolList.major}" placeholder="내용을 입력해주세요."></td>
+						<td><input type="text" name="score" th:value="${schoolList.score}" placeholder="내용을 입력해주세요."></td>
+						<td>
+							<select class="gradEndList" name="sstatus" title="선택">
+								<option selected="selected" th:text="${schoolList.sstatus}"></option>
+								<option value="휴학">휴학</option>
+								<option value="재학">재학</option>
+								<option value="중퇴">중퇴</option>
+								<option value="졸업">졸업</option>
+								<option value="졸업예정">졸업예정</option>
+								<option value="검정(독학)">검정(독학)</option>
+							</select>
+						</td>
+						<td>
+							<button type="button" class="deleteRowButton">삭제</button>
+						</td>
+					</tr>
+				</tbody>
+			</th:block>
 		</table>
 		<hr>
 		<!-- 경력사항 -->
@@ -140,34 +146,45 @@
 					<th>삭제</th>
 				</tr>
 			</thead>
-			<tbody id="careerTableBody">
-				<tr>
-					<td><input type="text" name="cName" placeholder="내용을 입력해주세요.">
-					</td>
-					<td><input type="date" name="startDate" id="startDate"
-						title="입사일자" placeholder="yyyy.mm.dd" maxlength="10"> <span>~</span>
-						<input type="date" name="endDate" id="endDate" title="퇴사일자"
-						placeholder="yyyy.mm.dd" maxlength="10"></td>
-					<td><input type="text" name="rank" id="rank"
-						placeholder="내용을 입력해주세요."></td>
-					<td><input type="text" name="position" id="position"
-						placeholder="내용을 입력해주세요."></td>
-					<td><select class="careerList" name="status" title="상태선택">
-							<option value selected="selected">상태선택</option>
-							<option value="퇴직">퇴직</option>
-							<option value="재직">재직</option>
-					</select></td>
-					<td><input type="text" name="type" placeholder="내용을 입력해주세요.">
-					</td>
-					<td><input type="text" name="position"
-						placeholder="내용을 입력해주세요."></td>
-					<td><input type="text" name="work" placeholder="내용을 입력해주세요.">
-					</td>
-					<td>
-						<button type="button" class="deleteRowButton2">삭제</button>
-					</td>
-				</tr>
-			</tbody>
+			<th:block th:each="careerList : ${careerList}">
+				<tbody id="careerTableBody">
+					<tr>
+						<td>
+							<input type="text" name="cName" th:value="${careerList.cName}" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<input type="date" name="startDate" id="startDate" title="입사일자" th:value="${careerList.startDate}"> 
+							<span>~</span>
+							<input type="date" name="endDate" id="endDate" title="퇴사일자" th:value="${careerList.endDate}">
+						</td>
+						<td>
+							<input type="text" name="rank" id="rank" th:value="${careerList.rank}" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<input type="text" name="position" id="position" th:value="${careerList.position}" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<select class="careerList" name="status" title="상태선택">
+								<option selected="selected" th:text="${careerList.status}"></option>
+								<option value="퇴직">퇴직</option>
+								<option value="재직">재직</option>
+							</select>
+						</td>
+						<td>
+							<input type="text" name="type" th:value="${careerList.type}" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<input type="text" name="position" th:value="${careerList.position}" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<input type="text" name="work" th:value="${careerList.work}" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<button type="button" class="deleteRowButton2">삭제</button>
+						</td>
+					</tr>
+				</tbody>
+			</th:block>
 		</table>
 		<hr>
 		<!-- 사회 활동 -->
@@ -183,34 +200,31 @@
 					<th>삭제</th>
 				</tr>
 			</thead>
-			<tbody id="experienceTableBody">
-				<tr>
-					<td><input type="text" name="org" id="org"
-						placeholder="내용을 입력해주세요."></td>
-					<td><input type="date" name="startDay" id="startDay"
-						title="시작일자" placeholder="yyyy.mm.dd" maxlength="10"> <span>~</span>
-						<input type="date" name="endDay" id="endDay" title="종료일자"
-						placeholder="yyyy.mm.dd" maxlength="10"></td>
-					<td><input type="text" name="econtent"
-						placeholder="내용을 입력해주세요."></td>
-					<td>
-						<button type="button" class="deleteRowButton3">삭제</button>
-					</td>
-				</tr>
-			</tbody>
+			<th:block th:each="experienceList : ${experienceList}">
+				<tbody id="experienceTableBody">
+					<tr>
+						<td>
+							<input type="text" th:value="${experienceList.org}" name="org" id="org" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<input type="date" name="startDay" id="startDay" title="시작일자" th:value="${experienceList.startDay}"> 
+							<span>~</span>
+							<input type="date" name="endDay" id="endDay" title="종료일자" th:value="${experienceList.endDay}">
+						</td>
+						<td>
+							<input type="text" name="econtent" placeholder="내용을 입력해주세요." th:value="${experienceList.econtent}">
+						</td>
+						<td>
+							<button type="button" class="deleteRowButton3">삭제</button>
+						</td>
+					</tr>
+				</tbody>
+			</th:block>
 		</table>
 		<hr>
 		<!-- 보유자격 및 면허 -->
 		<div>
-			보유자격 및 면허 <input type="button" value="+ 항목추가"
-				id="addRowButton4
-나머지도 마저 출력해줘
-ChatGPT
-Sure, let's continue:
-
-html
-코드 복사
-">
+			보유자격 및 면허 <input type="button" value="+ 항목추가" id="addRowButton4">
 		</div>
 		<table>
 			<thead>
@@ -222,29 +236,37 @@ html
 					<th>삭제</th>
 				</tr>
 			</thead>
-			<tbody id="licenseTableBody">
-				<tr>
-					<td><select class="licenseList" name="type" title="구분">
-							<option value selected="selected">구분</option>
-							<option value="국가공인">국가공인</option>
-							<option value="민간공인">민간공인</option>
-					</select></td>
-					<td><input type="text" name="lname" placeholder="내용을 입력해주세요.">
-					</td>
-					<td><input type="text" name="lorg" placeholder="내용을 입력해주세요.">
-					</td>
-					<td><input type="date" name="getDate" id="getDate" title="취득일"
-						placeholder="yyyy.mm.dd" maxlength="10"></td>
-					<td>
-						<button type="button" class="deleteRowButton4">삭제</button>
-					</td>
-				</tr>
-			</tbody>
+			<th:block th:each="licenseList : ${licenseList}">
+				<tbody id="licenseTableBody">
+					<tr>
+						<td>
+							<select class="licenseList" name="type" title="구분">
+								<option selected="selected" th:text="${licenseList.type}"></option>
+								<option value="국가공인">국가공인</option>
+								<option value="민간공인">민간공인</option>
+							</select>
+						</td>
+						<td>
+							<input type="text" name="lname" th:value="${licenseList.lname}" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<input type="text" name="lorg" th:value="${licenseList.lorg}" placeholder="내용을 입력해주세요.">
+						</td>
+						<td>
+							<input type="date" name="getDate" id="getDate" title="취득일" th:value="${licenseList.getDate}"></td>
+						<td>
+							<button type="button" class="deleteRowButton4">삭제</button>
+						</td>
+					</tr>
+				</tbody>
+			</th:block>
 		</table>
 		<hr>
 		<!-- 보유 스킬 -->
 		<div>
-			보유 스킬 <input type="text" name="content" placeholder="내용을 입력해주세요.">
+			<th:block th:each="oaList : ${oaList}">
+				보유 스킬 <input type="text" name="content" placeholder="내용을 입력해주세요." th:value="${oaList.content}">
+			</th:block>
 		</div>
 		<hr>
 		<!-- 희망 직종 -->
@@ -252,44 +274,53 @@ html
 			희망 직종 <em class="em1">[필수]</em>
 		</div>
 		<hr>
-		<ul>
-			<li>희망근무지역 <input type="text" name="region1"
-				placeholder="희망근무지역1"> <input type="text" name="region2"
-				placeholder="희망근무지역2"> <input type="text" name="region3"
-				placeholder="희망근무지역3">
-			</li>
-			<li>관심업종 <input type="text" name="sectors"
-				placeholder="내용을 입력해주세요.">
-			</li>
-			<li>관심직무 <input type="text" name="job" placeholder="내용을 입력해주세요.">
-			</li>
-		</ul>
+		<th:block th:each="hopeList : ${hopeList}">
+			<ul>
+				<li>
+					희망근무지역
+					<input type="text" name="region1" th:value="${hopeList.region1}" placeholder="희망근무지역1"> 
+					<input type="text" name="region2" th:value="${hopeList.region2}" placeholder="희망근무지역2"> 
+					<input type="text" name="region3" th:value="${hopeList.region3}" placeholder="희망근무지역3">
+				</li>
+				<li>
+					관심업종 <input type="text" name="sectors" th:value="${hopeList.sectors}" placeholder="내용을 입력해주세요.">
+				</li>
+				<li>
+					관심직무 <input type="text" name="job" th:value="${hopeList.job}" placeholder="내용을 입력해주세요.">
+				</li>
+			</ul>
+		</th:block>
 		<hr>
 		<!-- 자기소개서 -->
 		<div>
-			자기소개서 <em class="em1">[필수]</em> <input type="button" value="+ 항목추가"
-				id="addRowButton5">
+			자기소개서 <em class="em1">[필수]</em> 
+			<input type="button" value="+ 항목추가" id="addRowButton5">
 		</div>
 		<table>
-			<tbody id="selfInfoTableBody">
-				<tr>
-					<td><input type="text" name="title" placeholder="제목을 입력해주세요.">
-						<button type="button" class="deleteRowButton5">삭제</button> <br>
-						<input type="text" name="scontent" placeholder="내용을 입력해주세요."></td>
-				</tr>
-			</tbody>
+			<th:block th:each="selfInfoList : ${selfInfoList}">
+				<tbody id="selfInfoTableBody">
+					<tr>
+						<td>
+							<input type="text" name="title" th:value="${selfInfoList.title}" placeholder="제목을 입력해주세요.">
+							<button type="button" class="deleteRowButton5">삭제</button> <br>
+							<input type="text" name="scontent" th:value="${selfInfoList.scontent}" placeholder="내용을 입력해주세요.">
+						</td>
+					</tr>
+				</tbody>
+			</th:block>
 		</table>
 		<hr>
 		<!-- 이력서 공개 여부 -->
 		<div>
-			<label for="openResume">이력서 공개 여부</label> <input type="checkbox"
-				id="openResume" name="openResume">
+			<label for="openResume">이력서 공개 여부</label> 
+			<input type="checkbox" id="openResume" name="openResume" >
 		</div>
 		<hr>
 		<input type="hidden" name="disclo" id="disclo" value="0"> <input
 			type="submit" value="이력서 저장">
 	</form>
 	<script th:inline="javascript">
+	
 
     document.getElementById('addRowButton').addEventListener('click', function() {
         var tbody = document.getElementById('educationTableBody');
@@ -601,6 +632,8 @@ html
 	requiredFields.forEach(function(field) {
 	    field.addEventListener('input', updateSubmitButtonState);
 	});
+	
+	
 
 </script>
 </body>
