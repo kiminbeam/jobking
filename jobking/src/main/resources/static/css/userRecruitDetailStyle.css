@@ -1,120 +1,184 @@
-*{
+* {
     font-family: 'Pretendard-Regular';
 }
 
-#icon_wrap{
-    width: 200px; height: 40px;
-    position: absolute; top: 235px; left: 1350px;
+#wrap {
+    height: 1500px;
+}
+
+#icon_wrap {
+    width: 200px;
+    height: 40px;
+    position: absolute;
+    top: 235px;
+    left: 1350px;
     z-index: 99;
 }
+
 .link-icon {
     float: left;
     margin: 3px;
 }
 
-.link-icon img{
+.link-icon img {
     width: 30px;
 }
 
-#icon_wrap2{
-    width: 100px; height: 25px;
-    position: absolute; top: 170px; left: 1400px;
+#icon_wrap2 {
+    width: 100px;
+    height: 25px;
+    position: absolute;
+    top: 170px;
+    left: 1400px;
     opacity: 70%;
     z-index: 99;
 }
 
-#icon_wrap2>div{
+#icon_wrap2>div {
     float: left;
 }
-#icon_wrap2>div:nth-child(2){
+
+#icon_wrap2>div:nth-child(2) {
     margin: 0 10px;
 }
 
-button{
-    width: 200px; height: 50px;
+button {
+    width: 200px;
+    height: 50px;
     font: 900 18px/50px 'Pretendard-Regular';
     border: 0;
     color: #fff;
     background-color: #3399ff;
     text-align: center;
-    position: relative; top: 280px; left: 670px;
+    position: relative;
+    top: 270px;
+    left: 670px;
     margin: 20px;
 }
-.header>div{
+
+.header>div {
     margin-left: 30px;
 }
-.t1{
-    position: absolute; top: 160px; left: 500px;
+
+.t1 {
+    position: absolute;
+    top: 160px;
+    left: 500px;
     font: 900 20px/40px 'Pretendard-Regular';
     width: 200px;
 }
 
-.t2{
-    position: absolute; top: 160px; left: 580px;
+.t2 {
+    position: absolute;
+    top: 160px;
+    left: 580px;
     width: 200px;
     font: 200 14px/40px 'Pretendard-Regular';
 }
-.t3{
+
+.t3 {
     font: 900 18px/40px 'Pretendard-Regular';
     margin-left: 20px;
 }
-.t3_cont{
+
+.t3_cont {
     margin-left: 20px;
 }
-#dDay{
+
+#dDay {
     color: #3399ff;
     font: 200 14px/40px 'Pretendard-Regular';
 }
 
-#info_tbl{
-    margin-left: 20px;
+#info_tbl th {
+    padding: 10px;
 }
 
-#main_tbl{
+#main_tbl {
     margin: 10px auto;
+    border-collapse: collapse;
+    width: 1000px;
+    margin: 1rem auto;
 }
 
-#jtop{
+#jtop {
     width: 1000px;
-    border: 1px solid rgb(145, 121, 121);
-    position: absolute; top: 210px; left: 500px;
+    position: absolute;
+    top: 210px;
+    left: 500px;
 }
-.jobad{
+
+.jobad {
     width: 1000px;
     background-color: rgba(255, 255, 255, 0.5);
 }
-.header{
+
+.header {
     border-top: 2px solid #333;
 }
-.company_info{
+
+.company_info {
     border-top: 1px solid lightgray;
 }
-.main{
+
+.h1 {
+    font: 900 20px/30px 'Pretendard-Regular';
+}
+
+.h2 {
+    font: 900 16px/26px 'Pretendard-Regular';
+}
+
+.h3 {
+    font: 900 14px/24px 'Pretendard-Regular';
+}
+
+.main {
     border-top: 2px solid #333;
     border: 1px solid lightgray;
-    position: absolute; top: 470px; left: 450px;
+    position: absolute;
+    top: 470px;
+    left: 450px;
     margin: 50px;
 }
-th{
-    font: 900 15px/30px 'Pretendard-Regular';
-    margin-right: 20px;
-}
-tr{
-}
-td{
+
+/* 테이블 행 */
+#main_tbl td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
     font: 500 15px/30px 'Pretendard-Regular';
+}
 
+#main_tbl th {
+    width: 13%;
+    padding: 8px;
+    text-align: left;
+    text-align: center;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    font: 900 15px/30px 'Pretendard-Regular';
 }
 
 
+#main_tbl th,
+#main_tbl td {
+    border-left: none;
+    border-right: none;
+}
 
 #chart-container {
     border-top: 2px solid #333;
-    position: relative; top: 130px; left: 500px;
-    width: 1000px; height: 200px;
+    position: relative;
+    top: 350px;
+    left: 500px;
+    width: 1000px;
+    height: 200px;
     clear: both;
     background-color: rgba(255, 255, 255, 0.5);
 }
-canvas{
+
+canvas {
     margin: 20px;
 }
