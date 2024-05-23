@@ -31,20 +31,20 @@
 				<!-- 10. 추천 일자리 (5개 표시;) -->
 				<div id="icon_wrap">
 					<a id="btnTwitter" href="javascript:shareTwitter();">
-					<img src="/images/icon/icon-twitter.png" class="link-icon twitter"></a>
+						<img src="/images/icon/icon-twitter.png" class="link-icon twitter"></a>
 
-					<a id="btnFacebook" href="javascript:shareFacebook();">	<img src="/images/icon/icon-facebook.png" class="link-icon facebook"></a>
-					
+					<a id="btnFacebook" href="javascript:shareFacebook();"> <img src="/images/icon/icon-facebook.png"
+							class="link-icon facebook"></a>
+
 					<a id="btnKakao" href="javascript:shareKakao();">
-					<img src="/images/icon/icon-kakao.png"  class="link-icon kakao"></a>
+						<img src="/images/icon/icon-kakao.png" class="link-icon kakao"></a>
 				</div>
 				<div class="t1"> 채용공고</div>
 				<div class="t2">접수기간 d-day <span id="dDay"></span></div>
-				
+
 				<div id="icon_wrap2">
 					<div id="copyBtn" onclick="copyToClipboard()">
-						<img style="width:25px; height:25px;"
-						th:src="@{/images/icon/copy.png}" alt="copyBtn">
+						<img style="width:25px; height:25px;" th:src="@{/images/icon/copy.png}" alt="copyBtn">
 					</div>
 					<div id="likeContainer"></div>
 					<div id="scrapContainer"></div>
@@ -174,10 +174,10 @@
 		const dDay = document.querySelector("#dDay");
 		const targetDate = [[${ jobad.receiptCloseDt }]];
 		const regDate = [[${ jobad.regdate }]];
-		const female = [[${female}]]
-		const male = [[${male}]]
-		const count = [[${count}]]
-		
+		const female = [[${ female }]]
+		const male = [[${ male }]]
+		const count = [[${ count }]]
+
 
 		//스크랩버튼 처리
 		if ([[${ scrap == false}]]) {
@@ -202,7 +202,7 @@
 		function openPopUp() {
 			window.open("http://localhost:8093/user/user_resumePick?jno=" + [[${ jobad.jno }]], "팝업 창", "width=600,height=400");
 		}
-		if(document.querySelector("#downloadFormBtn") != null){
+		if (document.querySelector("#downloadFormBtn") != null) {
 			// 자체 양식 다운로드 버튼 클릭 시 처리
 			document.querySelector("#downloadFormBtn").addEventListener("click", function () {
 				// 만약 attachFileUrl2가 빈 문자열이 아니라면, 즉 양식이 존재한다면
@@ -220,7 +220,7 @@
 				}
 			});
 		}
-		
+
 
 		function scrapJobad() {
 			const xhttp = new XMLHttpRequest();
@@ -317,50 +317,50 @@
 
 
 		function drawPieChart(canvasId, data, colors, labels) {
-		    var canvas = document.getElementById(canvasId);
-		    var ctx = canvas.getContext('2d');
-		    var total = data.reduce((acc, value) => acc + value, 0);
-		    var startAngle = 0;
-		    var endAngle = 0;
+			var canvas = document.getElementById(canvasId);
+			var ctx = canvas.getContext('2d');
+			var total = data.reduce((acc, value) => acc + value, 0);
+			var startAngle = 0;
+			var endAngle = 0;
 
-		    for (var i = 0; i < data.length; i++) {
-		        var sliceAngle = 2 * Math.PI * (data[i] / total);
+			for (var i = 0; i < data.length; i++) {
+				var sliceAngle = 2 * Math.PI * (data[i] / total);
 
-		        ctx.fillStyle = colors[i];
-		        ctx.beginPath();
-		        ctx.moveTo(canvas.width / 2, canvas.height / 2);
-		        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, startAngle + sliceAngle);
-		        ctx.lineTo(canvas.width / 2, canvas.height / 2);
-		        ctx.fill();
+				ctx.fillStyle = colors[i];
+				ctx.beginPath();
+				ctx.moveTo(canvas.width / 2, canvas.height / 2);
+				ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, startAngle + sliceAngle);
+				ctx.lineTo(canvas.width / 2, canvas.height / 2);
+				ctx.fill();
 
-		        // 레이블 표시
-		        var midAngle = startAngle + sliceAngle / 2;
-		        var labelRadius = canvas.width * 0.5 * 0.8;
-		        var x = canvas.width / 2 + Math.cos(midAngle) * labelRadius;
-		        var y = canvas.height / 2 + Math.sin(midAngle) * labelRadius;
+				// 레이블 표시
+				var midAngle = startAngle + sliceAngle / 2;
+				var labelRadius = canvas.width * 0.5 * 0.8;
+				var x = canvas.width / 2 + Math.cos(midAngle) * labelRadius;
+				var y = canvas.height / 2 + Math.sin(midAngle) * labelRadius;
 
-		        ctx.fillStyle = 'black';
-		        ctx.font = 'bold 12px Arial';
-		        ctx.textAlign = 'center';
-		        ctx.fillText(labels[i], x, y);
+				ctx.fillStyle = 'black';
+				ctx.font = 'bold 12px Arial';
+				ctx.textAlign = 'center';
+				ctx.fillText(labels[i], x, y);
 
-		        startAngle += sliceAngle;
-		    }
+				startAngle += sliceAngle;
+			}
 		}
 
 		// 데이터와 색상 정의
 		var data1 = [female, male];
-		var colors1 = ['#ff5733', '#33ff57'];
-		var labels1 = ['여자 지원자 수 : ' + female , '남자 지원자 수 : ' + male];
+		var colors1 = ['#5AB2FF', '#A0DEFF'];
+		var labels1 = ['여자 지원자 수 : ' + female, '남자 지원자 수 : ' + male];
 
 		var data2 = [count];
-		var colors2 = ['#ffcc00'];
+		var colors2 = ['#FFF9D0'];
 		var labels2 = ['총 지원자 수 :' + count];
 
 		// 원 그래프 그리기
 		drawPieChart('chart1', data1, colors1, labels1);
 		drawPieChart('chart2', data2, colors2, labels2);
-	    
+
 	</script>
 </body>
 
