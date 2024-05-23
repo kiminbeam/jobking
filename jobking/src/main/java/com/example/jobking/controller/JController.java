@@ -4,13 +4,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.hibernate.internal.build.AllowSysOut;
+import org.checkerframework.checker.units.qual.s;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.jobking.dto.JobAdWithScrapAndLike;
 import com.example.jobking.entity.AbgLoginTime;
 import com.example.jobking.entity.ApplyList;
 import com.example.jobking.entity.Career;
@@ -258,9 +260,33 @@ public class JController {
 	}
 	
 	@RequestMapping("/user_recruit_region")
-	public void userRecruitRegion(Model model) {
+	public void userRecruitRegion(HttpServletRequest request, Model model) {
 		List<JobAd> jobAdList = jobadRepo.findAll();
-		model.addAttribute("jobadList", jobAdList);
+		List<JobAdWithScrapAndLike> newList = new ArrayList<>();
+		String uid = (String) request.getSession().getAttribute("id");
+		//스크랩되있는 jno 모음
+		List<Long> scrappedJno = jobscrapRepo.findScrapedJobAdByUid(uid);
+		//구독한 기업 cid모음
+		//전체 리스트 뿌려주기
+		for(JobAd ja : jobAdList) {
+			JobAdWithScrapAndLike jobDto = new JobAdWithScrapAndLike();
+			jobDto.setJobad(ja);
+			for(Long ln : scrappedJno) {
+				if(ja.getJno() == ln) {
+					jobDto.setScrapped(true);
+				}
+			}
+			System.out.println(jobDto.getClass());
+			newList.add(jobDto);
+		}
+		
+		
+		model.addAttribute("newList", newList);
+
+		for(JobAdWithScrapAndLike x : newList) {
+			System.out.println(x.getClass());
+		}
+		
 	}
 	@RequestMapping("/user_recruit_regionSearch")
 	public @ResponseBody List<JobAd> userRecruitRegionSearch(HttpServletRequest request, @RequestParam(required = false, name = "region1Name") String region1Name,
