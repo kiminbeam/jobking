@@ -11,7 +11,7 @@
 		<ul>
 			<li><img src="../../../images/reg.png" width="50" height="50">
 			</li>
-			<li><em class="em1">[필수]</em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
+			<li><em class="em1">[필수] </em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
 				반드시 기입해 주세요.</li>
 			<li>개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로
 				클릭하여 기입하신 정보를 저장하시기 바랍니다.</li>
@@ -24,7 +24,7 @@
 	<form method="post" th:action="@{/user/user_resume(rno=${rno})}">
 		<!-- 이력서 제목 -->
 		<div>
-			이력서 제목 <em class="em1">[필수]</em><input type="text" name="rtitle"
+			이력서 제목 <em class="em1">[필수] </em><input type="text" name="rtitle"
 				placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요)">
 		</div>
 		<!-- 회원정보수정하기 버튼 -->
@@ -82,8 +82,6 @@
 					<th>학력</th>
 					<th>기간</th>
 					<th>전공학과</th>
-					<th>학 나머지도 마저 출력해줘 ChatGPT Sure, let's continue from where we
-						left off: html 코드 복사
 					<th>학점</th>
 					<th>상태</th>
 					<th>삭제</th>
@@ -92,7 +90,7 @@
 			<tbody id="educationTableBody">
 				<tr>
 					<td><select class="gradeList_0" name="eduName" title="학력 선택">
-							<option value selected="selected">학력 선택</option>
+							<option value selected="selected" >학력 선택</option>
 							<option value="무학">무학</option>
 							<option value="초등학교">초등학교</option>
 							<option value="중학교">중학교</option>
@@ -103,7 +101,7 @@
 							<option value="대학원(박사)">대학원(박사)</option>
 					</select></td>
 					<td><input type="date" name="accDate" title="입학일자"
-						placeholder="yyyy.mm.dd" maxlength="10"> <span>~</span> <input
+						placeholder="yyyy.mm.dd" maxlength="10"  > <span>~</span> <input
 						type="date" name="gradDate" title="졸업일자" placeholder="yyyy.mm.dd"
 						maxlength="10"></td>
 					<td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
