@@ -16,8 +16,9 @@
 		</header>
 		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
     <button onclick="location.href='/user/user_resumePick'">뒤로가기</button>
-    <h2>이력서 상세</h2>
-
+    <div id="title_wrap">
+      <div class="title2">이력서 상세</div>
+    </div>
     <div th:if="${resume != null}">
       <h3 th:text="${resume.rtitle}"></h3>
       <p>지원자: <span th:text="${user.uname}"></span> (<span th:text="${user.genderString}"></span>, <span

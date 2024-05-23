@@ -5,6 +5,7 @@
 	<meta charset="UTF-8">
 	<title>Insert title here</title>
 	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/userResumeListStyle.css">
 </head>
 
 <body>
@@ -13,32 +14,37 @@
 			<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
 		</header>
 		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-		<div>마이페이지</div>
-		<div>이력서 관리</div>
+		<div id="title_wrap">
+			<div class="title1">마이페이지</div>
+			<div class="title2">이력서 관리</div>
+		</div>
 		<div>
 			<input type="button" value="대표 이력서 설정하기" onclick="showSecondList()" id="btn1" style="display: block;">
+			<input type="button" value="이력서 작성하기" onclick="showResumeForm()" id="btn5" style="display: block;">
 		</div>
 		<div>
 			<input type="hidden" id="resumeCount" th:value="${resumeCount}" />
 		</div>
 		<!-- 첫 번째 이력서 목록 -->
-		<div id="resumeListDiv" style="display: block">
-			<input type="button" value="이력서 작성하기" onclick="showResumeForm()" id="btn5" style="display: block;">
+		<div id="resumeListDiv" style="display: block" class="resumeList">
+	
 			<ul th:each="resume, resumeIndex : ${resumeList}">
 				<li>
 					<span class="representative" th:if="${#strings.equals(resume.def, '1')}"
-						style="display: inline;">(대표 이력서)</span>
+						style="display: inline;">[ 대표 이력서 ]</span>
 					<a th:href="@{/user/user_resume_detail(rno=${resume.rno}, uid=${resume.user.uid})}">
-						<span th:text="${resume.rtitle}"></span>
+						<span th:text="${resume.rtitle}" class="rs_title"></span>
 					</a>
 				</li>
-				<li><img src="../../images/pen.png" width="50" height="50"></li>
-				<li><img src="../../images/X.png" width="50" height="50"></li>
+				<ul id="icon">
+					<li><img src="/images/수정.png" width="50" height="50"></li>
+					<li><img src="/images/삭제.png" width="50" height="50"></li>				
+				</ul>
 			</ul>
 		</div>
 
 		<!-- 두 번째 이력서 목록, 초기에는 숨김 -->
-		<div id="resumeListDiv2" style="display: none">
+		<div id="resumeListDiv2" style="display: none"  class="resumeList">
 			<ul th:each="resume, resumeIndex : ${resumeList}">
 				<li>
 					<div id="selfInfoDiv">
