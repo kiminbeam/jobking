@@ -6,7 +6,7 @@ main {
 }
 #reviewWrap{
 	width:1000px;
-	height:1500px;
+	height:1800px;
 	position:relative;
 	padding:10px;
 	top:30px;
@@ -19,20 +19,46 @@ h1, h3 {
 }
 
 table {
-    width: 100%;
+    border: 1px #c3c3c4 solid;
+    font-size: .9em;
+    box-shadow: 0 2px 5px rgba(0,0,0,.25);
+    width: 80%;
     border-collapse: collapse;
-    margin-top: 20px;
+    border-radius: 5px;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  
+  th {
+    text-align: center;
+    background-color:#3399ff;
+    color:white;
+  }
+    
+  thead {
+    font-weight: bold;
+    color: #fff;
+    background: #3399ff;
+    font: 900 15px/30px 'Pretendard-Regular';
+
+  }
+    
+   td, th {
+    padding: 1em .5em;
+    vertical-align: middle;
+    text-align: center;
+    font: 500 15px/30px 'Pretendard-Regular';
+  }
+    
+   td {
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    background: #fff;
+  }
+  
+table a {
+  color: #3399ff;
 }
 
-table th, table td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-}
-
-table th {
-    background-color: #f2f2f2;
-}
 
 span {
     display: inline-block;
@@ -45,7 +71,7 @@ span {
 
 .review-section h3 {
     font-weight: bold;
-    margin-top: 20px;
+    margin-top: 40px;
 }
 
 .star-rating {
