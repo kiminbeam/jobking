@@ -568,6 +568,22 @@ public class CompanyController {
 			return "/company/com_communityDetail";
 		}
 		
+		//댓글 작성
+		@RequestMapping("/companyReply_insert")
+		public String insertComReply(@RequestParam("cbno") Long cbno, @RequestParam("cid") String cid, CompanyReply comReply,HttpServletRequest request) {
+			Optional<CompanyBoard> list= comboardRepository.findById(cbno);
+			CompanyBoard board = list.get();
+			
+			Optional<Company> com = comrepository.findById(cid);
+			Company company = com.get();
+			
+			comReply.setCompanyBoard(board);
+			comReply.setCompany(company);
+			
+			comReplyRepository.save(comReply);
+			return "redirect:/company/com_communityDetail?cbno=" + cbno;
+		}
+		
 		@RequestMapping("/com_communityForm_insert")
 		public String comCommunityFormInsert(CompanyBoard comboard, Model model) {
 			CompanyBoard latestAlertBoard = comboardRepository.findLatestBoardByType("3");
@@ -619,12 +635,33 @@ public class CompanyController {
 		@RequestMapping("/com_myBoardList")
 		public String comMyBoardList(HttpServletRequest request, Model model) {
 			String cid = (String) request.getSession().getAttribute("id");
-			List<CompanyBoard> companyBoardList = comboardRepository.findByCid(cid);
+			List<CompanyBoard> comBoardList = comboardRepository.findByCid(cid);
+			List<CompanyReply> comReplyList = comReplyRepository.findAllByCid(cid);
 			
+			model.addAttribute("comBoardList", comBoardList);
+			model.addAttribute("comReplyList", comReplyList);
+			
+			System.out.println(comReplyList);
 			
 			return "/company/com_myboardList";
 		}
 		
+		@RequestMapping("/delete_board")
+		public String deleteBoard(@RequestParam("cbno")Long cbno,HttpServletRequest request) {
+			
+			comReplyRepository.deleteAllByCbno(cbno);
+			
+			comboardRepository.delete(comboardRepository.findById(cbno).get());
+			
+			return "/company/com_myboardList";
+		}
+		
+		@RequestMapping("/delete_reply")
+		public String delete_reply(@RequestParam("relyno") Long replyno, Model model) {
+			comReplyRepository.delete(comReplyRepository.findById(replyno).get());
+			
+			return "/company/com_myboardList";
+		}
 		
 		
 	}

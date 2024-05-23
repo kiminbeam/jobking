@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 	<style>
 		body{
 				font-family: Arial, sans-serif;
@@ -100,11 +101,10 @@
 				background-color: #ddd;
 			}
 		
-		
 	</style>
 </head>
 <body>
-	<div class="top">
+		<div class="top">
 			<div class="navbar">
 				<a href="#home">home</a>
 				<div class="dropdown">
@@ -138,7 +138,7 @@
 				<a href=" " class="content">유저서비스</a>
 			</div>
 		</div><!-- top end-->
-
+		
 			<div class="maincontent">
 				<div class="sidebar">
 					<div>
@@ -169,51 +169,74 @@
 				</div><!--sidebar end-->
 				
 				<div>
-					<div class="container">
-							<div class="alertTab">
-								<span>📢 [공지사항]  </span>
-								<a th:text="${latestAlertBoard.title}" th:href="@{/com/com_communityDetail(cbno=${latestAlertBoard.cbno})}"></a>
-							</div>
-					<table class="content_container">
-						<tr> 
-							<th id="title">[[${companyBoard.title}]]</th>
+					<h1>마이페이지</h1>
+					<h3>커뮤니티 활동 관리</h3>
+					
+					<h3>내가 쓴 글 보기</h3>
+					<table class="companyBoard">
+						<tr>
+							<th>커뮤니티 글 제목</th>
+							<th>수정</th>
+							<th>삭제</th>
 						</tr>
-						<tr class="detail_container"> 
-							<td><span>[[${companyBoard.regdate}]]</span><span>[[${companyBoard.company.cname}]]</span> 
-							<a th:href="@{/com/com_communityForm_edit(cbno=${companyBoard.cbno})}">✏️수정하기</a>
-							<a th:href="@{/com/com_communityForm_delete(cbno=${companyBoard.cbno})}">❌삭제하기</a></td>
-						</tr>
-						<tr> 
-							<td>[[${companyBoard.content}]]</td>
+						<tr th:each="comBoard : ${comBoardList}">
+							<td>[[${comBoard.title}]]</td>
+							<td class="editBtn">📝<span style="display:none;">[[${comBoard.cbno}]]</span></td>
+							<td class="deleteBtn">❌<span style="display:none;">[[${comBoard.cbno}]]</span></td>
 						</tr>
 					</table>
-					<table class="reply_container">
-						<tr> 
-						<td>
-							<input type="text" placeholder="댓글을 작성해보세요">
-							<input type="hidden" id="companyId" th:value="${companyBoard.company.cid}">
-							<button onclick="addReply()">등록</button>
-						</td>
+					
+					
+					<h3>내가 쓴 댓글 보기</h3>
+					<table class="companyReply">
+						<tr>
+							<th>커뮤니티 글 제목</th>
+							<th>댓글 내용</th>
+							<th>수정</th>
+							<th>삭제</th>
 						</tr>
-						<tr th:each="companyReply,companyReplyStat : ${companyReplyList}"> 
-							<th>[[${companyReply.writer}]]</th>
-							<td>[[${companyReply.regdate}]]</td>
-							<td>[[${companyReply.content}]]</td>
-							<td th:if="${companyReply.writer == session.id}"><button >수정하기</button> <button>삭제하기</button></td>
+						<tr th:each="comReply : ${comReplyList}">
+							<td>[[${comReply.companyBoard.title}]]</td>
+							<td>[[${comReply.content}]]</td>
+							<td class="editBtn">📝<span style="display:none;">[[${comReply.replyno}]]</span></td>
+							<td class="deleteBtn">❌<span style="display:none;">[[${comReply.replyno}]]</span></td>
 						</tr>
 					</table>
 				</div>
-				
 			</div><!--maincontent end-->
-			
-			<script th:inline="javascript">
-			
-			var companyBoardCbno = /*[[${companyBoard.cbno}]]*/ '0';
-			var companyId = document.getElementById("companyId").value;
-		    function addReply(){
-		        window.location.href = "/company/companyReply_insert?cbno=" + companyBoardCbno +"&cid=" + companyId;
-		    }
-			</script>
-	
+		
+	<script th:inline="javascript">
+		const deleteBtns = document.querySelectorAll(".deleteBtn");
+		const editBtns = document.querySelectorAll(".editBtn");
+		deleteBtns.forEach(btn=>{
+			btn.addEventListener("click", function(e){
+				let table = e.target.parentElement.parentElement.parentElement.classList;
+				let no = e.target.querySelector("span").innerText;
+				
+				if(table =="companyBoard"){
+					if(confirm("정말로 해당 글을 커뮤니티에서 삭제하시겠습니까?")){
+						location.href="/company/delete_board?ubno="+no;
+					};
+				}else if(table =="companyReply"){
+					if(confirm("정말로 해당 댓글을 커뮤니티에서 삭제하시겠습니까?")){
+						location.href="/company/delete_reply?replyno="+no;
+					}
+				}
+			})
+		})
+		
+		editBtns.forEach(btn=>{
+			btn.addEventListener("click", function(e){
+				let table = e.target.parentElement.parentElement.parentElement.classList;
+				let no = e.target.querySelector("span").innerText;
+				
+				if(table =="companyrBoard"){
+					location.href="/company/com_communityForm_edit?ubno="+no;
+				}else if(table =="companyReply"){
+					location.href="/user/edit_reply?replyno="+no;
+				}
+			})
+		})
+	</script>
 </body>
 </html>

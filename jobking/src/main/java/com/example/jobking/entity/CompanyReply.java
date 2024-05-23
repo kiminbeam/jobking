@@ -34,14 +34,9 @@ public class CompanyReply extends BaseEntity {
     @JoinColumn(name = "cbno", referencedColumnName = "cbno", nullable = false)
     private CompanyBoard companyBoard;
 
-    @ManyToOne
-    @JoinColumn(name = "jno", referencedColumnName = "jno", nullable = false)
-    private JobAd jobAd;
-
-
-    @Column(name = "content", length = 255)
+    @Column(name = "content", columnDefinition = "TEXT")
     private String content;
 
-    @Column(name = "writer", length = 255)
+    @Column(name = "writer", length = 30)
     private String writer;	
 }
