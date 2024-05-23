@@ -279,10 +279,7 @@ public class JController {
 			System.out.println(jobDto.getClass());
 			newList.add(jobDto);
 		}
-		
-		
 		model.addAttribute("newList", newList);
-		
 	}
 	@RequestMapping("/user_recruit_regionSearch")
 	public @ResponseBody List<JobAd> userRecruitRegionSearch(HttpServletRequest request, @RequestParam(required = false, name = "region1Name") String region1Name,
@@ -299,10 +296,48 @@ public class JController {
 	}
 
 	@RequestMapping("/user_recruit_job")
-	public void userRecruitJob() {
+	public void userRecruitJob(HttpServletRequest request, Model model) {
+		List<JobAd> jobAdList = jobadRepo.findAll();
+		List<JobAdWithScrapAndLike> newList = new ArrayList<>();
+		String uid = (String) request.getSession().getAttribute("id");
+		//스크랩되있는 jno 모음
+		List<Long> scrappedJno = jobscrapRepo.findScrapedJobAdByUid(uid);
+		//구독한 기업 cid모음
+		//전체 리스트 뿌려주기
+		for(JobAd ja : jobAdList) {
+			JobAdWithScrapAndLike jobDto = new JobAdWithScrapAndLike();
+			jobDto.setJobad(ja);
+			for(Long ln : scrappedJno) {
+				if(ja.getJno() == ln) {
+					jobDto.setScrapped(true);
+				}
+			}
+			System.out.println(jobDto.getClass());
+			newList.add(jobDto);
+		}
+		model.addAttribute("newList", newList);
 	}
 	@RequestMapping("/user_recruit_sector")
-	public void userRecruitSector() {
+	public void userRecruitSector(HttpServletRequest request, Model model) {
+		List<JobAd> jobAdList = jobadRepo.findAll();
+		List<JobAdWithScrapAndLike> newList = new ArrayList<>();
+		String uid = (String) request.getSession().getAttribute("id");
+		//스크랩되있는 jno 모음
+		List<Long> scrappedJno = jobscrapRepo.findScrapedJobAdByUid(uid);
+		//구독한 기업 cid모음
+		//전체 리스트 뿌려주기
+		for(JobAd ja : jobAdList) {
+			JobAdWithScrapAndLike jobDto = new JobAdWithScrapAndLike();
+			jobDto.setJobad(ja);
+			for(Long ln : scrappedJno) {
+				if(ja.getJno() == ln) {
+					jobDto.setScrapped(true);
+				}
+			}
+			System.out.println(jobDto.getClass());
+			newList.add(jobDto);
+		}
+		model.addAttribute("newList", newList);
 	}
 
 	@RequestMapping("/user_recruitDetail")

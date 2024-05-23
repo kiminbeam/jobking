@@ -54,7 +54,23 @@
                     </div>
                 </div>
                 <button onclick="searchList()">검색</button>
-                <ul id="listContainer"></div>                
+                <div id="listContainer">
+	                 <div th:if="${newList != null}" th:each="jobWrapper : ${newList}">
+				        <div class="t2">[[${jobWrapper.jobad.company.cname}]]</div>
+				        <div class="t3">공고제목</div>
+				        <span><a th:href="@{/user/user_recruitDetail(jno=${jobWrapper.jobad.jno})}">[[${jobWrapper.jobad.wantedTitle}]]</a></span>
+				        <div class="t3">마감 날짜</div>
+				        <span>[[${jobWrapper.jobad.receiptCloseDt}]]</span>
+				         <div id="icon">
+						    <span th:if="${jobWrapper.scrapped}">
+						        <img style='width:10px; height:10px;' src='/images/icon/save_full.png' alt='saveFullBtn' >
+						    </span>
+						    <span th:unless="${jobWrapper.scrapped}">
+						        <img style='width:10px; height:10px;' src='/images/icon/save.png' alt='saveBtn' >
+						    </span>
+						 </div>
+				     </div>
+                </div>           
             </div>
         </main>
         <footer>
