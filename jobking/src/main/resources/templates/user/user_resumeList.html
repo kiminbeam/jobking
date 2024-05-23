@@ -1,78 +1,85 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/userResumeListStyle.css">
 </head>
+
 <body>
-	<div>마이페이지</div>
-	<div>이력서 관리</div>
-	<div>
-		<input type="button" value="대표 이력서 설정하기" onclick="showSecondList()"
-			id="btn1" style="display: block;">
-	</div>
-	<div>
-		<input type="hidden" id="resumeCount" th:value="${resumeCount}" />
-	</div>
-	<!-- 첫 번째 이력서 목록 -->
-	<div id="resumeListDiv" style="display: block">
-    <input type="button" value="이력서 작성하기" onclick="showResumeForm()" id="btn5" style="display: block;">
-    <ul th:each="resume, resumeIndex : ${resumeList}">
-        <li>
-            <span class="representative" th:if="${#strings.equals(resume.def, '1')}" 
-                  style="display: inline;">(대표 이력서)</span> 
-            <a th:href="@{/user/user_resume_detail(rno=${resume.rno}, uid=${resume.user.uid})}">
-    			<span th:text="${resume.rtitle}"></span>
-			</a>
-        </li>
-        <li>
-        	<a href="/user/user_resume_form">
-        		<img src="../../images/pen.png"  width="50" height="50">
-       		</a>
-       	</li>
-        <li>
-        	<a href="삭제">
-        		<img src="../../images/X.png" width="50" height="50">
-       		</a>
-       	</li>
-    </ul>
-</div>
+	<div id="wrap">
+		<header>
+			<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+		</header>
+		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+		<div id="title_wrap">
+			<div class="title1">마이페이지</div>
+			<div class="title2">이력서 관리</div>
+		</div>
+		<div>
+			<input type="button" value="대표 이력서 설정하기" onclick="showSecondList()" id="btn1" style="display: block;">
+			<input type="button" value="이력서 작성하기" onclick="showResumeForm()" id="btn5" style="display: block;">
+		</div>
+		<div>
+			<input type="hidden" id="resumeCount" th:value="${resumeCount}" />
+		</div>
+		<!-- 첫 번째 이력서 목록 -->
+		<div id="resumeListDiv" style="display: block" class="resumeList">
+	
+			<ul th:each="resume, resumeIndex : ${resumeList}">
+				<li>
+					<span class="representative" th:if="${#strings.equals(resume.def, '1')}"
+						style="display: inline;">[ 대표 이력서 ]</span>
+					<a th:href="@{/user/user_resume_detail(rno=${resume.rno}, uid=${resume.user.uid})}">
+						<span th:text="${resume.rtitle}" class="rs_title"></span>
+					</a>
+				</li>
+				<ul id="icon">
+					<li><img src="/images/수정.png" width="50" height="50"></li>
+					<li><img src="/images/삭제.png" width="50" height="50"></li>				
+				</ul>
+			</ul>
+		</div>
 
-	<!-- 두 번째 이력서 목록, 초기에는 숨김 -->
-	<div id="resumeListDiv2" style="display: none">
-    <ul th:each="resume, resumeIndex : ${resumeList}">
-        <li>
-            <div id="selfInfoDiv">
-                <div th:if="${selfinfoMap[resume.rno] != null}">
-                    <input type="checkbox" th:id="'resumeCheckbox' + ${resumeIndex}"
-                           th:data-resume-id="${resume.rno}"
-                           onclick="toggleCheck(this)">
-                   	<span th:text="${resume.rtitle}"></span>
-                    <div th:each="selfInfo : ${selfinfoMap[resume.rno]}">
-                        <span th:text="${selfInfo.title}"></span><br>
-                        <span th:text="${selfInfo.scontent}"></span>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>
+		<!-- 두 번째 이력서 목록, 초기에는 숨김 -->
+		<div id="resumeListDiv2" style="display: none"  class="resumeList">
+			<ul th:each="resume, resumeIndex : ${resumeList}">
+				<li>
+					<div id="selfInfoDiv">
+						<div th:if="${selfinfoMap[resume.rno] != null}">
+							<input type="checkbox" th:id="'resumeCheckbox' + ${resumeIndex}"
+								th:data-resume-id="${resume.rno}" onclick="toggleCheck(this)">
+							<span th:text="${resume.rtitle}"></span>
+							<div th:each="selfInfo : ${selfinfoMap[resume.rno]}">
+								<span th:text="${selfInfo.title}"></span><br>
+								<span th:text="${selfInfo.scontent}"></span>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
 
-	<div id="btn2" style="display: none">
-		<input type="button" value="대표 설정" onclick="setRepresentative()">
+		<div id="btn2" style="display: none">
+			<input type="button" value="대표 설정" onclick="setRepresentative()">
+		</div>
+		<footer>
+			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+		</footer>
 	</div>
-
 	<script>
 		function toggleCheck(checkbox) {
 			// 모든 체크박스 가져오기
 			var checkboxes = document
-					.querySelectorAll('#resumeListDiv2 input[type="checkbox"]');
+				.querySelectorAll('#resumeListDiv2 input[type="checkbox"]');
 
 			// 현재 클릭된 체크박스의 상태 확인
 			var isChecked = checkbox.checked;
 
 			// 모든 체크박스의 체크 상태 해제
-			checkboxes.forEach(function(cb) {
+			checkboxes.forEach(function (cb) {
 				cb.checked = false;
 			});
 
@@ -110,7 +117,7 @@
 				var xhr = new XMLHttpRequest();
 				xhr.open("POST", "/user/setRepresentative", true);
 				xhr.setRequestHeader("Content-Type", "application/json");
-				xhr.onreadystatechange = function() {
+				xhr.onreadystatechange = function () {
 					if (xhr.readyState === 4 && xhr.status === 200) {
 						alert("대표 이력서 설정이 바뀌었습니다.");
 						// 요청이 성공하면 페이지 새로고침
@@ -131,4 +138,5 @@
 		}
 	</script>
 </body>
+
 </html>
