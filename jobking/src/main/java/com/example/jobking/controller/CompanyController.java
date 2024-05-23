@@ -568,6 +568,65 @@ public class CompanyController {
 			return "/company/com_communityDetail";
 		}
 		
+		@RequestMapping("/com_communityForm_insert")
+		public String comCommunityFormInsert(CompanyBoard comboard, Model model) {
+			CompanyBoard latestAlertBoard = comboardRepository.findLatestBoardByType("3");
+			model.addAttribute("latestAlertBoard", latestAlertBoard);
+			
+			return "/company/com_communityForm_insert";
+		}
+		
+		@RequestMapping("/com_boardRegist")
+		public String comBoardRegist(HttpServletRequest request, CompanyBoard companyBoard) {
+			String cid = (String) request.getSession().getAttribute("id");
+			companyBoard.setCompany(comrepository.findById(cid).get());
+			comboardRepository.save(companyBoard);
+			
+			return "/company/com_communityList";
+		}
+		
+		@RequestMapping("/com_communityForm_edit")
+		public String comBoardEdit(@RequestParam("cbno") Long cbno, Model model) {
+			CompanyBoard latestAlertBoard = comboardRepository.findLatestBoardByType("3");
+			model.addAttribute("latestAlertBoard", latestAlertBoard);
+			
+			CompanyBoard companyBoard = comboardRepository.findById(cbno).get();
+			model.addAttribute("companyBoard", companyBoard);
+			
+			return "/company/com_communityForm_edit";
+		}
+		
+		@RequestMapping("/com_boardUpdate")
+		public String comBoardUpdate(HttpServletRequest request, CompanyBoard comboard, Model model) {
+			
+			CompanyBoard latestAlertBoard = comboardRepository.findLatestBoardByType("3");
+			model.addAttribute("latestAlertBoard", latestAlertBoard);
+			
+			String cid = (String)request.getSession().getAttribute("id");
+			comboard.setCompany(comrepository.findById(cid).get());
+			comboardRepository.save(comboard);
+			
+			return "/company/com_communityForm_update";
+		}
+		
+		@RequestMapping("/com_communityForm_delete")
+		public String comBoardDelete(@RequestParam("cbno") Long cbno) {
+			comboardRepository.deleteById(cbno);
+			
+			return "redirect:/company/com_communityList";
+		}
+		
+		@RequestMapping("/com_myBoardList")
+		public String comMyBoardList(HttpServletRequest request, Model model) {
+			String cid = (String) request.getSession().getAttribute("id");
+			List<CompanyBoard> companyBoardList = comboardRepository.findByCid(cid);
+			
+			
+			return "/company/com_myboardList";
+		}
+		
+		
+		
 	}
 
 

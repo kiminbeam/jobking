@@ -15,4 +15,7 @@ public interface ICompanyBoardRepository extends JpaRepository<CompanyBoard, Lon
 	
 	@Query(value="select * from company_board where type= :type order by regdate desc limit 1", nativeQuery=true)
 	CompanyBoard findLatestBoardByType(@Param("type") String type);
+	
+	@Query(value="select * from company_board where cid= :cid", nativeQuery=true)
+	List<CompanyBoard> findByCid(@Param("cid") String cid);
 }

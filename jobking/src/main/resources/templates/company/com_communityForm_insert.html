@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+	<style>
+		body{
+				font-family: Arial, sans-serif;
+			}
+			
+			.navbar{
+				display: flex;
+				background-color: #333;
+				overflow: hidden;
+			}
+			
+			.navbar a, .dropbtn {
+				color: black;
+				text-align: center;
+				padding: 14px 20px;
+				text-decoration: none;
+				display: block;
+				
+			}
+			
+			.navbar a:hover, dropdown:hover .dropbtn{
+				background-color: #ddd;
+				color: black;
+			}
+			
+			.dropdown{
+				float: left;
+				overflow: hidden;
+			}
+			
+			
+			.dropdown-content {
+				display: none;
+				position: absolute;
+				background-color: #f9f9f9;
+				min-width: 160px;
+				z-index: 1;
+			}
+			
+			
+			
+			.dropdown-content a {
+				color: black;
+				padding: 12px 16px;
+				text-decoration: none;
+				display: block;
+				text-align: left;
+			}
+			
+			.dropdown-content a:hover{
+				background-color: #f1f1f1;
+			}
+			
+			
+			
+			.dropdown:hover .dropdown-content{
+				display: block;
+			}
+			
+			.maincontent{
+				display: flex;
+			}
+			
+			.sidebar {
+				width: 200px;
+				background-color:white;
+				padding: 15px;
+				border-right: 1px solid #ddd;
+				
+			}
+			
+			.dropdown-btn {
+				padding: 10px;
+				font-size: 16px;
+				border: none;
+				background: none;
+				cursor: pointer;
+				border-bottom: dimgray;
+			}
+			
+			.dropdown-container {
+				display: none;
+				padding-left: 8px;
+			}
+			
+			
+			.sidebar a {
+				padding: 10px;
+				text-decoration: none;
+				display: block;
+				color: black;
+			}
+			
+			.sidebar a:hover {
+				background-color: #ddd;
+			}
+		
+		
+	</style>
+</head>
+<body>
+	<div class="top">
+			<div class="navbar">
+				<a href="#home">home</a>
+				<div class="dropdown">
+					<button class="dropbtn">공고*지원자관리</button>
+					<div class="dropdown-content">
+						<a href="">채용공고</a>
+						<a href="">입사지원관리</a>
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">회사정보관리</button>
+					<div class="dropdown-content">
+						<a href=" " >기본정보관리</a>
+						<a href=" " >내기업평점보기</a>		
+					</div>
+				</div>
+				<div class="dropdown">
+					<button class="dropbtn">인재관리</button>
+					<div class="dropdown-content">
+						<a href=" ">포지션제안인재</a>
+						<a href=" ">기업구독인재</a>
+						<a href=" ">스크랩한인재</a>
+						<a href=" ">최근 본 인재</a>		
+					</div>
+				</div>
+				<div id="dropdown">
+					<a href=" ">인재 검색</a>
+				</div>
+				
+				<a href=" " class="content">로그인</a>
+				<a href=" " class="content">유저서비스</a>
+			</div>
+		</div><!-- top end-->
+		
+		<div class="maincontent">
+				<div class="sidebar">
+					<div>
+						<button class="dropdown-btn">공고*지원자관리</button>
+						<div class="dropdown-container">
+							<a href=" ">채용공고</a>
+							<a href="">입사지원관리</a>
+						</div>
+					</div>
+					<div>
+						<button class="dropdown-btn">회사정보관리</button>
+						<div class="dropdown-container">
+							<a href="">기본정보관리</a>
+							<a href="">내기업평점보기</a>
+						</div>
+					</div>
+					<div>
+						<button class="dropdown-btn">인재관리</button>
+						<div class="dropdown-container">
+							<a href="">인재 검색</a>
+							<a href="">포지션제안 인재</a>
+							<a href="">기업구독 인재</a>
+							<a href="">스크랩한 인재</a>
+							<a href="">최근 본 인재</a>
+						</div>
+					</div>
+					<a href="">커뮤니티</a>
+				</div><!--sidebar end-->
+				
+				<div>
+					<div class="container">
+					<div class="alertTab">
+						<span>📢 [공지사항]  </span>
+						<a th:text="${latestAlertBoard.title}" th:href="@{/company/com_communityDetail(cbno=${latestAlertBoard.cbno})}"></a>
+					</div>
+						<form class="form-container" action="/company/com_boardRegist" method="post">
+							<fieldset class="typeContainer">
+							  	<span>게시판 타입 선택</span>
+							    <input type="radio" name="type" value="1"  />
+							    <label for="type">질문</label>
+							    <input type="radio" name="type" value="2" />
+							    <label for="type">정보</label>
+							    
+							</fieldset>
+							<div class="form">
+								<input type="text" placeholder="제목을 입력해주세요" name="title"> <br>
+								<textarea placeholder="내용을 입력해주세요" name="content"></textarea> <br>
+								<input id="submitBtn" type="submit" value="등록">
+							</div>
+						</form>
+					</div>
+				</div>
+				
+				
+			</div><!--maincontent end-->
+			
+			<script>
+				const tabs = document.querySelectorAll(".tab-link");
+				const contents = document.querySelectorAll(".tab-content")
+	
+	
+				tabs.forEach(tab=>{
+					tab.addEventListener("click", function(e){
+						const id = e.target.getAttribute("data-tab")
+						tabs.forEach(t=>{t.classList.remove("current")})
+						contents.forEach(content=>{content.classList.remove("current")})
+						tab.classList.add("current");
+						document.querySelector("#"+id).classList.add("current")
+					})
+				})
+			</script>
+		
+</body>
+</html>

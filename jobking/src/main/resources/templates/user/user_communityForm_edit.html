@@ -19,15 +19,13 @@
 						<span>📢 [공지사항]  </span>
 						<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
 					</div>
-						<form class="form-container" action="/user/user_board_regist" method="post">
+						<form class="form-container" action="/user/user_board_update" method="post">
 							<fieldset class="typeContainer">
 							  	<span>게시판 타입 선택</span>
 							    <input type="radio" name="type" value="1"  />
 							    <label for="type">구직자</label>
 							    <input type="radio" name="type" value="2" />
 							    <label for="type">재직자</label>
-							    <input type="radio" name="type" value="3" checked />
-							    <label for="type">전체</label>
 							</fieldset>
 							<div class="form">
 								<input type="text" name="title" th:value="${userBoard.title}">
