@@ -156,7 +156,7 @@ public class JController {
 		}else {
 			model.addAttribute("result", false);
 		}
-		return result ? "/user/index" : "/user/login_form";
+		return result ? "/user/user_mainPage" : "/user/login_form";
 	}
 	@RequestMapping("/company_login")
 	public String companyLogin(HttpServletRequest request, Model model) {
@@ -183,7 +183,7 @@ public class JController {
 		}else {
 			model.addAttribute("result", false);
 		}
-		return result ? "/user/index" : "/user/login_form";
+		return result ? "/company/cpmain" : "/user/login_form";
 	}
 	@RequestMapping("/user_myPage")
 	public void userMyPage(HttpServletRequest request, Model model) {
