@@ -20,4 +20,6 @@ public class TestController {
 		List<CompanyReply> list = r.findAllByCid("aaaa");
 		System.out.println(list);
 	}
+	
+	
 }

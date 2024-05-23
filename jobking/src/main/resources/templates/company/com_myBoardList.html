@@ -230,8 +230,8 @@
 				let table = e.target.parentElement.parentElement.parentElement.classList;
 				let no = e.target.querySelector("span").innerText;
 				
-				if(table =="companyrBoard"){
-					location.href="/company/com_communityForm_edit?ubno="+no;
+				if(table =="companyBoard"){
+					location.href="/company/com_communityForm_edit?cbno="+no;
 				}else if(table =="companyReply"){
 					location.href="/user/edit_reply?replyno="+no;
 				}

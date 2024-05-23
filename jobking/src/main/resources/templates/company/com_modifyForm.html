@@ -205,14 +205,33 @@ input[type="submit"]:hover {
 		</div>
 		<br>
 		<div class="form-group">
-			<label for="startTime">근무 시작 시간:</label> <select id="startHour"
-				name="startHour">
-			</select> <select id="startMinute" name="startMinute">
-			</select> <label for="endTime">근무 종료 시간:</label> <select id="endHour"
-				name="endHour">
-			</select> <select id="endMinute" name="endMinute">
-			</select>
-		</div>
+    <label for="startTime">근무 시작 시간:</label>
+    <select id="startHour" name="startHour">
+        <option th:each="hour : ${#numbers.sequence(0, 23)}"
+                th:value="${hour}"
+                th:text="${hour} + '시'"
+                th:selected="${hour == wkdWkhCntList[0]}"></option> 
+    </select>
+    <select id="startMinute" name="startMinute">
+        <option th:each="minute : ${#numbers.sequence(0, 59)}"
+                th:value="${minute}"
+                th:text="${minute} + '분'"
+                th:selected="${minute == wkdWkhCntList[1]}"></option>
+    </select>
+    <label for="endTime">근무 종료 시간:</label>
+    <select id="endHour" name="endHour">
+        <option th:each="hour : ${#numbers.sequence(0, 23)}"
+                th:value="${hour}"
+                th:text="${hour} + '시'"
+                th:selected="${hour == wkdWkhCntList[2]}"></option> 
+    </select>
+    <select id="endMinute" name="endMinute">
+        <option th:each="minute : ${#numbers.sequence(0, 59)}"
+                th:value="${minute}"
+                th:text="${minute} + '분'"
+                th:selected="${minute == wkdWkhCntList[3]}"></option>
+    </select>
+</div>
 		<div class="form-group">
 			<label for="salTpCd">급여조건</label> <select id="salTpCd" name="salTpCd">
 				<option value="일급" th:selected="${modify.salTpCd} == '일급'">일급</option>
@@ -583,7 +602,7 @@ input[type="submit"]:hover {
  	
     /*]]>*/
     
-    
+    /*
     // 근무 시간 옵션 생성 함수
     function createHourOptions(selectId) {
         const select = document.getElementById(selectId);
@@ -604,7 +623,7 @@ input[type="submit"]:hover {
             select.add(option);
         }
     }
-
+*/
     // 페이지 로드 시 옵션 생성
     createHourOptions('startHour');
     createMinuteOptions('startMinute');
