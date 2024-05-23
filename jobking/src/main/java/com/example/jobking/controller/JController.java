@@ -282,10 +282,6 @@ public class JController {
 		
 		
 		model.addAttribute("newList", newList);
-
-		for(JobAdWithScrapAndLike x : newList) {
-			System.out.println(x.getClass());
-		}
 		
 	}
 	@RequestMapping("/user_recruit_regionSearch")
