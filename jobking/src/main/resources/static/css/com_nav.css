@@ -1,1 +1,60 @@
 @charset "UTF-8";
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+    height: 90px;
+}
+
+#logo img {
+    height: 70px; /* 로고의 높이를 설정합니다. */
+    cursor: pointer;
+}
+
+.left-menu, .right-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.left-menu li, .right-menu li {
+    margin: 0 15px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+.left-menu li a, .right-menu li a {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 15px;
+}
+
+.left-menu li a:hover, .right-menu li a:hover {
+    text-decoration: underline;
+}
+
+#serviceBox {
+    color: gray;
+    background-color: white;
+    border-radius: 15px;
+    padding: 10px 15px;
+    margin-left: 15px;
+    margin-left: 15px;
+}
+
+.right-menu {
+	gap: 10px;
+}

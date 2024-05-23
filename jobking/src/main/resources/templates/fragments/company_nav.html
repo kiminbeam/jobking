@@ -8,29 +8,23 @@
 	<div th:fragment="fragment-company_nav"><!-- top 였던 것 -->
 		<nav class="navbar">
 			<div id="logo" onclick="location.href='/company/cpmain'"><img src="../" alt=""></div>
-			<ul>
+			<ul class="left-menu">
 				<li><a href="">공고*지원자관리</a></li>
-				<li><a href="">회사정보관리</a>
-				<li><a href="">인재관리</a>
-				<li><a href="">인재검색</a>
-				
-				<th:block th:if="${session.id == null}">
-					<ul id="main_login_section">
-						<li><a href="/user/login_form">로그인</a></li>
-						<li><a>회원가입</a></li>
-					</ul>
-				</th:block>
-				<th:block th:if="${session.id != null}">
-					<ul>
-						<li><a href="">로그아웃</a></li>
-						<li><a href="">마이페이지</a></li>
-					</ul>
-				</th:block>
-				<li>
-					<div id="serviceBox">유저서비스</div>
-				</li>
-				
+				<li><a href="">회사정보관리</a></li>
+				<li><a href="">인재관리</a></li>
+				<li><a href="">인재검색</a></li>
 			</ul>
+			<ul class="right-menu" th:if="${session.id == null}">
+				<li><a href="/user/login_form">로그인</a></li>
+				<li><a>회원가입</a></li>
+				<div id="serviceBox">유저서비스</div>
+			</ul>
+			<ul class="right-menu" th:if="${session.id != null}">
+				<li><a href="">로그아웃</a></li>
+				<li><a href="">마이페이지</a></li>
+				<div id="serviceBox">유저서비스</div>
+			</ul>
+			
 		</nav>
 	</div>
 </body>
