@@ -1,5 +1,7 @@
 package com.example.jobking.entity;
 
+import java.util.Optional;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,8 +25,8 @@ public class InterestUser extends BaseEntity{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "inteuno", nullable = false)
-	private Long inteuno;
+	@Column(name = "interuno", nullable = false)
+	private Long interuno;
 
 	@ManyToOne
 	@JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
@@ -34,4 +36,8 @@ public class InterestUser extends BaseEntity{
 	@JoinColumn(name = "cid", referencedColumnName = "cid", nullable = false)
 	private Company company;
 	
+	
+	@ManyToOne
+    @JoinColumn(name = "rno", referencedColumnName = "rno", nullable = false)
+    private Resume resume;
 }

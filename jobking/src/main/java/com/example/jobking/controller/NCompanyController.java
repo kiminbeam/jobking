@@ -8,12 +8,16 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties.Authentication;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.example.jobking.entity.Career;
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.Hope;
+import com.example.jobking.entity.InterestUser;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.User;
@@ -28,6 +33,7 @@ import com.example.jobking.repository.IApplyListRepository;
 import com.example.jobking.repository.ICareerRepository;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.IHopeRepository;
+import com.example.jobking.repository.IInterestUserRepository;
 import com.example.jobking.repository.IInterviewListRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.IResumeRepository;
@@ -35,6 +41,9 @@ import com.example.jobking.repository.IUserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RequestMapping("/company")
 @Controller
@@ -58,16 +67,22 @@ public class NCompanyController {
 	@Autowired
 	private IHopeRepository hopeRepository;
 
+	@Autowired
+    private IInterestUserRepository interestUserRepository;
+	
 	@RequestMapping("/com_totalfind")
-	public String totalFind(Model model) {
-
+	public String totalFind(Model model, HttpSession session) {
+		String companyId = (String) session.getAttribute("id");
+		System.out.println(companyId);
+	    List<InterestUser> scrappedUsers = interestUserRepository.findByCompanyCid(companyId); // InterestUser 객체 목록 조회
+	    model.addAttribute("scrappedUsers", scrappedUsers); // 뷰로 전달
 		List<User> allUsers = userRepository.findAll(); // 모든 유저 조회
 		List<Hope> defaultHopes = new ArrayList<>();
 		List<Resume> defaultResumes = new ArrayList<>();
 		List<List<Career>> defaultCareers = new ArrayList<>(); // 각 이력서에 대한 경력 목록 리스트
 
 		for (User user : allUsers) {
-			Resume defaultResume = resumeRepository.findByUserAndDef(user, "1");
+			Resume defaultResume = resumeRepository.findByUserAndDefAndDisclo(user, "1", "1");
 			if (defaultResume != null) {
 				Hope defaultHope = hopeRepository.findByUserAndResume(user, defaultResume);
 				defaultHopes.add(defaultHope);
@@ -78,7 +93,9 @@ public class NCompanyController {
 				defaultCareers.add(careers); // 경력 목록 리스트에 추가
 			}
 		}
-
+		List<String> scrapUids = scrappedUsers.stream().map(iu -> iu.getUser().getUid()).collect(Collectors.toList());
+	    model.addAttribute("scrapUids", scrapUids);
+		
 		long defaultResumeCount = resumeRepository.countByDef("1"); // 대표 이력서 갯수 조회
 		model.addAttribute("defaultResumeCount", defaultResumeCount);
 
@@ -88,6 +105,28 @@ public class NCompanyController {
 
 		return "company/com_totalfind";
 	}
+	
+	@PostMapping("/scrap") 
+    public String scrapResume(@RequestParam("uid") String userId, @RequestParam("rno") Long resumeId, HttpSession session) {
+		String companyId = (String) session.getAttribute("id");
+		Optional<InterestUser> existingScrap = interestUserRepository.findByUserUidAndCompanyCid(userId, companyId);
+
+	    if (existingScrap.isPresent()) {
+	        // 이미 스크랩된 경우 -> 스크랩 취소
+	        interestUserRepository.delete(existingScrap.get()); // 스크랩 데이터 삭제
+	    } else {
+	        // 스크랩되지 않은 경우 -> 스크랩
+	        InterestUser interestUser = InterestUser.builder()
+	                .user(userRepository.findById(userId).orElseThrow())
+	                .company(comrepository.findById(companyId).orElseThrow())
+	                .resume(resumeRepository.findById(resumeId).orElseThrow())
+	                .build();
+	        interestUserRepository.save(interestUser);
+	    }
+        
+        // 기존 페이지로 리다이렉트 (예: 이력서 목록 페이지)
+        return "redirect:/company/com_totalfind"; 
+    }
 
 	@RequestMapping("/regi_jobadForm")
 	public String regiForm(Model model) throws IOException {
@@ -144,20 +183,16 @@ public class NCompanyController {
 	}
 
 	@RequestMapping("/regi_jobad")
-	public String regiAD(@RequestParam("companyFile") MultipartFile file, @RequestParam("jobCont") List<String> jobCont,
+	public String regiAD( @RequestParam("jobCont") List<String> jobCont,
 			@RequestParam("needskill") List<String> needskill, @RequestParam("srchKeywordNm") String srchKeywordNm,
 			@RequestParam("startHour") int startHour, @RequestParam("startMinute") int startMinute,
 			@RequestParam("endHour") int endHour, @RequestParam("endMinute") int endMinute,
-			@ModelAttribute JobAd jobad) {
+			@ModelAttribute JobAd jobad, HttpSession session) {
 
-		
-		
-		
-		// 로그인 미구현으로 임시 코딩
-		// 데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
-		// *반드시 company테이블에 데이터가 있어야됨!
-		String cid = "1";
-		Optional<Company> com = comrepository.findById(cid);
+		String cid = (String) session.getAttribute("id");
+
+	    if (cid != null) { // cid가 null인 경우 예외 처리
+	        Optional<Company> com = comrepository.findById(cid);
 
 		if (com.isPresent()) {
 			jobad.setCompany(com.get());
@@ -189,7 +224,7 @@ public class NCompanyController {
 
 			repository.save(jobad);
 		}
-
+	    }
 		return "redirect:/company/jobadList";
 	}
 
@@ -335,12 +370,10 @@ public class NCompanyController {
 			@RequestParam(value = "needskill", required = false) List<String> needskill,
 			@RequestParam("srchKeywordNm") String srchKeywordNm, @RequestParam("startHour") int startHour,
 			@RequestParam("startMinute") int startMinute, @RequestParam("endHour") int endHour,
-			@RequestParam("endMinute") int endMinute, @ModelAttribute JobAd jobad) {
+			@RequestParam("endMinute") int endMinute, @ModelAttribute JobAd jobad, HttpSession session) {
 
-		// 로그인 미구현으로 임시 코딩
-		// 데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
-		// *반드시 company테이블에 데이터가 있어야됨!
-		String cid = "1";
+		
+		String cid = (String) session.getAttribute("id");
 		Optional<Company> com = comrepository.findById(cid);
 
 		if (com.isPresent()) {

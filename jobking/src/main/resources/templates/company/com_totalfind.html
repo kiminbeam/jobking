@@ -98,13 +98,22 @@
     .button-group button {
         padding: 5px 10px;
         border: 1px solid #ddd;
-        background-color: white;
         cursor: pointer;
     }
 
     .button-group button:hover {
         background-color: #f2f2f2;
     }
+    
+    .scrap-button {
+    background-color: blue; 
+    color: white;         
+	}
+
+	.scrap-button-active {
+    background-color: #dc3545;
+    color: white;
+	}
 
 </style>
 </head>
@@ -175,13 +184,44 @@
             <td class="button-group">
                 <button>이력서 확인</button>
                 <button>포지션 제안</button>
-            </td>
+    <form th:action="@{/company/scrap}" method="post">
+        <input type="hidden" name="cid" th:value="${session.id}" /> 
+        <input type="hidden" name="rno" th:value="${defaultHopes[resumeStat.index].resume.rno}">
+        <input type="hidden" name="uid" th:value="${defaultHopes[resumeStat.index].user.uid}">
+        <button type="submit"
+                th:class="${scrapUids.contains(defaultHopes[resumeStat.index].user.uid)} ? 'scrap-button-active' : 'scrap-button'"
+                th:text="${scrapUids.contains(defaultHopes[resumeStat.index].user.uid)} ? '스크랩 취소' : '스크랩'">
+        </button>
+    </form>
+</td>
         </tr>
     </th:block>
 </tbody>
         </table>
     </div>
 </div>
+<script th:inline="javascript">
 
+const scrapForm = document.querySelectorAll('form[action="/company/scrap"]');
+const companyId = /*[[${session.id}]]*/ null; // 로그인된 회사의 ID
+
+scrapForm.forEach(form => {
+    const resumeId = form.querySelector('input[name="rno"]').value;
+    const userId = form.querySelector('input[name="uid"]').value;
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // 기본 동작(폼 제출) 막기
+
+        if (confirm('스크랩 하시겠습니까?')) { 
+            if (companyId && resumeId && userId) {
+                form.submit();
+            } else {
+                alert('스크랩 정보가 유효하지 않습니다.');
+            }
+        }
+    });
+});
+
+</script>
 </body>
 </html>
