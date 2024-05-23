@@ -36,4 +36,6 @@ public interface IResumeRepository extends JpaRepository<Resume, Long> {
 	
 	@Query(value="delete from resume where rno = :rno" , nativeQuery=true)
 	public void deleteResumeByRno(@Param("rno") Long rno);
+	
+	
 }

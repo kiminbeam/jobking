@@ -36,8 +36,8 @@ public class License extends BaseEntity {
 	@JoinColumn(name = "uid", referencedColumnName = "uid", nullable = false)
 	private User user;
 
-	@Column(name = "type")
-	private String type;
+	@Column(name = "ltype")
+	private String ltype;
 
 	@Column(name = "lname")
 	private String lname;
@@ -49,7 +49,7 @@ public class License extends BaseEntity {
 	private LocalDate getDate;
 	
 	public void update(License newLicense) {
-        this.type = newLicense.getType();
+        this.ltype = newLicense.getLtype();
         this.lname = newLicense.getLname();
         this.lorg = newLicense.getLorg();
         this.getDate = newLicense.getGetDate();

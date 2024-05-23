@@ -11,4 +11,6 @@ public interface ISelfInfo extends JpaRepository<SelfInfo, Long> {
 	List<SelfInfo> findByUser_uid(String uid);
 	
 	List<SelfInfo> findByResumeRno(Long rno);
+	
+	void deleteByResumeRno(Long rno);
 }

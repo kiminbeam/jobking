@@ -9,5 +9,6 @@ import com.example.jobking.entity.School;
 public interface ISchoolRepository extends JpaRepository<School, Long>{
 	
 	List<School> findByResumeRno(Long rno);
-
+	
+	void deleteByResumeRno(Long rno);
 }
