@@ -6,8 +6,7 @@ main {
 }
 #reviewWrap{
 	width:1000px;
-	height:1100px;
-	background-color:#fff;
+	height:1500px;
 	position:relative;
 	padding:10px;
 	top:30px;
@@ -67,6 +66,7 @@ button {
 button:hover {
     background-color: #555;
 }
-h3{
-	margin:10px;
+
+div.text-content {
+    line-height: 2; /* 원하는 줄 간 간격 값으로 설정, 예: 1.6 */
 }

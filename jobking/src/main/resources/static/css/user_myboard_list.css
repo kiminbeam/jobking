@@ -10,13 +10,10 @@ body {
 }
 #managingCommuWrap{
 	width:1000px;
-	
-	background-color:#fff;
 	position:relative;
 	padding:10px;
 	top:30px;
 	left:300px;
-
 }
 
 main {
@@ -29,9 +26,7 @@ main {
 main > div {
     flex: 1;
     padding: 20px;
-    background-color: #fff;
     margin: 0 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1, h3 {
@@ -94,4 +89,9 @@ button {
 
 button:hover {
     background-color: #555;
+}
+
+h3{
+	display:block;
+	margin:10px;
 }
