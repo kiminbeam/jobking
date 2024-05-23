@@ -26,8 +26,8 @@ public interface IResumeRepository extends JpaRepository<Resume, Long> {
 	// 이력서가 특정 사용자에 의해 존재하는지 여부를 확인하는 메서드 추가
     boolean existsByUser_Uid(String uid);
     
-    @Query("SELECT r FROM Resume r WHERE r.user = :user AND r.def = :def")
-    Resume findByUserAndDef(@Param("user") User user, @Param("def") String def);
+    @Query("SELECT r FROM Resume r WHERE r.user = :user AND r.def = :def AND r.disclo = :disclo")
+    Resume findByUserAndDefAndDisclo(@Param("user") User user, @Param("def") String def, @Param("disclo") String disclo);
 
 	long countByDef(String def); 
 	
