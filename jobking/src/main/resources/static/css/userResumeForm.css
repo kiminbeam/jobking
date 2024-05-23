@@ -1,0 +1,115 @@
+@charset "UTF-8";
+.logo{
+	margin-bottom: 20px;
+}
+
+/* 공지사항 스타일 */
+.notice {
+    width: 1150px;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-left: 5px solid #007bff;
+    position: relative; top: 120px; left: 350px;
+}
+
+.notice ul {
+    list-style: none;
+    padding: 0;
+}
+
+.notice li {
+    margin-bottom: 10px;
+}
+
+.notice em {
+    font-weight: bold;
+}
+
+.notice .em1 {
+    color: red;
+}
+
+/* 이력서 폼 스타일 */
+#resumeForm {
+    width: 1200px; /* 너비를 1200px로 고정 */
+    margin: 140px auto; /* 중앙 정렬 */
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+#resumeForm hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+
+#resumeForm input[type="text"],
+#resumeForm input[type="date"],
+#resumeForm select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+#resumeForm input[type="button"] {
+    padding: 10px;
+    margin-left: 15px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#resumeForm input[type="button"]:hover {
+    background-color: #0056b3;
+}
+
+#resumeForm table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+#resumeForm table th,
+#resumeForm table td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+#resumeForm table th {
+    background-color: #f1f1f1;
+}
+
+#resumeForm .deleteRowButton, .deleteRowButton2, .deleteRowButton3, .deleteRowButton4, .deleteRowButton5, .deleteRowButton6 {
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#resumeForm .deleteRowButton:hover {
+    background-color: darkred;
+}
+
+[type='submit']{
+    position: relative; top: 0; left: 250px;
+    width: 640px; height: 75px;
+    border: 0;
+    background-color: #3399ff;
+    color: #fff;
+    font: 900 20px/75px 'Pretendard-Regular';
+    box-sizing: border-box;
+}
+
+[type='checkbox']{
+    width: 20px; height: 20px;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+}
