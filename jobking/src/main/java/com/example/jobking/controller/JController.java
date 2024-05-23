@@ -565,7 +565,5 @@ public class JController {
 
         return ResponseEntity.ok("Data received successfully");
     }
-	@RequestMapping("/user_regForm2")
-	public void regForm() {
-	}
+
 }
