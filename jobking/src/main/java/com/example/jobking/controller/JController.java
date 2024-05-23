@@ -29,6 +29,8 @@ import com.example.jobking.entity.AbgLoginTime;
 import com.example.jobking.entity.ApplyList;
 import com.example.jobking.entity.Career;
 import com.example.jobking.entity.Company;
+import com.example.jobking.entity.CompanyBoard;
+import com.example.jobking.entity.CompanyReply;
 import com.example.jobking.entity.CompanyReview;
 import com.example.jobking.entity.Experience;
 import com.example.jobking.entity.Hope;
@@ -532,6 +534,26 @@ public class JController {
 		List<UserReply> userReplyList = userReplyRepo.findAllByUbno(ubno);
 		model.addAttribute("userReplyList", userReplyList);
 	}
+	
+	//댓글작성
+	@RequestMapping("/userReply_insert")
+	public String insertUserReply(@RequestParam("ubno") Long ubno, @RequestParam("uid") String uid, @RequestParam("content") String content ,UserReply userReply,HttpServletRequest request) {
+		Optional<UserBoard> list= userBoardRepo.findById(ubno);
+		UserBoard board = list.get();
+		
+		Optional<User> user = userRepo.findById(uid);
+		User u = user.get();
+		
+		userReply.setUserBoard(board);
+		userReply.setUser(u);
+		userReply.setContent(content);
+		
+		userReplyRepo.save(userReply);
+		return "redirect:/user/user_community_detail?ubno=" + ubno;
+	}
+	
+	
+	
 	@RequestMapping("/user_communityForm_insert")//등록 화면
 	public void userCommunityFormInsert(UserBoard userBoard, Model model) {
 		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");

@@ -190,7 +190,8 @@
 					<table class="reply_container">
 						<tr> 
 						<td>
-							<input type="text" placeholder="댓글을 작성해보세요">
+							<input type="text" id="writer" placeholder="댓글 표시되는 작성자"><br>
+							<input type="text" id="myReply" placeholder="댓글을 작성해보세요">
 							<input type="hidden" id="companyId" th:value="${companyBoard.company.cid}">
 							<button onclick="addReply()">등록</button>
 						</td>
@@ -210,9 +211,13 @@
 			
 			var companyBoardCbno = /*[[${companyBoard.cbno}]]*/ '0';
 			var companyId = document.getElementById("companyId").value;
-		    function addReply(){
-		        window.location.href = "/company/companyReply_insert?cbno=" + companyBoardCbno +"&cid=" + companyId;
+		    
+			function addReply(){
+				var writer = document.getElementById("writer").value;
+		    	var content = document.getElementById("myReply").value;
+		        window.location.href = "/company/companyReply_insert?cbno=" + companyBoardCbno +"&cid=" + companyId + "&writer=" + writer + "&content=" + content;
 		    }
+			
 			</script>
 	
 </body>
