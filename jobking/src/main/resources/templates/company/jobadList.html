@@ -233,8 +233,8 @@ body {
 							<tr th:each="dto : ${list}">
 								<td th:text="${dto.company.cname}"></td>
 								<td><a th:href="@{/company/com_jobDetail(jno=${dto.jno})}">[[${dto.wantedTitle}]]</a></td>
-								<td><a th:href="@{/company/com_modifyForm(jno=${dto.jno})}">수정</a></td>
-								<td><a th:href="@{/company/com_jobdelete(jno=${dto.jno})}">삭제</a></td>
+								<td><button type="button" th:onclick="|location.href='@{/company/com_modifyForm(jno=${dto.jno})}'|">수정하기</button></td>
+								<td><button type="button" th:onclick="|if(confirm('정말 삭제하시겠습니까?')) location.href='@{/company/com_jobdelete(jno=${dto.jno})}'|">삭제하기</button></td>
 							</tr>
 						</tbody>
 					</table>

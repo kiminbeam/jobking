@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jobking.entity.Career;
 import com.example.jobking.entity.Company;
@@ -39,7 +40,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 public class NCompanyController {
 
-	
 	@Autowired
 	IJobAdRepository repository;
 
@@ -47,52 +47,47 @@ public class NCompanyController {
 	ICompanyRepository comrepository;
 
 	@Autowired
-    private IUserRepository userRepository;
+	private IUserRepository userRepository;
 
-	
 	@Autowired
 	private ICareerRepository careerRepository;
-	
-    @Autowired
-    private IResumeRepository resumeRepository;
-    
-    @Autowired
-    private IHopeRepository hopeRepository;
-	
-	/*
-	@RequestMapping("com_totalfind")
+
+	@Autowired
+	private IResumeRepository resumeRepository;
+
+	@Autowired
+	private IHopeRepository hopeRepository;
+
+	@RequestMapping("/com_totalfind")
 	public String totalFind(Model model) {
-		
+
 		List<User> allUsers = userRepository.findAll(); // 모든 유저 조회
 		List<Hope> defaultHopes = new ArrayList<>();
-        List<Resume> defaultResumes = new ArrayList<>();
-        List<List<Career>> defaultCareers = new ArrayList<>(); // 각 이력서에 대한 경력 목록 리스트
+		List<Resume> defaultResumes = new ArrayList<>();
+		List<List<Career>> defaultCareers = new ArrayList<>(); // 각 이력서에 대한 경력 목록 리스트
 
-        for (User user : allUsers) {
-            Resume defaultResume = resumeRepository.findByUserAndDef(user, "1");
-            if (defaultResume != null) {
-            	Hope defaultHope = hopeRepository.findByUserAndResume(user, defaultResume);
-            	defaultHopes.add(defaultHope);
-                defaultResumes.add(defaultResume); // 대표 이력서만 추가
-                
-             // 해당 이력서의 경력 목록 조회
-                List<Career> careers = careerRepository.findByResume(defaultResume);
-                defaultCareers.add(careers); // 경력 목록 리스트에 추가
-            }
-        }
-        
-        long defaultResumeCount = resumeRepository.countByDef("1"); // 대표 이력서 갯수 조회
-        model.addAttribute("defaultResumeCount", defaultResumeCount);
+		for (User user : allUsers) {
+			Resume defaultResume = resumeRepository.findByUserAndDef(user, "1");
+			if (defaultResume != null) {
+				Hope defaultHope = hopeRepository.findByUserAndResume(user, defaultResume);
+				defaultHopes.add(defaultHope);
+				defaultResumes.add(defaultResume); // 대표 이력서만 추가
 
-        model.addAttribute("defaultResumes", defaultResumes);
-        model.addAttribute("defaultHopes", defaultHopes);
-        model.addAttribute("defaultCareers", defaultCareers);
-		
+				// 해당 이력서의 경력 목록 조회
+				List<Career> careers = careerRepository.findByResume(defaultResume);
+				defaultCareers.add(careers); // 경력 목록 리스트에 추가
+			}
+		}
+
+		long defaultResumeCount = resumeRepository.countByDef("1"); // 대표 이력서 갯수 조회
+		model.addAttribute("defaultResumeCount", defaultResumeCount);
+
+		model.addAttribute("defaultResumes", defaultResumes);
+		model.addAttribute("defaultHopes", defaultHopes);
+		model.addAttribute("defaultCareers", defaultCareers);
+
 		return "company/com_totalfind";
 	}
-	*/
-	
-    
 
 	@RequestMapping("/regi_jobadForm")
 	public String regiForm(Model model) throws IOException {
@@ -149,12 +144,15 @@ public class NCompanyController {
 	}
 
 	@RequestMapping("/regi_jobad")
-	public String regiAD(@RequestParam("jobCont") List<String> jobCont,
+	public String regiAD(@RequestParam("companyFile") MultipartFile file, @RequestParam("jobCont") List<String> jobCont,
 			@RequestParam("needskill") List<String> needskill, @RequestParam("srchKeywordNm") String srchKeywordNm,
 			@RequestParam("startHour") int startHour, @RequestParam("startMinute") int startMinute,
 			@RequestParam("endHour") int endHour, @RequestParam("endMinute") int endMinute,
 			@ModelAttribute JobAd jobad) {
 
+		
+		
+		
 		// 로그인 미구현으로 임시 코딩
 		// 데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
 		// *반드시 company테이블에 데이터가 있어야됨!
@@ -216,7 +214,7 @@ public class NCompanyController {
 			model.addAttribute("needskillList", jobad.getNeedskillList());
 			model.addAttribute("srchKeywordNmList", jobad.getSrchKeywordNmList());
 			model.addAttribute("wkdWkhCntList", jobad.getWkdWkhCntList());
-			
+
 			return "/company/com_jobDetail";
 		} else {
 			// 해당하는 채용 공고가 없는 경우 처리
@@ -243,18 +241,22 @@ public class NCompanyController {
 			model.addAttribute("modify", jobAd);
 			ObjectMapper objectMapper = new ObjectMapper();
 			try {
-	            List<String> jobContList = objectMapper.readValue(jobAd.getJobCont(), new TypeReference<List<String>>() {});
-	            List<String> needskillList = objectMapper.readValue(jobAd.getNeedskill(), new TypeReference<List<String>>() {});
-	            List<String> srchKeywordNmList = objectMapper.readValue(jobAd.getSrchKeywordNm(), new TypeReference<List<String>>() {});
+				List<String> jobContList = objectMapper.readValue(jobAd.getJobCont(),
+						new TypeReference<List<String>>() {
+						});
+				List<String> needskillList = objectMapper.readValue(jobAd.getNeedskill(),
+						new TypeReference<List<String>>() {
+						});
+				List<String> srchKeywordNmList = objectMapper.readValue(jobAd.getSrchKeywordNm(),
+						new TypeReference<List<String>>() {
+						});
 
-	            model.addAttribute("jobContList", jobContList);
-	            model.addAttribute("needskillList", needskillList);
-	            model.addAttribute("srchKeywordNmList", srchKeywordNmList);
-	        } catch (JsonProcessingException e) {
-	        }
-			
-			
-			
+				model.addAttribute("jobContList", jobContList);
+				model.addAttribute("needskillList", needskillList);
+				model.addAttribute("srchKeywordNmList", srchKeywordNmList);
+			} catch (JsonProcessingException e) {
+			}
+
 			// 근무 시간 JSON 파싱 및 시간, 분 추출
 			String workTimeJson = jobAd.getWkdWkhCnt();
 			if (workTimeJson != null) {
@@ -313,7 +315,7 @@ public class NCompanyController {
 					new ClassPathResource("static/json/eduCode.json").getFile(),
 					new TypeReference<List<Map<String, Object>>>() {
 					});
-
+			model.addAttribute("wkdWkhCntList", jobAd.getWkdWkhCntList2());
 			model.addAttribute("eduCodes", eduCodes);
 			model.addAttribute("regions", regions);
 			model.addAttribute("sectorCategories", sectorCategories);
@@ -322,19 +324,18 @@ public class NCompanyController {
 			model.addAttribute("modify", jobAd);
 
 		}
-			return "/company/com_modifyForm";
-		
+		return "/company/com_modifyForm";
+
 	}
 
 	// 공고수정
 	@RequestMapping("/com_modify")
 	public String jobadModify(@RequestParam("jno") Long jno,
-		    @RequestParam(value = "jobCont", required = false) List<String> jobCont,
-		    @RequestParam(value = "needskill", required = false) List<String> needskill,
-		    @RequestParam("srchKeywordNm") String srchKeywordNm,
-			@RequestParam("startHour") int startHour, @RequestParam("startMinute") int startMinute,
-			@RequestParam("endHour") int endHour, @RequestParam("endMinute") int endMinute,
-			@ModelAttribute JobAd jobad) {
+			@RequestParam(value = "jobCont", required = false) List<String> jobCont,
+			@RequestParam(value = "needskill", required = false) List<String> needskill,
+			@RequestParam("srchKeywordNm") String srchKeywordNm, @RequestParam("startHour") int startHour,
+			@RequestParam("startMinute") int startMinute, @RequestParam("endHour") int endHour,
+			@RequestParam("endMinute") int endMinute, @ModelAttribute JobAd jobad) {
 
 		// 로그인 미구현으로 임시 코딩
 		// 데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
@@ -344,8 +345,7 @@ public class NCompanyController {
 
 		if (com.isPresent()) {
 			jobad.setCompany(com.get());
-			
-			
+
 			ObjectMapper objectMapper = new ObjectMapper();
 			try {
 				String jobContJson = objectMapper.writeValueAsString(jobCont);
@@ -377,7 +377,5 @@ public class NCompanyController {
 
 		return "redirect:/company/jobadList";
 	}
-    
-    
-	
+
 }
