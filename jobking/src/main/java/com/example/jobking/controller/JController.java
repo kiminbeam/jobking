@@ -522,18 +522,18 @@ public class JController {
 		List<UserReply> userReplyList = userReplyRepo.findAllByUbno(ubno);
 		model.addAttribute("userReplyList", userReplyList);
 	}
-	@RequestMapping("/user_communityForm_insert")
+	@RequestMapping("/user_communityForm_insert")//등록 화면
 	public void userCommunityFormInsert(UserBoard userBoard, Model model) {
 		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
 		model.addAttribute("latestAlertBoard",latestAlertBoard);
 	}
-	@RequestMapping("/user_board_regist")
+	@RequestMapping("/user_board_regist")//등록기능
 	public void userBoardRegist(HttpServletRequest request, UserBoard userBoard) {
 		String uid = (String) request.getSession().getAttribute("id");
 		userBoard.setUser(userRepo.findById(uid).get());
 		userBoardRepo.save(userBoard);
 	}
-	@RequestMapping("/user_communityForm_edit")
+	@RequestMapping("/user_communityForm_edit")//수정 화면
 	public void userCommunityFormEdit(@RequestParam("ubno") Long ubno, Model model) {
 		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
 		model.addAttribute("latestAlertBoard",latestAlertBoard);
@@ -541,8 +541,9 @@ public class JController {
 		UserBoard userBoard = userBoardRepo.findById(ubno).get();
 		model.addAttribute(userBoard);
 	}
-	
-	@RequestMapping("/user_communityForm_update")
+
+
+	@RequestMapping("/user_communityForm_update")//수정기능
 	public void userCommunityFormUpdate(HttpServletRequest request, UserBoard userBoard, Model model) {
 		System.out.println(request.getParameter("ubno"));
 		String uid = (String) request.getSession().getAttribute("id");
