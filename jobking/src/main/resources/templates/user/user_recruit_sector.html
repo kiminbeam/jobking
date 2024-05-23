@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/css/userRecruitStyle.css">
+    <link rel="stylesheet" type="text/css" href="/css/userRecruitStyle2.css">
 </head>
 
 <body>
@@ -53,10 +53,11 @@
                             </ul>
                         </div>
                     </div>
+                    <button onclick="searchList()">검색</button>
                 </div>
-                <button onclick="searchList()">검색</button>
+                
                 <div id="listContainer">
-	                 <div th:if="${newList != null}" th:each="jobWrapper : ${newList}">
+	                 <div class="jobad"  th:if="${newList != null}" th:each="jobWrapper : ${newList}">
 				        <div class="t2">[[${jobWrapper.jobad.company.cname}]]</div>
 				        <div class="t3">공고제목</div>
 				        <span><a th:href="@{/user/user_recruitDetail(jno=${jobWrapper.jobad.jno})}">[[${jobWrapper.jobad.wantedTitle}]]</a></span>

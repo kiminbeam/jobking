@@ -43,7 +43,7 @@
 			<tr th:each="jobscrap : ${jobscrapList}">
 				<td>[[${jobscrap.jobAd.company.cname}]]</td>
 				<td><a th:href="@{/user/user_recruitDetail(jno=${jobscrap.jobAd.jno})}">[[${jobscrap.jobAd.wantedTitle}]]</a></td>
-				<td class="deleteBtn">❌<span style="display:none;">[[${jobscrap.jobAd.jno}]]</span></td>
+				<td class="deleteBtn">❌<span style="display:none;">[[${jobscrap.scno}]]</span></td>
 				
 			</tr>
 		</table>
@@ -70,7 +70,8 @@
 				};
 			}else if(table =="jobScrap"){
 				if(confirm("정말로 해당 공고를 리스트에서 삭제하시겠습니까?")){
-					location.href="/user/delete_jobScrap?jno="+no;
+					console.log(no);
+					location.href="/user/delete_jobScrap?scno="+no;
 				}
 			}
 		})

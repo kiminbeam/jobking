@@ -16,4 +16,8 @@ public interface IJobScrapRepository extends JpaRepository<JobScrap, Long> {
 	
 	@Query(value="SELECT a.jno FROM jobad a right JOIN (SELECT * FROM job_scrap WHERE uid= :uid)  b ON a.jno=b.jno", nativeQuery=true)
 	List<Long> findScrapedJobAdByUid(@Param("uid") String uid);
+	
+	@Query(value="Delete FROM jobad WHERE uid= :uid and jno= :jno", nativeQuery=true)
+	void deleteByJnoAndUid(@Param("jno") Long jno, @Param("uid") String uid);
+	
 }

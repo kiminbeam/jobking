@@ -31,8 +31,13 @@
 }
 
 .t2{
+  
   width: 100px; height: 30px;
   position: absolute; top: 580px ; left: 560px;
+}
+
+.title2 > img{
+	display:inline;
 }
 
 .title4{

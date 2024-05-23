@@ -19,7 +19,11 @@
 
 			<div id="title_wrap">
 				<div class="title1 t">마이페이지</div>
-				<div class="title2 t">[[${user.uname}]] 님의 평균 평점 : [[${avgReview}]]</div>
+			 	<div class="title2 t"> 
+			 	<img style="width:30px; height:30px;" th:src="@{|/images/icon/starIcon.png|}"/>
+			 	평균 평점 &nbsp;&nbsp;
+			 	<span style="font-size:20px;">[[${avgReview}]]</span>
+			 	</div>
 			</div>
 			<div id="userInfo">
 				<div class="title1 t1">회원정보</div>

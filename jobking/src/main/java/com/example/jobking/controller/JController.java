@@ -284,17 +284,32 @@ public class JController {
 		model.addAttribute("newList", newList);
 	}
 	@RequestMapping("/user_recruit_regionSearch")
-	public @ResponseBody List<JobAd> userRecruitRegionSearch(HttpServletRequest request, @RequestParam(required = false, name = "region1Name") String region1Name,
+	public @ResponseBody List<JobAdWithScrapAndLike> userRecruitRegionSearch(HttpServletRequest request, @RequestParam(required = false, name = "region1Name") String region1Name,
 	        @RequestParam(required = false, name = "region2Name") String region2Name,
 	        @RequestParam(required = false, name = "sector1Name") String sector1Name,
 	        @RequestParam(required = false, name = "sector2Name") String sector2Name,
 	        @RequestParam(required = false, name = "position1Name") String position1Name,
 	        @RequestParam(required = false, name = "position2Name") String position2Name) {
-		String uid = (String) request.getSession().getAttribute("id");
-		System.out.println(uid);
+		 String uid = (String) request.getSession().getAttribute("id");
 		 List<JobAd> list = jobadRepo.findJobad(region1Name, region2Name, sector1Name,sector2Name,position1Name,position2Name);
-
-		return list;
+		 List<JobAdWithScrapAndLike> newList = new ArrayList<>();
+		 //스크랩되있는 jno 모음
+			List<Long> scrappedJno = jobscrapRepo.findScrapedJobAdByUid(uid);
+			//구독한 기업 cid모음
+			//전체 리스트 뿌려주기
+			for(JobAd ja : list) {
+				JobAdWithScrapAndLike jobDto = new JobAdWithScrapAndLike();
+				jobDto.setJobad(ja);
+				for(Long ln : scrappedJno) {
+					if(ja.getJno() == ln) {
+						jobDto.setScrapped(true);
+					}
+				}
+				System.out.println(jobDto.getClass());
+				newList.add(jobDto);
+			}
+			
+		return newList;
 	}
 
 	@RequestMapping("/user_recruit_job")
@@ -429,8 +444,8 @@ public class JController {
 		return"redirect:/user/user_subNscrap_list";
 	}
 	@RequestMapping("/delete_jobScrap")
-	public String deletJobScrap(@RequestParam("jno") String jno) {
-		jobscrapRepo.deleteById(Long.parseLong(jno));
+	public String deletJobScrap(@RequestParam("scno") String scno) {
+		jobscrapRepo.deleteById(Long.parseLong(scno));
 		return"redirect:/user/user_subNscrap_list";
 	}
 	
@@ -499,15 +514,23 @@ public class JController {
 		System.out.println(userReplyList);
 	}
 	@RequestMapping("/delete_board")
-	public void deleteBoard(@RequestParam("ubno") Long ubno, HttpServletRequest request, Model model) {
+	public String deleteBoard(@RequestParam("ubno") Long ubno, HttpServletRequest request, Model model) {
 		//해당 글에 달려있는 모든 댓글 먼저 다 지우기
 		userReplyRepo.deleteAllByUbno(ubno);
 		//선택한 글 지우기
 		userBoardRepo.delete(userBoardRepo.findById(ubno).get());
+		
+		return "redirect:/user/user_myBoard_list";
 	}
-	@RequestMapping("/delete_reply")
-	public void deleteReply(@RequestParam("replyno") Long replyno, Model model) {
+	@RequestMapping("/delete_reply")// 마이페이지에서 댓삭제
+	public String deleteReply(@RequestParam("replyno") Long replyno, Model model) {
 		userReplyRepo.delete(userReplyRepo.findById(replyno).get());
+		return "redirect:/user/user_myBoard_list";
+	}
+	@RequestMapping("/user_delete_reply") // 상세에서 Ajax로 댓삭제
+	public @ResponseBody String userDeleteReply(@RequestParam("replyno") Long replyno, Model model) {
+		userReplyRepo.delete(userReplyRepo.findById(replyno).get());
+		return "done";
 	}
 	@RequestMapping("/user_communityList")
 	public void userCommunityList(Model model) {
@@ -552,8 +575,6 @@ public class JController {
 		return "redirect:/user/user_community_detail?ubno=" + ubno;
 	}
 	
-	
-	
 	@RequestMapping("/user_communityForm_insert")//등록 화면
 	public void userCommunityFormInsert(UserBoard userBoard, Model model) {
 		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
@@ -575,7 +596,6 @@ public class JController {
 		model.addAttribute(userBoard);
 	}
 
-
 	@RequestMapping("/user_communityForm_update")//수정기능
 	public String userCommunityFormUpdate(HttpServletRequest request, UserBoard userBoard, Model model) {
 		String ubno = request.getParameter("ubno");
@@ -585,12 +605,15 @@ public class JController {
 		ub.setType(userBoard.getType());
 		System.out.println(ub);
 		userBoardRepo.save(ub);
-		return "redirect:/user/user_communityList";
+		return "redirect:/user/user_community_detail?ubno=" + ubno;
 	}
 	
 	@RequestMapping("/user_communityForm_delete")
 	public String userCommunityFormDelete(@RequestParam("ubno") Long ubno) {
-		userBoardRepo.deleteById(ubno);
+		//해당 글에 달려있는 모든 댓글 먼저 다 지우기
+		userReplyRepo.deleteAllByUbno(ubno);
+		//선택한 글 지우기
+		userBoardRepo.delete(userBoardRepo.findById(ubno).get());
 		return "redirect:/user/user_communityList";
 	}
 	@RequestMapping("/user_positionMatch")
