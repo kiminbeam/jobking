@@ -16,6 +16,7 @@
 			<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
 		</header>
 		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+		<aside></aside>
 		<main>
 			<div>
 				<!-- 1. 복사(버튼) url 복사, 공유 기능 -->
@@ -55,9 +56,9 @@
 
 				<div id="jtop">
 					<div class="jobad header">
-						<div class="title3">[[${jobad.company.cname}]]</div>
-						<div class="title2">[[${avgReview}]]</div>
-						<div class="title1">[[${jobad.wantedTitle}]]</div>
+						<div class="h3">[[${jobad.company.cname}]]</div>
+						<div class="h2">[[${avgReview}]]</div>
+						<div class="h1">[[${jobad.wantedTitle}]]</div>
 					</div>
 					<div class="jobad company_info">
 						<table id="info_tbl">
