@@ -77,5 +77,16 @@ public class Career extends BaseEntity {
         return sb.toString().trim(); // 불필요한 공백 제거
     }
     
+    public void update(Career newCareer) {
+        this.startDate = newCareer.getStartDate();
+        this.endDate = newCareer.getEndDate();
+        this.cName = newCareer.getCName();
+        this.rank = newCareer.getRank();
+        this.status = newCareer.getStatus();
+        this.type = newCareer.getType();
+        this.position = newCareer.getPosition();
+        this.work = newCareer.getWork();
+        // 필요에 따라 다른 필드도 업데이트
+    }
     
 }

@@ -54,4 +54,15 @@ public class School extends BaseEntity {
 
 	@Column(name = "sstatus", nullable = false)
 	private String sstatus;
+	
+	
+	public void update(School newSchool) {
+	    this.accDate = newSchool.getAccDate();
+	    this.gradDate = newSchool.getGradDate();
+	    this.eduName = newSchool.getEduName();
+	    this.major = newSchool.getMajor();
+	    this.score = newSchool.getScore();
+	    this.sstatus = newSchool.getSstatus();
+	    // 필요에 따라 다른 필드도 업데이트
+	}
 }
