@@ -11,7 +11,6 @@
 
 <body>
     <div id="wrap">
-        <div id="main-logo"></div>
         <header>
             <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
         </header>
@@ -31,7 +30,7 @@
                                 <input type="text" name="uid" placeholder=" 아이디*" id="uid">
                                 <input type="button" name="dup-check" value="중복체크" onclick="loadDoc1()">
                             </li>
-                            <li id="uid-msg" class="msgText"></li>
+                            <li id="uid-msg"></li>
                             <div class="failure-message hide msgText">아이디는 4~12글자이어야 합니다</div>
                             <div class="failure-message2 hide msgText">영어 또는 숫자만 가능합니다</div>
 
@@ -92,12 +91,12 @@
                                 <input type="text" name="cid" placeholder=" 아이디*" id="cid">
                                 <input type="button" name="dup-check" value="중복체크" onclick="loadDoc2()">
                             </li>
-                            <li id="cid-msg" class="msgText"></li>
+                            <li id="cid-msg"></li>
                             <div class="failure-message-com hide msgText">아이디는 4~12글자이어야 합니다</div>
                             <div class="failure-message2-com hide msgText">영어 또는 숫자만 가능합니다</div>
 
                             <li><input type="password" name="cpw" placeholder=" 비밀번호*" id="cpw"></li>
-                            <div class="strongPassword-message-com hide">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요</div>
+                            <div class="strongPassword-message-com hide msgText">8글자 이상, 영문, 숫자, 특수문자(@$!%*#?&)를 사용하세요</div>
                             <li><input type="password" name="cpw2" placeholder=" 비밀번호확인*" id="cpw2"></li>
                             <li id="cpw-msg" class="msgText"></li>
 
