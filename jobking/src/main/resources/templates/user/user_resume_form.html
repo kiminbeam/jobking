@@ -4,50 +4,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
-	<link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/userResumeForm.css">
 </head>
 
 <body>
     <div id="wrap">
-        <div id="wrap">
-            <header>
-                <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
-            </header>
-            <div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-            <div id="title_wrap">
-                <div class="title1">마이페이지</div>
-                <div class="title2">이력서 등록</div>
-            </div>
-            <div class="notice">
-                <ul>
-                    <li>
-                        <img src="../../../images/reg.png" width="50" height="50">
-                    </li>
-                    <li>
-                        <em class="em1">[필수] </em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
-                        반드시 기입해 주세요.
-                    </li>
-                    <li>
-                        개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로
-                        클릭하여 기입하신 정보를 저장하시기 바랍니다.
-                    </li>
-                    <li>
-                        구직신청 후에는 기본으로 설정한 이력서와 자기소개서만 인재정보 검색서비스를 통해 구인업체에 공개됩니다.
-                    </li>
-                    <li>
-                        기본으로 설정된 이력서와 자기소개서는 [미리보기] 기능을 통해 한 화면에서 조회·인쇄·파일로 저장할 수
-                        있습니다.
-                    </li>
-                </ul>
-            </div>
+        <header>
+            <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+        </header>
+        <div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+        <div id="title_wrap">
+            <div class="title1">마이페이지</div>
+            <div class="title2">이력서 등록</div>
+        </div>
+        <div class="notice">
+            <ul>
+                <li><img src="/images/이력서.png" width="50" height="50" class="logo"></li>
+                <li>
+                    <em class="em1">[필수] </em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
+                    반드시 기입해 주세요.
+                </li>
+                <li>
+                    개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로
+                    클릭하여 기입하신 정보를 저장하시기 바랍니다.
+                </li>
+                <li>
+                    구직신청 후에는 기본으로 설정한 이력서와 자기소개서만 인재정보 검색서비스를 통해 구인업체에 공개됩니다.
+                </li>
+                <li>
+                    기본으로 설정된 이력서와 자기소개서는 [미리보기] 기능을 통해 한 화면에서 조회·인쇄·파일로 저장할 수
+                    있습니다.
+                </li>
+            </ul>
+        </div>
 
+        <div id="resumeForm">
             <form method="post" th:action="@{/user/user_resume(rno=${rno})}">
-                <div>
+                <div id="">
                     이력서 제목 <em class="em1">[필수] </em><input type="text" name="rtitle"
                         placeholder="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요)">
-                </div>
-                <div>
-                    <input type="button" value="회원정보수정하기" onclick="location.href='/user/user_information'">
                 </div>
                 <hr>
                 <table>
@@ -263,17 +259,18 @@
 
                 <input type="submit" value="이력서 저장">
             </form>
-            <footer>
-                <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
-            </footer>
         </div>
+        <footer>
+            <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+        </footer>
+    </div>
 
-        <script th:inline="javascript">
+    <script th:inline="javascript">
 
-            document.getElementById('addRowButton').addEventListener('click', function () {
-                var tbody = document.getElementById('educationTableBody');
-                var newRow = document.createElement('tr');
-                newRow.innerHTML = `
+        document.getElementById('addRowButton').addEventListener('click', function () {
+            var tbody = document.getElementById('educationTableBody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
             <td>
                 <select class="gradeList_0" name="eduName" title="학력 선택">
                     <option value selected="selected">학력 선택</option>
@@ -307,29 +304,29 @@
             </td>
             <td><button type="button" class="deleteRowButton">삭제</button></td>
         `;
-                tbody.appendChild(newRow);
+            tbody.appendChild(newRow);
 
-                // 새로운 삭제 버튼에 이벤트 리스너 추가
-                newRow.querySelector('.deleteRowButton').addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        newRow.remove();
-                    }
-                });
+            // 새로운 삭제 버튼에 이벤트 리스너 추가
+            newRow.querySelector('.deleteRowButton').addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    newRow.remove();
+                }
             });
+        });
 
-            // 기존의 삭제 버튼에 이벤트 리스너 추가
-            document.querySelectorAll('.deleteRowButton').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        button.closest('tr').remove();
-                    }
-                });
+        // 기존의 삭제 버튼에 이벤트 리스너 추가
+        document.querySelectorAll('.deleteRowButton').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    button.closest('tr').remove();
+                }
             });
+        });
 
-            document.getElementById('addRowButton2').addEventListener('click', function () {
-                var tbody = document.getElementById('careerTableBody');
-                var newRow = document.createElement('tr');
-                newRow.innerHTML = `
+        document.getElementById('addRowButton2').addEventListener('click', function () {
+            var tbody = document.getElementById('careerTableBody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
             <td>
                 <input type="text" name="cName" placeholder="내용을 입력해주세요.">
             </td>
@@ -364,29 +361,29 @@
                 <button type="button" class="deleteRowButton2">삭제</button>
             </td>
         `;
-                tbody.appendChild(newRow);
+            tbody.appendChild(newRow);
 
-                // 새로운 삭제 버튼에 이벤트 리스너 추가
-                newRow.querySelector('.deleteRowButton2').addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        newRow.remove();
-                    }
-                });
+            // 새로운 삭제 버튼에 이벤트 리스너 추가
+            newRow.querySelector('.deleteRowButton2').addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    newRow.remove();
+                }
             });
+        });
 
-            // 기존의 삭제 버튼에 이벤트 리스너 추가
-            document.querySelectorAll('.deleteRowButton2').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        button.closest('tr').remove();
-                    }
-                });
+        // 기존의 삭제 버튼에 이벤트 리스너 추가
+        document.querySelectorAll('.deleteRowButton2').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    button.closest('tr').remove();
+                }
             });
+        });
 
-            document.getElementById('addRowButton3').addEventListener('click', function () {
-                var tbody = document.getElementById('experienceTableBody');
-                var newRow = document.createElement('tr');
-                newRow.innerHTML = `
+        document.getElementById('addRowButton3').addEventListener('click', function () {
+            var tbody = document.getElementById('experienceTableBody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
             <td>
                 <input type="text" name="org" id="org" placeholder="내용을 입력해주세요.">
             </td>
@@ -402,30 +399,30 @@
                 <button type="button" class="deleteRowButton3">삭제</button>
             </td>
         `;
-                tbody.appendChild(newRow);
+            tbody.appendChild(newRow);
 
-                // 새로운 삭제 버튼에 이벤트 리스너 추가
-                newRow.querySelector('.deleteRowButton3').addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        newRow.remove();
-                    }
-                });
+            // 새로운 삭제 버튼에 이벤트 리스너 추가
+            newRow.querySelector('.deleteRowButton3').addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    newRow.remove();
+                }
             });
+        });
 
-            // 기존의 삭제 버튼에 이벤트 리스너 추가
-            document.querySelectorAll('.deleteRowButton3').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        button.closest('tr').remove();
-                    }
-                });
+        // 기존의 삭제 버튼에 이벤트 리스너 추가
+        document.querySelectorAll('.deleteRowButton3').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    button.closest('tr').remove();
+                }
             });
+        });
 
 
-            document.getElementById('addRowButton4').addEventListener('click', function () {
-                var tbody = document.getElementById('licenseTableBody');
-                var newRow = document.createElement('tr');
-                newRow.innerHTML = `
+        document.getElementById('addRowButton4').addEventListener('click', function () {
+            var tbody = document.getElementById('licenseTableBody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
         <td>
                     <select class="licenseList" name="type" title="구분">
                     	<option value selected="selected">구분</option>
@@ -446,69 +443,69 @@
                     <button type="button" class="deleteRowButton4">삭제</button>
                 </td>
         `;
-                tbody.appendChild(newRow);
+            tbody.appendChild(newRow);
 
-                // 새로운 삭제 버튼에 이벤트 리스너 추가
-                newRow.querySelector('.deleteRowButton4').addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        newRow.remove();
-                    }
-                });
-            });
-
-            // 기존의 삭제 버튼에 이벤트 리스너 추가
-            document.querySelectorAll('.deleteRowButton4').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        button.closest('tr').remove();
-                    }
-                });
-            });
-
-            document.querySelector('#openResume').addEventListener('click', function (event) {
-                var openResumeCheckbox = document.getElementById('openResume');
-                var discloInput = document.getElementById('disclo');
-                if (openResumeCheckbox.checked) {
-                    discloInput.value = '1';
-
-                } else {
-                    discloInput.value = '0';
+            // 새로운 삭제 버튼에 이벤트 리스너 추가
+            newRow.querySelector('.deleteRowButton4').addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    newRow.remove();
                 }
             });
+        });
 
-            document.getElementById('addRowButton5').addEventListener('click', function () {
-                var tbody = document.getElementById('selfInfoTableBody');
-                var newRow = document.createElement('tr');
-                newRow.innerHTML = `
+        // 기존의 삭제 버튼에 이벤트 리스너 추가
+        document.querySelectorAll('.deleteRowButton4').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    button.closest('tr').remove();
+                }
+            });
+        });
+
+        document.querySelector('#openResume').addEventListener('click', function (event) {
+            var openResumeCheckbox = document.getElementById('openResume');
+            var discloInput = document.getElementById('disclo');
+            if (openResumeCheckbox.checked) {
+                discloInput.value = '1';
+
+            } else {
+                discloInput.value = '0';
+            }
+        });
+
+        document.getElementById('addRowButton5').addEventListener('click', function () {
+            var tbody = document.getElementById('selfInfoTableBody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
         	<td>
 	            <input type="text" name="title" placeholder="제목을 입력해주세요.">
 	            <button type="button" class="deleteRowButton5">삭제</button><br>
 	            <input type="text" name="scontent" placeholder="내용을 입력해주세요.">
         	</td>
         `;
-                tbody.appendChild(newRow);
+            tbody.appendChild(newRow);
 
-                // 새로운 삭제 버튼에 이벤트 리스너 추가
-                newRow.querySelector('.deleteRowButton5').addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        newRow.remove();
-                    }
-                });
+            // 새로운 삭제 버튼에 이벤트 리스너 추가
+            newRow.querySelector('.deleteRowButton5').addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    newRow.remove();
+                }
             });
+        });
 
-            // 기존의 삭제 버튼에 이벤트 리스너 추가
-            document.querySelectorAll('.deleteRowButton5').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        button.closest('tr').remove();
-                    }
-                });
+        // 기존의 삭제 버튼에 이벤트 리스너 추가
+        document.querySelectorAll('.deleteRowButton5').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    button.closest('tr').remove();
+                }
             });
+        });
 
-            document.getElementById('addRowButton6').addEventListener('click', function () {
-                var tbody = document.getElementById('portTableBody');
-                var newRow = document.createElement('tr');
-                newRow.innerHTML = `
+        document.getElementById('addRowButton6').addEventListener('click', function () {
+            var tbody = document.getElementById('portTableBody');
+            var newRow = document.createElement('tr');
+            newRow.innerHTML = `
         	<td>
         		<input type="text" name="Field" placeholder="포트폴리오 url을 입력 하세요.">
     		</td>
@@ -516,72 +513,72 @@
         		<button type="button" class="deleteRowButton6">삭제</button><br>
     		</td>
         `;
-                tbody.appendChild(newRow);
+            tbody.appendChild(newRow);
 
-                // 새로운 삭제 버튼에 이벤트 리스너 추가
-                newRow.querySelector('.deleteRowButton6').addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        newRow.remove();
-                    }
-                });
-            });
-
-            // 기존의 삭제 버튼에 이벤트 리스너 추가
-            document.querySelectorAll('.deleteRowButton6').forEach(function (button) {
-                button.addEventListener('click', function () {
-                    if (confirm('삭제하시겠습니까?')) {
-                        button.closest('tr').remove();
-                    }
-                });
-            });
-
-
-
-
-            function checkRequiredFields() {
-                // 필수 입력 필드 목록
-                var requiredFields = [
-                    'region1',
-                    'sectors',
-                    'job',
-                    'rtitle',
-                    'accDate',
-                    'gradDate',
-                    'eduName',
-                    'title',
-                    'scontent'
-                ];
-
-                // 필수 입력 필드 중 하나라도 입력되지 않은 경우
-                for (var i = 0; i < requiredFields.length; i++) {
-                    var field = document.getElementsByName(requiredFields[i])[0];
-                    if (!field || field.value.trim() === '') {
-                        return false;
-                    }
+            // 새로운 삭제 버튼에 이벤트 리스너 추가
+            newRow.querySelector('.deleteRowButton6').addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    newRow.remove();
                 }
-                return true; // 모든 필수 입력 필드가 입력되었을 경우 
-            }
+            });
+        });
 
-            // 제출 버튼 상태 업데이트 함수
-            function updateSubmitButtonState() {
-                var submitButton = document.querySelector('input[type="submit"]');
-                if (checkRequiredFields()) {
-                    submitButton.disabled = false; // 필수 입력 필드가 모두 입력되었을 경우 버튼 활성화
-                } else {
-                    submitButton.disabled = true; // 필수 입력 필드 중 하나라도 입력되지 않았을 경우 버튼 비활성화
+        // 기존의 삭제 버튼에 이벤트 리스너 추가
+        document.querySelectorAll('.deleteRowButton6').forEach(function (button) {
+            button.addEventListener('click', function () {
+                if (confirm('삭제하시겠습니까?')) {
+                    button.closest('tr').remove();
+                }
+            });
+        });
+
+
+
+
+        function checkRequiredFields() {
+            // 필수 입력 필드 목록
+            var requiredFields = [
+                'region1',
+                'sectors',
+                'job',
+                'rtitle',
+                'accDate',
+                'gradDate',
+                'eduName',
+                'title',
+                'scontent'
+            ];
+
+            // 필수 입력 필드 중 하나라도 입력되지 않은 경우
+            for (var i = 0; i < requiredFields.length; i++) {
+                var field = document.getElementsByName(requiredFields[i])[0];
+                if (!field || field.value.trim() === '') {
+                    return false;
                 }
             }
+            return true; // 모든 필수 입력 필드가 입력되었을 경우 
+        }
 
-            // 페이지 로드 시 제출 버튼 상태 업데이트
-            updateSubmitButtonState();
+        // 제출 버튼 상태 업데이트 함수
+        function updateSubmitButtonState() {
+            var submitButton = document.querySelector('input[type="submit"]');
+            if (checkRequiredFields()) {
+                submitButton.disabled = false; // 필수 입력 필드가 모두 입력되었을 경우 버튼 활성화
+            } else {
+                submitButton.disabled = true; // 필수 입력 필드 중 하나라도 입력되지 않았을 경우 버튼 비활성화
+            }
+        }
 
-            // 필수 입력 필드 값이 변경될 때마다 제출 버튼 상태 업데이트
-            var requiredFields = document.querySelectorAll('[name="region1"], [name="sectors"], [name="job"], [name="rtitle"], [name="accDate"], [name="gradDate"], [name="eduName"], [name="title"], [name="scontent"]');
-            requiredFields.forEach(function (field) {
-                field.addEventListener('input', updateSubmitButtonState);
-            });
+        // 페이지 로드 시 제출 버튼 상태 업데이트
+        updateSubmitButtonState();
 
-        </script>
+        // 필수 입력 필드 값이 변경될 때마다 제출 버튼 상태 업데이트
+        var requiredFields = document.querySelectorAll('[name="region1"], [name="sectors"], [name="job"], [name="rtitle"], [name="accDate"], [name="gradDate"], [name="eduName"], [name="title"], [name="scontent"]');
+        requiredFields.forEach(function (field) {
+            field.addEventListener('input', updateSubmitButtonState);
+        });
+
+    </script>
 </body>
 
 </html>
