@@ -52,10 +52,6 @@
 			</div>
 			
 
-			<div id="chart-container">
-        		<canvas id="chart"></canvas>
-    		</div>
-			
 			<div class="jobad header">
 				<h3>[[${jobad.company.cname}]]</h3>
 				<h3>[[${avgReview}]]</h3>
@@ -160,6 +156,11 @@
 					</tr>
 				</table>               
 				키워드 : <ul><li th:each="jobKeyword : ${jobKeyword}">📌 [[${jobKeyword}]] </li></ul>
+			
+			
+				<canvas id="chart1" width="200" height="200"></canvas>
+    			<canvas id="chart2" width="200" height="200"></canvas>
+			
 			</div>
 		</div>
 	</main>
@@ -167,6 +168,9 @@
 	const dDay = document.querySelector("#dDay");
 	const targetDate = [[${jobad.receiptCloseDt}]];
 	const regDate = [[${jobad.regdate}]];
+	const female = [[${female}]]
+	const male = [[${male}]]
+	const count = [[${count}]]
 	
 	//스크랩버튼 처리
 	if([[${scrap == false}]]){
@@ -192,21 +196,24 @@
 		 window.open("http://localhost:8093/user/user_resumePick?jno="+[[${jobad.jno}]], "팝업 창", "width=600,height=400");
 	}
 	// 자체 양식 다운로드 버튼 클릭 시 처리
-	document.querySelector("#downloadFormBtn").addEventListener("click", function() {
-	    // 만약 attachFileUrl2가 빈 문자열이 아니라면, 즉 양식이 존재한다면
-	    if ([[${jobad.attachFileUrl2 == ""}]]) {
-	        // 파일 다운로드 링크 생성
-	        const downloadLink = document.createElement("a");
-	        downloadLink.href = [[${jobad.attachFileUrl2}]];
-	        // 파일명 설정
-	        downloadLink.download = "지원서_양식.pdf"; // 다운로드되는 파일명
-	        // 링크 클릭하여 다운로드 시작
-	        downloadLink.click();
-	    } else {
-	        // 양식이 없을 경우에 대한 처리
-	        alert("양식이 존재하지 않습니다.");
-	    }
-	});
+	if(document.querySelector("#downloadFormBtn") != null){
+		document.querySelector("#downloadFormBtn").addEventListener("click", function() {
+		    // 만약 attachFileUrl2가 빈 문자열이 아니라면, 즉 양식이 존재한다면
+		    if ([[${jobad.attachFileUrl2 == ""}]]) {
+		        // 파일 다운로드 링크 생성
+		        const downloadLink = document.createElement("a");
+		        downloadLink.href = [[${jobad.attachFileUrl2}]];
+		        // 파일명 설정
+		        downloadLink.download = "지원서_양식.pdf"; // 다운로드되는 파일명
+		        // 링크 클릭하여 다운로드 시작
+		        downloadLink.click();
+		    } else {
+		        // 양식이 없을 경우에 대한 처리
+		        alert("양식이 존재하지 않습니다.");
+		    }
+		});
+	}
+	
 	
 	function scrapJobad(){
 		 const xhttp = new XMLHttpRequest();
@@ -244,47 +251,6 @@
 		  xhttp.send();
 	}
 	
-	
-	
-	  // 그래프 초기화
-    document.addEventListener("DOMContentLoaded", function() {
-        var chartContainer = document.getElementById('chart-container');
-        var chartCanvas = document.getElementById('chart');
-        var ctx = chartCanvas.getContext('2d');
-        
-        var chart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ["공고등록일", "오늘"],
-                datasets: [{
-                    label: '실시간 지원자수 현황',
-                    data: [1, 50],
-                    borderColor: 'blue',
-                    borderWidth: 1,
-                    fill: false
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        display: true,
-                        ticks: {
-                            autoSkip: true,
-                            maxTicksLimit: 10
-                        }
-                    },
-                    y: {
-                        display: true,
-                        suggestedMin: 0,
-                        suggestedMax: 100
-                    }
-                }
-            }
-        });
-    });
-
 	function calcDday(){
 		 // 주어진 날짜와 현재 날짜 간의 차이 계산
 	    const oneDay = 24 * 60 * 60 * 1000; // 하루를 밀리초 단위로 표현
@@ -339,6 +305,54 @@
 		    }
 		  });
 		}
+	
+	
+	
+	function drawPieChart(canvasId, data, colors, labels) {
+	    var canvas = document.getElementById(canvasId);
+	    var ctx = canvas.getContext('2d');
+	    var total = data.reduce((acc, value) => acc + value, 0);
+	    var startAngle = 0;
+	    var endAngle = 0;
+
+	    for (var i = 0; i < data.length; i++) {
+	        var sliceAngle = 2 * Math.PI * (data[i] / total);
+
+	        ctx.fillStyle = colors[i];
+	        ctx.beginPath();
+	        ctx.moveTo(canvas.width / 2, canvas.height / 2);
+	        ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 2, startAngle, startAngle + sliceAngle);
+	        ctx.lineTo(canvas.width / 2, canvas.height / 2);
+	        ctx.fill();
+
+	        // 레이블 표시
+	        var midAngle = startAngle + sliceAngle / 2;
+	        var labelRadius = canvas.width * 0.5 * 0.8;
+	        var x = canvas.width / 2 + Math.cos(midAngle) * labelRadius;
+	        var y = canvas.height / 2 + Math.sin(midAngle) * labelRadius;
+
+	        ctx.fillStyle = 'black';
+	        ctx.font = 'bold 12px Arial';
+	        ctx.textAlign = 'center';
+	        ctx.fillText(labels[i], x, y);
+
+	        startAngle += sliceAngle;
+	    }
+	}
+
+	// 데이터와 색상 정의
+	var data1 = [female, male];
+	var colors1 = ['#ff5733', '#33ff57'];
+	var labels1 = ['여자 지원자 수 : ' + female , '남자 지원자 수 : ' + male];
+
+	var data2 = [count];
+	var colors2 = ['#ffcc00'];
+	var labels2 = ['총 지원자 수 :' + count];
+
+	// 원 그래프 그리기
+	drawPieChart('chart1', data1, colors1, labels1);
+	drawPieChart('chart2', data2, colors2, labels2);
+    
 </script>
 </body>
 </html>
