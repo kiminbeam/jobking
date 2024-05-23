@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.jobking.entity.SelfInfo;
 
-public interface ISelfInfo extends JpaRepository<SelfInfo, Integer> {
+public interface ISelfInfo extends JpaRepository<SelfInfo, Long> {
 
 	List<SelfInfo> findByUser_uid(String uid);
 	

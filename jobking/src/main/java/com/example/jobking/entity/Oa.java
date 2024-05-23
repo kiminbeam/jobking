@@ -40,4 +40,10 @@ public class Oa extends BaseEntity {
 
     @Column(name = "content")
     private String content;
+    
+    public void update(Oa newOa) {
+        this.type = newOa.getType();
+        this.content = newOa.getContent();
+        // 필요에 따라 다른 필드도 업데이트
+    }
 }

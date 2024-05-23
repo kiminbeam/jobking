@@ -33,4 +33,7 @@ public interface IResumeRepository extends JpaRepository<Resume, Long> {
 	
 	@Query("SELECT r FROM Resume r JOIN FETCH r.user WHERE r.user.uid = :uid AND r.rno = :rno")
 	Optional<Resume> findResumeWithUserById(@Param("uid") String uid, @Param("rno") Long rno);
+	
+	@Query(value="delete from resume where rno = :rno" , nativeQuery=true)
+	public void deleteResumeByRno(@Param("rno") Long rno);
 }
