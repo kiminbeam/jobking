@@ -1,0 +1,194 @@
+#wrap {
+    height: 1800px;
+}
+main{
+	width: calc(100% - 210px);
+	height: 1600px;
+	float: left;
+}
+#icon_wrap {
+    width: 200px;
+    height: 40px;
+    position: absolute;
+    top: 235px;
+    left: 1350px;
+    z-index: 99;
+}
+
+.link-icon {
+    float: left;
+    margin: 3px;
+}
+
+.link-icon img {
+    width: 30px;
+}
+
+#icon_wrap2 {
+    width: 100px;
+    height: 25px;
+    position: absolute;
+    top: 170px;
+    left: 1400px;
+    opacity: 70%;
+    z-index: 99;
+}
+
+#icon_wrap2>div {
+    float: left;
+}
+
+#icon_wrap2>div:nth-child(2) {
+    margin: 0 10px;
+}
+
+button {
+    width: 200px;
+    height: 50px;
+    font: 900 18px/50px 'Pretendard-Regular';
+    border: 0;
+    color: #fff;
+    background-color: #3399ff;
+    text-align: center;
+    position: relative;
+    top: 270px;
+    left: 670px;
+    margin: 20px;
+}
+
+.header>div {
+    margin-left: 30px;
+}
+
+.t1 {
+    position: absolute;
+    top: 160px;
+    left: 500px;
+    font: 900 20px/40px 'Pretendard-Regular';
+    width: 200px;
+}
+
+.t2 {
+    position: absolute;
+    top: 160px;
+    left: 580px;
+    width: 200px;
+    font: 200 14px/40px 'Pretendard-Regular';
+}
+
+.t3 {
+    font: 900 18px/40px 'Pretendard-Regular';
+    margin-left: 20px;
+}
+
+.t3_cont {
+    margin-left: 20px;
+}
+
+#dDay {
+    color: #3399ff;
+    font: 200 14px/40px 'Pretendard-Regular';
+}
+
+#info_tbl th {
+    padding: 10px;
+}
+
+#main_tbl {
+    margin: 10px auto;
+    border-collapse: collapse;
+    width: 1000px;
+    margin: 1rem auto;
+}
+
+#jtop {
+    width: 1000px;
+    position: absolute;
+    top: 210px;
+    left: 500px;
+}
+
+.jobad {
+    width: 1000px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.header {
+    border-top: 2px solid #333;
+}
+
+.company_info {
+    border-top: 1px solid lightgray;
+}
+
+.h1 {
+    font: 900 20px/30px 'Pretendard-Regular';
+}
+
+.h2 {
+    font: 900 16px/26px 'Pretendard-Regular';
+}
+
+.h3 {
+    font: 900 14px/24px 'Pretendard-Regular';
+}
+
+.main {
+    border-top: 2px solid #333;
+    border: 1px solid lightgray;
+    position: absolute;
+    top: 470px;
+    left: 450px;
+    margin: 50px;
+    padding:10px;
+}
+
+/* 테이블 행 */
+#main_tbl td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+    font: 500 15px/30px 'Pretendard-Regular';
+}
+
+#main_tbl th {
+    width: 13%;
+    padding: 8px;
+    text-align: left;
+    text-align: center;
+    border-top: 1px solid #333;
+    border-bottom: 1px solid #333;
+    font: 900 15px/30px 'Pretendard-Regular';
+}
+
+
+#main_tbl th,
+#main_tbl td {
+    border-left: none;
+    border-right: none;
+}
+
+#chart-container {
+    border-top: 2px solid #333;
+    margin: 20px;
+    position: absolute;
+    top: 1300px;
+    left: 480px;
+    width: 1000px;
+    height: 280px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+#chart-container>li{
+    width: 500px;
+    float: left;
+}
+.c_title{
+    font: 900 16px/26px 'Pretendard-Regular';
+    margin-left: 100px;
+    margin-top: 10px;
+}
+canvas {
+	margin-top: 10px;
+	margin-left: 100px;
+}

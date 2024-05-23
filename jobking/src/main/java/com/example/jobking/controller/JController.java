@@ -342,7 +342,7 @@ public class JController {
 
 	@RequestMapping("/user_recruitDetail")
 	public void userRecruitDetail(HttpServletRequest request, @RequestParam("jno") Long jno, Model model) {
-		String uid = (String) request.getSession().getAttribute("id");
+	String uid = (String) request.getSession().getAttribute("id");
 		
 		//해당 채용공고 정보 보내주기
 		JobAd jobad = jobadRepo.findById(jno).get();
@@ -371,6 +371,16 @@ public class JController {
 		}else {
 			model.addAttribute("interest", true);
 		}
+		//해당공고에 지원한 사람 수 구하기(총사람수, 남자지원자수, 여자지원자수)
+		
+	
+		
+		int count = (applyRepo.findFemaleAppli(jno)+applyRepo.findMaleAppli(jno));
+	
+		model.addAttribute("female", applyRepo.findFemaleAppli(jno));
+		model.addAttribute("male", applyRepo.findMaleAppli(jno));
+		model.addAttribute("count", count);
+
 	}
 	@RequestMapping("/scrapJobad")
 	public @ResponseBody String scrapJobad(HttpServletRequest request, @RequestParam("jno") String jno, Model model) {
@@ -541,15 +551,20 @@ public class JController {
 		UserBoard userBoard = userBoardRepo.findById(ubno).get();
 		model.addAttribute(userBoard);
 	}
+
+
 	@RequestMapping("/user_communityForm_update")//수정기능
-	public void userCommunityFormUpdate(HttpServletRequest request, UserBoard userBoard, Model model) {
-		UserBoard latestAlertBoard = userBoardRepo.findLatestBoardByType("3");
-		model.addAttribute("latestAlertBoard",latestAlertBoard);
-		
-		String uid = (String) request.getSession().getAttribute("id");
-		userBoard.setUser(userRepo.findById(uid).get());
-		userBoardRepo.save(userBoard);
+	public String userCommunityFormUpdate(HttpServletRequest request, UserBoard userBoard, Model model) {
+		String ubno = request.getParameter("ubno");
+		UserBoard ub = userBoardRepo.findById(Long.parseLong(ubno)).get();
+		ub.setTitle(userBoard.getTitle());
+		ub.setContent(userBoard.getContent());
+		ub.setType(userBoard.getType());
+		System.out.println(ub);
+		userBoardRepo.save(ub);
+		return "redirect:/user/user_communityList";
 	}
+	
 	@RequestMapping("/user_communityForm_delete")
 	public String userCommunityFormDelete(@RequestParam("ubno") Long ubno) {
 		userBoardRepo.deleteById(ubno);
@@ -622,50 +637,6 @@ public class JController {
 
         return ResponseEntity.ok("Data received successfully");
     }
-	@RequestMapping("/user_recruitDetail2")
-	public void userRecruitDetail2(HttpServletRequest request, @RequestParam("jno") Long jno, Model model) {
-		String uid = (String) request.getSession().getAttribute("id");
-		
-		//해당 채용공고 정보 보내주기
-		JobAd jobad = jobadRepo.findById(jno).get();
-		model.addAttribute("jobad", jobad);
-		//해당 채용공고 직무설명 리스트 보내주기
-		model.addAttribute("jobCont", jobad.getJobContList());
-		//해당 채용공고 스킬리스트 보내주기
-		model.addAttribute("jobSkill", jobad.getNeedskillList());
-		//해당 채용공고 키워드리스트 보내주기
-		model.addAttribute("jobKeyword", jobad.getSrchKeywordNmList());
-		
-		//해당기업 별점 정보보내주기
-		Double avgReview = companyReviewRepo.findAverageByCid(jobad.getCompany().getCid());
-		model.addAttribute("avgReview", String.format("%.2f", avgReview));
-		//스크랩 여부 정보 보내주기
-		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(uid,jno);
-		if(checkS.isEmpty()) {
-			model.addAttribute("scrap", false);
-		}else {
-			model.addAttribute("scrap", true);
-		}
-		//해당기업 찜 여부 정보 보내주기
-		Optional<InterestCop> checkI = interestRepo.findByUidNCid(uid,jobad.getCompany().getCid());
-		if(checkI.isEmpty()) {
-			model.addAttribute("interest", false);
-		}else {
-			model.addAttribute("interest", true);
-		}
-		//해당공고에 지원한 사람 수 구하기(총사람수, 남자지원자수, 여자지원자수)
-		
 	
-		
-		int count = (applyRepo.findFemaleAppli(jno)+applyRepo.findMaleAppli(jno));
-	
-		model.addAttribute("female", applyRepo.findFemaleAppli(jno));
-		model.addAttribute("male", applyRepo.findMaleAppli(jno));
-		model.addAttribute("count", count);
-		
-		System.out.println(applyRepo.findFemaleAppli(jno));
-		System.out.println(applyRepo.findMaleAppli(jno));
-		System.out.println(count);
-	}
 
 }

@@ -2,6 +2,7 @@
 * {
     margin: 0;
     padding: 0;
+    font-family: 'Pretendard-Regular';
 }
 :root {
    accent-color: red;
@@ -161,3 +162,4 @@ footer{
 .title3{
     font: 900 14px/40px 'Pretendard-Regular';
 }
+

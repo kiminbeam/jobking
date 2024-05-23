@@ -15,13 +15,12 @@
             <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
         </header>
         <div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-        
+        <div id="title_wrap">
+            <div class="title1">마이페이지</div>
+            <div class="title2">입사지원 관리</div>
+            <div class="title3">내가 지원한 기업 리스트</div>
+        </div>
         <div id="apply-wrap">
-            <div id="title_wrap">
-                <div class="title1">마이페이지</div>
-                <div class="title2">입사지원 관리</div>
-                <div class="title3">내가 지원한 기업 리스트</div>
-            </div>
             <table>
                 <thead>
                     <th>기업명</th>
@@ -41,8 +40,8 @@
                                 [[${apply.jobAd.wantedTitle}]]
                             </a>
                         </td>
-                        <td>[[${apply.jobAd.position}]]</td>
-                        <td>[[${apply.jobAd.sectors}]]</td>
+                        <td>[[${apply.jobAd.position2}]]</td>
+                        <td>[[${apply.jobAd.sector2}]]</td>
                         <td>[[${apply.regdate}]]</td>
                         <td>[[${apply.status}]]</td>
                         <!--                     <td class="deleteBtn"><a th:href="@{/user/deleteUserApplyList(ano=${apply.ano})}">지원철회</a></td> -->

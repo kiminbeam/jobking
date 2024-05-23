@@ -116,14 +116,17 @@ input[type="submit"]:hover {
 					th:value="${sectorCategory['산업/업종명']}"
 					th:text="${sectorCategory['산업/업종명']}"
 					th:data-code="${sectorCategory.코드}"
-					th:selected="${modify.sector1} == ${sectorCategory['산업/업종명']}"></option>
+					th:selected="${modify.sector1 eq sectorCategory['산업/업종명']}"></option>
 			</select>
 		</div>
-
 		<div class="form-group">
 			<label for="sector2">상세모집업종</label> <select id="sector2"
-				name="sector2">
+				name="sector2" th:field="*{modify.sector2}">
 				<option value="">선택</option>
+				<option th:each="sector : ${allSectors}"
+					th:value="${sector['산업/업종명']}" th:text="${sector['산업/업종명']}"
+					th:selected="${modify.sector2 eq sector['산업/업종명']}"
+					th:data-sector1-code="${sector['상위코드']}"></option>
 			</select>
 		</div>
 		<div class="form-group">
@@ -142,17 +145,20 @@ input[type="submit"]:hover {
 				<option value="">선택</option>
 				<option th:each="regionEntry : ${regions}"
 					th:value="${regionEntry.key}" th:text="${regionEntry.key}"
-					th:selected="${modify.region1} == ${regionEntry.key}"></option>
-			</select> <select id="region2" name="region2">
+					th:selected="${modify.region1 eq regionEntry.key}"></option>
+			</select> <select id="region2" name="region2" th:field="*{modify.region2}">
 				<option value="">선택</option>
+				<option th:each="district : ${regions.get(modify.region1)}"
+					th:value="${district}" th:text="${district}"
+					th:selected="${modify.region2 eq district}"></option>
 			</select>
 		</div>
 		<div class="form-group" id="jobContContainer">
-			<label for="jobCont">직무내용</label> <input type="text"
-				class="jobContInput" name="jobCont">
+			<label for="jobCont">직무내용</label>
 			<button type="button"
 				onclick="addInput('jobContContainer', 'jobContInput')">추가</button>
 		</div>
+
 		<div class="form-group">
 			<label for="empTpNm">고용형태</label> <select id="empTpNm" name="empTpNm">
 				<option value="정규직" th:selected="${modify.empTpNm} == '정규직'">정규직</option>
@@ -182,8 +188,7 @@ input[type="submit"]:hover {
 			</select>
 		</div>
 		<div class="form-group" id="needskillContainer">
-			<label for="needskill">필요스킬</label> <input type="text"
-				class="needskillInput" name="needskill">
+			<label for="needskill">필요스킬</label>
 			<button type="button"
 				onclick="addInput('needskillContainer', 'needskillInput')">추가</button>
 		</div>
@@ -213,11 +218,13 @@ input[type="submit"]:hover {
 				<option value="일급" th:selected="${modify.salTpCd} == '일급'">일급</option>
 				<option value="월급" th:selected="${modify.salTpCd} == '월급'">월급</option>
 				<option value="연봉" th:selected="${modify.salTpCd} == '연봉'">연봉</option>
-			</select> <input type="text" id="salTpNm" name="salTpNm" th:value="${modify.salTpNm}"> 만 원
+			</select> <input type="text" id="salTpNm" name="salTpNm"
+				th:value="${modify.salTpNm}"> 만 원
 		</div>
 		<div class="form-group">
 			<label for="retirepay">퇴직금 여부</label> <input type="checkbox"
-				id="retirepay" name="retirepay">
+				id="retirepay" name="retirepay"
+				th:checked="${modify.retirepay == 'on'}">
 		</div>
 		<div class="form-group">
 			<label for="etcWelfare">기타복리후생</label>
@@ -226,7 +233,8 @@ input[type="submit"]:hover {
 		</div>
 		<div class="form-group">
 			<label for="mltsvcExcHope">병역특례채용희망</label> <input type="checkbox"
-				id="mltsvcExcHope" name="mltsvcExcHope">
+				id="mltsvcExcHope" name="mltsvcExcHope"
+				th:checked="${modify.mltsvcExcHope == 'on'}">
 		</div>
 		<div class="form-group">
 			<label for="keywordSearch">키워드 검색:</label> <input type="text"
@@ -234,7 +242,15 @@ input[type="submit"]:hover {
 				for="srchKeywordNm">채용공고 관련 키워드:</label> <select id="keywordSelect"
 				onchange="addKeyword()">
 			</select>
-			<div id="selectedKeywords"></div>
+			<div id="selectedKeywords">
+				<span
+					th:each="keyword, iterStat : ${#strings.arraySplit(modify.srchKeywordNm, ',')}"
+					th:with="currentIndex=${iterStat.index}"> <span
+					th:text="${keyword.trim()}"></span>
+					<button type="button"
+						onclick="removeKeywordAndSpan(this, /*[[${keyword}]]*/ '')">x</button>
+				</span>
+			</div>
 		</div>
 		<input type="hidden" id="srchKeywordNmJson" name="srchKeywordNm">
 		<div class="form-group">
@@ -262,13 +278,105 @@ input[type="submit"]:hover {
 	    const position2Select = document.getElementById('position2');
 	    const modifyPosition2 = /*[[${modify.position2}]]*/ null; // Thymeleaf로 modify.position2 값 가져오기
 	    if (modifyPosition2) {
-	        const option = document.createElement('option');
-	        option.value = modifyPosition2;
-	        option.text = modifyPosition2;
-	        option.selected = true;
-	        position2Select.add(option);
+	      const option = document.createElement('option');
+	      option.value = modifyPosition2;
+	      option.text = modifyPosition2;
+	      option.selected = true;
+	      position2Select.add(option);
 	    }
-	});
+	    
+	 // 기존 jobCont 및 needskill 값을 배열 형태로 가져오기
+	    const initialJobCont = /*[[${jobContList}]]*/ [];
+	    const initialNeedskill = /*[[${needskillList}]]*/ [];
+	    const initialSrchKeywordNm = /*[[${srchKeywordNmList}]]*/ [];
+
+	    // jobCont, needskill 입력 필드 초기화 및 값 설정
+	    const jobContContainer = document.getElementById('jobContContainer');
+    	const needskillContainer = document.getElementById('needskillContainer');
+    	const srchKeywordNmJsonInput = document.getElementById('srchKeywordNmJson');
+    	const keywordSelect = document.getElementById('keywordSelect');
+	    
+	    initialJobCont.forEach((jobCont, index) => {
+	      addInputWithValue('jobContContainer', 'jobContInput', jobCont, index);
+	    });
+
+	    initialNeedskill.forEach((needskill, index) => {
+	      addInputWithValue('needskillContainer', 'needskillInput', needskill, index);
+	    });
+	    
+	    // 이미 존재하는 키워드를 selectedKeywords 배열에 추가하고 선택된 상태로 설정
+	    initialSrchKeywordNm.forEach(keyword => {
+	        selectedKeywords.push(keyword);
+
+	        // select 요소에서 해당 키워드를 찾아 선택 상태로 설정
+	        for (let i = 0; i < keywordSelect.options.length; i++) {
+	            if (keywordSelect.options[i].value === keyword) {
+	                keywordSelect.options[i].selected = true;
+	                break;
+	            }
+	        }
+	    });
+
+	    updateKeywordDisplay(); // 선택된 키워드 표시
+	  });
+	
+	
+	// addInput 함수 수정 (값을 받아서 입력 필드에 설정)
+	function addInputWithValue(containerId, inputClass, value, index) {
+		const container = document.getElementById(containerId);
+	  	const existingInputs = container.querySelectorAll(`.${inputClass}`);
+	 	const newIndex = index !== undefined ? index : existingInputs.length;
+
+	  // 입력 필드 생성
+	  const newInput = document.createElement('input');
+    	newInput.type = 'text';
+    	newInput.classList.add(inputClass);
+    	newInput.name = containerId.replace('Container', ''); // name 속성을 jobCont 또는 needskill로 설정
+
+    	newInput.value = value;
+
+	  // 삭제 버튼 생성
+	  const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.textContent = '삭제';
+    deleteButton.onclick = function() {
+      removeInput(containerId, this);
+    };
+
+	  // 컨테이너에 입력 필드와 삭제 버튼 추가
+	  const newDiv = document.createElement('div');
+	  newDiv.appendChild(newInput);
+	  newDiv.appendChild(deleteButton);
+	  container.insertBefore(newDiv, container.lastElementChild); // 추가된 부분
+	}
+
+	// 컨테이너에 이벤트 리스너 추가 (이벤트 위임)
+	document.getElementById('jobContContainer').addEventListener('click', handleDeleteButtonClick);
+	document.getElementById('needskillContainer').addEventListener('click', handleDeleteButtonClick);
+
+	function handleDeleteButtonClick(event) {
+	  if (event.target.tagName === 'BUTTON' && event.target.textContent === '삭제') {
+	    const divToRemove = event.target.parentNode;
+	    removeInput(divToRemove.parentNode.id, divToRemove); // 컨테이너 ID와 삭제할 div 요소 전달
+	  }
+	}
+	
+	function removeInput(containerId, elementToRemove) {
+		  const container = document.getElementById(containerId);
+		  container.removeChild(elementToRemove); // 부모 div 요소를 제거
+
+		  // Update input names to match array indices after deletion
+		  const remainingInputs = container.querySelectorAll(`input[name^="${containerId.replace('Container', '')}"]`);
+		  remainingInputs.forEach((input, index) => {
+		    input.name = `${containerId.replace('Container', '')}[${index}]`; 
+		  });
+
+		  // 남은 입력 필드가 하나도 없으면 빈 입력 필드 하나 추가 (jobCont, needskill은 필수 입력)
+		  if (remainingInputs.length === 0) {
+		      addInput(containerId, containerId.replace('Container', '') + 'Input');
+		  }
+		}
+	
 
     function addInput(containerId, inputClass) {
         const container = document.getElementById(containerId);
@@ -296,15 +404,23 @@ input[type="submit"]:hover {
     function convertInputsToJson() {
     	
         const jobContInputs = document.querySelectorAll('.jobContInput');
+        const filteredJobContArray = Array.from(jobContInputs)
+        .filter(input => input.value.trim() !== '')  // 빈 값 제외
+        .map(input => input.value);
+        
         const needskillInputs = document.querySelectorAll('.needskillInput');
+        const filteredNeedskillArray = Array.from(needskillInputs)
+        .filter(input => input.value.trim() !== '')
+        .map(input => input.value);
+        
         const srchKeywordNmInputs = document.querySelectorAll('.srchKeywordNmInput');
 
         const jobContArray = Array.from(jobContInputs).map(input => input.value);
         const needskillArray = Array.from(needskillInputs).map(input => input.value);
         const srchKeywordNmArray = Array.from(srchKeywordNmInputs).map(input => input.value);
 
-        const jobContJson = JSON.stringify(jobContArray);
-        const needskillJson = JSON.stringify(needskillArray);
+        const jobContJson = JSON.stringify(filteredJobContArray);
+        const needskillJson = JSON.stringify(filteredNeedskillArray);
         const srchKeywordNmJson = document.getElementById('srchKeywordNmJson').value;
 
         document.getElementById('jobContJson').value = jobContJson;
@@ -415,24 +531,29 @@ input[type="submit"]:hover {
     }
  	// sector2 옵션 업데이트 함수
     function updateSector2Options() {
-        const sector1Select = document.getElementById('sector1');
-        const sector2Select = document.getElementById('sector2');
-        const selectedSector1Name = sector1Select.value; // 선택된 산업/업종명
-        const selectedSector1Code = sector1Select.options[sector1Select.selectedIndex].getAttribute('data-code');
-        // sector2 옵션 초기화
-        sector2Select.innerHTML = '<option value="">선택</option>';
+    const sector1Select = document.getElementById('sector1');
+    const sector2Select = document.getElementById('sector2');
+    const selectedSector1Code = sector1Select.options[sector1Select.selectedIndex].getAttribute('data-code');
 
-        // sector1에 해당하는 sector2 옵션 추가
-        if (selectedSector1Code) {
-            const filteredSectors = allSectors.filter(sector => sector["상위코드"] == parseInt(selectedSector1Code, 10));
-            filteredSectors.forEach(sector => {
-                const option = document.createElement('option');
-                option.value = sector["산업/업종명"];
-                option.text = sector["산업/업종명"];
-                sector2Select.add(option);
-            });
-        }
+    // sector2 옵션 초기화
+    sector2Select.innerHTML = '<option value="">선택</option>';
+
+    // sector1에 해당하는 sector2 옵션 추가
+    if (selectedSector1Code) {
+        const filteredSectors = allSectors.filter(sector => sector["상위코드"] == parseInt(selectedSector1Code, 10));
+        filteredSectors.forEach(sector => {
+            const option = document.createElement('option');
+            option.value = sector["산업/업종명"];
+            option.text = sector["산업/업종명"];
+            option.setAttribute('data-sector1-code', sector["상위코드"]); 
+            // 선택된 값과 일치하면 selected 속성 추가
+            if (option.value === /*[[${modify.sector2}]]*/ null) {
+                option.selected = true;
+            }
+            sector2Select.add(option);
+        });
     }
+}
  	
     function updateRegion2Options() {
         const region1Select = document.getElementById('region1');
@@ -449,6 +570,12 @@ input[type="submit"]:hover {
                 const option = document.createElement('option');
                 option.value = district;
                 option.text = district;
+
+                // 기존에 선택된 값과 일치하면 selected 속성 추가
+                if (district === /*[[${modify.region2}]]*/ null) {
+                    option.selected = true;
+                }
+
                 region2Select.add(option);
             });
         }

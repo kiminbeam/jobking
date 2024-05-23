@@ -77,7 +77,7 @@ public class JobAd extends BaseEntity {
 	@Column(name = "minEdubglcd", nullable = false, length = 10)
 	private String minEdubglcd;
 
-	@Column(name = "mltsvcExcHope", nullable = false, length = 10)
+	@Column(name = "mltsvcExcHope",length = 10)
 	private String mltsvcExcHope;
 
 	@Column(name = "needskill", columnDefinition = "TEXT")
@@ -101,13 +101,13 @@ public class JobAd extends BaseEntity {
 	@Column(name = "etcWelfare", nullable = false, columnDefinition = "TEXT")
 	private String etcWelfare;
 
-	@Column(name = "attachFileUrl", length = 30)
+	@Column(name = "attachFileUrl", columnDefinition = "TEXT")
 	private String attachFileUrl;
 
-	@Column(name = "attachFileUrl2", length = 50, columnDefinition = "VARCHAR(50)")
+	@Column(name = "attachFileUrl2",columnDefinition = "TEXT")
 	private String attachFileUrl2;
 
-	@Column(name = "srchKeywordNm", length = 30)
+	@Column(name = "srchKeywordNm", columnDefinition = "TEXT")
 	private String srchKeywordNm;
 
 	@Column(name = "salTpCd", nullable = false, length = 20, columnDefinition = "VARCHAR(20)")
@@ -145,6 +145,15 @@ public class JobAd extends BaseEntity {
 	        return new ObjectMapper().readValue(srchKeywordNm, new TypeReference<List<String>>() {});
 	    } catch (JsonProcessingException e) {
 	        log.error("Error parsing srchKeywordNm JSON: {}", e.getMessage());
+	        return Collections.emptyList(); // or throw an exception
+	    }
+	}
+	
+	public List<String> getWkdWkhCntList() {
+	    try {
+	        return new ObjectMapper().readValue(WkdWkhCnt, new TypeReference<List<String>>() {});
+	    } catch (JsonProcessingException e) {
+	        log.error("Error parsing WkdWkhCnt JSON: {}", e.getMessage());
 	        return Collections.emptyList(); // or throw an exception
 	    }
 	}
