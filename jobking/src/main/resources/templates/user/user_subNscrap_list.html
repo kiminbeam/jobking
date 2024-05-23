@@ -4,15 +4,17 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/user_subNscrap_list.css">
 </head>
 
 <body>
+<div id="wrap">
 <header>
 	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
 </header>
+<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 <main>
-	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-	<div>
+	<div id="subAndLikeWrap">
 		<h1>마이페이지</h1>
 		<h3>구독 및 스크랩</h3>
 		
@@ -50,6 +52,7 @@
 	<footer>
 		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 	</footer>
+</div>
 </body>
 
 

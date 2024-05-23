@@ -8,8 +8,9 @@ body {
     font-family: 'Pretendard-Regular', sans-serif;
     
 }
-#managingCommuWrap{
+#subAndLikeWrap{
 	width:1000px;
+	height:1500px;
 	position:relative;
 	padding:10px;
 	top:30px;

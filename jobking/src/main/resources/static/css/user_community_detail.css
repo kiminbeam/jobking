@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-@charset "UTF-8";
 
 .container{
 	width:1200px;
@@ -51,4 +50,146 @@ span{
 }
 #sub_detail{
 	padding:20px;
+}
+
+
+
+.content_container {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.content_container th, .content_container td {
+    border: 1px solid #f2f2f2;
+    padding: 8px;
+}
+
+.content_container th {
+    font-size: 1.5em;
+}
+
+.detail_container {
+    background-color: #f9f9f9;
+}
+
+.detail_container span {
+    margin-right: 10px;
+}
+
+.detail_container a {
+    margin-left: 10px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.detail_container a:hover {
+    text-decoration: underline;
+}
+
+.reply_container {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.reply_container tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.reply_container th, .reply_container td {
+    padding: 8px;
+}
+
+.reply_container input[type="text"] {
+    width: 80%;
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.reply_container button {
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.reply_container button:hover {
+    background-color: #0056b3;
+}
+
+.reply_container button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.reply_container th {
+    background-color: #f2f2f2;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.content_container {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.content_container th {
+    background-color: #f8f8f8;
+    font-size: 24px;
+    text-align: left;
+    padding: 10px;
+}
+
+.content_container td {
+    padding: 10px;
+    vertical-align: top;
+    border-top: 1px solid #eaeaea;
+}
+
+.reply_container {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.reply_container tr {
+    border-bottom: 1px solid #eaeaea;
+}
+
+.reply_container th, .reply_container td {
+    padding: 10px;
+    text-align: left;
+}
+
+.reply_container input[type="text"] {
+    width: calc(100% - 90px);
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.reply_container button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.reply_container button:hover {
+    background-color: #0056b3;
+}
+
+.reply_container button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
 }
