@@ -20,7 +20,7 @@
                     <div class="title1">마이페이지</div>
                     <div class="title2">회원정보 수정</div>
                 </div>
-                <form action="user_edit" method="post" enctype="multipart/form-data">
+                <form action="/user/user_edit" method="post" enctype="multipart/form-data" onsubmit="return checkCondition()">
                     <ul id="edit">
                         <li><img th:src="@{|/images/user/${user.fileName}|}" alt="" /></li>
                         <li style="display:none;"><a th:href="@{|/images/${user.fileName}|}">[[${user.fileName}]]</a>
@@ -65,5 +65,69 @@
         </footer>
     </div>
 </body>
+<script th:inline="javascript">
 
+let validPw;
+let samePw;
+let nullCheck = true;
+
+
+// 유효성검사
+// 중복 검사
+const upw = document.getElementById("upw");
+const upw2 = document.getElementById("upw2");
+
+upw2.addEventListener('input', function () {
+    const upwInput = upw.value;
+    const upw2Input = upw2.value;
+    if (upwInput === upw2Input) {
+        samePw = true;
+    }else {
+        samePw = false;
+    }
+});
+
+function strongPassword(str) {
+    return /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(str);
+}
+
+document.getElementById("upw").onkeyup = function () {
+    // 값을 입력한 경우
+    if (upw.value.length !== 0) {
+        if (strongPassword(upw.value)) {
+            validPw = true;
+        }
+        else {
+            validPw = false;
+        }
+    }
+    // 값을 입력하지 않은 경우 (지웠을 때)
+    else {
+        validPw = false;
+    }
+};
+
+
+function checkCondition() {
+    const uname = document.querySelector('input[name="uname"]').value;
+    const email = document.querySelector('input[name="email"]').value;
+    const tel = document.querySelector('input[name="tel"]').value;
+    if (!uname || !email || !tel) {
+        nullCheck = false;
+    }
+
+    if (nullCheck && validPw && samePw) {
+        return true;
+    } else {
+    	if (!validPw) {
+            alert("유효한 비밀번호가 아닙니다. 8글자 이상, 영문, 숫자, 특수문자가 포함되어야 합니다. 다시 입력해주세요");
+        }else if (!samePw) {
+            alert("비밀번호가 같지 않습니다. 다시 입력해주세요");
+        }else if (!nullCheck) {
+            alert("필수입력값은 비어있을 수 없습니다. 다시 입력해주세요")
+        }
+        return false;
+    }
+}
+</script>
 </html>

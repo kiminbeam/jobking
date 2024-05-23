@@ -14,12 +14,8 @@
 		<main>
 			<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 				<div>
-					<div class="container">
-					<div class="alertTab">
-						<span>📢 [공지사항]  </span>
-						<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
-					</div>
-						<form class="form-container" action="/user/user_board_update" method="post">
+
+						<form class="form-container" th:action="@{/user/user_communityForm_update(ubno=${userBoard.ubno})}" method="post">
 							<fieldset class="typeContainer">
 							  	<span>게시판 타입 선택</span>
 							    <input type="radio" name="type" value="1"  />
