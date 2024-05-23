@@ -212,6 +212,24 @@ body {
 	padding-bottom: 10px;
 	margin-bottom: 10px;
 }
+
+.keyword-container {
+    display: flex;
+    align-items: center; /* 수직 가운데 정렬 */
+}
+
+.keyword-title {
+    margin-right: 10px; /* 제목과 키워드 사이 간격 */
+}
+
+.keywords {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.keywords span {
+    margin-right: 20px;
+}
 </style>
 </head>
 <body>
@@ -281,15 +299,15 @@ body {
 					<div class="job-conditions">
 						<div>
 							<h3>지원 자격</h3>
-							<p>경력: [[${detail.yofExperiences}]]</p>
-							<p>학력: [[${detail.minEdubglcd}]] 이상
+							<p><strong>지원</strong>: [[${detail.yofExperiences}]]</p>
+							<p><strong>학력</strong>: [[${detail.minEdubglcd}]] 이상</p>
 						</div>
 						<div>
 							<h3>근무 조건</h3>
-							<p>고용 형태: [[${detail.empTpNm}]]</p>
-							<p>급여: [[${detail.salTpCd}]] [[${detail.salTpNm}]] 만원</p>
-							<p>지역: [[${detail.region1}]] [[${detail.region2}]]</p>
-							<p>시간: [[${detail.WkdWkhCnt}]]</p>
+							<p><strong>고용 형태</strong>: [[${detail.empTpNm}]]</p>
+							<p><strong>급여</strong>: <span th:text="${#numbers.formatInteger(detail.salTpNm, 3, 'COMMA')}"></span> 만원</p>
+							<p><strong>지역</strong>: [[${detail.region1}]] [[${detail.region2}]]</p>
+							<p><strong>시간</strong>: [[${detail.WkdWkhCnt}]]</p>
 						</div>
 					</div>
 				</div>
@@ -301,8 +319,8 @@ body {
 					<div id="comsimpleinfo">
 						<h3>기업정보</h3>
 						<div>[[${detail.company.cname}]]</div>
-						<div>산업(업종) [[${detail.company.sector}]]</div>
-						<div>사원수 [[${detail.company.employees}]]</div>
+						<div><strong>산업(업종)</strong> [[${detail.company.sector}]]</div>
+						<div><strong>사원수</strong>: <span th:text="${#numbers.formatInteger(detail.company.employees, 3, 'COMMA')}"></span>명</div>
 						<div th:if="${detail.company.url != null}">홈페이지
 							[[${detail.company.url}]]</div>
 					</div>
@@ -318,7 +336,7 @@ body {
 							<th>근무지역</th>
 							<th>근무내용</th>
 							<th>세부사항</th>
-							<th>인원</th>
+							<th>모집인원</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -333,10 +351,10 @@ body {
 							</td>
 							<td>
 								<div>
-									<strong>지원조건</strong><br> <span>-학력
-										[[${detail.minEdubglcd}]] 이상 </span> <span>-경력
-										[[${detail.yofExperiences}]]</span>
-								</div>
+									<strong>지원조건</strong><br> 
+									<span>&nbsp;- 학력: [[${detail.minEdubglcd}]]</span> <br>
+										<span>&nbsp;- 지원가능: [[${detail.yofExperiences}]]</span>
+								</div><hr>
 								<div th:if="${not #lists.isEmpty(needskillList)}">
 									<strong>필요스킬</strong><br>
 									<ul>
@@ -359,9 +377,19 @@ body {
 			</div>
 			<div>
 				<h3>근무 환경</h3>
-				<p>근무 지역 [[${detail.region1}]] [[${detail.region2}]]</p>
-				<p>복리 후생 [[${detail.etcWelfare}]]</p>
+				<p><strong>근무 지역</strong> [[${detail.region1}]] [[${detail.region2}]]</p>
+				<p><strong>복리 후생</strong> [[${detail.etcWelfare}]]</p>
 			</div>
+			<div>
+			<h3>공고 마감일</h3>
+			<p th:text="${detail.receiptCloseDt}"></p>
+			</div>
+	<div class="keyword-container">
+    <h3 class="keyword-title">키워드</h3>
+    <div class="keywords">
+        <span th:each="keyword : ${srchKeywordNmList}" th:text="${keyword}"></span>
+    </div>
+</div>
 		</div>
 	</div>
 	<script
