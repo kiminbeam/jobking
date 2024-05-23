@@ -16,4 +16,8 @@ public interface ICompanyReplyRepository extends JpaRepository<CompanyReview, Lo
 	
 	@Query(value="select * from company_reply where cbno= :cbno",nativeQuery=true)
 	List<CompanyReply> findAllByCbno(@Param("cbno") Long cbno);
+	
+	@Query(value="select * from company_reply where cid = :cid",nativeQuery=true)
+	List<CompanyReply> findByCid(@Param("cid") String cid);
+	
 }
