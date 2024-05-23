@@ -26,7 +26,21 @@
     font: 900 18px/1 'Pretendard-Regular';
     text-align: center;
 }
-
+#ai1{
+	background-image: url("/images/jobad/jobad1.png");
+}
+#ai2{
+	background-image: url("/images/jobad/jobad2.png");
+}
+#ai3{
+	background-image: url("/images/jobad/jobad3.png");
+}
+#ai4{
+	background-image: url("/images/jobad/jobad4.png");
+}
+#ai5{
+	background-image: url("/images/jobad/jobad5.png");
+}
 section{
     width: 100%; height: 600px;
     background-color: #f7f7f7;
@@ -49,7 +63,18 @@ section{
     text-align: center;
     float: left;
 }
-
+#jobad1{
+	background-image: url("/images/jobad/baemin.png");
+}
+#jobad2{
+	background-image: url("/images/jobad/gucci.png");
+}
+#jobad3{
+	background-image: url("/images/jobad/juvis.png");
+}
+#jobad4{
+	background-image: url("/images/jobad/kt.png");
+}
 #button{
     width: 570px; height: 80px;
     position: relative; top: -30px;

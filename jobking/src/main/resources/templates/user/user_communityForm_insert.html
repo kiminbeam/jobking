@@ -20,7 +20,7 @@
 						<span>📢 [공지사항]  </span>
 						<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
 					</div>
-						<form class="form-container" action="/user/user_board_regist" method="post">
+						<form class="form-container" action="/user/user_board_regist" method="post" onsubmit="return checkValid()">
 							<fieldset class="typeContainer">
 							  	<span>게시판 타입 선택</span>
 							    <input type="radio" name="type" value="1"  />
@@ -59,7 +59,17 @@ tabs.forEach(tab=>{
 		document.querySelector("#"+id).classList.add("current")
 	})
 })
-
+function checkValid(){
+     const type = document.querySelector('input[name="type"]').value;
+     const title = document.querySelector('input[name="title"]').value;
+     const content = document.querySelector('input[name="content"]').value;
+     
+     if (!type|| !title || !content) {
+         alert("빈 칸이 있습니다. 모든 값을 입력해주세요 :)");
+         return false;
+     }
+     return true;
+}
 
 
 

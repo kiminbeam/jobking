@@ -16,13 +16,13 @@
 				<div>
 
 						<form class="form-container" th:action="@{/user/user_communityForm_update(ubno=${userBoard.ubno})}" method="post">
-							<fieldset class="typeContainer">
-							  	<span>게시판 타입 선택</span>
-							    <input type="radio" name="type" value="1"  />
-							    <label for="type">구직자</label>
-							    <input type="radio" name="type" value="2" />
-							    <label for="type">재직자</label>
-							</fieldset>
+							  <fieldset class="typeContainer">
+		                        <span>게시판 타입 선택</span>
+		                        <input type="radio" name="type" value="1" th:checked="${userBoard.type == 1}" />
+		                        <label for="type">구직자</label>
+		                        <input type="radio" name="type" value="2" th:checked="${userBoard.type == 2}" />
+		                        <label for="type">재직자</label>
+			                   </fieldset>
 							<div class="form">
 								<input type="text" name="title" th:value="${userBoard.title}">
 								<textarea name="content" th:value="${userBoard.content}"></textarea>

@@ -18,12 +18,12 @@
             <ul>
                 <li class="sidebar_title"><a href="">포지션매치</a></li>
             </ul>
-            <ul>
+            <ul th:classappend="${session.id == null} ? 'hidden'">
                 <li class="sidebar_title">
                     <a href="/user/user_myPage">마이페이지</a>
                 </li>
                 <li><a href="/user/user_information">회원정보 수정</a></li>
-                <li><a href="">이력서 관리</a></li>
+                <li><a href="/user/user_resumeList">이력서 관리</a></li>
                 <li><a href="/user/user_subNscrap_list">구독 및 스크랩</a></li>
                 <li><a href="/user/user_apply_list">입사지원관리</a></li>
                 <li><a href="/user/user_offer_list">받은제안 관리</a></li>

@@ -256,7 +256,7 @@ public class JController {
 		alt.setEndTime(new Date());
 		abgLoginRepo.save(alt);
 		request.getSession().invalidate();
-		return "/user/index";
+		return "redirect:/user/user_mainPage";
 	}
 	
 	@RequestMapping("/user_recruit_region")
@@ -538,10 +538,11 @@ public class JController {
 		model.addAttribute("latestAlertBoard",latestAlertBoard);
 	}
 	@RequestMapping("/user_board_regist")//등록기능
-	public void userBoardRegist(HttpServletRequest request, UserBoard userBoard) {
+	public String userBoardRegist(HttpServletRequest request, UserBoard userBoard) {
 		String uid = (String) request.getSession().getAttribute("id");
 		userBoard.setUser(userRepo.findById(uid).get());
 		userBoardRepo.save(userBoard);
+		return "redirect:/user/user_communityList";
 	}
 	@RequestMapping("/user_communityForm_edit")//수정 화면
 	public void userCommunityFormEdit(@RequestParam("ubno") Long ubno, Model model) {
@@ -571,8 +572,12 @@ public class JController {
 		return "redirect:/user/user_communityList";
 	}
 	@RequestMapping("/user_positionMatch")
-	public void userPositionMatch(HttpServletRequest request, Model model) {
+	public String userPositionMatch(HttpServletRequest request, Model model) {
 		String uid = (String) request.getSession().getAttribute("id");
+		if(uid == null) {
+	        model.addAttribute("errorMessage", "포지션매치를 보시려면 로그인이 필요합니다.");
+	        return "redirect:/user/login_form";
+		}
 		Resume defResume = resumeRepo.findDefByUid(uid);
 		Long rno = defResume.getRno();
 		Hope hope = hopeRepo.findByUidAndRno(uid, rno);
@@ -581,6 +586,7 @@ public class JController {
 		String sectors = hope.getSectors();
 		List<JobAd> list = jobadRepo.findMatchingAd(region1,sectors,job);
         model.addAttribute("recentList", list);
+        return "/user/user_positionMatch"; 
 	}
 	@GetMapping("/user_resume_detailApply")
 	public void userResumeDetail(HttpServletRequest request, Model model, @RequestParam("rno") Long rno) {
