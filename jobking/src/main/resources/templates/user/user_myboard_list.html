@@ -4,15 +4,16 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/user_myboard_list.css">
 </head>
 
 <body>
 <header>
 	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
 </header>
+<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 <main>
-	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-	<div>
+	<div id="managingCommuWrap">
 		<h1>마이페이지</h1>
 		<h3>커뮤니티 활동 관리</h3>
 		

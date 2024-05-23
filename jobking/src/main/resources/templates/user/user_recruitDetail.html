@@ -16,7 +16,6 @@
 			<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
 		</header>
 		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-		<aside></aside>
 		<main>
 			<div>
 				<!-- 1. 복사(버튼) url 복사, 공유 기능 -->
@@ -174,7 +173,11 @@
 					</li>
 				</ul>
 			</div>
+
 		</main>
+		<footer>
+            <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+        </footer>
 	</div>
 	<script th:inline="javascript">
 		const dDay = document.querySelector("#dDay");
@@ -346,7 +349,7 @@
 				var y = canvas.height / 2 + Math.sin(midAngle) * labelRadius;
 
 				ctx.fillStyle = 'black';
-				ctx.font = 'bold 12px Arial';
+				ctx.font = '900 16px/20px "Pretendard-Regular"';
 				ctx.textAlign = 'center';
 				ctx.fillText(labels[i], x, y);
 
@@ -357,11 +360,11 @@
 		// 데이터와 색상 정의
 		var data1 = [female, male];
 		var colors1 = ['#5AB2FF', '#A0DEFF'];
-		var labels1 = ['여자 지원자 수 : ' + female, '남자 지원자 수 : ' + male];
+		var labels1 = ['[여자] ' + female, '[남자] ' + male];
 
 		var data2 = [count];
 		var colors2 = ['#FFF9D0'];
-		var labels2 = ['총 지원자 수 :' + count];
+		var labels2 = [count];
 
 		// 원 그래프 그리기
 		drawPieChart('chart1', data1, colors1, labels1);
