@@ -9,4 +9,6 @@ import com.example.jobking.entity.Experience;
 public interface IExperienceRepository extends JpaRepository<Experience, Long> {
 
 	List<Experience> findByResumeRno(Long rno);
+	
+	
 }

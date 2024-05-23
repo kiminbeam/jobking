@@ -48,4 +48,14 @@ public class Hope extends BaseEntity {
 
 	@Column(name = "job", nullable = false)
 	private String job;
+	
+	public void update(Hope newHope) {
+        this.region1 = newHope.getRegion1();
+        this.region2 = newHope.getRegion2();
+        this.region3 = newHope.getRegion3();
+        this.sectors = newHope.getSectors();
+        this.job = newHope.getJob();
+        // 필요에 따라 다른 필드도 업데이트
+    }
+	
 }

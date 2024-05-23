@@ -47,4 +47,12 @@ public class License extends BaseEntity {
 
 	@Column(name = "getDate")
 	private LocalDate getDate;
+	
+	public void update(License newLicense) {
+        this.type = newLicense.getType();
+        this.lname = newLicense.getLname();
+        this.lorg = newLicense.getLorg();
+        this.getDate = newLicense.getGetDate();
+        // 필요에 따라 다른 필드도 업데이트
+    }
 }

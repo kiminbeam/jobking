@@ -30,7 +30,7 @@
 		</ul>
 	</div>
 
-	<form method="post" th:action="@{/user/user_resume(rno=${rno})}">
+	<form method="post" th:action="@{/user/user_resume}">
 		<div>
 			이력서 제목 <em class="em1">[필수] </em><input type ="text" name ="rtitle"
 				placeholder ="나를 가장 잘 소개할 수 있는 이력서 제목을 입력하세요)">
@@ -115,9 +115,9 @@
                         </select>
                     </td>
                     <td>
-                        <input type="date" name="accDate" id="accDate" title="입학일자" placeholder="yyyy.mm.dd" maxlength="10">
+                        <input type="date" name="accDate" id="accDate" title="입학일자">
                         <span>~</span>
-                        <input type="date" name="gradDate" id="gradDate" title="졸업일자" placeholder="yyyy.mm.dd" maxlength="10">
+                        <input type="date" name="gradDate" id="gradDate" title="졸업일자">
                     </td>
                     <td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
                     <td><input type="text" name="score" placeholder="내용을 입력해주세요."></td>
@@ -492,7 +492,7 @@
         var newRow = document.createElement('tr');
         newRow.innerHTML = `
         	<td>
-        		<input type="text" name="Field" placeholder="포트폴리오 url을 입력 하세요.">
+        		<input type="text" name="portfolioUrl" placeholder="포트폴리오 url을 입력 하세요.">
     		</td>
     		<td>
         		<button type="button" class="deleteRowButton6">삭제</button><br>

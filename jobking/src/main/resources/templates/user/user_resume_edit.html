@@ -9,7 +9,8 @@
 	<div>이력서 등록</div>
 	<div class="notice">
 		<ul>
-			<li><img src="../../../images/reg.png" width="50" height="50">
+			<li>
+				<img src="../../../images/reg.png" width="50" height="50">
 			</li>
 			<li><em class="em1">[필수] </em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
 				반드시 기입해 주세요.</li>
@@ -21,7 +22,7 @@
 		</ul>
 	</div>
 
-	<form method="post" th:action="@{/user/user_resume(rno=${rno})}">
+	<form method="post" th:action="@{/user/user_regupdate(rno=${resume.rno})}">
 		<!-- 이력서 제목 -->
 		<div>
         이력서 제목 <em class="em1">[필수] </em>
@@ -38,7 +39,7 @@
 			<thead>
 				<tr>
 					<th>포트폴리오</th>
-					<th><input type="button" value="+ 항목추가" id="addRowButton6"></th>
+					<th><input type="button" name="portfolioUrl" value="+ 항목추가" id="addRowButton6"></th>
 				</tr>
 			</thead>
 			<tbody id="portTableBody">
@@ -91,6 +92,7 @@
 				<tbody id="educationTableBody">
 					<tr>
 						<td>
+						<input type="hidden" name="sno" th:value="${schoolList.sno}" >  
 							<select class="gradeList_0" name="eduName" title="학력 선택" >
 								<option selected="selected" th:text="${schoolList.eduName}"></option>
 								<option value="무학">무학</option>
@@ -150,6 +152,7 @@
 				<tbody id="careerTableBody">
 					<tr>
 						<td>
+							<input type="hidden" name="cno" th:value="${careerList.cno}" > 
 							<input type="text" name="cName" th:value="${careerList.cName}" placeholder="내용을 입력해주세요.">
 						</td>
 						<td>
@@ -204,6 +207,7 @@
 				<tbody id="experienceTableBody">
 					<tr>
 						<td>
+							<input type="hidden" name="eno" th:value="${experienceList.eno}" > 
 							<input type="text" th:value="${experienceList.org}" name="org" id="org" placeholder="내용을 입력해주세요.">
 						</td>
 						<td>
@@ -240,6 +244,7 @@
 				<tbody id="licenseTableBody">
 					<tr>
 						<td>
+							<input type="hidden" name="lno" th:value="${licenseList.rno}" > 
 							<select class="licenseList" name="type" title="구분">
 								<option selected="selected" th:text="${licenseList.type}"></option>
 								<option value="국가공인">국가공인</option>
@@ -265,6 +270,7 @@
 		<!-- 보유 스킬 -->
 		<div>
 			<th:block th:each="oaList : ${oaList}">
+				<input type="hidden" name="ono" th:value="${oaList.ono}" > 
 				보유 스킬 <input type="text" name="content" placeholder="내용을 입력해주세요." th:value="${oaList.content}">
 			</th:block>
 		</div>
@@ -278,6 +284,7 @@
 			<ul>
 				<li>
 					희망근무지역
+					<input type="hidden" name="hno" th:value="${hopeList.hno}" >
 					<input type="text" name="region1" th:value="${hopeList.region1}" placeholder="희망근무지역1"> 
 					<input type="text" name="region2" th:value="${hopeList.region2}" placeholder="희망근무지역2"> 
 					<input type="text" name="region3" th:value="${hopeList.region3}" placeholder="희망근무지역3">
@@ -301,6 +308,7 @@
 				<tbody id="selfInfoTableBody">
 					<tr>
 						<td>
+							<input type="hidden" name="sino" th:value="${selfInfoList.sino}" >
 							<input type="text" name="title" th:value="${selfInfoList.title}" placeholder="제목을 입력해주세요.">
 							<button type="button" class="deleteRowButton5">삭제</button> <br>
 							<input type="text" name="scontent" th:value="${selfInfoList.scontent}" placeholder="내용을 입력해주세요.">
@@ -316,8 +324,8 @@
 			<input type="checkbox" id="openResume" name="openResume" >
 		</div>
 		<hr>
-		<input type="hidden" name="disclo" id="disclo" value="0"> <input
-			type="submit" value="이력서 저장">
+		<input type="hidden" name="disclo" id="disclo" value="0"> 
+		<input type="submit" value="이력서 저장">
 	</form>
 	<script th:inline="javascript">
 	
@@ -562,7 +570,7 @@
         var newRow = document.createElement('tr');
         newRow.innerHTML = `
         	<td>
-        		<input type="text" name="Field" placeholder="포트폴리오 url을 입력 하세요.">
+        		<input type="text" name="Field" name="portfolioUrl" placeholder="포트폴리오 url을 입력 하세요.">
     		</td>
     		<td>
         		<button type="button" class="deleteRowButton6">삭제</button><br>
