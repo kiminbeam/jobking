@@ -150,6 +150,7 @@
                             // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
                             sectorEl.innerHTML = "";
                             sector1Name = e.target.innerText;
+                            searchList();
 
                             // 이전에 클릭된 섹터의 스타일을 원래대로 되돌리기
                             if (lastClickedSector1) {
@@ -176,6 +177,7 @@
                                         sectorEl.addEventListener("click", function (e) {
                                             console.log(e.target);
                                             sector2Name = e.target.innerText;
+                                            searchList();
                                             // 이전에 클릭된 섹터의 스타일을 원래대로 되돌리기
                                             if (lastClickedSector2) {
                                                 lastClickedSector2.style.fontWeight = "normal";
@@ -231,6 +233,7 @@
                             const ccode = Number(e.target.id.slice(4));
                             const gu = Object.values(data[ccode])[0];
                             region1Name = e.target.innerText;
+                            searchList();
 
                             // 이전에 클릭된 도시의 스타일을 원래대로 되돌리기
                             if (lastClickedRegion1) {
@@ -252,6 +255,7 @@
                             guEls.forEach(guEl => {
                                 guEl.addEventListener("click", function (e) {
                                     region2Name = e.target.innerText;
+                                    searchList();
                                     // 이전에 클릭된 구의 스타일을 원래대로 되돌리기
                                     if (lastClickedRegion2) {
                                         lastClickedRegion2.style.fontWeight = "normal";
@@ -302,6 +306,7 @@
                             // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
                             positionEl.innerHTML = "";
                             position1Name = e.target.innerText;
+                            searchList();
                             // 이전에 클릭된 포지션의 스타일을 원래대로 되돌리기
                             if (lastClickedPosition1) {
                                 lastClickedPosition1.style.fontWeight = "normal";
@@ -328,6 +333,7 @@
                                         positionEl.addEventListener("click", function (e) {
                                             console.log(e.target);
                                             position2Name = e.target.innerText;
+                                            searchList();
                                             // 이전에 클릭된 포지션의 스타일을 원래대로 되돌리기
                                             if (lastClickedPosition2) {
                                                 lastClickedPosition2.style.fontWeight = "normal";
