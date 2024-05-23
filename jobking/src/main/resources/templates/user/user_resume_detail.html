@@ -81,7 +81,7 @@
     <div th:if="${not #lists.isEmpty(licenseList)}">
       <h3>자격증</h3>
       <div th:each="license : ${licenseList}">
-        <p>자격증 종류: <span th:text="${license.type}"></span></p>
+        <p>자격증 종류: <span th:text="${license.ltype}"></span></p>
         <p>자격증명: <span th:text="${license.lname}"></span></p>
         <p>발행처: <span th:text="${license.lorg}"></span></p>
         <p>취득일: <span th:text="${#temporals.format(license.getDate, 'yyyy-MM-dd')}"></span></p>

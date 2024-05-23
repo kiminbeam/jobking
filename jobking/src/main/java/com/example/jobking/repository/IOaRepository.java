@@ -9,5 +9,6 @@ import com.example.jobking.entity.Oa;
 public interface IOaRepository extends JpaRepository<Oa, Long> {
 	
 	List<Oa> findByResumeRno(Long rno);
-
+	
+	void deleteByResumeRno(Long rno);
 }

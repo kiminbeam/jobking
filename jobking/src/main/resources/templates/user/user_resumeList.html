@@ -38,7 +38,7 @@
 				</li>
 				<ul id="icon">
 					<li><img src="/images/수정.png" width="50" height="50"></li>
-					<li><img src="/images/삭제.png" width="50" height="50"></li>				
+					<li><img src="/images/삭제.png" width="50" height="50" th:data-rno="${resume.rno}" onclick="deleteItem(this)"></li>
 				</ul>
 			</ul>
 		</div>
@@ -136,6 +136,14 @@
 				window.location.href = "/user/user_resume_form";
 			}
 		}
+		
+		function deleteItem(element) {
+			const rno = element.getAttribute('data-rno');
+			if (confirm("정말로 삭제하시겠습니까?")) {
+				window.location.href = `/user/delete?rno=${rno}`;
+			}
+		}
+		
 	</script>
 </body>
 
