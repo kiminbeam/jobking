@@ -544,11 +544,15 @@ public class JController {
 
 
 	@RequestMapping("/user_communityForm_update")//수정기능
-	public void userCommunityFormUpdate(HttpServletRequest request, UserBoard userBoard, Model model) {
-		System.out.println(request.getParameter("ubno"));
-		String uid = (String) request.getSession().getAttribute("id");
-		userBoard.setUser(userRepo.findById(uid).get());
-		userBoardRepo.save(userBoard);
+	public String userCommunityFormUpdate(HttpServletRequest request, UserBoard userBoard, Model model) {
+		String ubno = request.getParameter("ubno");
+		UserBoard ub = userBoardRepo.findById(Long.parseLong(ubno)).get();
+		ub.setTitle(userBoard.getTitle());
+		ub.setContent(userBoard.getContent());
+		ub.setType(userBoard.getType());
+		System.out.println(ub);
+		userBoardRepo.save(ub);
+		return "redirect:/user/user_communityList";
 	}
 	
 	@RequestMapping("/user_communityForm_delete")
