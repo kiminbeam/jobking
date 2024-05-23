@@ -13,30 +13,23 @@
         <header>
             <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
         </header>
-        <div id="ad">
-            <ul>
-                <li>광고</li>
-                <li>광고</li>
-                <li>광고</li>
-            </ul>
-        </div>
-
+      
         <div id="ai">
             <ul>
-                <li><a href="">ai추천채용공고</a></li>
-                <li><a href="">ai추천채용공고</a></li>
-                <li><a href="">ai추천채용공고</a></li>
-                <li><a href="">ai추천채용공고</a></li>
-                <li><a href="">ai추천채용공고</a></li>
+                <li onclick="location.href='/user/user_recruitDetail?jno=4'" id="ai1"></li>
+                <li onclick="location.href='/user/user_recruitDetail?jno=4'" id="ai2"></li>
+                <li onclick="location.href='/user/user_recruitDetail?jno=4'" id="ai3"></li>
+                <li onclick="location.href='/user/user_recruitDetail?jno=4'" id="ai4"></li>
+                <li onclick="location.href='/user/user_recruitDetail?jno=4'" id="ai5"></li>
             </ul>
         </div>
 
         <section>
             <ul id="lastest">
-                <li><a href="">최신등록공고출력란</a></li>
-                <li><a href="">최신등록공고출력란</a></li>
-                <li><a href="">최신등록공고출력란</a></li>
-                <li><a href="">최신등록공고출력란</a></li>
+                <li id="jobad1" onclick="location.href='/user/user_recruitDetail?jno=4'"></li>
+                <li id="jobad2" onclick="location.href='/user/user_recruitDetail?jno=5'"></li>
+                <li id="jobad3" onclick="location.href='/user/user_recruitDetail?jno=4'"></li>
+                <li id="jobad4" onclick="location.href='/user/user_recruitDetail?jno=4'"></li>
             </ul>
 
             <ul id="button">
@@ -45,11 +38,12 @@
                 <li><a href="user_recruit_type">업종별</a></li>
             </ul>
         </section>
-
         <footer>
             <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
         </footer>
     </div>
+
+    
 </body>
 
 </html>
