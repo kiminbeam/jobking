@@ -55,19 +55,21 @@
                 </div>
                 <button onclick="searchList()">검색</button>
                 <div id="listContainer">
-                 <div th:if="${newList != null}" th:each="jobWrapper : ${newList}">
-			        <div class="t2">[[${jobWrapper.jobad.company.cname}]]</div>
-			        <div class="t3">공고제목</div>
-			        <span><a th:href="@{/user/user_recruitDetail(jno=${jobWrapper.jobad.jno})}">[[${jobWrapper.jobad.wantedTitle}]]</a></span>
-			        <div class="t3">마감 날짜</div>
-			        <span>[[${jobWrapper.jobad.receiptCloseDt}]]</span>
-			        <div id="icon">
-		                <span th:if="${jobWrapper.scrapped}">♡♡♡♡</span>
-		                <span th:else="${!jobWrapper.scrapped}">♡</span>
-			            
-			        </div>
-			    </div>
-
+	                 <div th:if="${newList != null}" th:each="jobWrapper : ${newList}">
+				        <div class="t2">[[${jobWrapper.jobad.company.cname}]]</div>
+				        <div class="t3">공고제목</div>
+				        <span><a th:href="@{/user/user_recruitDetail(jno=${jobWrapper.jobad.jno})}">[[${jobWrapper.jobad.wantedTitle}]]</a></span>
+				        <div class="t3">마감 날짜</div>
+				        <span>[[${jobWrapper.jobad.receiptCloseDt}]]</span>
+				         <div id="icon">
+						    <span th:if="${jobWrapper.scrapped}">
+						        <img style='width:10px; height:10px;' src='/images/icon/save_full.png' alt='saveFullBtn' >
+						    </span>
+						    <span th:unless="${jobWrapper.scrapped}">
+						        <img style='width:10px; height:10px;' src='/images/icon/save.png' alt='saveBtn' >
+						    </span>
+						 </div>
+				     </div>
                 </div>
             </div>
         </main>
@@ -150,6 +152,7 @@
                             const ccode = Number(e.target.id.slice(4));
                             const gu = Object.values(data[ccode])[0];
                             region1Name = e.target.innerText;
+                            searchList();
 
                             // 이전에 클릭된 도시의 스타일을 원래대로 되돌리기
                             if (lastClickedRegion1) {
@@ -172,6 +175,7 @@
                             guEls.forEach(guEl => {
                                 guEl.addEventListener("click", function (e) {
                                     region2Name = e.target.innerText;
+                                    searchList();
 
                                     // 이전에 클릭된 구의 스타일을 원래대로 되돌리기
                                     if (lastClickedRegion2) {
@@ -225,6 +229,7 @@
                             // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
                             sectorEl.innerHTML = "";
                             sector1Name = e.target.innerText;
+                            searchList();
 
                             // 이전에 클릭된 섹터의 스타일을 원래대로 되돌리기
                             if (lastClickedSector1) {
@@ -252,6 +257,7 @@
                                         sectorEl.addEventListener("click", function (e) {
                                             console.log(e.target);
                                             sector2Name = e.target.innerText;
+                                            searchList();
 
                                             // 이전에 클릭된 섹터의 스타일을 원래대로 되돌리기
                                             if (lastClickedSector2) {
@@ -305,6 +311,7 @@
                             // 상위 카테고리 클릭 시 세부 직무 카테고리 칸 비워주기
                             positionEl.innerHTML = "";
                             position1Name = e.target.innerText;
+                            searchList();
                             // 이전에 클릭된 포지션의 스타일을 원래대로 되돌리기
                             if (lastClickedPosition1) {
                                 lastClickedPosition1.style.fontWeight = "normal";
@@ -332,6 +339,7 @@
                                         positionEl.addEventListener("click", function (e) {
                                             console.log(e.target);
                                             position2Name = e.target.innerText;
+                                            searchList();
 
                                             // 이전에 클릭된 포지션의 스타일을 원래대로 되돌리기
                                             if (lastClickedPosition2) {

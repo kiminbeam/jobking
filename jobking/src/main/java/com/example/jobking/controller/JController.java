@@ -156,7 +156,7 @@ public class JController {
 		}else {
 			model.addAttribute("result", false);
 		}
-		return result ? "/user/index" : "/user/login_form";
+		return result ? "/user/user_mainPage" : "/user/login_form";
 	}
 	@RequestMapping("/company_login")
 	public String companyLogin(HttpServletRequest request, Model model) {
@@ -183,7 +183,7 @@ public class JController {
 		}else {
 			model.addAttribute("result", false);
 		}
-		return result ? "/user/index" : "/user/login_form";
+		return result ? "/company/cpmain" : "/user/login_form";
 	}
 	@RequestMapping("/user_myPage")
 	public void userMyPage(HttpServletRequest request, Model model) {
@@ -279,14 +279,7 @@ public class JController {
 			System.out.println(jobDto.getClass());
 			newList.add(jobDto);
 		}
-		
-		
 		model.addAttribute("newList", newList);
-
-		for(JobAdWithScrapAndLike x : newList) {
-			System.out.println(x.getClass());
-		}
-		
 	}
 	@RequestMapping("/user_recruit_regionSearch")
 	public @ResponseBody List<JobAd> userRecruitRegionSearch(HttpServletRequest request, @RequestParam(required = false, name = "region1Name") String region1Name,
@@ -303,10 +296,48 @@ public class JController {
 	}
 
 	@RequestMapping("/user_recruit_job")
-	public void userRecruitJob() {
+	public void userRecruitJob(HttpServletRequest request, Model model) {
+		List<JobAd> jobAdList = jobadRepo.findAll();
+		List<JobAdWithScrapAndLike> newList = new ArrayList<>();
+		String uid = (String) request.getSession().getAttribute("id");
+		//스크랩되있는 jno 모음
+		List<Long> scrappedJno = jobscrapRepo.findScrapedJobAdByUid(uid);
+		//구독한 기업 cid모음
+		//전체 리스트 뿌려주기
+		for(JobAd ja : jobAdList) {
+			JobAdWithScrapAndLike jobDto = new JobAdWithScrapAndLike();
+			jobDto.setJobad(ja);
+			for(Long ln : scrappedJno) {
+				if(ja.getJno() == ln) {
+					jobDto.setScrapped(true);
+				}
+			}
+			System.out.println(jobDto.getClass());
+			newList.add(jobDto);
+		}
+		model.addAttribute("newList", newList);
 	}
 	@RequestMapping("/user_recruit_sector")
-	public void userRecruitSector() {
+	public void userRecruitSector(HttpServletRequest request, Model model) {
+		List<JobAd> jobAdList = jobadRepo.findAll();
+		List<JobAdWithScrapAndLike> newList = new ArrayList<>();
+		String uid = (String) request.getSession().getAttribute("id");
+		//스크랩되있는 jno 모음
+		List<Long> scrappedJno = jobscrapRepo.findScrapedJobAdByUid(uid);
+		//구독한 기업 cid모음
+		//전체 리스트 뿌려주기
+		for(JobAd ja : jobAdList) {
+			JobAdWithScrapAndLike jobDto = new JobAdWithScrapAndLike();
+			jobDto.setJobad(ja);
+			for(Long ln : scrappedJno) {
+				if(ja.getJno() == ln) {
+					jobDto.setScrapped(true);
+				}
+			}
+			System.out.println(jobDto.getClass());
+			newList.add(jobDto);
+		}
+		model.addAttribute("newList", newList);
 	}
 
 	@RequestMapping("/user_recruitDetail")
@@ -591,5 +622,50 @@ public class JController {
 
         return ResponseEntity.ok("Data received successfully");
     }
+	@RequestMapping("/user_recruitDetail2")
+	public void userRecruitDetail2(HttpServletRequest request, @RequestParam("jno") Long jno, Model model) {
+		String uid = (String) request.getSession().getAttribute("id");
+		
+		//해당 채용공고 정보 보내주기
+		JobAd jobad = jobadRepo.findById(jno).get();
+		model.addAttribute("jobad", jobad);
+		//해당 채용공고 직무설명 리스트 보내주기
+		model.addAttribute("jobCont", jobad.getJobContList());
+		//해당 채용공고 스킬리스트 보내주기
+		model.addAttribute("jobSkill", jobad.getNeedskillList());
+		//해당 채용공고 키워드리스트 보내주기
+		model.addAttribute("jobKeyword", jobad.getSrchKeywordNmList());
+		
+		//해당기업 별점 정보보내주기
+		Double avgReview = companyReviewRepo.findAverageByCid(jobad.getCompany().getCid());
+		model.addAttribute("avgReview", String.format("%.2f", avgReview));
+		//스크랩 여부 정보 보내주기
+		Optional<JobScrap> checkS = jobscrapRepo.findByUidNJno(uid,jno);
+		if(checkS.isEmpty()) {
+			model.addAttribute("scrap", false);
+		}else {
+			model.addAttribute("scrap", true);
+		}
+		//해당기업 찜 여부 정보 보내주기
+		Optional<InterestCop> checkI = interestRepo.findByUidNCid(uid,jobad.getCompany().getCid());
+		if(checkI.isEmpty()) {
+			model.addAttribute("interest", false);
+		}else {
+			model.addAttribute("interest", true);
+		}
+		//해당공고에 지원한 사람 수 구하기(총사람수, 남자지원자수, 여자지원자수)
+		
+	
+		
+		int count = (applyRepo.findFemaleAppli(jno)+applyRepo.findMaleAppli(jno));
+	
+		model.addAttribute("female", applyRepo.findFemaleAppli(jno));
+		model.addAttribute("male", applyRepo.findMaleAppli(jno));
+		model.addAttribute("count", count);
+		
+		System.out.println(applyRepo.findFemaleAppli(jno));
+		System.out.println(applyRepo.findMaleAppli(jno));
+		System.out.println(count);
+	}
 
 }

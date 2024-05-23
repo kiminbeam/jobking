@@ -23,7 +23,7 @@
 
                 <div id="user_reg" class="tab-content current">
                     <p id="noti">* 필수 입력 정보입니다.</p>
-                    <form action="user_regist" method="post">
+                     <form action="/user/user_regist" method="post"  onsubmit="return checkCondition()">
                         <ul id="user-regForm-ul">
                             <li><input type="text" name="uname" placeholder=" 이름(실명)*"></li>
                             <li>
@@ -84,7 +84,7 @@
 
                 <div id="company_reg" class="tab-content">
                     <p id="noti">* 필수 입력 정보입니다.</p>
-                    <form action="com_regist" method="post">
+                     <form action="/user/com_regist" method="post"  onsubmit="return checkCondition()">
                         <ul id="company-regForm-ul">
                             <li><input type="text" name="cname" placeholder=" 기업명*"></li>
                             <li>
@@ -251,13 +251,13 @@
             } else {
                 if (!validId) {
                     alert("유효한 아이디가 아닙니다. 다시 입력해주세요");
-                } else if (!dupliCheck) {
+                }else if (!dupliCheck) {
                     alert("회원가입을 하려면 아이디 중복검사가 필수입니다. 아이디 중복검사를 진행해주세요")
-                } else if (!nullCheck) {
+                }else if (!nullCheck) {
                     alert("필수입력값은 비어있을 수 없습니다. 다시 입력해주세요")
-                } else if (!validPw) {
+                }else if (!validPw) {
                     alert("유효한 비밀번호가 아닙니다. 다시 입력해주세요");
-                } else if (!samePw) {
+                }else if (!samePw) {
                     alert("비밀번호가 같지 않습니다. 다시 입력해주세요");
                 }
                 return false;
