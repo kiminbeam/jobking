@@ -290,7 +290,7 @@ body {
 		</div>
 		<!--sidebar end-->
 
-
+		
 		<div class="job-content">
 			<div class="job-header">
 				<div>
@@ -307,7 +307,7 @@ body {
 							<p><strong>고용 형태</strong>: [[${detail.empTpNm}]]</p>
 							<p><strong>급여</strong>: <span th:text="${#numbers.formatInteger(detail.salTpNm, 3, 'COMMA')}"></span> 만원</p>
 							<p><strong>지역</strong>: [[${detail.region1}]] [[${detail.region2}]]</p>
-							<p><strong>시간</strong>: [[${detail.WkdWkhCnt}]]</p>
+							<p><strong>근무시간</strong>: <span th:each="wkdWkhCnt : ${detail.wkdWkhCntList}" th:text="${wkdWkhCnt}"></span></p>
 						</div>
 					</div>
 				</div>
@@ -319,8 +319,8 @@ body {
 					<div id="comsimpleinfo">
 						<h3>기업정보</h3>
 						<div>[[${detail.company.cname}]]</div>
-						<div><strong>산업(업종)</strong> [[${detail.company.sector}]]</div>
-						<div><strong>사원수</strong>: <span th:text="${#numbers.formatInteger(detail.company.employees, 3, 'COMMA')}"></span>명</div>
+						<div><strong>산업(업종)</strong>&nbsp; [[${detail.company.sector}]]</div>
+						<div><strong>사원수</strong>&nbsp;<span th:text="${#numbers.formatInteger(detail.company.employees, 3, 'COMMA')}"></span>명</div>
 						<div th:if="${detail.company.url != null}">홈페이지
 							[[${detail.company.url}]]</div>
 					</div>
@@ -390,9 +390,19 @@ body {
         <span th:each="keyword : ${srchKeywordNmList}" th:text="${keyword}"></span>
     </div>
 </div>
+
+<div>
+    <button type="button" th:onclick="|location.href='@{/company/com_modifyForm(jno=${detail.jno})}'|">공고 수정하기</button>
+    <button type="button" th:onclick="|if(confirm('정말 삭제하시겠습니까?')) location.href='@{/company/com_jobdelete(jno=${detail.jno})}'|">공고 삭제하기</button>
+</div>
 		</div>
 	</div>
-	<script
-		src="https://cdn.jsdelivr.net/npm/thymeleaf@3.1.1/thymeleaf.min.js"></script>
+	<script	src="https://cdn.jsdelivr.net/npm/thymeleaf@3.1.1/thymeleaf.min.js">
+	
+	
+	
+	
+	
+	</script>
 </body>
 </html>

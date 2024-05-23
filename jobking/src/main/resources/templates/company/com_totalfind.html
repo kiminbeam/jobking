@@ -164,7 +164,7 @@
             </td>
             <td>
                 <span th:each="career, careerStat : ${defaultCareers[resumeStat.index]}">
-                    <span th:if="${careerStat.first}">[[${career.careerDuration}]] - </span>
+                    <span th:if="${careerStat.first}">경력: [[${career.careerDuration}]] - </span>
                 </span>
                 <span th:text="${defaultHopes[resumeStat.index].resume.rtitle}"></span>
 
