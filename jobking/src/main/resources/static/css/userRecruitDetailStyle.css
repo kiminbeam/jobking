@@ -1,0 +1,54 @@
+
+*{
+    font-family: 'Pretendard-Regular';
+}
+.link-icon {
+    position: relative;
+    display: inline-block;
+    width: auto;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    margin-right: 10px;
+    padding-top: 50px;
+}
+
+.link-icon.twitter {
+    background-image: url(/images/icon/icon-twitter.png);
+    background-repeat: no-repeat;
+}
+
+.link-icon.facebook {
+    background-image: url(/images/icon/icon-facebook.png);
+    background-repeat: no-repeat;
+}
+
+.link-icon.kakao {
+    background-image: url(/images/icon/icon-kakao.png);
+    background-repeat: no-repeat;
+}
+
+#chart-container {
+    height: 500px;
+}
+#jtop{
+    width: 1000px;
+    border: 1px solid lightgray;
+    position: absolute; top: 200px; left: 500px;
+}
+.jobad{
+    width: 1000px;
+    background-color: rgba(255, 255, 255, 0.5);
+
+}
+.header{
+    border-top: 2px solid #333;
+}
+.company_info{
+    border-top: 1px solid lightgray;
+}
+.main{
+    border-top: 2px solid #333;
+    border: 1px solid lightgray;
+    position: absolute; top: 400px; left: 500px;
+}
