@@ -11,22 +11,22 @@
 		<ul>
 			<li><a href="/user/user_recruit_region">채용정보</a></li>
 			<li><a href="/user/user_communityList">커뮤니티</a></li>
-			<li><a href="">포지션매치</a></li>
+			<li><a href="/user/user_positionMatch">포지션매치</a></li>
 			<li><input type="text" value="검색창" id="search"> </li>
 			<th:block th:if="${session.id == null}">
 				<ul id="main_login_section">
 					<li><a href="/user/login_form">로그인</a></li>
-					<li><a>회원가입</a></li>	
+					<li><a href="/user/user_regForm">회원가입</a></li>	
 				</ul>
 			</th:block>
 			<th:block th:if="${session.id != null}">
-				<ul id="main_login_section2">
+				<ul id="main_login_section">
 					<li><a href="/user/user_logout">로그아웃</a></li>
 					<li><a href="/user/user_myPage">마이페이지</a></li>
 				</ul>
 			</th:block>
 			<li>
-				<div id="serviceBox">기업서비스</div>
+				<div onclick="location.href='/company/cpmain'" id="serviceBox">기업서비스</div>
 			</li>
 		</ul>
 	</nav>

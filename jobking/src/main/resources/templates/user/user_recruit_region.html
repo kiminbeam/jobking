@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/css/userRecruitStyle.css">
+    <link rel="stylesheet" type="text/css" href="/css/userRecruitStyle2.css">
 </head>
 
 <body>
@@ -52,10 +52,11 @@
                             </ul>
                         </div>
                     </div>
+                    <button onclick="searchList()">검색</button>
                 </div>
-                <button onclick="searchList()">검색</button>
+                
                 <div id="listContainer">
-	                 <div th:if="${newList != null}" th:each="jobWrapper : ${newList}">
+	                 <div class="jobad" th:if="${newList != null}" th:each="jobWrapper : ${newList}">
 				        <div class="t2">[[${jobWrapper.jobad.company.cname}]]</div>
 				        <div class="t3">공고제목</div>
 				        <span><a th:href="@{/user/user_recruitDetail(jno=${jobWrapper.jobad.jno})}">[[${jobWrapper.jobad.wantedTitle}]]</a></span>
@@ -384,27 +385,36 @@
                     console.error('Error:', error);
                 });
         }
-
+        
+    
         function updateList(data) {
             const listContainer = document.getElementById('listContainer');
             listContainer.innerHTML = '';
             data.forEach(jobad => {
                 const listItem = document.createElement('li');
                 listItem.className = 'jobad';
+                
+                const isScrapped = jobad.scrapped;
+                const iconHTML = isScrapped
+                    ? `<img style='width:10px; height:10px;' src='/images/icon/save_full.png' alt='saveFullBtn'>`
+                    : `<img style='width:10px; height:10px;' src='/images/icon/save.png' alt='saveBtn'>`;
+
                 listItem.innerHTML = `
-		            <div class="t2">${jobad.company.cname}</div>
-		            <div class="t3">공고제목</div>
-		            <span><a href="/user/user_recruitDetail?jno=${jobad.jno}">${jobad.wantedTitle}</a></span>
-		            <div class="t3">마감 날짜</div>
-		             <span>${jobad.receiptCloseDt}</span>
-		            <div id="icon">
-		                <span>♡</span>
-			            <span>☆</span>
-		            </div>
-	        `;
+                    <div class="t2">${jobad.jobad.company.cname}</div>
+                    <div class="t3">공고제목</div>
+                    <span><a href="/user/user_recruitDetail?jno=${jobad.jno}">${jobad.jobad.wantedTitle}</a></span>
+                    <div class="t3">마감 날짜</div>
+                    <span>${jobad.jobad.receiptCloseDt}</span>
+                    <div id="icon">
+                        ${iconHTML}
+                    </div>
+                `;
+                
                 listContainer.appendChild(listItem);
             });
         }
+        
+        
 
     </script>
 </body>

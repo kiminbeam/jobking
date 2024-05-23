@@ -25,11 +25,11 @@
 				</tr>
 				<tr class="detail_container"> 
 					<td><span>[[${userBoard.regdate}]]</span><span>[[${userBoard.user.uname}]]</span> 
-					<a th:href="@{/user/user_communityForm_edit(ubno=${userBoard.ubno})}">✏️수정하기</a>
-					<a th:href="@{/user/user_communityForm_delete(ubno=${userBoard.ubno})}">❌삭제하기</a></td>
+					<a th:if="${session.id == userBoard.user.uid}" th:href="@{/user/user_communityForm_edit(ubno=${userBoard.ubno})}">✏️수정하기</a>
+					<a th:if="${session.id == userBoard.user.uid}" th:href="@{/user/user_communityForm_delete(ubno=${userBoard.ubno})}">❌삭제하기</a></td>
 				</tr>
-				<tr> 
-					<td>[[${userBoard.content}]]</td>
+				<tr > 
+					<td id="boardContent">[[${userBoard.content}]]</td>
 				</tr>
 			</table>
 			<table class="reply_container">
@@ -40,10 +40,10 @@
 					<button onclick="addReply()">등록</button>
 				</tr>
 				<tr th:each="userReply,userReplyStat : ${userReplyList}"> 
-					<th>[[${userReply.writer}]]</th>
+					<th id="writer">[[${userReply.writer}]]</th>
 					<td>[[${userReply.regdate}]]</td>
 					<td>[[${userReply.content}]]</td>
-					<td th:if="${userReply.writer == session.id}"><button >수정하기</button> <button>삭제하기</button></td>
+					<td th:if="${userReply.writer == session.id}"><button >수정하기</button> <button id="deleteReplyBtn">삭제하기</button></td>
 				</tr>
 			</table>
 		</div>
@@ -54,12 +54,12 @@
 		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 	</footer>
 
-<<<<<<< HEAD
+
 
 <script th:inline="javascript">
 var userBoardUbno = /*[[${userBoard.ubno}]]*/ '0';
 var userId = document.getElementById("userId").value;
-
+const deleteReplyBtn = document.querySelector("#deleteReplyBtn");
 
 function addReply(){
 	var writer = document.getElementById("writer").value;
@@ -68,10 +68,23 @@ function addReply(){
 }
 
 
+deleteReplyBtn.addEventListener("click", function(){
+	const xhttp = new XMLHttpRequest();
+	xhttp.onload = function() {
+	  if(this.responseText == "done"){
+		  console.log("yaaay");
+	  }
+	  }
+	xhttp.open("GET", "/user/user_delete_reply?replyno?"+ [[${userReply.replyno}]], true);
+	xhttp.send();
+})
+
+
+
 
 </script>
-=======
+
 </div>
->>>>>>> kiminbeom/yoojia
+
 </body>
 </html>
