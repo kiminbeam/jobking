@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.example.jobking.entity.ApplyList;
 import com.example.jobking.entity.Company;
 import com.example.jobking.entity.CompanyBoard;
+import com.example.jobking.entity.CompanyReply;
 import com.example.jobking.entity.CompanyReview;
 import com.example.jobking.entity.InterviewList;
 import com.example.jobking.entity.JobAd;
@@ -28,6 +29,7 @@ import com.example.jobking.entity.User;
 import com.example.jobking.entity.UserReview;
 import com.example.jobking.repository.IApplyListRepository;
 import com.example.jobking.repository.ICompanyBoardRepository;
+import com.example.jobking.repository.ICompanyReplyRepository;
 import com.example.jobking.repository.ICompanyRepository;
 import com.example.jobking.repository.ICompanyReviewRepository;
 import com.example.jobking.repository.IInterviewListRepository;
@@ -532,12 +534,40 @@ public class CompanyController {
 		
 		@RequestMapping("/com_communityList")
 		public String communityList(Model model) {
-			List<CompanyBoard> companyboard = comboardRepository.findAll();
+			List<CompanyBoard> allList = comboardRepository.findAll();
+			List<CompanyBoard> t1List = comboardRepository.findAllByType("1");
+			List<CompanyBoard> t2List = comboardRepository.findAllByType("2");
+			List<CompanyBoard> t3List = comboardRepository.findAllByType("3");
 			
-			model.addAttribute("list", companyboard);
+			CompanyBoard latestAlertBoard = comboardRepository.findLatestBoardByType("3");
+			
+			model.addAttribute("allList", allList);
+			model.addAttribute("t1List", t1List);
+			model.addAttribute("t2List", t2List);
+			model.addAttribute("t3List", t3List);
+			model.addAttribute("latestAlertBoard", latestAlertBoard);
 			
 			return "/company/com_communityList";
 		}
+		
+		@Autowired
+		ICompanyReplyRepository comReplyRepository; 
+		
+		@RequestMapping("/com_communityDetail")
+		public String communityDetail(@RequestParam("cbno") Long cbno, Model model) {
+			CompanyBoard companyBoard = comboardRepository.findById(cbno).get(); 
+			
+			CompanyBoard latestAlertBoard = comboardRepository.findLatestBoardByType("3");
+			model.addAttribute("latestAlertBoard", latestAlertBoard);
+			
+			model.addAttribute("companyBoard", companyBoard);
+			
+			List<CompanyReply> companyReplyList = comReplyRepository.findAllByCbno(cbno);
+			model.addAttribute("companyReplyList", companyReplyList);
+			
+			return "/company/com_communityDetail";
+		}
+		
 	}
 
 

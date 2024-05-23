@@ -245,7 +245,9 @@ public class KHController {
 	        List<School> schoolList = SchoolRepository.findByResumeRno(rno);
 	        model.addAttribute("schoolList", schoolList);
 
-			
+	        // Add disclo value to model
+	        String disclo = resume.getDisclo();
+	        model.addAttribute("disclo", disclo);
 		}
 		return "/user/user_resume_detail";
 	}
@@ -276,12 +278,14 @@ public class KHController {
 
             List<Oa> oaList = OaRepository.findByResumeRno(rno);
             model.addAttribute("oaList", oaList);
-
+          
             List<SelfInfo> selfInfoList = SelfInfoRepository.findByResumeRno(rno);
             model.addAttribute("selfInfoList", selfInfoList);
 
             List<School> schoolList = SchoolRepository.findByResumeRno(rno);
             model.addAttribute("schoolList", schoolList);
+           
+            
         }
 
         return "/user/user_resume_edit";

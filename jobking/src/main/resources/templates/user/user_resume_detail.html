@@ -5,6 +5,11 @@
   <link rel="stylesheet" href="style.css"> </head>
 <body>
 	<h2>이력서 상세</h2>
+	<div>
+		이력서 공개 여부 :
+        <span th:if="${disclo == '1'}">공개</span>
+        <span th:unless="${disclo == '1'}">비공개</span>
+	</div>
 	<input type="hidden" id="resumeRno" th:value="${resume.rno}">
 	<input type="button" value="수정하기" th:onclick="'editResume(' + ${resume.rno} + ')'">
 	<div th:if="${resume != null}">
@@ -65,7 +70,7 @@
       <div th:each="license : ${licenseList}">
         <p>자격증 종류: <span th:text="${license.type}"></span></p>
         <p>자격증명: <span th:text="${license.lname}"></span></p>
-        <p>발행처: <span th:text="${license.org}"></span></p>
+        <p>발행처: <span th:text="${license.lorg}"></span></p>
         <p>취득일: <span th:text="${#temporals.format(license.getDate, 'yyyy-MM-dd')}"></span></p> 
       </div>
     </div>

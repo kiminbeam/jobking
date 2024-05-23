@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Table(name = "company_board")
 public class CompanyBoard extends BaseEntity {
-
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cbno", nullable = false)
@@ -35,4 +34,7 @@ public class CompanyBoard extends BaseEntity {
 
     @Column(name = "content", columnDefinition = "TEXT", nullable = false)
     private String content;
+    
+    @Column(name= "type")
+    private Integer type;
 }
