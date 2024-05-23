@@ -163,10 +163,16 @@
 						<li th:each="jobKeyword : ${jobKeyword}">📌 [[${jobKeyword}]] </li>
 					</ul>
 				</div>
-				<div id="chart-container">
-					<canvas id="chart1" width="200" height="200"></canvas>
-					<canvas id="chart2" width="200" height="200"></canvas>
-				</div>
+				<ul id="chart-container">
+					<li>
+						<p class="c_title">성별</p>
+						<canvas id="chart1" width="200" height="200"></canvas>
+					</li>
+					<li>
+						<p class="c_title">총 지원자 수</p>
+						<canvas id="chart2" width="200" height="200"></canvas>
+					</li>
+				</ul>
 			</div>
 		</main>
 	</div>
