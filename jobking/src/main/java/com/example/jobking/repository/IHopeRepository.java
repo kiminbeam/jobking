@@ -22,4 +22,8 @@ public interface IHopeRepository extends JpaRepository<Hope, Long> {
     
     List<Hope> findByResumeRno(Long rno);
 	
+    @Query(value="delete from hope where hno = :hno" , nativeQuery=true)
+	public void deleteHopeByHno(@Param("hno") Long hno);
+ 
+    void deleteByResumeRno(Long rno);
 }
