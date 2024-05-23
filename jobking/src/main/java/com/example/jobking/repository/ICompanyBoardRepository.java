@@ -18,4 +18,6 @@ public interface ICompanyBoardRepository extends JpaRepository<CompanyBoard, Lon
 	
 	@Query(value="select * from company_board where cid= :cid", nativeQuery=true)
 	List<CompanyBoard> findByCid(@Param("cid") String cid);
+	
+	
 }

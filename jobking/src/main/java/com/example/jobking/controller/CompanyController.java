@@ -63,273 +63,7 @@ public class CompanyController {
 		return "/company/cpmain";
 	}
 
-	@RequestMapping("/regi_jobadForm")
-	public String regiForm(Model model) throws IOException {
-
-		// job_category.json 데이터 읽어오기
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> jobCategories = objectMapper.readValue(
-				new ClassPathResource("static/json/job_category.json").getFile(),
-				new TypeReference<List<Map<String, Object>>>() {
-				});
-		model.addAttribute("jobCategories", jobCategories);
-
-		// job.json 데이터 읽어오기
-		List<Map<String, Object>> allJobs = objectMapper.readValue(
-				new ClassPathResource("static/json/job.json").getFile(),
-				new TypeReference<List<Map<String, Object>>>() {
-				});
-		model.addAttribute("allJobs", allJobs);
-
-		// sector_category.json 데이터 읽어오기
-		List<Map<String, Object>> sectorCategories = objectMapper.readValue(
-				new ClassPathResource("static/json/sector_category.json").getFile(),
-				new TypeReference<List<Map<String, Object>>>() {
-				});
-
-		// sector.json 데이터 읽어오기
-		List<Map<String, Object>> allSectors = objectMapper.readValue(
-				new ClassPathResource("static/json/sector.json").getFile(),
-				new TypeReference<List<Map<String, Object>>>() {
-				});
-
-		// korea-administrative-district.json 데이터 읽어오기
-		List<Map<String, Object>> regionData = objectMapper.readValue(
-				new ClassPathResource("static/json/korea-administrative-district.json").getFile(),
-				new TypeReference<List<Map<String, Object>>>() {
-				});
-		Map<String, List<String>> regions = regionData.stream()
-				.collect(Collectors.toMap(map -> map.keySet().iterator().next(), // key 값 (서울특별시, 부산광역시 등)
-						map -> (List<String>) map.values().iterator().next() // value 값 (구, 군 리스트)
-				));
-
-		// eduCode.json 데이터 읽어오기
-		List<Map<String, Object>> eduCodes = objectMapper.readValue(
-				new ClassPathResource("static/json/eduCode.json").getFile(),
-				new TypeReference<List<Map<String, Object>>>() {
-				});
-
-		model.addAttribute("eduCodes", eduCodes);
-		model.addAttribute("regions", regions);
-		model.addAttribute("sectorCategories", sectorCategories);
-		model.addAttribute("allSectors", allSectors);
-
-		return "/company/regi_jobadForm";
-	}
-
-	@RequestMapping("/regi_jobad")
-	public String regiAD(@RequestParam("jobCont") List<String> jobCont,
-			@RequestParam("needskill") List<String> needskill, @RequestParam("srchKeywordNm") String srchKeywordNm,
-			@RequestParam("startHour") int startHour, @RequestParam("startMinute") int startMinute,
-			@RequestParam("endHour") int endHour, @RequestParam("endMinute") int endMinute,
-			@ModelAttribute JobAd jobad) {
-
-		// 로그인 미구현으로 임시 코딩
-		// 데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
-		// *반드시 company테이블에 데이터가 있어야됨!
-		String cid = "1";
-		Optional<Company> com = comrepository.findById(cid);
-
-		if (com.isPresent()) {
-			jobad.setCompany(com.get());
-			jobad.setMltsvcExcHope("1");
-			ObjectMapper objectMapper = new ObjectMapper();
-			try {
-				String jobContJson = objectMapper.writeValueAsString(jobCont);
-				String needskillJson = objectMapper.writeValueAsString(needskill);
-
-				// JobAd 객체에 JSON 문자열 설정
-				jobad.setJobCont(jobContJson);
-				jobad.setNeedskill(needskillJson);
-				jobad.setSrchKeywordNm(srchKeywordNm);
-			} catch (JsonProcessingException e) {
-				// 예외 처리
-			}
-
-			Map<String, String> workTime = new HashMap<>();
-			workTime.put("근무시작시간", String.format("%02d:%02d", startHour, startMinute));
-			workTime.put("근무종료시간", String.format("%02d:%02d", endHour, endMinute));
-
-			try {
-				String workTimeJson = objectMapper.writeValueAsString(workTime);
-				jobad.setWkdWkhCnt(workTimeJson); // WkdWkhCnt 필드에 JSON 저장
-			} catch (JsonProcessingException e) {
-				// 예외 처리
-			}
-			// minEdubglcd 값 설정 (변경된 부분)
-			jobad.setMinEdubglcd(jobad.getMinEdubglcd());
-
-			repository.save(jobad);
-		}
-
-		return "redirect:/company/jobadList";
-	}
-
-	@RequestMapping("/jobadList")
-	public String jobadList(Model model) {
-
-		List<JobAd> list = repository.findAll();
-
-		model.addAttribute("list", list);
-
-		return "/company/jobadList";
-	}
-
-	// 공고정보 상세보기
-	@RequestMapping("/com_jobDetail")
-	public String jobadDetail(@RequestParam("jno") Long jno, Model model) {
-		Optional<JobAd> option = repository.findById(jno);
-		if (option.isPresent()) {
-			JobAd jobad = option.get();
-			model.addAttribute("detail", jobad);
-			model.addAttribute("jobContList", jobad.getJobContList());
-			model.addAttribute("needskillList", jobad.getNeedskillList());
-			model.addAttribute("srchKeywordNmList", jobad.getSrchKeywordNmList());
-			return "/company/com_jobDetail";
-		} else {
-			// 해당하는 채용 공고가 없는 경우 처리
-			return "redirect:/company/jobadList"; // 예시: 채용 공고 목록 페이지로 리다이렉트
-		}
-	}
-
-	// 공고삭제
-	@RequestMapping("/com_jobdelete")
-	public String jobadDelete(@RequestParam("jno") Long jno) {
-
-		repository.deleteById(jno);
-
-		return "redirect:/company/jobadList";
-	}
-
-	// 공고수정폼
-	@GetMapping("/com_modifyForm")
-	public String jobadModifyForm(@RequestParam("jno") Long jno, Model model) throws IOException {
-
-		Optional<JobAd> option = repository.findById(jno);
-		if (option.isPresent()) {
-			JobAd jobAd = option.get();
-			model.addAttribute("modify", jobAd);
-
-			// 근무 시간 JSON 파싱 및 시간, 분 추출
-			String workTimeJson = jobAd.getWkdWkhCnt();
-			if (workTimeJson != null) {
-				try {
-					Map<String, String> workTime = new ObjectMapper().readValue(workTimeJson, new TypeReference<>() {
-					});
-					String startTime = workTime.get("근무시작시간");
-					String endTime = workTime.get("근무종료시간");
-					model.addAttribute("startHour", startTime.split(":")[0]);
-					model.addAttribute("startMinute", startTime.split(":")[1]);
-					model.addAttribute("endHour", endTime.split(":")[0]);
-					model.addAttribute("endMinute", endTime.split(":")[1]);
-				} catch (JsonProcessingException e) {
-					// JSON 파싱 오류 처리
-				}
-			}
-
-			// job_category.json 데이터 읽어오기
-			ObjectMapper objectMapper = new ObjectMapper();
-			List<Map<String, Object>> jobCategories = objectMapper.readValue(
-					new ClassPathResource("static/json/job_category.json").getFile(),
-					new TypeReference<List<Map<String, Object>>>() {
-					});
-			model.addAttribute("jobCategories", jobCategories);
-
-			// job.json 데이터 읽어오기
-			List<Map<String, Object>> allJobs = objectMapper.readValue(
-					new ClassPathResource("static/json/job.json").getFile(),
-					new TypeReference<List<Map<String, Object>>>() {
-					});
-			model.addAttribute("allJobs", allJobs);
-
-			// sector_category.json 데이터 읽어오기
-			List<Map<String, Object>> sectorCategories = objectMapper.readValue(
-					new ClassPathResource("static/json/sector_category.json").getFile(),
-					new TypeReference<List<Map<String, Object>>>() {
-					});
-
-			// sector.json 데이터 읽어오기
-			List<Map<String, Object>> allSectors = objectMapper.readValue(
-					new ClassPathResource("static/json/sector.json").getFile(),
-					new TypeReference<List<Map<String, Object>>>() {
-					});
-
-			// korea-administrative-district.json 데이터 읽어오기
-			List<Map<String, Object>> regionData = objectMapper.readValue(
-					new ClassPathResource("static/json/korea-administrative-district.json").getFile(),
-					new TypeReference<List<Map<String, Object>>>() {
-					});
-			Map<String, List<String>> regions = regionData.stream()
-					.collect(Collectors.toMap(map -> map.keySet().iterator().next(), // key 값 (서울특별시, 부산광역시 등)
-							map -> (List<String>) map.values().iterator().next() // value 값 (구, 군 리스트)
-					));
-
-			// eduCode.json 데이터 읽어오기
-			List<Map<String, Object>> eduCodes = objectMapper.readValue(
-					new ClassPathResource("static/json/eduCode.json").getFile(),
-					new TypeReference<List<Map<String, Object>>>() {
-					});
-
-			model.addAttribute("eduCodes", eduCodes);
-			model.addAttribute("regions", regions);
-			model.addAttribute("sectorCategories", sectorCategories);
-			model.addAttribute("allSectors", allSectors);
-
-			model.addAttribute("modify", jobAd);
-
-		}
-			return "/company/com_modifyForm";
-		
-	}
-
-	// 공고수정
-	@RequestMapping("/com_modify")
-	public String jobadModify(@RequestParam("jno") Long jno, @RequestParam("jobCont") List<String> jobCont,
-			@RequestParam("needskill") List<String> needskill, @RequestParam("srchKeywordNm") String srchKeywordNm,
-			@RequestParam("startHour") int startHour, @RequestParam("startMinute") int startMinute,
-			@RequestParam("endHour") int endHour, @RequestParam("endMinute") int endMinute,
-			@ModelAttribute JobAd jobad) {
-
-		// 로그인 미구현으로 임시 코딩
-		// 데이터베이스 기업 정보 저장 후 String cid에 해당 기업 cid 적어주면 데이터 들어갑니다.
-		// *반드시 company테이블에 데이터가 있어야됨!
-		String cid = "1";
-		Optional<Company> com = comrepository.findById(cid);
-
-		if (com.isPresent()) {
-			jobad.setCompany(com.get());
-			jobad.setMltsvcExcHope("1");
-			ObjectMapper objectMapper = new ObjectMapper();
-			try {
-				String jobContJson = objectMapper.writeValueAsString(jobCont);
-				String needskillJson = objectMapper.writeValueAsString(needskill);
-
-				// JobAd 객체에 JSON 문자열 설정
-				jobad.setJobCont(jobContJson);
-				jobad.setNeedskill(needskillJson);
-				jobad.setSrchKeywordNm(srchKeywordNm);
-			} catch (JsonProcessingException e) {
-				// 예외 처리
-			}
-
-			Map<String, String> workTime = new HashMap<>();
-			workTime.put("근무시작시간", String.format("%02d:%02d", startHour, startMinute));
-			workTime.put("근무종료시간", String.format("%02d:%02d", endHour, endMinute));
-
-			try {
-				String workTimeJson = objectMapper.writeValueAsString(workTime);
-				jobad.setWkdWkhCnt(workTimeJson); // WkdWkhCnt 필드에 JSON 저장
-			} catch (JsonProcessingException e) {
-				// 예외 처리
-			}
-			// minEdubglcd 값 설정 (변경된 부분)
-			jobad.setMinEdubglcd(jobad.getMinEdubglcd());
-
-			repository.save(jobad);
-		}
-
-		return "redirect:/company/jobadList";
-	}
+	
 	// 지원자 리스트 불러오기
 		@RequestMapping("/com_applicantList")
 		public String applicantList(@RequestParam("cid") String cid, Model model) {
@@ -568,6 +302,22 @@ public class CompanyController {
 			return "/company/com_communityDetail";
 		}
 		
+		//댓글 작성
+		@RequestMapping("/companyReply_insert")
+		public String insertComReply(@RequestParam("cbno") Long cbno, @RequestParam("cid") String cid, CompanyReply comReply,HttpServletRequest request) {
+			Optional<CompanyBoard> list= comboardRepository.findById(cbno);
+			CompanyBoard board = list.get();
+			
+			Optional<Company> com = comrepository.findById(cid);
+			Company company = com.get();
+			
+			comReply.setCompanyBoard(board);
+			comReply.setCompany(company);
+			
+			comReplyRepository.save(comReply);
+			return "redirect:/company/com_communityDetail?cbno=" + cbno;
+		}
+		
 		@RequestMapping("/com_communityForm_insert")
 		public String comCommunityFormInsert(CompanyBoard comboard, Model model) {
 			CompanyBoard latestAlertBoard = comboardRepository.findLatestBoardByType("3");
@@ -619,12 +369,33 @@ public class CompanyController {
 		@RequestMapping("/com_myBoardList")
 		public String comMyBoardList(HttpServletRequest request, Model model) {
 			String cid = (String) request.getSession().getAttribute("id");
-			List<CompanyBoard> companyBoardList = comboardRepository.findByCid(cid);
+			List<CompanyBoard> comBoardList = comboardRepository.findByCid(cid);
+			List<CompanyReply> comReplyList = comReplyRepository.findAllByCid(cid);
 			
+			model.addAttribute("comBoardList", comBoardList);
+			model.addAttribute("comReplyList", comReplyList);
+			
+			System.out.println(comReplyList);
 			
 			return "/company/com_myboardList";
 		}
 		
+		@RequestMapping("/delete_board")
+		public String deleteBoard(@RequestParam("cbno")Long cbno,HttpServletRequest request) {
+			
+			comReplyRepository.deleteAllByCbno(cbno);
+			
+			comboardRepository.delete(comboardRepository.findById(cbno).get());
+			
+			return "/company/com_myboardList";
+		}
+		
+		@RequestMapping("/delete_reply")
+		public String delete_reply(@RequestParam("relyno") Long replyno, Model model) {
+			comReplyRepository.delete(comReplyRepository.findById(replyno).get());
+			
+			return "/company/com_myboardList";
+		}
 		
 		
 	}
