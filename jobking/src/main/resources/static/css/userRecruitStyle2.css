@@ -1,17 +1,8 @@
 /* 공통 설정 */
-body {
-    font-family: 'Pretendard-Regular', sans-serif;
-    background-color: #f9fafc;
-    margin: 0;
-    padding: 0;
-}
 
 .container {
     width: 1200px;
     margin: 50px auto;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 20px;
 }
 
@@ -86,7 +77,6 @@ button {
     border: 0;
     color: #fff;
     background-color: #3399ff;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1), 0 6px 6px rgba(0, 0, 0, 0.05);
     text-align: center;
     border-radius: 5px;
     cursor: pointer;

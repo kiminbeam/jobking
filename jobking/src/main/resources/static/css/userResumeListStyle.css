@@ -1,48 +1,101 @@
 @charset "UTF-8";
-[type='button']{
-    width: 150px; height: 30px;
+
+#wrap{
+	overflow: hidden;
+}
+#btn_wrap {
+    position: relative;
+    top: 85px;
+    left: 850px;
+}
+
+[type='button'] {
+    width: 150px;
+    height: 30px;
     font: 500 14px/30px 'Pretendard-Regular';
     border: 0;
     color: #fff;
     background-color: dimgray;
     text-align: center;
-    position: relative; top: 85px; left: 850px;
     border-radius: 5px;
 }
-#btn1{
-	margin-right: 30px;
-	float: left;
+
+#btn1, #btn5{
+    margin-right: 30px;
+    float: left;
 }
-.resumeList{
-    width: 900px; height: 200px;
+
+#resumeListDiv, #resumeListDiv2 {
+    height: 800px;
+    margin-top: 30px;
+}
+
+.resumeList {
+    width: 900px;
+    height: 200px;
     background-color: #fff;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.01), 0 6px 6px rgba(0,0,0,0.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.01), 0 6px 6px rgba(0, 0, 0, 0.05);
     border-radius: 30px;
     border-top: 4px solid blue;
     font: 500 15px/30px 'Pretendard-Regular';
-    position:relative; top: 100px; left: 500px;
+    position: relative;
+    top: 100px;
+    left: 500px;
+    margin-bottom: 20px;
 }
-.representative{
-	position: absolute; top: 30px; left: 50px;
+
+.representative {
+    position: absolute;
+    top: 30px;
+    left: 50px;
     font: 900 17px/30px 'Pretendard-Regular';
     color: blue;
     z-index: 99;
 }
-.rs_title{
-	position: absolute; top: 70px; left: 50px;
+
+.rs_title {
+    position: absolute;
+    top: 70px;
+    left: 50px;
     font: 900 50px/1 'Pretendard-Regular';
+    color: #333;
 }
 
-#icon{
-	position: absolute; top: 70px; left: 730px;
-	width: 130px; height: 50px;
+#icon {
+    position: absolute;
+    top: 70px;
+    left: 730px;
+    width: 130px;
+    height: 50px;
 }
-#icon>li{
+
+#icon>li {
+    float: left;
+}
+
+#icon>li:first-child {
+    margin-right: 30px;
+}
+
+#icon>li>img {
+    opacity: 80%;
+}
+
+[type='checkbox']{
+    width: 50px; height: 50px;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    position: relative;
+    top: 70px;
+    float: left;
+}
+
+.selfInfo_wrap{
+	width: 350px; height: 130px;
+	background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	position: relative;
+    top: 35px; left: 200px;
 	float: left;
-}
-#icon>li:first-child{
-	margin-right: 30px;
-}
-#icon>li>img{
-	opacity: 80%;
+	color: #666;
 }

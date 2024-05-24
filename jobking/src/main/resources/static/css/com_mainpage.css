@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+/* Container for the ads */
+#ad-container {
+    display: flex;
+    justify-content: center; /* Centers the flex items horizontally */
+    align-items: center; /* Centers the flex items vertically */
+    height: 300px; /* Adjust based on how much vertical space you need */
+}
+
+.box {
+    width: 100px; /* Make this value equal to height for a square shape */
+    height: 100px; /* Make this value equal to width for a square shape */
+    margin: 10px;
+    background-color: lightgray;
+    display: flex;
+    justify-content: center; /* Centers text horizontally */
+    align-items: center; /* Centers text vertically */
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid black;
+}
+
+.match {
+    padding: 20px;
+}
+
+.human {
+    background-color: white;
+    color: black;
+}
+
+.match {
+    padding: 20px;
+    display: flex;
+    justify-content: center; /* Centers the flex items horizontally */
+    flex-wrap: wrap; /* Allows the items to wrap to the next line */
+}
+
+.miniboard {
+    padding: 20px;
+}
+
+#boardcontent {
+    margin-bottom: 20px;
+}
+
+.footer {
+    padding: 20px;
+    background-color: #f4f4f4;
+    text-align: center;
+    font-size: 12px;
+}

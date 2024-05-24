@@ -16,12 +16,12 @@
 		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
 		<div id="title_wrap">
 			<div class="title1">마이페이지</div>
-			<div class="title2">이력서 등록</div>
+			<div class="title2">이력서 수정</div>
 		</div>
 		<div class="notice">
 			<ul>
 				<li><img src="/images/이력서.png" width="50" height="50" class="logo"></li>
-				<li><em class="em1">[필수] </em> 표시가 붙은 항목은 <em class="em2">필수입력</em>항목이니
+				<li><em class="em1">[필수] </em> 표시가 붙은 항목은 <em class="em2">필수입력 </em>항목이니
 					반드시 기입해 주세요.</li>
 				<li>개인정보 보호를 위해 일정시간(약 1시간) 후 ‘자동로그아웃’ 될 수 있으니, ‘이력서 저장’ 버튼을 수시로
 					클릭하여 기입하신 정보를 저장하시기 바랍니다.</li>
@@ -31,7 +31,8 @@
 			</ul>
 		</div>
 		<div id="resumeForm">
-			<form method="post" th:action="@{/user/user_resume(rno=${rno})}">
+			<form method="post" th:action="@{/user/user_regupdate}">
+			<input type="hidden" name="rno" th:value="${resume.rno}">
 				<!-- 이력서 제목 -->
 				<div>
 					이력서 제목 <em class="em1">[필수] </em>
@@ -98,8 +99,9 @@
 					</thead>
 					<th:block th:each="schoolList : ${schoolList}">
 						<tbody id="educationTableBody">
-							<tr>
+							 <tr th:each="schoolList, stat : ${schoolList}">
 								<td>
+								<input type="hidden" th:name="|school[${stat.index}].sno|" th:value="${schoolList.sno}" >
 									<select class="gradeList_0" name="eduName" title="학력 선택">
 										<option selected="selected" th:text="${schoolList.eduName}"></option>
 										<option value="무학">무학</option>
@@ -265,8 +267,8 @@
 						<tbody id="licenseTableBody">
 							<tr>
 								<td>
-									<select class="licenseList" name="type" title="구분">
-										<option selected="selected" th:text="${licenseList.type}"></option>
+									<select class="licenseList" name="ltype" title="구분">
+										<option selected="selected" th:text="${licenseList.ltype}"></option>
 										<option value="국가공인">국가공인</option>
 										<option value="민간공인">민간공인</option>
 									</select>
@@ -375,9 +377,9 @@
                 </select>
             </td>
             <td>
-                <input type="date" name="accDate" title="입학일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="accDate" title="입학일자">
                 <span>~</span>
-                <input type="date" name="gradDate" title="졸업일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="gradDate" title="졸업일자">
             </td>
             <td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
             <td><input type="text" name="score" placeholder="내용을 입력해주세요."></td>
@@ -421,9 +423,9 @@
                 <input type="text" name="cName" placeholder="내용을 입력해주세요.">
             </td>
             <td>
-                <input type="date" name="startDate" id="startDate" title="입사일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="startDate" id="startDate" title="입사일자">
                 <span>~</span>
-                <input type="date" name="endDate" id="endDate" title="퇴사일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="endDate" id="endDate" title="퇴사일자">
             </td>
             <td>
                 <input type="text" name="rank" id="rank" placeholder="내용을 입력해주세요.">
@@ -478,9 +480,9 @@
                 <input type="text" name="org" id="org" placeholder="내용을 입력해주세요.">
             </td>
             <td>
-                <input type="date" name="startDay" id="startDay" title="시작일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="startDay" id="startDay" title="시작일자">
                 <span>~</span>
-                <input type="date" name="endDay" id="endDay" title="종료일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="endDay" id="endDay" title="종료일자">
             </td>
             <td>
                 <input type="text" name="econtent" placeholder="내용을 입력해주세요.">
@@ -514,7 +516,7 @@
 			var newRow = document.createElement('tr');
 			newRow.innerHTML = `
         <td>
-                    <select class="licenseList" name="type" title="구분">
+                    <select class="licenseList" name="ltype" title="구분">
                     	<option value selected="selected">구분</option>
                         <option value="국가공인">국가공인</option>
                         <option value="민간공인">민간공인</option>
@@ -527,7 +529,7 @@
                     <input type="text" name="lorg" placeholder="내용을 입력해주세요.">
                 </td>
                 <td>
-                    <input type="date" name="getDate" id="getDate" title="취득일" placeholder="yyyy.mm.dd" maxlength="10">
+                    <input type="date" name="getDate" id="getDate" title="취득일">
                 </td>
                 <td>
                     <button type="button" class="deleteRowButton4">삭제</button>
@@ -597,7 +599,7 @@
 			var newRow = document.createElement('tr');
 			newRow.innerHTML = `
         	<td>
-        		<input type="text" name="Field" placeholder="포트폴리오 url을 입력 하세요.">
+        		<input type="text" name="portfolioUrl" placeholder="포트폴리오 url을 입력 하세요.">
     		</td>
     		<td>
         		<button type="button" class="deleteRowButton6">삭제</button><br>

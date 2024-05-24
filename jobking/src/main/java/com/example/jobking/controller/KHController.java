@@ -1,11 +1,13 @@
 package com.example.jobking.controller;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,8 +35,11 @@ import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.ISchoolRepository;
 import com.example.jobking.repository.ISelfInfo;
 import com.example.jobking.repository.IUserRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 
 @RequestMapping("/user")
 @Controller
@@ -83,10 +88,50 @@ public class KHController {
 	}
 
 	@GetMapping("/user_resume_form")
-	public void resumeForm(HttpServletRequest request, Model model) {
+	public void resumeForm(HttpServletRequest request, Model model)throws IOException {
 		String uid = (String) request.getSession().getAttribute("id");
 		Optional<User> user = UserRepository.findById(uid);
 		user.ifPresent(u -> model.addAttribute("user", u));
+		
+		// job_category.json 데이터 읽어오기
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<Map<String, Object>> jobCategories = objectMapper.readValue(
+				new ClassPathResource("static/json/job_category.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+		model.addAttribute("jobCategories", jobCategories);
+
+		// job.json 데이터 읽어오기
+		List<Map<String, Object>> allJobs = objectMapper.readValue(
+				new ClassPathResource("static/json/job.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+		model.addAttribute("allJobs", allJobs);
+		
+		// sector_category.json 데이터 읽어오기
+		List<Map<String, Object>> sectorCategories = objectMapper.readValue(
+				new ClassPathResource("static/json/sector_category.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+
+		// sector.json 데이터 읽어오기
+		List<Map<String, Object>> allSectors = objectMapper.readValue(
+				new ClassPathResource("static/json/sector.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+		
+		// korea-administrative-district.json 데이터 읽어오기
+		List<Map<String, Object>> regionData = objectMapper.readValue(
+				new ClassPathResource("static/json/korea-administrative-district.json").getFile(),
+				new TypeReference<List<Map<String, Object>>>() {
+				});
+		Map<String, List<String>> regions = regionData.stream()
+				.collect(Collectors.toMap(map -> map.keySet().iterator().next(), // key 값 (서울특별시, 부산광역시 등)
+						map -> (List<String>) map.values().iterator().next() // value 값 (구, 군 리스트)
+				));
+		
+		model.addAttribute("regions", regions);
+		model.addAttribute("sectorCategories", sectorCategories);
 	}
 
 //	@PostMapping("/user_resume_form")
@@ -177,6 +222,8 @@ public class KHController {
 			ExperienceRepository.save(experience);
 		}
 
+		
+		
 		return "redirect:user_resumeList";
 	}
 
@@ -406,10 +453,25 @@ public class KHController {
 	}
 	
 	@RequestMapping("/delete")
-	public String delete() {
+	@Transactional
+	public String delete(@RequestParam("rno") Long rno) {
 		
+		HopeReository.deleteByResumeRno(rno);
 		
+		ExperienceRepository.deleteByResumeRno(rno);
 		
-		return "redirect:/user/user_regList";
+		LicenseRepository.deleteByResumeRno(rno);
+		
+		CareerRepository.deleteByResumeRno(rno);
+		
+		OaRepository.deleteByResumeRno(rno);
+		
+		SchoolRepository.deleteByResumeRno(rno);
+		
+		SelfInfoRepository.deleteByResumeRno(rno);
+		
+		ResumeRepository.deleteById(rno);
+		
+		return "redirect:/user/user_resumeList";
 	}
 }

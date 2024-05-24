@@ -10,5 +10,5 @@ public interface IExperienceRepository extends JpaRepository<Experience, Long> {
 
 	List<Experience> findByResumeRno(Long rno);
 	
-	
+	void deleteByResumeRno(Long rno);
 }

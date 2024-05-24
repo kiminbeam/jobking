@@ -4,10 +4,17 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/css/com_nav.css">
+<link rel="stylesheet" type="text/css" href="/css/com_sidebar.css">
 </head>
 <body>
 	<header>
 		<div th:replace="~{/fragments/company_nav.html :: fragment-company_nav}"></div>
 	</header>
+	<div class="container">
+		<div th:replace="~{/fragments/company_sidebar.html :: fragment-companySidebar}"></div>
+		<div class="content">
+				
+		</div>
+	</div>
 </body>
 </html>

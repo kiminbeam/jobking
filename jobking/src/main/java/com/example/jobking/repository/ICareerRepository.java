@@ -19,5 +19,5 @@ public interface ICareerRepository extends JpaRepository<Career, Long>{
     @Query(value="delete from career where cno = :cno" , nativeQuery=true)
 	public void deleteCareerByCno(@Param("cno") Long cno);
     
-    
+    void deleteByResumeRno(Long rno);
 }

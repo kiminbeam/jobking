@@ -18,17 +18,19 @@
 			<div class="title1">마이페이지</div>
 			<div class="title2">이력서 관리</div>
 		</div>
-		<div>
+		<div id="btn_wrap">
 			<input type="button" value="대표 이력서 설정하기" onclick="showSecondList()" id="btn1" style="display: block;">
 			<input type="button" value="이력서 작성하기" onclick="showResumeForm()" id="btn5" style="display: block;">
+			<input type="button" value="대표 설정" onclick="setRepresentative()" id="btn2" style="display: none;">
 		</div>
+		
 		<div>
 			<input type="hidden" id="resumeCount" th:value="${resumeCount}" />
 		</div>
 		<!-- 첫 번째 이력서 목록 -->
-		<div id="resumeListDiv" style="display: block" class="resumeList">
+		<div id="resumeListDiv" style="display: block">
 	
-			<ul th:each="resume, resumeIndex : ${resumeList}">
+			<ul th:each="resume, resumeIndex : ${resumeList}" class="resumeList">
 				<li>
 					<span class="representative" th:if="${#strings.equals(resume.def, '1')}"
 						style="display: inline;">[ 대표 이력서 ]</span>
@@ -37,22 +39,22 @@
 					</a>
 				</li>
 				<ul id="icon">
-					<li><img src="/images/수정.png" width="50" height="50"></li>
-					<li><img src="/images/삭제.png" width="50" height="50"></li>				
+					<li><a th:href="@{/user/user_resume_edit(rno=${resume.rno})}"><img src="/images/수정.png" width="50" height="50" ></a></li>
+					<li><img src="/images/삭제.png" width="50" height="50" th:data-rno="${resume.rno}" onclick="deleteItem(this)"></li>
 				</ul>
 			</ul>
 		</div>
 
 		<!-- 두 번째 이력서 목록, 초기에는 숨김 -->
-		<div id="resumeListDiv2" style="display: none"  class="resumeList">
-			<ul th:each="resume, resumeIndex : ${resumeList}">
+		<div id="resumeListDiv2" style="display: none">
+			<ul th:each="resume, resumeIndex : ${resumeList}" class="resumeList">
 				<li>
 					<div id="selfInfoDiv">
 						<div th:if="${selfinfoMap[resume.rno] != null}">
 							<input type="checkbox" th:id="'resumeCheckbox' + ${resumeIndex}"
 								th:data-resume-id="${resume.rno}" onclick="toggleCheck(this)">
-							<span th:text="${resume.rtitle}"></span>
-							<div th:each="selfInfo : ${selfinfoMap[resume.rno]}">
+							<span th:text="${resume.rtitle}" class="rs_title"></span>
+							<div th:each="selfInfo : ${selfinfoMap[resume.rno]}" class="selfInfo_wrap">
 								<span th:text="${selfInfo.title}"></span><br>
 								<span th:text="${selfInfo.scontent}"></span>
 							</div>
@@ -62,14 +64,12 @@
 			</ul>
 		</div>
 
-		<div id="btn2" style="display: none">
-			<input type="button" value="대표 설정" onclick="setRepresentative()">
-		</div>
 		<footer>
 			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 		</footer>
-	</div>
-	<script>
+
+</div>
+	<script th:inline="javascript">
 		function toggleCheck(checkbox) {
 			// 모든 체크박스 가져오기
 			var checkboxes = document
@@ -136,6 +136,14 @@
 				window.location.href = "/user/user_resume_form";
 			}
 		}
+		
+		function deleteItem(element) {
+			const rno = element.getAttribute('data-rno');
+			if (confirm("정말로 삭제하시겠습니까?")) {
+				window.location.href = `/user/delete?rno=${rno}`;
+			}
+		}
+		
 	</script>
 </body>
 

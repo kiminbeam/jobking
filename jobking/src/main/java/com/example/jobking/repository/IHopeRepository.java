@@ -22,4 +22,5 @@ public interface IHopeRepository extends JpaRepository<Hope, Long> {
     
     List<Hope> findByResumeRno(Long rno);
 	
+    void deleteByResumeRno(Long rno);
 }
