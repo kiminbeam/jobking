@@ -1,0 +1,50 @@
+@charset "UTF-8";
+
+.container {
+    display: flex;
+    
+}
+
+.comInfo {
+	width: 400px;
+    border: 2px solid black; /* 검은색 테두리 추가 */
+    padding: 20px; /* 테두리 안쪽에 여백 추가 */
+}
+
+.infoTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.infoTitle h3 {
+    margin: 0;
+    margin-right: 100px; /* 원하는 간격으로 조절 */
+}
+
+.infoTitle button {
+    margin-left: 0; /* 왼쪽 여백 제거 */
+}
+
+.separator {
+    border: 1px solid gray;
+}
+
+.detail {
+    margin-top: 20px; /* .detail 요소들에 상단 여백 추가 */
+}
+
+.detail div {
+    margin-bottom: 15px; /* 각 항목 간의 간격 */
+}
+
+.detail span {
+    display: inline-block;
+    border-bottom: 2px solid orange; /* 주황색 밑줄 */
+    padding-bottom: 2px; /* 텍스트와 밑줄 사이의 간격 */
+}
+
+.detail .text {
+    font-weight: bold; /* 굵은 글씨체 */
+    margin-left: 10px; /* span과 .text 사이의 간격 */
+}

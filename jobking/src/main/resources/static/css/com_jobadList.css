@@ -34,60 +34,36 @@
 }
 
 #jobad table {
-    width: 100%; /* 테이블이 부모 요소의 100%를 차지하도록 설정 */
-    border-collapse: collapse; /* 테이블 셀 사이의 간격 제거 */
+    width: 100%;
+    border-collapse: collapse;
 }
 
-#jobad thead {
-    position: sticky; /* 상단에 고정 */
-    top: 0; /* 위쪽으로 붙임 */
-    background-color: #f4f4f4; /* 배경색 설정 */
-    z-index: 1; /* 다른 요소들 위에 나타나도록 설정 */
-}
-
-#jobad th, #jobad td {
-    padding: 10px; /* 셀 안의 여백 설정 */
-    border: 1px solid #ddd; /* 테두리 설정 */
-    text-align: center; /* 가운데 정렬 */
-}
-
-#jobad th {
-	background-color: #f4f4f4;
-	border: none;
-}
-
-#jobad td {
-	border: none;	
-}
-
-#jobad tbody tr {
-    display: flex; /* 가로로 나열하도록 설정 */
-}
-
-#jobad tbody td {
-    flex: 1; /* 동일한 너비로 설정 */
+#jobad thead th {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 2px solid #ddd; /* <th>의 아래쪽에만 선 추가 */
+    background-color: #f4f4f4;
 }
 
 #jobad tbody td {
     padding: 10px;
     text-align: center;
-    border: none; /* 테두리 제거 */
+    border: none; /* <td>의 테두리 제거 */
 }
 
 #jobad tbody td:first-child {
-    background-color: #f4f4f4; /* 배경색 설정 */
+    background-color: #f4f4f4;
 }
 
 #jobad tbody td button {
     padding: 5px 10px;
-    background-color: #808080; /* 배경색 설정 */
+    background-color: #808080;
     color: white;
-    border: 2px solid black; /* 테두리 설정 */
+    border: 2px solid black;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #jobad tbody td button:hover {
-    background-color: #666; /* 호버 시 배경색 변경 */
+    background-color: #666;
 }
-
