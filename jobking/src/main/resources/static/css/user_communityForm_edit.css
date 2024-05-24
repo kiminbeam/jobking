@@ -1,58 +1,79 @@
 @charset "UTF-8";
 
 
-
-form {
-    margin: 20px auto;
-    max-width: 1000px;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.container{
+	width:1200px;
+	margin: 0 auto;
+}
+.alertTab{
+	margin:50px auto;
+	padding:10px;
+	display:flex;
+	border:1px solid #FFC939;
+	background-color:floralwhite;
+	color:#FFC939;
+}
+.alertTab a{
+	margin-left:30px;
+	font-weight:bold;
+	color:#FFC939;
+}
+.alertTab a:hover{
+	margin-left:30px;
+	font-weight:bold;
+	color:grey;
+}
+.typeContainer{
+	background-color:white;
+	width:400px;
+	margin-bottom:50px;
+}
+.typeContainer span{
+	font-weight:bold;
+	padding:20px;
+}
+.form{
+	background-color:white;
+	overflow:hidden;
+	margin-bottom:50px;
 }
 
-.form-container {
-    display: flex;
-    flex-direction: column;
+
+input[type="text"],
+input[type="submit"],
+textarea {
+	border: none;
+	outline: none;
+	box-shadow: none;
+	background: none;
+	padding: 10px;
+	font-size: 16px;
+	font-family: inherit;
+	box-sizing: border-box;
 }
 
-.typeContainer {
-	width:30%;
-    margin-bottom: 20px;
-    padding:10px;
+.form input[type="text"],textarea{
+	border:none;
+	border-bottom: 1px solid lightgrey;
+	padding:30px;
+	width: 100%;
+    margin: 10px 0;
 }
-
-.typeContainer span {
-    font-weight: bold;
-}
-
-.typeContainer input[type="radio"] {
-    margin-right: 10px;
-}
-
-.form input[type="text"],
-.form textarea {
-    width: 95%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-.form input[type="submit"] {
-    padding: 10px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.form input[type="submit"]:hover {
-    background-color: #0056b3;
-}
-
 textarea{
 	height:500px;
 	resize:none;
+}
+input[type="submit"] {
+    background-color: grey; 
+	color: white;     
+	font-weight:bold;        
+	cursor: pointer; 
+	margin:20px;   
+	padding:10px 20px;
+	float:right;
+}
+
+input[type="submit"]:hover {
+    background-color: blue; 
+    border-radius: 4px; 
 }

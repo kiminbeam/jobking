@@ -67,28 +67,37 @@ body{
 	margin-top: 100px;
 	line-height: 1.6
 }
-.container{
-	width: 1200px;
-	margin: 0 auto;
-}
-ul.tabs{
-	margin: 0px;
-	padding: 0px;
-	list-style: none;
-}
-ul.tabs li{
-	background: none;
-	color: #222;
-	display: inline-block;
-	padding: 10px 15px;
-	cursor: pointer;
+
+.container {
+    width: 1200px;
+    margin: 50px auto;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
 }
 
-ul.tabs li.current{
-	background: #ededed;
-	color: #222;
+ul.tabs {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ddd;
 }
 
+ul.tabs li {
+    flex: 1;
+    text-align: center;
+    padding: 15px 0;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+ul.tabs li.current {
+    background: #4a5470;
+    color: #fff;
+    border-bottom: 2px solid #4a5470;
+}
 .tab-content{
 	display: none;
 	background: white;
