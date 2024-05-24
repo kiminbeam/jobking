@@ -34,19 +34,20 @@
 			</table>
 			<table class="reply_container">
 				<tr>
-
 				<td>
-
 					<input type="text" id="myReply" placeholder="댓글을 작성해보세요">
-					<input type="hidden" id="userId" th:value="${userBoard.user.uid}">
 					<button onclick="addReply()">등록</button>
 				</td>
 				</tr>
-				<tr th:each="userReply,userReplyStat : ${userReplyList}"> 
+				<tr th:if="${userReply !=null }" th:each="userReply,userReplyStat : ${userReplyList}"> 
 					<th id="writer">[[${userReply.writer}]]</th>
 					<td>[[${userReply.regdate}]]</td>
 					<td>[[${userReply.content}]]</td>
-					<td th:if="${userReply.writer == session.id}"><button >수정하기</button> <button id="deleteReplyBtn">삭제하기</button></td>
+					<td class="replyNo" style="display:none;">[[${userReply.replyno}]]</td>
+					<td th:if="${userReply.user.uid == session.id}">
+						<button class="editReplyBtn" >수정하기</button> 
+						<button class="deleteReplyBtn">삭제하기</button>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -57,37 +58,42 @@
 		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 	</footer>
 
-
+</div>
 
 <script th:inline="javascript">
-var userBoardUbno = /*[[${userBoard.ubno}]]*/ '0';
-var userId = document.getElementById("userId").value;
-const deleteReplyBtn = document.querySelector("#deleteReplyBtn");
+
+const deleteReplyBtns = document.querySelectorAll(".deleteReplyBtn");
+const editReplyBtns = document.querySelectorAll(".editReplyBtn");
 
 function addReply(){
-	var writer = document.getElementById("writer").value;
-	var content = document.getElementById("myReply").value;
-    window.location.href = "/user/userReply_insert?ubno=" + userBoardUbno +"&uid=" + userId + "&writer=" + writer + "&content=" + content;
+	const content = document.querySelector("#myReply").value;
+	console.log(content);
+	location.href="/user/userReply_insert?ubno="+[[${userBoard.ubno}]]+"&&content="+ content;
 }
 
-
-deleteReplyBtn.addEventListener("click", function(){
-	const xhttp = new XMLHttpRequest();
-	xhttp.onload = function() {
-	  if(this.responseText == "done"){
-		  console.log("yaaay");
-	  }
-	  }
-	xhttp.open("GET", "/user/user_delete_reply?replyno?"+ [[${userReply.replyno}]], true);
-	xhttp.send();
+deleteReplyBtns.forEach(btn=>{
+	btn.addEventListener("click", function(e){
+		const replyNo = e.target.parentElement.parentElement.querySelector(".replyNo").innerText;
+		location.href="/user/user_delete_reply?replyno=" +replyNo +"&&ubno=" + [[${userBoard.ubno}]];
+	})
+})
+editReplyBtns.forEach(btn=>{
+	btn.addEventListener("click", function(e){
+		const replyNo = e.target.parentElement.parentElement.querySelector(".replyNo").innerText;
+		const xhttp = new XMLHttpRequest();
+		xhttp.onload = function() {
+		    document.querySelector("#editReply").value=this.responseText;
+		    }
+		  xhttp.open("GET", "/user/user_getReply?replyno="+ replyNo, true);
+		  xhttp.send();
+		console.log(e.target)
+		e.target.innerHTML = "<input type='text' id='editReply' value=''><button onclick='addReply()'>수정</button>"
+// 		const replyNo = e.target.parentElement.parentElement.querySelector(".replyNo").innerText;
+// 		location.href="/user/user_edit_reply?replyno=" +replyNo +"&&ubno=" + [[${userBoard.ubno}]];
+	})
 })
 
 
-
-
 </script>
-
-</div>
-
 </body>
 </html>
