@@ -79,28 +79,16 @@ public class YController {
 	
 	// User 회원가입 기능
 	@RequestMapping("/user_regist")
-	public String userReg(User user, @RequestParam("uid") String uid, @RequestParam("upw") String upw) {
-		Optional<User> result = userRepository.findById(user.getUid());
-		if(result.isPresent()) {
-			return "/user/user_regForm";
-		}else if(uid.length()>=4 &&  uid.length()<=12 && upw.length()>=8){
-			userRepository.save(user);
-			return "/user/login_form";
-		}
-		return "/user/user_regForm";
+	public String userReg(User user) {
+		userRepository.save(user);
+		return "/user/login_form";
 	}
 	
 	// Company 회원가입 기능
 	@RequestMapping("/com_regist")
-	public String comReg(Company company, @RequestParam("cid") String cid, @RequestParam("cpw") String cpw) {
-		Optional<Company> result = companyRepository.findById(company.getCid());
-		if(result.isPresent()) {
-			return "/user/user_regForm";
-		}else if(cid.length()>=4 &&  cid.length()<=12 && cpw.length()>=8){
-			companyRepository.save(company);
-			return "/user/login_form";
-		}
-		return "/user/user_regForm";
+	public String comReg(Company company) {
+		companyRepository.save(company);
+		return "/user/login_form";
 	}
 	
 	// 입사지원관리	

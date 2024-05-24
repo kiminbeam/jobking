@@ -84,7 +84,7 @@
 
                 <div id="company_reg" class="tab-content">
                     <p id="noti">* 필수 입력 정보입니다.</p>
-                     <form action="/user/com_regist" method="post"  onsubmit="return checkCondition()">
+                     <form action="/user/com_regist" method="post"  onsubmit="return checkCondition2()">
                         <ul id="company-regForm-ul">
                             <li><input type="text" name="cname" placeholder=" 기업명*"></li>
                             <li>
@@ -103,9 +103,9 @@
                             <li><input type="text" name="ceo" placeholder=" 대표자명*"></li>
                             <li><input type="text" name="cnum" placeholder=" 사업자번호*"></li>
                             <li><input type="text" name="caddr" placeholder=" 기업주소*"></li>
-                            <li><input type="text" name="jobsCd" placeholder=" 업종코드*"></li>
+                            <li><input type="text" name="sector" placeholder=" 업종*"></li>
                             <li><input type="text" name="employee" placeholder=" 사원수*"></li>
-                            <li><input type="text" name="url" placeholder=" 회사홈페이지url*"></li>
+                            <li><input type="text" name="url" placeholder=" 회사홈페이지url"></li>
                             <li><input type="text" name="size" placeholder=" 기업규모*"></li>
                             <li><input type="text" name="major" placeholder=" 주요사업*"></li>
                             <li><input type="text" name="yrSales" placeholder=" 연매출액"></li>
@@ -235,7 +235,7 @@
             }
         }
 
-
+//유저 체크컨디션
         function checkCondition() {
             const uname = document.querySelector('input[name="uname"]').value;
             const birthDate = document.querySelector('input[name="birthDate"]').value;
@@ -456,6 +456,37 @@
             checkboxes2.forEach((checkbox) => {
                 checkbox.checked = selectAll2.checked;
             });
+        }
+        //기업체크컨디션
+        function checkCondition2() {
+            const cname = document.querySelector('input[name="cname"]').value;
+            const ceo = document.querySelector('input[name="ceo"]').value;
+            const cnum = document.querySelector('input[name="cnum"]').value;
+            const caddr = document.querySelector('input[name="caddr"]').value;
+            const sector = document.querySelector('input[name="sector"]').value;
+            const employee = document.querySelector('input[name="employee"]').value;
+            const size = document.querySelector('input[name="size"]').value;
+            const major = document.querySelector('input[name="major"]').value;
+            if (!cname || !ceo || !caddr || !cnum || !jobsCd || !employee||!size||!major) {
+                nullCheck = false;
+            }
+
+            if (validId && dupliCheck && nullCheck && validPw && samePw) {
+                return true;
+            } else {
+                if (!validId) {
+                    alert("유효한 아이디가 아닙니다. 다시 입력해주세요");
+                }else if (!dupliCheck) {
+                    alert("회원가입을 하려면 아이디 중복검사가 필수입니다. 아이디 중복검사를 진행해주세요")
+                }else if (!nullCheck) {
+                    alert("필수입력값은 비어있을 수 없습니다. 다시 입력해주세요")
+                }else if (!validPw) {
+                    alert("유효한 비밀번호가 아닙니다. 다시 입력해주세요");
+                }else if (!samePw) {
+                    alert("비밀번호가 같지 않습니다. 다시 입력해주세요");
+                }
+                return false;
+            }
         }
     </script>
 

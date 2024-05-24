@@ -623,13 +623,15 @@ public class JController {
 	        model.addAttribute("errorMessage", "포지션매치를 보시려면 로그인이 필요합니다.");
 	        return "redirect:/user/login_form";
 		}
+		//대표이력서 찾기
 		Resume defResume = resumeRepo.findDefByUid(uid);
 		Long rno = defResume.getRno();
+		//희망근무지, 지역, 업종찾기
 		Hope hope = hopeRepo.findByUidAndRno(uid, rno);
-		String job = hope.getJob();
+		String position1 = hope.getJob();
 		String region1 = hope.getRegion1();
-		String sectors = hope.getSectors();
-		List<JobAd> list = jobadRepo.findMatchingAd(region1,sectors,job);
+		String sector1 = hope.getSectors();
+		List<JobAd> list = jobadRepo.findMatchingAd(region1,sector1,position1);
         model.addAttribute("recentList", list);
         return "/user/user_positionMatch"; 
 	}
