@@ -34,10 +34,12 @@
 			</table>
 			<table class="reply_container">
 				<tr>
+				<td>
 					<input type="text" id="writer" placeholder="댓글 표시되는 작성자"><br> 
 					<input type="text" id="myReply" placeholder="댓글을 작성해보세요">
 					<input type="hidden" id="userId" th:value="${userBoard.user.uid}">
 					<button onclick="addReply()">등록</button>
+				</td>
 				</tr>
 				<tr th:each="userReply,userReplyStat : ${userReplyList}"> 
 					<th id="writer">[[${userReply.writer}]]</th>

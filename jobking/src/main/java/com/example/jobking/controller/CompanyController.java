@@ -66,7 +66,6 @@ public class CompanyController {
 	
 
 	
-	
 	@RequestMapping("/cpmain")
 	public String main() {
 		return "/company/cpmain";
