@@ -63,6 +63,7 @@ public class School extends BaseEntity {
 	    this.major = newSchool.getMajor();
 	    this.score = newSchool.getScore();
 	    this.sstatus = newSchool.getSstatus();
+	    
 	    // 필요에 따라 다른 필드도 업데이트
 	}
 }
