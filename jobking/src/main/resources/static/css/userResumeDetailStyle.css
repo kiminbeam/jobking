@@ -1,0 +1,55 @@
+*{
+    font-size: 14px;
+    color: #444;
+}
+
+.title2 {
+    border-bottom: 1px dotted #999;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: #333;
+}
+
+p {
+    margin: 5px 0;
+}
+.rs_title{
+    font: 900 14px/1px 'Pretendard-Regular';
+    color: #333;
+    margin-right: 10px;
+}
+
+input[type="button"] {
+    width: 840px; height:20px;
+    border: 0;
+    background-color: #3399ff;
+    color: #fff;
+    font: 900 15px/20px 'Pretendard-Regular';
+    box-sizing: border-box;
+    margin: 30px;
+    position: relative; top: 80px; left: 292px;   
+}
+
+input[type="button"]:hover {
+    background-color: #0056b3;
+    transition-duration: 0.5s;
+}
+
+/* 이력서 컨테이너 스타일 */
+#resume {
+    width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 섹션 별로 약간의 패딩 추가 */
+div[th\\:if] {
+    padding: 10px 0;
+}
+
+/* 각 항목별 스타일링 */
+.resume-section {
+    margin-bottom: 
