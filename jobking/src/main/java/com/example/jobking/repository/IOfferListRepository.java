@@ -2,6 +2,7 @@ package com.example.jobking.repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -26,4 +27,8 @@ public interface IOfferListRepository extends JpaRepository<OfferList, Long> {
 	@Query(value="select * from offer_list where cid= :cid and moddate > :regdate", nativeQuery=true)
 	List<OfferList> findReactedOfferByCidAfterLastLogin(@Param("cid") String cid, @Param("regdate") Date regdate);
 
+	List<OfferList> findByCompanyCid(String cid);
+	
+	Optional<OfferList> findByUserUidAndCompanyCid(String uid, String cid);
+	
 }

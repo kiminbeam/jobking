@@ -206,7 +206,9 @@
                 <a th:href="@{/company/com_resume_detail(rno=${defaultResumes[resumeStat.index].rno})}"> 
                     <button type="button">이력서 확인</button> 
                 </a>
-                <button>포지션 제안</button>
+                <a th:href="@{/company/positionOfferForm(userId=${defaultHopes[resumeStat.index].user.uid}, resumeId=${defaultResumes[resumeStat.index].rno})}">
+        			<button type="button">포지션 제안</button> 
+    			</a>
     <form th:action="@{/company/scrap}" method="post">
         <input type="hidden" name="cid" th:value="${session.id}" /> 
         <input type="hidden" name="rno" th:value="${defaultHopes[resumeStat.index].resume.rno}">

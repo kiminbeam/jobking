@@ -50,7 +50,9 @@
                     <a th:href="@{/company/com_resume_detail(rno=${scrap.get('rno')})}"> 
                 <button type="button">이력서 확인</button> 
             </a>
-                    <button>포지션 제안</button>
+                    <a th:href="@{/company/positionOfferForm(userId=${scrap.get('uid')}, resumeId=${scrap.get('rno')})}">
+      					<button type="button">포지션 제안</button> 
+  					</a>
                     <form th:action="@{/company/scrap}" method="post">
                         <input type="hidden" name="rno" th:value="${scrap.get('rno')}">
                         <input type="hidden" name="uid" th:value="${scrap.get('uid')}">

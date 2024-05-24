@@ -1,0 +1,33 @@
+!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>포지션 제안 목록</title>
+</head>
+<body>
+    <header>
+      <div th:replace="~{/fragments/company_nav.html :: fragment-company_nav}"></div>
+    </header>
+    <div th:include="~{/fragments/company_sidebar.html :: fragment-companySidebar}"></div>
+
+    <div class="content">
+        <h2>포지션 제안 목록</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>제안 직무</th>
+                    <th>상태</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="offer : ${offerLists}">
+                    <td th:text="${offer.user.uname}"></td>
+                    <td th:text="${offer.title}"></td>
+                    <td th:text="${offer.accept}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

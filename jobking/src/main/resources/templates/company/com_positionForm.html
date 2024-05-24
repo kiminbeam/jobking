@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>포지션 제안 폼</title>
+<style>
+.top {
+	width: 100%;
+	height: 60px;
+	background-color: #333;
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+	box-sizing: border-box;
+}
+
+.navbar a {
+    float: left;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+}
+
+.navbar a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+
+
+
+.maincontent {
+    margin-top: 60px;
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+}
+
+.sidebar {
+    height: calc(100vh - 60px);
+    width: 250px;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    background-color: white;
+    overflow-x: hidden;
+    padding-top: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar a, .sidebar button {
+	padding: 10px 15px;
+	text-decoration: none;
+	font-size: 18px;
+	color: black;
+	display: block;
+	background: none;
+	width: 100%;
+	text-align: left;
+	border: none;
+	cursor: pointer;
+	outline: none;
+}
+
+.sidebar a:hover, .sidebar button:hover {
+	background-color: #ddd;
+}
+
+.error-message {
+    color: red;
+    font-weight: bold;
+}
+</style>
+</head>
+<body>
+	<div class="top">
+        <div class="navbar">
+            <a href="#home">home</a>
+            <a href="">채용공고</a>
+            <a href="">기본정보관리</a>
+            <a href="">인재 검색</a>
+            <a href="">로그인</a>
+            <a href="">유저서비스</a>
+        </div>
+    </div>
+
+    <div class="maincontent">
+        <div class="sidebar">
+        	<a href="">공고*지원자관리</a>
+            <a href="">채용공고</a> 
+            <a href="">입사지원관리</a>
+            <a class="sidebar_title">회사정보관리</a>
+            <a href="">기본정보관리</a> 
+            <a href="">내기업평점보기</a>
+            <a href="">인재 검색</a> 
+            <a href="">포지션제안 인재</a> 
+            <a href="">기업구독 인재</a>
+            <a href="">스크랩한 인재</a> 
+            <a href="">최근 본 인재</a>
+            <a href="">커뮤니티</a>
+        </div>
+        
+        <div class="content">
+        <h2>포지션 제안 - <span th:text="${user.uname}"></span> 님</h2>
+
+        <div class="user-info-container"> 
+            <h3>지원자 정보</h3>
+            <div>
+                <label>이름:</label>
+                <span th:text="${user.uname}"></span>
+            </div>
+            <div>
+                <label>성별:</label>
+                <span th:text="${user.genderString}"></span>
+            </div>
+            <div>
+                <label>나이:</label>
+                <span th:text="${user.age}"></span>
+            </div>
+            <div th:if="${hope != null}"> 
+                <label>희망 근무 지역:</label>
+                <span th:text="${hope.region1}"></span>
+            </div>
+            <div th:if="${hope != null}">
+                <label>희망 업종:</label>
+                <span th:text="${hope.sectors}"></span>
+            </div>
+            <div th:if="${hope != null}">
+                <label>희망 직무:</label>
+                <span th:text="${hope.job}"></span>
+            </div>
+        </div> 
+        
+        <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div> 
+        
+        <form th:action="@{/company/sendPositionOffer}" method="post">
+            <input type="hidden" name="uid" th:value="${user.uid}">
+            <input type="hidden" name="rno" th:value="${hope.resume.rno}">
+            <div>
+                <label for="jobTitle">제안 제목:</label>
+                <input type="text" id="jobTitle" name="title" required>
+            </div>
+            <div>
+                <label for="content">제안 내용:</label>
+<textarea id="content" name="content">ex)제안 직무:
+
+ex)직무 내용:
+
+ex)제안 연봉:
+
+ex)제안 근무지역:</textarea>
+            </div>
+ 
+            <button type="submit">제안하기</button>
+        </form>
+        
+        </div>
+        
+        
+        
+        
+        </div>
+</body>
+</html>
