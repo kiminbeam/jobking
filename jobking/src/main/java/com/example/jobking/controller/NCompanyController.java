@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.jobking.entity.Career;
 import com.example.jobking.entity.Company;
@@ -30,6 +31,7 @@ import com.example.jobking.entity.InterestUser;
 import com.example.jobking.entity.JobAd;
 import com.example.jobking.entity.License;
 import com.example.jobking.entity.Oa;
+import com.example.jobking.entity.OfferList;
 import com.example.jobking.entity.Resume;
 import com.example.jobking.entity.School;
 import com.example.jobking.entity.SelfInfo;
@@ -44,6 +46,7 @@ import com.example.jobking.repository.IInterviewListRepository;
 import com.example.jobking.repository.IJobAdRepository;
 import com.example.jobking.repository.ILicenseRepository;
 import com.example.jobking.repository.IOaRepository;
+import com.example.jobking.repository.IOfferListRepository;
 import com.example.jobking.repository.IResumeRepository;
 import com.example.jobking.repository.ISchoolRepository;
 import com.example.jobking.repository.ISelfInfo;
@@ -94,6 +97,9 @@ public class NCompanyController {
 	
 	@Autowired
 	private IExperienceRepository ExperienceRepository;
+	
+	@Autowired
+	private IOfferListRepository OfferRepository;
 	
 	
 	@RequestMapping("/com_totalfind")
@@ -192,6 +198,78 @@ public class NCompanyController {
 	                                    .collect(Collectors.toList()));
 	    return "/company/com_scraplist";
 	}
+	
+	
+	@GetMapping("/positionOfferForm")
+	public String positionOfferForm(@RequestParam("userId") String userId, @RequestParam("resumeId") Long resumeId, Model model) {
+	    User user = userRepository.findById(userId)
+	            .orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+	    
+	    Resume resume = resumeRepository.findById(resumeId)
+	            .orElseThrow(() -> new IllegalArgumentException("Invalid resume ID"));
+	    
+	    Hope hope = hopeRepository.findByUserAndResume(user, resume);
+	    
+	    model.addAttribute("user", user);
+	    model.addAttribute("hope", hope);
+	    return "company/com_positionForm"; // 포지션 제안 폼 뷰 이름
+	}
+	
+	
+	@PostMapping("/sendPositionOffer")
+    public String sendPositionOffer(@RequestParam("rno") Long resumeId,
+            @RequestParam("uid") String userId,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            HttpSession session, RedirectAttributes redirectAttributes) {
+
+        String companyId = (String) session.getAttribute("id");
+
+        // 사용자 및 회사 정보 조회
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("Invalid user ID"));
+        Company company = comrepository.findById(companyId).orElseThrow(() -> new IllegalArgumentException("Invalid company ID"));
+
+        // PositionOffer 객체 생성 및 저장
+        OfferList offerList = OfferList.builder()
+                .company(company)
+                .user(user)
+                .title(title)
+                .content(content)
+                .copName(company.getCname())
+                .accept("대기")
+                .status("대기")
+                .build();
+        
+     // 유효성 검사
+        if (title.isEmpty() || content.isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "모든 필드를 입력해주세요.");
+            return "redirect:/company/positionOfferForm?userId=" + userId + "&resumeId=" + resumeId;
+        }
+
+        // 중복 제안 확인
+        Optional<OfferList> existingOffer = OfferRepository.findByUserUidAndCompanyCid(userId, companyId);
+        if (existingOffer.isPresent()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "이미 포지션 제안을 보낸 사용자입니다.");
+            return "redirect:/company/positionOfferForm?userId=" + userId + "&resumeId=" + resumeId;
+        }
+        
+        
+        OfferRepository.save(offerList);
+
+        return "redirect:/company/com_totalfind";
+    }
+
+	
+	@GetMapping("/positionOfferList")
+	public String positionOfferList(Model model, HttpSession session) {
+	    String companyId = (String) session.getAttribute("id");
+
+	    List<OfferList> offerLists = OfferRepository.findByCompanyCid(companyId); // 회사가 보낸 제안 목록 조회
+	    model.addAttribute("offerLists", offerLists);
+
+	    return "company/com_position_offer_list"; // 포지션 제안 목록 뷰 이름
+	}
+	
 	
 	
 	@GetMapping("/com_resume_detail")

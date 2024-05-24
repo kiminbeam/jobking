@@ -84,6 +84,11 @@ input[type="submit"]:hover {
 
 </style>
 <body>
+<header>
+      <div th:replace="~{/fragments/company_nav.html :: fragment-company_nav}"></div>
+    </header>
+    <div th:include="~{/fragments/company_sidebar.html :: fragment-companySidebar}"></div>
+
 <h1>채용공고 등록</h1>
 <hr>
 <form action="/company/regi_jobad" method="post" onsubmit="convertInputsToJson()">
