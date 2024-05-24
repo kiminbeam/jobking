@@ -53,43 +53,43 @@
 					</tr>
 					<tr th:each="resumeList, stat :${resumeList}">
 						<td>[[${stat.count}]]</td>
-						<td>[[${resumeList.rtitle}]]</td>
-						<td>[[${resumeList.def}]]</td>
+						<td><a th:href="@{user/user_resume_detail(rno=${resumeList.rno})}">[[${resumeList.rtitle}]]</a></td>
+						<td th:text="${resumeList?.def == '1' ? '대표 이력서' : ''}">[[${resumeList?.def ?: ''}]]</td>
 					</tr>
 				</table>
 			</div>
 
 			<ul id="group">
 				<li><img src="/images/구독기업.png" alt="">
-					<a>구독기업</a>
+					<a href="/user/user_subNscrap">구독기업</a>
 				</li>
 				<li>
 					<img src="/images/스크랩공고.png" alt="">
-					<a>스크랩공고</a>
+					<a href="/user/user_subNscrap">스크랩공고</a>
 				</li>
 				<li>
 					<img src="/images/받은제안관리.png" alt="">
-					<a>받은제안 관리</a>
+					<a href="/user/user_offer_list">받은제안 관리</a>
 				</li>
 				<li>
 					<img src="/images/입사지원관리.png" alt="">
-					<a>입사지원 관리</a>
+					<a href="/user/user_apply_list">입사지원 관리</a>
 				</li>
 				<li>
 					<img src="/images/희망근무조건.png" alt="">
-					<a>희망근무조건</a>
+					<a href="/user/user_resumeList">이력서 관리</a>
 				</li>
 				<li>
 					<img src="/images/최근본공고.png" alt="">
-					<a>최근 본 공고</a>
+					<a href="/user/user_resumeList">최근 본 공고</a>
 				</li>
 				<li>
 					<img src="/images/평점관리.png" alt="">
-					<a>평점관리</a>
+					<a href="/user/user_review_list">평점관리</a>
 				</li>
 				<li>
 					<img src="/images/커뮤니티관리.png" alt="">
-					<a>커뮤니티 관리</a>
+					<a href="/user/user_myBoard_list">커뮤니티 관리</a>
 				</li>
 			</ul>
 	</div>
