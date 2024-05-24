@@ -54,7 +54,7 @@
                     </div>
                     <button onclick="searchList()">검색</button>
                 </div>
-                
+                <div  class="container">
                 <div id="listContainer">
 	                 <div class="jobad" th:if="${newList != null}" th:each="jobWrapper : ${newList}">
 				        <div class="t2">[[${jobWrapper.jobad.company.cname}]]</div>
@@ -71,7 +71,8 @@
 						    </span>
 						 </div>
 				     </div>
-                </div>           
+                </div>  
+                </div>         
             </div>
         </main>
         <footer>
