@@ -533,8 +533,10 @@ public class JController {
 		return "redirect:/user/user_community_detail?ubno="+ubno;
 	}
 	@RequestMapping("/user_edit_reply") // 상세에서댓수정
-	public String userEditReply(@RequestParam("replyno") Long replyno, Model model,@RequestParam("ubno") Long ubno) {
-		userReplyRepo.delete(userReplyRepo.findById(replyno).get());
+	public String userEditReply(@RequestParam("replyno") Long replyno, Model model,@RequestParam("content") String content,@RequestParam("ubno") Long ubno) {
+		UserReply ur = userReplyRepo.findById(replyno).get();
+		ur.setContent(content);
+		userReplyRepo.save(ur);
 		return "redirect:/user/user_community_detail?ubno="+ubno;
 	}
 	@RequestMapping("/user_getReply") // 상세에서댓정보가져오기

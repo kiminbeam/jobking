@@ -86,13 +86,17 @@ editReplyBtns.forEach(btn=>{
 		    }
 		  xhttp.open("GET", "/user/user_getReply?replyno="+ replyNo, true);
 		  xhttp.send();
-		console.log(e.target)
-		e.target.innerHTML = "<input type='text' id='editReply' value=''><button onclick='addReply()'>수정</button>"
-// 		const replyNo = e.target.parentElement.parentElement.querySelector(".replyNo").innerText;
-// 		location.href="/user/user_edit_reply?replyno=" +replyNo +"&&ubno=" + [[${userBoard.ubno}]];
+		
+		e.target.innerHTML = "<input type='text' id='editReply' value=''><button onclick='editReply(event)'>수정</button>"
+		
 	})
 })
 
+function editReply(){
+	const replyNo = event.target.parentElement.parentElement.parentElement.querySelector(".replyNo").innerText;
+	const content = document.querySelector("#editReply").value;
+	location.href="/user/user_edit_reply?replyno=" +replyNo +"&&content=" + content+"&&ubno=" + [[${userBoard.ubno}]];
+}
 
 </script>
 </body>
