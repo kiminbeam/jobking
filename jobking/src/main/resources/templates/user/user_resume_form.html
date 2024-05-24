@@ -621,23 +621,7 @@
             field.addEventListener('input', updateSubmitButtonState);
         });
 
-     	// JSON 데이터 불러오기 (job.json 파일 경로 확인 필요)
-        fetch('/json/job.json')
-            .then(response => response.json())
-            .then(data => {
-                const select = document.getElementById('keywordSelect');
-                const keywordSet = new Set(); // 중복 키워드 방지
-
-                data.forEach(item => {
-                    if (!keywordSet.has(item["직무 키워드명"])) {
-                        const option = document.createElement('option');
-                        option.value = item["직무 키워드명"];
-                        option.text = item["직무 키워드명"];
-                        select.add(option);
-                        keywordSet.add(item["직무 키워드명"]);
-                    }
-                });
-            });
+     	
         
         
     </script>

@@ -64,12 +64,15 @@
 
     <script th:inline="javascript">
         const deleteBtn = document.querySelector(".deleteBtn");
-        deleteBtn.addEventListener("click", function (e) {
-            let ano = e.target.querySelector("span").innerText;
-            if (confirm("정말로 지원을 철회하시겠습니까?")) {
-                location.href = "/user/deleteUserApplyList?ano=" + ano;
-            }
-        })
+       if(deleteBtn != null){
+    	   deleteBtn.addEventListener("click", function (e) {
+               let ano = e.target.querySelector("span").innerText;
+               if (confirm("정말로 지원을 철회하시겠습니까?")) {
+                   location.href = "/user/deleteUserApplyList?ano=" + ano;
+               }
+           })
+       }
+       
     </script>
 </body>
 
