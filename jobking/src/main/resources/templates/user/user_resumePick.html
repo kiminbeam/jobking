@@ -4,15 +4,25 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
+<link rel="stylesheet" type="text/css" href="/css/userResumePick.css">
 </head>
 
 <body>
 
 
-<h1>이력서 선택하기</h1>
-<th:block th:each="resume : ${resumeList}">
-	<a th:href="@{/user/user_resume_detailApply(rno=${resume.rno},(jno=${jno}))}">[[${resume.rtitle}]]</a>
-</th:block>	
+<div id="title">이력서 선택하기</div>
+<table>
+	<tr>
+		<th>번호</th>
+		<th>제목</th>
+		<th>대표</th>
+	</tr>
+	<tr th:each="resumeList, stat :${resumeList}">
+		<td>[[${stat.count}]]</td>
+		<td><a th:href="@{/user/user_resume_detailApply(rno=${resumeList.rno},(jno=${jno}))}">[[${resumeList.rtitle}]]</a></td>
+		<td th:text="${resumeList?.def == '1' ? '대표 이력서' : ''}">[[${resumeList?.def ?: ''}]]</td>
+	</tr>
+</table>
 
 
 </body>
