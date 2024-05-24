@@ -24,19 +24,29 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.jobking.entity.Career;
 import com.example.jobking.entity.Company;
+import com.example.jobking.entity.Experience;
 import com.example.jobking.entity.Hope;
 import com.example.jobking.entity.InterestUser;
 import com.example.jobking.entity.JobAd;
+import com.example.jobking.entity.License;
+import com.example.jobking.entity.Oa;
 import com.example.jobking.entity.Resume;
+import com.example.jobking.entity.School;
+import com.example.jobking.entity.SelfInfo;
 import com.example.jobking.entity.User;
 import com.example.jobking.repository.IApplyListRepository;
 import com.example.jobking.repository.ICareerRepository;
 import com.example.jobking.repository.ICompanyRepository;
+import com.example.jobking.repository.IExperienceRepository;
 import com.example.jobking.repository.IHopeRepository;
 import com.example.jobking.repository.IInterestUserRepository;
 import com.example.jobking.repository.IInterviewListRepository;
 import com.example.jobking.repository.IJobAdRepository;
+import com.example.jobking.repository.ILicenseRepository;
+import com.example.jobking.repository.IOaRepository;
 import com.example.jobking.repository.IResumeRepository;
+import com.example.jobking.repository.ISchoolRepository;
+import com.example.jobking.repository.ISelfInfo;
 import com.example.jobking.repository.IUserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -50,10 +60,10 @@ import jakarta.servlet.http.HttpSession;
 public class NCompanyController {
 
 	@Autowired
-	IJobAdRepository repository;
+	private IJobAdRepository repository;
 
 	@Autowired
-	ICompanyRepository comrepository;
+	private ICompanyRepository comrepository;
 
 	@Autowired
 	private IUserRepository userRepository;
@@ -69,6 +79,22 @@ public class NCompanyController {
 
 	@Autowired
     private IInterestUserRepository interestUserRepository;
+	
+	@Autowired
+	private IOaRepository OaRepository;
+	
+	@Autowired
+	private ISchoolRepository SchoolRepository;
+	
+	@Autowired
+	private ILicenseRepository LicenseRepository;
+	
+	@Autowired
+	private ISelfInfo SelfInfoRepository;
+	
+	@Autowired
+	private IExperienceRepository ExperienceRepository;
+	
 	
 	@RequestMapping("/com_totalfind")
 	public String totalFind(Model model, HttpSession session) {
@@ -127,6 +153,94 @@ public class NCompanyController {
         // 기존 페이지로 리다이렉트 (예: 이력서 목록 페이지)
         return "redirect:/company/com_totalfind"; 
     }
+	
+	
+	
+	@GetMapping("/com_scraplist")
+	public String scrapList(Model model, HttpSession session) {
+	    String companyId = (String) session.getAttribute("id"); 
+
+	    List<InterestUser> scrappedUsers = interestUserRepository.findByCompanyCid(companyId); 
+	    List<Map<String, Object>> scrapList = new ArrayList<>();
+
+	    for (InterestUser iu : scrappedUsers) {
+	        Map<String, Object> scrapInfo = new HashMap<>();
+	        User user = iu.getUser();
+	        Resume resume = iu.getResume();
+	        Hope hope = hopeRepository.findByUserAndResume(user, resume);
+
+	        scrapInfo.put("uname", user.getUname());
+	        scrapInfo.put("gender", user.getGenderString());
+	        scrapInfo.put("uage", user.getAge());
+	        scrapInfo.put("rtitle", resume.getRtitle());
+	        scrapInfo.put("region1", hope.getRegion1());
+	        scrapInfo.put("sectors", hope.getSectors());
+	        scrapInfo.put("job", hope.getJob());
+	        scrapInfo.put("uid", user.getUid());
+	        scrapInfo.put("rno", resume.getRno());
+
+	        // 경력 정보 추가
+	        List<Career> careers = careerRepository.findByResume(resume);
+	        scrapInfo.put("careers", careers);
+
+	        scrapList.add(scrapInfo);
+	    }
+
+	    model.addAttribute("scrapList", scrapList);
+	    model.addAttribute("scrapUids", scrapList.stream()
+	                                    .map(scrap -> (String) scrap.get("uid"))
+	                                    .collect(Collectors.toList()));
+	    return "/company/com_scraplist";
+	}
+	
+	
+	@GetMapping("/com_resume_detail")
+	public String companyUserResumeDetail(Model model, @RequestParam("rno") Long rno, HttpSession session) {
+	    String companyId = (String) session.getAttribute("id");
+
+	    Optional<Resume> resumeOpt = resumeRepository.findById(rno);
+	    User user = null; // user 변수를 블록 외부에서 선언하고 초기화
+
+	    if (resumeOpt.isPresent()) {
+	        Resume resume = resumeOpt.get();
+	        model.addAttribute("resume", resume);
+
+	        user = resume.getUser(); // user 변수에 값 할당
+	        model.addAttribute("user", user);
+	        String disclo = resume.getDisclo();
+	        model.addAttribute("disclo", disclo);
+	        
+	        List<Career> careerList = careerRepository.findByResumeRno(rno);
+	        List<School> schoolList = SchoolRepository.findByResumeRno(rno);
+	        List<Hope> hopeList = hopeRepository.findByResumeRno(rno);
+	        List<License> licenseList = LicenseRepository.findByResumeRno(rno);
+	        List<Oa> oaList = OaRepository.findByResumeRno(rno);
+	        List<SelfInfo> selfInfoList = SelfInfoRepository.findByResumeRno(rno);
+	        List<Experience> experienceList = ExperienceRepository.findByResumeRno(rno);
+	        
+	        
+	        model.addAttribute("careerList", careerList);
+	        model.addAttribute("schoolList", schoolList);
+	        model.addAttribute("hopeList", hopeList);
+	        model.addAttribute("licenseList", licenseList);
+	        model.addAttribute("oaList", oaList);
+	        model.addAttribute("selfInfoList", selfInfoList);
+	        model.addAttribute("experienceList", experienceList);
+	        
+	    } else {
+	        // 이력서를 찾을 수 없는 경우 예외 처리
+	        return "redirect:/company/com_totalfind";
+	    }
+
+	    // 스크랩 여부 확인 (user 변수를 사용)
+	    Optional<InterestUser> existingScrap = interestUserRepository.findByUserUidAndCompanyCid(user.getUid(), companyId);
+	    model.addAttribute("isScrapped", existingScrap.isPresent());
+
+	    return "company/com_resume_detail";
+	}
+	
+	
+	
 
 	@RequestMapping("/regi_jobadForm")
 	public String regiForm(Model model) throws IOException {

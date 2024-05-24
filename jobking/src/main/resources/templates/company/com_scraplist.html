@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>스크랩한 인재 목록</title>
+<style>
+        .scrap-button {
+            background-color: blue; 
+            color: white;         
+        }
+
+        .scrap-button-active {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+	<header>
+      <div th:replace="~{/fragments/company_nav.html :: fragment-company_nav}"></div>
+    </header>
+    <div th:include="~{/fragments/company_sidebar.html :: fragment-companySidebar}"></div>
+	
+    <h2>스크랩한 인재 목록</h2>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>이름</th>
+                <th>이력서 요약</th>
+                <th>포지션 제안</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="scrap : ${scrapList}">
+                <td>
+                    <span th:text="${scrap.uname}"></span>
+                    <p>([[${scrap.gender}]], 만 [[${scrap.uage}]]세)</p> 
+                </td>
+                <td>
+                    <span th:each="career, careerStat : ${scrap.careers}">
+                        <span th:if="${careerStat.first}">경력: [[${career.careerDuration}]] - </span>
+                    </span>
+                    <span th:text="${scrap.rtitle}"></span>
+
+                    <p th:text="'희망 근무지: ' + ${scrap.region1}"></p>
+                    <span th:text="'희망 업종: ' + ${scrap.sectors}"></span>
+                    <span th:text="'희망 직무: ' + ${scrap.job}"></span>
+                </td>
+                <td class="button-group">
+                    <a th:href="@{/company/com_resume_detail(rno=${scrap.get('rno')})}"> 
+                <button type="button">이력서 확인</button> 
+            </a>
+                    <button>포지션 제안</button>
+                    <form th:action="@{/company/scrap}" method="post">
+                        <input type="hidden" name="rno" th:value="${scrap.get('rno')}">
+                        <input type="hidden" name="uid" th:value="${scrap.get('uid')}">
+                        <button type="submit"
+                                th:class="${scrapUids.contains(scrap.get('uid'))} ? 'scrap-button-active' : 'scrap-button'"
+                                th:text="${scrapUids.contains(scrap.get('uid'))} ? '스크랩 취소' : '스크랩'">
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
