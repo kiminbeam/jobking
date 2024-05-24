@@ -19,4 +19,6 @@ public interface IUserReplyRepository extends JpaRepository<UserReply, Long> {
 	
 	@Query(value="Select * from user_reply where ubno= :ubno", nativeQuery=true)
 	List<UserReply> findAllByUbno(@Param("ubno") Long ubno);
+	
+	
 }

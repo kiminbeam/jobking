@@ -56,6 +56,9 @@ public class User extends BaseEntity {
     @Column(name = "file_size")
     private Long fileSize;
     
+    @Column(name = "role")
+    private Long role;
+    
     public String getGenderString() {
         return gender.equals("1") ? "여성" : "남성";
     }
