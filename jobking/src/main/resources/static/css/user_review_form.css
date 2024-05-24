@@ -1,0 +1,90 @@
+@charset "UTF-8";
+
+
+  body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+   
+
+    #review-form-wrap {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    #review-form-wrap div, #review-form-wrap p, #review-form-wrap form {
+        margin-bottom: 20px;
+    }
+
+    #review-form-wrap select, #review-form-wrap input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin-top: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    #review-form-wrap input[type="submit"] {
+        width: 100%;
+        padding: 15px;
+        background-color: #808080;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    #review-form-wrap input[type="submit"]:hover {
+        background-color: #3399ff;;
+    }
+
+    .rating {
+        list-style: none;
+        padding: 0;
+    }
+
+    .rating>li {
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    [type='radio'] {
+        appearance: none;
+    }
+
+    [type='radio'] + .star,
+    [type='radio'] + .star2,
+    [type='radio'] + .star3 {
+        font-size: 24px;
+        color: #ccc;
+        cursor: pointer;
+    }
+
+    [type='radio']:checked + .star,
+    [type='radio']:checked + .star2,
+    [type='radio']:checked + .star3 {
+        color: gold;
+    }
+
+    .star:hover, .star2:hover, .star3:hover, .star:hover ~ .star, .star2:hover ~ .star2, .star3:hover ~ .star3 {
+        color: gold;
+    }
+
+    .rating>li{
+        display: inline;
+    }
+    
+ 	[type='radio'] {
+       appearance: none;
+    }
+    [type='submit']{
+        display: block;
+    }

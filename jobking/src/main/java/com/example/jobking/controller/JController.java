@@ -122,10 +122,13 @@ public class JController {
 	
 	
 	@RequestMapping("/index")
-	public String root() {
+	public String root(HttpServletRequest request) {
 //		companyRepo.save(new Company("ccc","", "네이버", "12345", "12345", "james", "11111", "서울", 500, "", "11", "11", "11"));
 //		userRepo.save(new User("aab", "james","1234", LocalDate.now(), "M", "aaa1234@gmail.com","010-1111-1111", "서울","dog"));
-			
+//			request.getSession().invalidate();
+		
+		
+		
 		return "/user/index";
 	}
 	

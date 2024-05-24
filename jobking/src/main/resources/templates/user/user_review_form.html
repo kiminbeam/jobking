@@ -5,25 +5,17 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" type="text/css" href="/css/style.css">
-<style>
-    .rating>li{
-        display: inline;
-    }
-    
- 	[type='radio'] {
-       appearance: none;
-    }
-    [type='submit']{
-        display: block;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="/css/user_review_form.css">
+
 </head>
 <body>
+<div id="wrap">
     <header>
 	    <div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
     </header>
+    <div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
     <div id="review-form-wrap">
-		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+		
         <div>마이페이지</div>
         <div>평점 작성하기</div>
         <p>❗오직 우리 사이트를 통해 지원하고 면접을 완료한 지원자만 해당 기업에 대한 평점을 작성할 수 있습니다.</p>
@@ -148,10 +140,12 @@
             <input type="text" name="feedback" placeholder="내용을 입력해주세요.">
             <input type="submit" value="리뷰 등록하기" onsubmit="register(event)">
         </form>
+        </div>
         <footer>
             <div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
         </footer>
     </div>
+
     <script>
         // <select> 요소를 가져오기
         var selectElement = document.getElementById("mySelect");
