@@ -1,116 +1,5 @@
 @charset "UTF-8";
-
-
-.container {
-    width: 1200px;
-    margin: 0 auto;
-}
-
-.alertTab{
-	margin:50px auto;
-	padding:10px;
-	display:flex;
-	border:1px solid #FFC939;
-	background-color:floralwhite;
-	color:#FFC939;
-}
-.alertTab a{
-	margin-left:30px;
-	font-weight:bold;
-	color:#FFC939;
-}
-.alertTab a:hover{
-	margin-left:30px;
-	font-weight:bold;
-	color:grey;
-}.alertTab{
-	margin:50px auto;
-	padding:10px;
-	display:flex;
-	border:1px solid #FFC939;
-	background-color:floralwhite;
-	color:#FFC939;
-}
-.alertTab a{
-	margin-left:30px;
-	font-weight:bold;
-	color:#FFC939;
-}
-.alertTab a:hover{
-	margin-left:30px;
-	font-weight:bold;
-	color:grey;
-}
-.content_container, .reply_container {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-.content_container th, .content_container td, .reply_container th, .reply_container td {
-    border: 1px solid #f2f2f2;
-    padding: 8px;
-}
-
-.content_container th {
-    background-color: #f8f8f8;
-    font-size: 24px;
-    text-align: left;
-    padding: 10px;
-}
-
-.content_container td {
-    border-top: 1px solid #eaeaea;
-}
-
-.detail_container {
-    background-color: #f9f9f9;
-    padding: 20px;
-}
-
-.detail_container span {
-    margin-right: 10px;
-}
-
-.detail_container a {
-    margin-left: 10px;
-    color: #007BFF;
-    text-decoration: none;
-}
-
-.detail_container a:hover {
-    text-decoration: underline;
-}
-
-.reply_container tr {
-    border-bottom: 1px solid #eaeaea;
-}
-
-.reply_container input[type="text"] {
-    width: calc(100% - 90px);
-    padding: 8px;
-    margin-right: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.reply_container button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-}
-
-.reply_container button:hover {
-    background-color: #0056b3;
-}
-
-.reply_container button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
-}
+input:focus {outline:none;}
 
 .container {
     width: 1200px;
@@ -141,9 +30,11 @@
 .alertTab a:hover {
     color: grey;
 }
-#boardContent{
-	height:500px;
+
+#boardContent {
+    height: 500px;
 }
+
 .content_container, .reply_container {
     width: 100%;
     border-collapse: collapse;
@@ -156,6 +47,7 @@
 }
 
 .content_container th {
+    background-color: #f8f8f8;
     font-size: xx-large;
     font-weight: bold;
     padding: 20px;
@@ -164,6 +56,7 @@
 
 .content_container td {
     background-color: white;
+    border-top: 1px solid #eaeaea;
 }
 
 .detail_container {
@@ -186,37 +79,54 @@
 }
 
 .reply_container tr {
-    border-bottom: 1px solid #ddd;
-    width:100%;
+    border-bottom: 1px solid #eaeaea;
 }
 
-.reply_container input[type="text"] {
-    width: calc(100% - 90px);
-    padding: 8px;
-    margin-right: 10px;
+.reply_container .input_container {
+    display: flex;
+    align-items: center;
+}
+
+#reply_wrap{
+    margin-top: 10px;
+}
+[type='text']{
+    width: 1095px; height: 45px;
     border: 1px solid #ddd;
-    border-radius: 5px;
-    width:100%;
+    box-sizing: border-box;
+    font: 200 16px/45px 'Pretendard-Regular';
 }
 
-.reply_container button {
-    padding: 8px 12px;
+#editReply{
+	margin-top: 10px;
+	width: 900px; height: 45px;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    font: 200 16px/45px 'Pretendard-Regular';
+}
+
+#regBtn {
+    width: 100px; height: 44px;
+    font: 200 16px/45px 'Pretendard-Regular';
     border: none;
-    border-radius: 5px;
-    background-color: #007bff;
+    box-sizing: border-box;
+    background-color: #394a78;
     color: white;
     cursor: pointer;
 }
 
-.reply_container button:hover {
-    background-color: #0056b3;
+#repBtn>button, #editBtn{
+    width: 80px; height: 30px;
+    background-color: #f2f4f7;
+    border: 1px solid lightgray;
+    box-sizing: border-box;
+    font: 200 13px/30px 'Pretendard-Regular';
+    color: darkgray;
 }
 
-.reply_container button:disabled {
-    background-color: #ddd;
-    cursor: not-allowed;
+#editBtn{
+	position: relative; top: -51px; left: 933.5px;
 }
-
 #title {
     font-size: xx-large;
     font-weight: bold;
@@ -236,27 +146,6 @@ span {
     float: right;
 }
 
-input#writer, input#myReply {
-    width: calc(50% - 50px);
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-button {
-    padding: 10px 20px;
-    margin: 10px 0;
-    border: none;
-    border-radius: 4px;
-    background-color: #007BFF;
-    color: white;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
 
 table.reply_container {
     width: 100%;
@@ -267,21 +156,4 @@ table.reply_container {
 table.reply_container th, table.reply_container td {
     padding: 10px;
     border-bottom: 1px solid #ddd;
-} {
-    font-size: xx-large;
-    font-weight: bold;
-    padding: 20px;
-}
-
-a {
-    display: inline;
-    margin: 5px;
-}
-
-span {
-    margin: 10px;
-}
-
-.btns {
-    float: right;
 }
