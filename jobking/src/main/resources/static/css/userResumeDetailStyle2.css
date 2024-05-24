@@ -1,0 +1,19 @@
+#wrap{
+    overflow: hidden;
+}
+.title1, #resume{
+    margin: 30px;
+}
+
+button {
+    width: 100px; height:30px;
+    border: 1px solid #3399ff;
+   	background-color: #fff;
+    color: #3399ff;
+    font: 900 14px/30px 'Pretendard-Regular';
+    box-sizing: border-box;
+    margin: 20px;
+    position: relative;
+    top: 0px;
+    left: 300px;
+}
