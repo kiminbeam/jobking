@@ -16,7 +16,7 @@
 			<div class="container">
 				<div class="alertTab">
 					<span>📢 [공지사항]  </span>
-					<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
+					<a th:if="${latestAlertBoard != null}" th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
 		        </div>
 		        <button onclick="location.href='/user/user_communityForm_insert'">글 작성하기</button>
 			<ul class="tabs">

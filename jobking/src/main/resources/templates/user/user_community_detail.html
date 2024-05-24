@@ -17,7 +17,7 @@
 			<div class="container">
 					<div class="alertTab">
 						<span>📢 [공지사항]  </span>
-						<a th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
+						<a th:if="${latestAlertBoard != null}" th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
 					</div>
 			<table class="content_container">
 				<tr> 
@@ -34,7 +34,6 @@
 			</table>
 			<table class="reply_container">
 				<tr>
-					<input type="text" id="writer" placeholder="댓글 표시되는 작성자"><br> 
 					<input type="text" id="myReply" placeholder="댓글을 작성해보세요">
 					<input type="hidden" id="userId" th:value="${userBoard.user.uid}">
 					<button onclick="addReply()">등록</button>
