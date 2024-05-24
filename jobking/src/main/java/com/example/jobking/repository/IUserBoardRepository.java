@@ -18,4 +18,6 @@ public interface IUserBoardRepository extends JpaRepository<UserBoard, Long> {
 	
 	@Query(value="Select * from user_board where type= :type order by regdate desc limit 1", nativeQuery=true)
 	UserBoard findLatestBoardByType(@Param("type") String type);
+	
+	
 }
