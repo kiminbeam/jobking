@@ -23,91 +23,97 @@
       </div>
     </div>
     <input type="hidden" id="resumeRno" th:value="${resume.rno}">
-    <input type="button" value="수정하기" th:onclick="'editResume(' + ${resume.rno} + ')'">
 
-<div id="resume">
-    <div th:if="${resume != null}">
-      <div class="title1" th:text="${resume.rtitle}"></div>
-      <p><span class="rs_title">지원자</span> 
-        <span th:text="${user.uname}"></span> (<span th:text="${user.genderString}"></span>, <span
-          th:text="${user.age}"></span>세)</p>
-      <p><span class="rs_title">이메일</span><span th:text="${user.email}"></span></p>
-      <p><span class="rs_title">연락처</span><span th:text="${user.tel}"></span></p>
-      <p><span class="rs_title">포트폴리오</span><span th:text="${resume.portfolioUrl}"></span></p>
 
-      <div th:if="${not #lists.isEmpty(schoolList)}">
-        <div class="title2">학력</div>
-        <div th:each="school : ${schoolList}">
-          <p><span class="rs_title">입학일</span><span th:text="${#temporals.format(school.accDate, 'yyyy-MM-dd')}"></span></p>
-          <p><span class="rs_title">졸업일</span><span th:text="${#temporals.format(school.gradDate, 'yyyy-MM-dd')}"></span></p>
-          <p><span class="rs_title">학력</span><span th:text="${school.eduName} + ' 졸업'"></span></p>
-          <p><span class="rs_title">전공</span><span th:text="${school.major}"></span></p>
-          <p><span class="rs_title">학점</span><span th:text="${school.score}"></span></p>
-          <p><span class="rs_title">졸업 상태</span><span th:text="${school.sstatus}"></span></p>
+    <div id="resume">
+      <input type="button" value="수정하기" th:onclick="'editResume(' + ${resume.rno} + ')'">
+      <div th:if="${resume != null}">
+        <div class="title1" th:text="${resume.rtitle}"></div>
+        <p><span class="rs_title">지원자</span>
+          <span th:text="${user.uname}"></span> (<span th:text="${user.genderString}"></span>, <span
+            th:text="${user.age}"></span>세)
+        </p>
+        <p><span class="rs_title">이메일</span><span th:text="${user.email}"></span></p>
+        <p><span class="rs_title">연락처</span><span th:text="${user.tel}"></span></p>
+        <p><span class="rs_title">포트폴리오</span><span th:text="${resume.portfolioUrl}"></span></p>
+
+        <div th:if="${not #lists.isEmpty(schoolList)}">
+          <div class="title2">학력</div>
+          <div th:each="school : ${schoolList}">
+            <p><span class="rs_title">입학일</span><span
+                th:text="${#temporals.format(school.accDate, 'yyyy-MM-dd')}"></span></p>
+            <p><span class="rs_title">졸업일</span><span
+                th:text="${#temporals.format(school.gradDate, 'yyyy-MM-dd')}"></span></p>
+            <p><span class="rs_title">학력</span><span th:text="${school.eduName} + ' 졸업'"></span></p>
+            <p><span class="rs_title">전공</span><span th:text="${school.major}"></span></p>
+            <p><span class="rs_title">학점</span><span th:text="${school.score}"></span></p>
+            <p><span class="rs_title">졸업 상태</span><span th:text="${school.sstatus}"></span></p>
+          </div>
+        </div>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(careerList)}">
+        <div class="title2">경력</div>
+        <div th:each="career : ${careerList}">
+          <p><span class="rs_title">회사명</span><span th:text="${career.cName}"></span></p>
+          <p><span class="rs_title">재직기간</span><span th:text="${career.careerDuration}"></span></p>
+          <p><span class="rs_title">직급</span><span th:text="${career.rank}"></span></p>
+          <p><span class="rs_title">직무</span><span th:text="${career.position}"></span></p>
+          <p><span class="rs_title">담당업무</span><span th:text="${career.work}"></span></p>
+        </div>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(experienceList)}">
+        <div class="title2">경험</div>
+        <div th:each="experience : ${experienceList}">
+          <p><span class="rs_title">기관/단체명</span><span th:text="${experience.org}"></span></p>
+          <p><span class="rs_title">활동기간</span><span
+              th:text="${#temporals.format(experience.startDay, 'yyyy-MM-dd')}"></span> ~ <span
+              th:text="${#temporals.format(experience.endDay, 'yyyy-MM-dd')}"></span></p>
+          <p><span class="rs_title">내용</span><span th:text="${experience.econtent}"></span></p>
+        </div>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(hopeList)}">
+        <div class="title2">희망 근무 조건</div>
+        <div th:each="hope : ${hopeList}">
+          <p><span class="rs_title">희망지역</span>
+            <span th:text="${hope.region1}"></span>
+            <span th:if="${hope.region2 != null ? ', ${hope.region2}' : ''}"></span>
+            <span th:if="${hope.region3 != null ? ', ${hope.region3}' : ''}"></span>
+          </p>
+          <p><span class="rs_title">희망직무</span><span th:text="${hope.sectors}"></span></p>
+          <p><span class="rs_title">희망직종</span><span th:text="${hope.job}"></span></p>
+        </div>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(licenseList)}">
+        <div class="title2">자격증</div>
+        <div th:each="license : ${licenseList}">
+          <p><span class="rs_title">자격증 종류</span><span th:text="${license.type}"></span></p>
+          <p><span class="rs_title">자격증명</span><span th:text="${license.lname}"></span></p>
+          <p><span class="rs_title">발행처</span><span th:text="${license.lorg}"></span></p>
+          <p><span class="rs_title">취득일</span><span
+              th:text="${#temporals.format(license.getDate, 'yyyy-MM-dd')}"></span></p>
+        </div>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(oaList)}">
+        <div class="title2">수상 및 활동</div>
+        <div th:each="oa : ${oaList}">
+          <p><span class="rs_title">활동 종류</span><span th:text="${oa.type}"></span></p>
+          <p><span class="rs_title">활동 내용</span><span th:text="${oa.content}"></span></p>
+        </div>
+      </div>
+
+      <div th:if="${not #lists.isEmpty(selfInfoList)}">
+        <div class="title2">자기소개</div>
+        <div th:each="selfInfo : ${selfInfoList}">
+          <p><span class="rs_title">제목</span><span th:text="${selfInfo.title}"></span></p>
+          <p><span class="rs_title">내용</span><span th:text="${selfInfo.scontent}"></span></p>
         </div>
       </div>
     </div>
-
-    <div th:if="${not #lists.isEmpty(careerList)}">
-      <div class="title2">경력</div>
-      <div th:each="career : ${careerList}">
-        <p><span class="rs_title">회사명</span><span th:text="${career.cName}"></span></p>
-        <p><span class="rs_title">재직기간</span><span th:text="${career.careerDuration}"></span></p>
-        <p><span class="rs_title">직급</span><span th:text="${career.rank}"></span></p>
-        <p><span class="rs_title">직무</span><span th:text="${career.position}"></span></p>
-        <p><span class="rs_title">담당업무</span><span th:text="${career.work}"></span></p>
-      </div>
-    </div>
-
-    <div th:if="${not #lists.isEmpty(experienceList)}">
-      <div class="title2">경험</div>
-      <div th:each="experience : ${experienceList}">
-        <p><span class="rs_title">기관/단체명</span><span th:text="${experience.org}"></span></p>
-        <p><span class="rs_title">활동기간</span><span th:text="${#temporals.format(experience.startDay, 'yyyy-MM-dd')}"></span> ~ <span
-            th:text="${#temporals.format(experience.endDay, 'yyyy-MM-dd')}"></span></p>
-        <p><span class="rs_title">내용</span><span th:text="${experience.econtent}"></span></p>
-      </div>
-    </div>
-
-    <div th:if="${not #lists.isEmpty(hopeList)}">
-      <div class="title2">희망 근무 조건</div>
-      <div th:each="hope : ${hopeList}">
-        <p><span class="rs_title">희망지역</span>
-          <span th:text="${hope.region1}"></span>
-          <span th:if="${hope.region2 != null ? ', ${hope.region2}' : ''}"></span>
-          <span th:if="${hope.region3 != null ? ', ${hope.region3}' : ''}"></span>
-        </p>
-        <p><span class="rs_title">희망직무</span><span th:text="${hope.sectors}"></span></p>
-        <p><span class="rs_title">희망직종</span><span th:text="${hope.job}"></span></p>
-      </div>
-    </div>
-
-    <div th:if="${not #lists.isEmpty(licenseList)}">
-      <div class="title2">자격증</div>
-      <div th:each="license : ${licenseList}">
-        <p><span class="rs_title">자격증 종류</span><span th:text="${license.type}"></span></p>
-        <p><span class="rs_title">자격증명</span><span th:text="${license.lname}"></span></p>
-        <p><span class="rs_title">발행처</span><span th:text="${license.lorg}"></span></p>
-        <p><span class="rs_title">취득일</span><span th:text="${#temporals.format(license.getDate, 'yyyy-MM-dd')}"></span></p>
-      </div>
-    </div>
-
-    <div th:if="${not #lists.isEmpty(oaList)}">
-      <div class="title2">수상 및 활동</div>
-      <div th:each="oa : ${oaList}">
-        <p><span class="rs_title">활동 종류</span><span th:text="${oa.type}"></span></p>
-        <p><span class="rs_title">활동 내용</span><span th:text="${oa.content}"></span></p>
-      </div>
-    </div>
-
-    <div th:if="${not #lists.isEmpty(selfInfoList)}">
-      <div class="title2">자기소개</div>
-      <div th:each="selfInfo : ${selfInfoList}">
-        <p><span class="rs_title">제목</span><span th:text="${selfInfo.title}"></span></p>
-        <p><span class="rs_title">내용</span><span th:text="${selfInfo.scontent}"></span></p>
-      </div>
-    </div>
-  </div>
 
     <div th:if="${resume == null}">
       <p>이력서를 찾을 수 없습니다.</p>

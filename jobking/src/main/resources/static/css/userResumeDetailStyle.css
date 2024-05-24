@@ -21,18 +21,18 @@ p {
 }
 
 input[type="button"] {
-    width: 840px; height:20px;
-    border: 0;
-    background-color: #3399ff;
-    color: #fff;
-    font: 900 15px/20px 'Pretendard-Regular';
+    width: 100px; height:30px;
+    border: 1px solid #3399ff;
+   	background-color: #fff;
+    color: #3399ff;
+    font: 900 14px/30px 'Pretendard-Regular';
     box-sizing: border-box;
-    margin: 30px;
-    position: relative; top: 80px; left: 292px;   
+    position: relative; top: 0; left: 700px;
 }
 
 input[type="button"]:hover {
-    background-color: #0056b3;
+    background-color: #3399ff;
+    color: #fff;
     transition-duration: 0.5s;
 }
 
