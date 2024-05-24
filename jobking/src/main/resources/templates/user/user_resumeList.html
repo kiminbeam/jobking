@@ -37,7 +37,7 @@
 					</a>
 				</li>
 				<ul id="icon">
-					<li><img src="/images/수정.png" width="50" height="50"></li>
+					<li><a th:href="@{/user/user_resume_edit(rno=${resume.rno})}"><img src="/images/수정.png" width="50" height="50" ></a></li>
 					<li><img src="/images/삭제.png" width="50" height="50" th:data-rno="${resume.rno}" onclick="deleteItem(this)"></li>
 				</ul>
 			</ul>
@@ -69,7 +69,7 @@
 			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 		</footer>
 	</div>
-	<script>
+	<script th:inline="javascript">
 		function toggleCheck(checkbox) {
 			// 모든 체크박스 가져오기
 			var checkboxes = document
