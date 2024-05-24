@@ -569,7 +569,7 @@ public class JController {
 		
 		userReply.setUserBoard(board);
 		userReply.setUser(u);
-		userReply.setContent(content);
+		//userReply.setContent(content);
 		
 		userReplyRepo.save(userReply);
 		return "redirect:/user/user_community_detail?ubno=" + ubno;

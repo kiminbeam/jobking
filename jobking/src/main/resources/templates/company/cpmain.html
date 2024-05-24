@@ -1,141 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link rel="stylesheet" type="text/css" href="/css/com_nav.css">
+<link rel="stylesheet" type="text/css" href="/css/com_mainpage.css">
 <style>
-body{
-		font-family: Arial, sans-serif;
-	}
-	
-	#dropdown {
-		background-color: white;
-	}
-	
-	.navbar{
-		background-color: black;
-		overflow: hidden;
-		
-		top:0;
-		width:100%;
-		z-index:1000;
-		height: 100px;
-	}
-	
-	.navbar a{
-		float: left;
-		display:block;
-		color:black;
-		text-align:center;
-		padding: 14px 20px;
-		text-decoration: none;
-		
-	}
-	
-	<!---->
-	.navbar a:hover{
-		background-color: #ddd;
-		color: black;
-	}
-	
-	#dropdown{
-		float: left;
-		overflow: hidden;
-	}
-	
-	
-	#dropdown #dropbtn{
-		font-size: 16px;
-		border: none;
-		outline:none;
-		color:black;
-		padding: 14px 20px;
-		background-color: inherit;
-		font-family: inherit;
-		margin: 0;
-	}
-	
-	.navbar a:hover, #dropdown:hover #dropbtn {
-		background-color: #ddd;
-		color: black;
-	}
-	
-	#dropdown-content {
-		display: none;
-		position: absolute;
-		background-color: #f9f9f9;
-		min-width: 160px;
-		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-		z-index:1;
-	}
-	
-	#dropdown-content a{
-		float: none;
-		color: balck;
-		padding: 12px 16px;
-		text-decoration: none;
-		display: block;
-		text-align: left;
-	}
-	
-	#dropdown-content a:hover{
-		background-color: white;
-	}
-	
-	#dropdown:hover #dropdown-content{
-		display: block;
-	}
-	
-	#content {
-		background-color: white;
-	}
-	
-	.container {
-		display: flex;
-		justify-content: space-around;
-		width: 80%;
-		margin: 0 auto;
-		padding-top: 50px;
-	}
-	
-	#box{
-		width: 340px;
-		height: 135px;
-		background-color: darkgray;
-		display: flex;
-		justify-content: center;
-		align-items:center;
-		color: white;
-		font-size:20px;
-	}
-	
-	.match{
-		display: flex;
-		justify-content: space-around;
-		width:1140px;
-		padding-top: 200px;
-		margin: 0 auto;
-	}
-	
-	#human{
-		width:200px;
-		height:200px;
-		border: 1px solid black;
-		
-	}
-	
-	.miniboard{
-		margin: 0 auto;
-		width:1140px;
-		height:320px;
-		background-color: darkgray;
-		margin-bottom: 200px;
-	}
-	
-	#boardcontent{
-		margin-bottom: 50px;
-	}
-	
 	.footer{
 		padding-top:20px;
 		border-top:1px solid darkgray;
@@ -144,79 +14,51 @@ body{
 </head>
 
 <body>
-<div class="navbar">
-	<div id="dropdown"><a href="">logo</a></div>
-	<div id="dropdown">
-		<button id="dropbtn">공고*지원자관리</button>
-		<div id="dropdown-content">
-			<a href="jobadList" id="content">채용공고</a>
-			<a href="" id="content">입사지원관리</a>
+	<header>
+		<div th:replace="~{/fragments/company_nav.html :: fragment-company_nav}"></div>
+	</header>
+	<div class="container">
+		<div id="ad-container">
+			<div class="box">광고1 </div>
+			<div class="box">광고2 </div>
+			<div class="box">광고3 </div>
 		</div>
 	</div>
-	<div id="dropdown">
-		<button id="dropbtn">회사정보관리</button>
-		<div id="dropdown-content">
-			<a href=" " id="content">기본정보관리</a>
-			<a href=" " id="content">내기업평점보기</a>		
+	
+	<div class="match">
+		<div class="box human">구직자1</div>
+		<div class="box human">구직자2</div>
+		<div class="box human">구직자3</div>
+		<div class="box human">구직자4</div>
+		<div class="box human">구직자5</div>
+	</div>
+	
+	<div class="miniboard">
+		<div id="boardcontent">
+			<h3>title</h3><br>
+			<p>content/content/content/content/</p>
+		</div>
+		<div id="boardcontent">
+			<h3>title2</h3><br>
+			<p>content2/content2/content2/content2/</p>
 		</div>
 	</div>
-	<div id="dropdown">
-		<button id="dropbtn">인재관리</button>
-		<div id="dropdown-content">
-			<a href=" " id="content">포지션제안인재</a>
-			<a href=" " id="content">기업구독인재</a>
-			<a href=" " id="content">스크랩한인재</a>
-			<a href=" " id="content">최근 본 인재</a>		
-		</div>
-	</div>
-	<div id="dropdown">
-		<a href=" ">인재 검색</a>
-	</div>
 	
-	<a href=" " id="content">로그인</a>
-	<a href=" " id="content">유저서비스</a>
-</div>
+	<footer class="footer">
+		고객센터 1588-9350 (평일 09:00 ~ 19:00 토요일 09:00 ~ 15:00)  FAX 02-565-9351  Email helpdesk@jobkorea.co.kr<br>
+		대표 : 윤현준  사업자등록번호 : 110-81-34859사업자정보 확인 > 주소 : 서울시 서초구 서초대로 301 동익성봉빌딩 16~18층<br>
+		통신판매업 신고번호 : 2016-서울서초-0287호 직업정보제공사업 신고번호 : 서울청 제2016-11호 유료직업소개업 등록번호 : 제2002-3210195-14-5-
+	</footer>
 
-<div class="container">
-	<div id="box">광고1 </div>
-	<div id="box">광고2 </div>
-	<div id="box">광고3 </div>
-</div>
-
-<div class="match">
-	<div id="human">구직자1</div>
-	<div id="human">구직자2</div>
-	<div id="human">구직자3</div>
-	<div id="human">구직자4</div>
-	<div id="human">구직자5</div>
-</div>
-
-<div class="miniboard">
-	<div id="boardcontent">
-		<h3>title</h3><br>
-		<p>content/content/content/content/</p>
-	</div>
-	<div id="boardcontent">
-		<h3>title2</h3><br>
-		<p>content2/content2/content2/content2/</p>
-	</div>
-</div>
-
-<footer class="footer">
-	고객센터 1588-9350 (평일 09:00 ~ 19:00 토요일 09:00 ~ 15:00)  FAX 02-565-9351  Email helpdesk@jobkorea.co.kr<br>
-	대표 : 윤현준  사업자등록번호 : 110-81-34859사업자정보 확인 > 주소 : 서울시 서초구 서초대로 301 동익성봉빌딩 16~18층<br>
-	통신판매업 신고번호 : 2016-서울서초-0287호 직업정보제공사업 신고번호 : 서울청 제2016-11호 유료직업소개업 등록번호 : 제2002-3210195-14-5-
-</footer>
-
-<script>
-	const miniboard = document.querySelector('.miniboard');
-	
-	const children = miniboard.children;
-	
-	for(let i = 0; i < children.length; i++){
-		children[i].style.backgroundColor = 'darkgray';
-	}
-</script>
+	<script>
+		const miniboard = document.querySelector('.miniboard');
+		
+		const children = miniboard.children;
+		
+		for(let i = 0; i < children.length; i++){
+			children[i].style.backgroundColor = 'darkgray';
+		}
+	</script>
 	
 
 </body>
