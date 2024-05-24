@@ -18,17 +18,19 @@
 			<div class="title1">마이페이지</div>
 			<div class="title2">이력서 관리</div>
 		</div>
-		<div>
+		<div id="btn_wrap">
 			<input type="button" value="대표 이력서 설정하기" onclick="showSecondList()" id="btn1" style="display: block;">
 			<input type="button" value="이력서 작성하기" onclick="showResumeForm()" id="btn5" style="display: block;">
+			<input type="button" value="대표 설정" onclick="setRepresentative()" id="btn2" style="display: none;">
 		</div>
+		
 		<div>
 			<input type="hidden" id="resumeCount" th:value="${resumeCount}" />
 		</div>
 		<!-- 첫 번째 이력서 목록 -->
-		<div id="resumeListDiv" style="display: block" class="resumeList">
+		<div id="resumeListDiv" style="display: block">
 	
-			<ul th:each="resume, resumeIndex : ${resumeList}">
+			<ul th:each="resume, resumeIndex : ${resumeList}" class="resumeList">
 				<li>
 					<span class="representative" th:if="${#strings.equals(resume.def, '1')}"
 						style="display: inline;">[ 대표 이력서 ]</span>
@@ -62,13 +64,11 @@
 			</ul>
 		</div>
 
-		<div id="btn2" style="display: none">
-			<input type="button" value="대표 설정" onclick="setRepresentative()">
-		</div>
 		<footer>
 			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
 		</footer>
-	</div>
+
+</div>
 	<script th:inline="javascript">
 		function toggleCheck(checkbox) {
 			// 모든 체크박스 가져오기
