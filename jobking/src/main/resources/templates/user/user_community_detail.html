@@ -1,103 +1,112 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="/css/style.css">
-<link rel="stylesheet" type="text/css" href="/css/user_community_detail.css">
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/user_community_detail.css">
 </head>
+
 <body>
-<div id="wrap">
-<header>
-	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
-</header>
-<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-<main>
-		<div>
-			<div class="container">
+	<div id="wrap">
+		<header>
+			<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+		</header>
+		<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+		<main>
+			<div>
+				<div class="container">
 					<div class="alertTab">
-						<span>📢 [공지사항]  </span>
-						<a th:if="${latestAlertBoard != null}" th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
+						<span>📢 [공지사항] </span>
+						<a th:if="${latestAlertBoard != null}" th:text="${latestAlertBoard.title}"
+							th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
 					</div>
-			<table class="content_container">
-				<tr> 
-					<th id="title">[[${userBoard.title}]]</th>
-				</tr>
-				<tr class="detail_container"> 
-					<td><span>[[${userBoard.regdate}]]</span><span>[[${userBoard.user.uname}]]</span> 
-					<a th:if="${session.id == userBoard.user.uid}" th:href="@{/user/user_communityForm_edit(ubno=${userBoard.ubno})}">✏️수정하기</a>
-					<a th:if="${session.id == userBoard.user.uid}" th:href="@{/user/user_communityForm_delete(ubno=${userBoard.ubno})}">❌삭제하기</a></td>
-				</tr>
-				<tr > 
-					<td id="boardContent">[[${userBoard.content}]]</td>
-				</tr>
-			</table>
-			<table class="reply_container">
-				<tr>
-				<td>
-					<input type="text" id="myReply" placeholder="댓글을 작성해보세요">
-					<button onclick="addReply()">등록</button>
-				</td>
-				</tr>
-				<tr th:if="${userReply !=null }" th:each="userReply,userReplyStat : ${userReplyList}"> 
-					<th id="writer">[[${userReply.writer}]]</th>
-					<td>[[${userReply.regdate}]]</td>
-					<td>[[${userReply.content}]]</td>
-					<td class="replyNo" style="display:none;">[[${userReply.replyno}]]</td>
-					<td th:if="${userReply.user.uid == session.id}">
-						<button class="editReplyBtn" >수정하기</button> 
-						<button class="deleteReplyBtn">삭제하기</button>
-					</td>
-				</tr>
-			</table>
-		</div>
-	
-    </div>
-</main>
-	<footer>
-		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
-	</footer>
+					<table class="content_container">
+						<tr>
+							<th id="title">[[${userBoard.title}]]</th>
+						</tr>
+						<tr class="detail_container">
+							<td><span>[[${userBoard.regdate}]]</span><span>[[${userBoard.user.uname}]]</span>
+								<a th:if="${session.id == userBoard.user.uid}"
+									th:href="@{/user/user_communityForm_edit(ubno=${userBoard.ubno})}">✏️수정하기</a>
+								<a th:if="${session.id == userBoard.user.uid}"
+									th:href="@{/user/user_communityForm_delete(ubno=${userBoard.ubno})}">❌삭제하기</a>
+							</td>
+						</tr>
+						<tr>
+							<td id="boardContent">[[${userBoard.content}]]</td>
+						</tr>
+					</table>
 
-</div>
+					<div id="reply_wrap">
+						<input type="text" id="myReply" placeholder="댓글을 작성해보세요">
+						<button onclick="addReply()" id="regBtn">등록</button>
+					</div>
 
-<script th:inline="javascript">
+					<table class="reply_container">
+						<tr th:if="${userReply !=null }" th:each="userReply,userReplyStat : ${userReplyList}">
+							<th id="writer">[[${userReply.writer}]]</th>
+							<td>[[${userReply.regdate}]]</td>
+							<td class='contentEl'>[[${userReply.content}]]</td>
+							<td class="replyNo" style="display:none;">[[${userReply.replyno}]]</td>
+							<td th:if="${userReply.user.uid == session.id}" id="repBtn">
+								<button class="editReplyBtn">수정</button>
+								<button class="deleteReplyBtn">삭제</button>
+							</td>
+						</tr>
+					</table>
+				</div>
 
-const deleteReplyBtns = document.querySelectorAll(".deleteReplyBtn");
-const editReplyBtns = document.querySelectorAll(".editReplyBtn");
+			</div>
+		</main>
+		<footer>
+			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+		</footer>
 
-function addReply(){
-	const content = document.querySelector("#myReply").value;
-	console.log(content);
-	location.href="/user/userReply_insert?ubno="+[[${userBoard.ubno}]]+"&&content="+ content;
-}
+	</div>
 
-deleteReplyBtns.forEach(btn=>{
-	btn.addEventListener("click", function(e){
-		const replyNo = e.target.parentElement.parentElement.querySelector(".replyNo").innerText;
-		location.href="/user/user_delete_reply?replyno=" +replyNo +"&&ubno=" + [[${userBoard.ubno}]];
-	})
-})
-editReplyBtns.forEach(btn=>{
-	btn.addEventListener("click", function(e){
-		const replyNo = e.target.parentElement.parentElement.querySelector(".replyNo").innerText;
-		const xhttp = new XMLHttpRequest();
-		xhttp.onload = function() {
-		    document.querySelector("#editReply").value=this.responseText;
-		    }
-		  xhttp.open("GET", "/user/user_getReply?replyno="+ replyNo, true);
-		  xhttp.send();
-		
-		e.target.innerHTML = "<input type='text' id='editReply' value=''><button onclick='editReply(event)'>수정</button>"
-		
-	})
-})
+	<script th:inline="javascript">
 
-function editReply(){
-	const replyNo = event.target.parentElement.parentElement.parentElement.querySelector(".replyNo").innerText;
-	const content = document.querySelector("#editReply").value;
-	location.href="/user/user_edit_reply?replyno=" +replyNo +"&&content=" + content+"&&ubno=" + [[${userBoard.ubno}]];
-}
+		const deleteReplyBtns = document.querySelectorAll(".deleteReplyBtn");
+		const editReplyBtns = document.querySelectorAll(".editReplyBtn");
 
-</script>
+		function addReply() {
+			const content = document.querySelector("#myReply").value;
+			console.log(content);
+			location.href = "/user/userReply_insert?ubno=" + [[${ userBoard.ubno }]] + "&&content=" + content;
+		}
+
+		deleteReplyBtns.forEach(btn => {
+			btn.addEventListener("click", function (e) {
+				const replyNo = e.target.parentElement.parentElement.querySelector(".replyNo").innerText;
+				location.href = "/user/user_delete_reply?replyno=" + replyNo + "&&ubno=" + [[${ userBoard.ubno }]];
+			})
+		})
+		editReplyBtns.forEach(btn => {
+			btn.addEventListener("click", function (e) {
+				e.target.style.display='none';
+				const replyNo = e.target.parentElement.parentElement.querySelector(".replyNo").innerText;
+				const xhttp = new XMLHttpRequest();
+				xhttp.onload = function () {
+					document.querySelector("#editReply").value = this.responseText;
+				}
+				xhttp.open("GET", "/user/user_getReply?replyno=" + replyNo, true);
+				xhttp.send();
+
+				e.target.parentElement.parentElement.querySelector(".contentEl").innerHTML = "<input type='text' id='editReply' value=''><button onclick='editReply(event)' id='editBtn'>수정</button>"
+
+			})
+		})
+
+		function editReply() {
+			const replyNo = event.target.parentElement.parentElement.parentElement.querySelector(".replyNo").innerText;
+			const content = document.querySelector("#editReply").value;
+			location.href = "/user/user_edit_reply?replyno=" + replyNo + "&&content=" + content + "&&ubno=" + [[${ userBoard.ubno }]];
+			
+		}
+
+	</script>
 </body>
+
 </html>
