@@ -11,6 +11,7 @@
     padding: 20px;
     height: 100vh; /* Full height */
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    
 }
 
 #sidebar ul {
@@ -48,4 +49,5 @@
     background-color: #fff;
     height: 100vh;
     overflow-y: auto;
+    margin-top: 20px;
 }

@@ -13,9 +13,9 @@ body {
     height: 300px; /* Adjust based on how much vertical space you need */
 }
 
-.box {
-    width: 100px; /* Make this value equal to height for a square shape */
-    height: 100px; /* Make this value equal to width for a square shape */
+.ad-box {
+    width: 400px; /* Make this value equal to height for a square shape */
+    height: 200px; /* Make this value equal to width for a square shape */
     margin: 10px;
     background-color: lightgray;
     display: flex;
@@ -30,9 +30,18 @@ body {
     padding: 20px;
 }
 
-.human {
+.human-box {
+	width: 200px;
+	height: 200px;
+	margin: 10px;
     background-color: white;
     color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 2px solid balck;
 }
 
 .match {
@@ -44,10 +53,35 @@ body {
 
 .miniboard {
     padding: 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.miniboard-header {
+	display: flex;
+	justify-content: space-between; /* 좌우로 나뉘어서 배치 */
+    align-items: center; /* 세로로 중앙 정렬 */
+    margin-bottom: 10px;
+    background-color: transparent;
+    border-bottom: 1px solid darkgray;
+}
+
+.miniboard-header h3 {
+    margin: 0;
+}
+
+.miniboard-header a {
+    color: blue;
+    text-decoration: none;
 }
 
 #boardcontent {
     margin-bottom: 20px;
+    background-color: darkgray;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .footer {
