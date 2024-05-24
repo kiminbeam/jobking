@@ -76,18 +76,8 @@
 		})
 	})
 	
-	editBtns.forEach(btn=>{
-		btn.addEventListener("click", function(e){
-			let table = e.target.parentElement.parentElement.parentElement.classList;
-			let no = e.target.querySelector("span").innerText;
-			
-			if(table =="userBoard"){
-				location.href="/user/user_communityForm_edit?ubno="+no;
-			}else if(table =="userReply"){
-				location.href="/user/edit_reply?replyno="+no;
-			}
-		})
-	})
+
+	
 
 	
 </script>
