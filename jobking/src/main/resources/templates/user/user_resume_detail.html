@@ -90,7 +90,7 @@
       <div th:if="${not #lists.isEmpty(licenseList)}">
         <div class="title2">자격증</div>
         <div th:each="license : ${licenseList}">
-          <p><span class="rs_title">자격증 종류</span><span th:text="${license.type}"></span></p>
+          <p><span class="rs_title">자격증 종류</span><span th:text="${license.ltype}"></span></p>
           <p><span class="rs_title">자격증명</span><span th:text="${license.lname}"></span></p>
           <p><span class="rs_title">발행처</span><span th:text="${license.lorg}"></span></p>
           <p><span class="rs_title">취득일</span><span

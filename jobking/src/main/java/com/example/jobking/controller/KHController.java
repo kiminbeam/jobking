@@ -295,9 +295,51 @@ public class KHController {
 	}
 
 	@RequestMapping("/user_resume_edit")
-	public String userResumeEdit(HttpServletRequest request, Model model, @RequestParam("rno") Long rno) {
+	public String userResumeEdit(HttpServletRequest request, Model model, @RequestParam("rno") Long rno) throws IOException {
 		String uid = (String) request.getSession().getAttribute("id");
 
+		// job_category.json 데이터 읽어오기
+				ObjectMapper objectMapper = new ObjectMapper();
+				List<Map<String, Object>> jobCategories = objectMapper.readValue(
+						new ClassPathResource("static/json/job_category.json").getFile(),
+						new TypeReference<List<Map<String, Object>>>() {
+						});
+				model.addAttribute("jobCategories", jobCategories);
+
+				// job.json 데이터 읽어오기
+				List<Map<String, Object>> allJobs = objectMapper.readValue(
+						new ClassPathResource("static/json/job.json").getFile(),
+						new TypeReference<List<Map<String, Object>>>() {
+						});
+				model.addAttribute("allJobs", allJobs);
+				
+				// sector_category.json 데이터 읽어오기
+				List<Map<String, Object>> sectorCategories = objectMapper.readValue(
+						new ClassPathResource("static/json/sector_category.json").getFile(),
+						new TypeReference<List<Map<String, Object>>>() {
+						});
+
+				// sector.json 데이터 읽어오기
+				List<Map<String, Object>> allSectors = objectMapper.readValue(
+						new ClassPathResource("static/json/sector.json").getFile(),
+						new TypeReference<List<Map<String, Object>>>() {
+						});
+				
+				// korea-administrative-district.json 데이터 읽어오기
+				List<Map<String, Object>> regionData = objectMapper.readValue(
+						new ClassPathResource("static/json/korea-administrative-district.json").getFile(),
+						new TypeReference<List<Map<String, Object>>>() {
+						});
+				Map<String, List<String>> regions = regionData.stream()
+						.collect(Collectors.toMap(map -> map.keySet().iterator().next(), // key 값 (서울특별시, 부산광역시 등)
+								map -> (List<String>) map.values().iterator().next() // value 값 (구, 군 리스트)
+						));
+				
+				model.addAttribute("regions", regions);
+				model.addAttribute("sectorCategories", sectorCategories);
+		
+		
+		
 		Optional<Resume> resumeOpt = ResumeRepository.findResumeWithUserById(uid, rno);
 		if (resumeOpt.isPresent()) {
 			Resume resume = resumeOpt.get();
@@ -333,6 +375,7 @@ public class KHController {
 		return "/user/user_resume_edit";
 	}
 
+	@Transactional
 	@PostMapping("/user_regupdate")
 	public String update(HttpServletRequest request, Model model, 
 			@RequestParam("rno") Long rno,
@@ -383,7 +426,6 @@ public class KHController {
 		        existingSchool.update(school1); // School 엔티티의 update 메서드 호출
 		        SchoolRepository.save(existingSchool);
 		    } else {
-		        // ... (새로운 School 생성 로직)
 		    }
 		}
 		
@@ -393,7 +435,6 @@ public class KHController {
 		        existingCareer.update(career1); 
 		        CareerRepository.save(existingCareer);
 		    } else {
-		        // ... (새로운 Career 생성 로직)
 		    }
 		}
 
@@ -449,6 +490,8 @@ public class KHController {
 
 		ResumeRepository.save(resume);
 
+		System.out.println(resume);
+		
 		return "redirect:/user/user_resumeList";
 	}
 	
