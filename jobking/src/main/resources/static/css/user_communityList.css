@@ -1,7 +1,5 @@
 @charset "UTF-8";
 
-@charset "UTF-8";
-
 .container{
 	width:1200px;
 	margin: 0 auto;
@@ -71,9 +69,7 @@ body{
 .container {
     width: 1200px;
     margin: 50px auto;
-    background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     padding: 20px;
 }
 
@@ -81,7 +77,6 @@ ul.tabs {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: 20px;
     border-bottom: 2px solid #ddd;
 }
 
@@ -100,9 +95,8 @@ ul.tabs li.current {
 }
 .tab-content{
 	display: none;
-	background: white;
 	padding: 15px;
-	
+	background-color: #fff;
 }
 
 .tab-content.current{

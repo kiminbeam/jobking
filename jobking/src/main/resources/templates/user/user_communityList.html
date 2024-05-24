@@ -1,112 +1,115 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link rel="stylesheet" type="text/css" href="/css/style.css">
-<link rel="stylesheet" type="text/css" href="/css/user_communityList.css">
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/user_communityList.css">
 </head>
+
 <body>
-<header>
-	<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
-</header>
-<main>
-	<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
-		<div>
-			<div class="container">
-				<div class="alertTab">
-					<span>📢 [공지사항]  </span>
-					<a th:if="${latestAlertBoard != null}" th:text="${latestAlertBoard.title}" th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
-		        </div>
-		        <button onclick="location.href='/user/user_communityForm_insert'">글 작성하기</button>
-			<ul class="tabs">
-				<li id="seekerTab" class="tab-link current" data-tab="seekerBoard" >구직자</li>
-				<li id="workerTab" class="tab-link" data-tab="workerBoard">재직자</li>
-				<li id="alertTab" class="tab-link" data-tab="alertBoard">공지사항</li>
-				<li id="allTab" class="tab-link" data-tab="allBoard">전체</li>
-			</ul>
-			<div id="seekerBoard" class="tab-content current">
-			<h3>총  [[${#lists.size(t1List)}]] 건</h3>
-				<table>
-					<tr th:each="t1List, t1ListStat : ${t1List}">
-						 <td>
-							 <a th:href="@{/user/user_community_detail(ubno=${t1List.ubno})}">[[${t1List.title}]]</a><br>
-							 <span>[[${t1List.content}]]</span> <br>
-							 <span>[[${t1List.regdate}]]</span>
-						 </td>
-					</tr>
-				</table>
+	<div id="wrap">
+		<header>
+			<div th:replace="~{/fragments/nav.html :: fragment-nav}"></div>
+		</header>
+		<main>
+			<div th:include="~{/fragments/sidebar.html :: fragment-sidebar}"></div>
+			<div>
+				<div class="container">
+					<div class="alertTab">
+						<span>📢 [공지사항] </span>
+						<a th:if="${latestAlertBoard != null}" th:text="${latestAlertBoard.title}"
+							th:href="@{/user/user_community_detail(ubno=${latestAlertBoard.ubno})}"></a>
+					</div>
+					<button onclick="location.href='/user/user_communityForm_insert'">글 작성하기</button>
+					<ul class="tabs">
+						<li id="seekerTab" class="tab-link current" data-tab="seekerBoard">구직자</li>
+						<li id="workerTab" class="tab-link" data-tab="workerBoard">재직자</li>
+						<li id="alertTab" class="tab-link" data-tab="alertBoard">공지사항</li>
+						<li id="allTab" class="tab-link" data-tab="allBoard">전체</li>
+					</ul>
+					<div id="seekerBoard" class="tab-content current">
+						<h3>총 [[${#lists.size(t1List)}]] 건</h3>
+						<table>
+							<tr th:each="t1List, t1ListStat : ${t1List}">
+								<td>
+									<a
+										th:href="@{/user/user_community_detail(ubno=${t1List.ubno})}">[[${t1List.title}]]</a><br>
+									<span>[[${t1List.content}]]</span> <br>
+									<span>[[${t1List.regdate}]]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="workerBoard" class="tab-content">
+						<h3>총 [[${#lists.size(t2List)}]] 건</h3>
+						<table>
+							<tr class="board" th:each="t2List, t2ListStat : ${t2List}">
+								<td>
+									<a
+										th:href="@{/user/user_community_detail(ubno=${t2List.ubno})}">[[${t2List.title}]]</a><br>
+									<span>[[${t2List.content}]]</span> <br>
+									<span>[[${t2List.regdate}]]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="alertBoard" class="tab-content">
+						<h3>총 [[${#lists.size(t3List)}]] 건</h3>
+						<table>
+							<tr th:each="t3List, t3ListStat : ${t3List}">
+								<td>
+									<a
+										th:href="@{/user/user_community_detail(ubno=${t3List.ubno})}">[[${t3List.title}]]</a><br>
+									<span>[[${t3List.content}]]</span> <br>
+									<span>[[${t3List.regdate}]]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+					<div id="allBoard" class="tab-content">
+						<h3>총 [[${#lists.size(allList)}]] 건</h3>
+						<table>
+							<tr th:each="allList, allListStat : ${allList}">
+								<td>
+									<a
+										th:href="@{/user/user_community_detail(ubno=${allList.ubno})}">[[${allList.title}]]</a><br>
+									<span>[[${allList.content}]]</span> <br>
+									<span>[[${allList.regdate}]]</span>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+
 			</div>
-			<div id="workerBoard" class="tab-content">
-			<h3>총  [[${#lists.size(t2List)}]] 건</h3>
-				<table>
-					<tr class="board" th:each="t2List, t2ListStat : ${t2List}">
-						 <td>
-						 <a th:href="@{/user/user_community_detail(ubno=${t2List.ubno})}">[[${t2List.title}]]</a><br>
-						 <span>[[${t2List.content}]]</span> <br>
-						 <span>[[${t2List.regdate}]]</span>
-						 </td>
-					</tr>
-				</table>
-			</div>
-			<div id="alertBoard" class="tab-content">
-			<h3>총  [[${#lists.size(t3List)}]] 건</h3>
-				<table >
-					<tr th:each="t3List, t3ListStat : ${t3List}">
-						 <td>
-						 <a th:href="@{/user/user_community_detail(ubno=${t3List.ubno})}">[[${t3List.title}]]</a><br>
-						 <span>[[${t3List.content}]]</span> <br>
-						 <span>[[${t3List.regdate}]]</span>
-						 </td>
-					</tr>
-				</table>
-			</div>
-			<div id="allBoard" class="tab-content">
-			<h3>총  [[${#lists.size(allList)}]] 건</h3>
-				<table >
-					<tr th:each="allList, allListStat : ${allList}">
-						 <td>
-						 <a th:href="@{/user/user_community_detail(ubno=${allList.ubno})}">[[${allList.title}]]</a><br>
-						 <span>[[${allList.content}]]</span> <br>
-						 <span>[[${allList.regdate}]]</span>
-						 </td>
-					</tr>
-				</table>
-			</div>
-		</div>
-	
-    </div>
-</main>
-	<footer>
-		<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
-	</footer>
+		</main>
+		<footer>
+			<div th:replace="~{/fragments/footer.html :: fragment-footer}"></div>
+		</footer>
+
+	</div>
+
+	<script>
+
+		const tabs = document.querySelectorAll(".tab-link");
+		const contents = document.querySelectorAll(".tab-content")
 
 
-<script>
-
-const tabs = document.querySelectorAll(".tab-link");
-const contents = document.querySelectorAll(".tab-content")
-
-
-tabs.forEach(tab=>{
-	tab.addEventListener("click", function(e){
-		const id = e.target.getAttribute("data-tab")
-		tabs.forEach(t=>{t.classList.remove("current")})
-		contents.forEach(content=>{content.classList.remove("current")})
-		tab.classList.add("current");
-		document.querySelector("#"+id).classList.add("current")
-	})
-})
+		tabs.forEach(tab => {
+			tab.addEventListener("click", function (e) {
+				const id = e.target.getAttribute("data-tab")
+				tabs.forEach(t => { t.classList.remove("current") })
+				contents.forEach(content => { content.classList.remove("current") })
+				tab.classList.add("current");
+				document.querySelector("#" + id).classList.add("current")
+			})
+		})
 
 
 
-
-
-
-
-
-
-
-</script>
+	</script>
 </body>
+
 </html>
