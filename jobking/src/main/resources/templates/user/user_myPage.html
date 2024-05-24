@@ -53,7 +53,7 @@
 					</tr>
 					<tr th:each="resumeList, stat :${resumeList}">
 						<td>[[${stat.count}]]</td>
-						<td><a th:href="@{user/user_resume_detail(rno=${resumeList.rno})}">[[${resumeList.rtitle}]]</a></td>
+						<td><a th:href="@{user_resume_detail(rno=${resumeList.rno})}">[[${resumeList.rtitle}]]</a></td>
 						<td th:text="${resumeList?.def == '1' ? '대표 이력서' : ''}">[[${resumeList?.def ?: ''}]]</td>
 					</tr>
 				</table>

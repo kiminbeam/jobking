@@ -527,10 +527,20 @@ public class JController {
 		userReplyRepo.delete(userReplyRepo.findById(replyno).get());
 		return "redirect:/user/user_myBoard_list";
 	}
-	@RequestMapping("/user_delete_reply") // 상세에서 Ajax로 댓삭제
-	public @ResponseBody String userDeleteReply(@RequestParam("replyno") Long replyno, Model model) {
+	@RequestMapping("/user_delete_reply") // 상세에서댓삭제
+	public String userDeleteReply(@RequestParam("replyno") Long replyno, Model model,@RequestParam("ubno") Long ubno) {
 		userReplyRepo.delete(userReplyRepo.findById(replyno).get());
-		return "done";
+		return "redirect:/user/user_community_detail?ubno="+ubno;
+	}
+	@RequestMapping("/user_edit_reply") // 상세에서댓수정
+	public String userEditReply(@RequestParam("replyno") Long replyno, Model model,@RequestParam("ubno") Long ubno) {
+		userReplyRepo.delete(userReplyRepo.findById(replyno).get());
+		return "redirect:/user/user_community_detail?ubno="+ubno;
+	}
+	@RequestMapping("/user_getReply") // 상세에서댓정보가져오기
+	public @ResponseBody String userGetReply(@RequestParam("replyno") Long replyno) {
+		String re = userReplyRepo.findById(replyno).get().getContent().toString();
+		return re;
 	}
 	@RequestMapping("/user_communityList")
 	public void userCommunityList(Model model) {
@@ -560,19 +570,17 @@ public class JController {
 	
 	//댓글작성
 	@RequestMapping("/userReply_insert")
-	public String insertUserReply(@RequestParam("ubno") Long ubno, @RequestParam("uid") String uid, @RequestParam("content") String content ,UserReply userReply,HttpServletRequest request) {
-		Optional<UserBoard> list= userBoardRepo.findById(ubno);
-		UserBoard board = list.get();
-		
-		Optional<User> user = userRepo.findById(uid);
-		User u = user.get();
-		
-		userReply.setUserBoard(board);
-		userReply.setUser(u);
-		//userReply.setContent(content);
-		
+	public String insertUserReply(@RequestParam("ubno") Long ubno, @RequestParam("content") String content,HttpServletRequest request) {
+		System.out.println("컨트롤러 실행ㅇㅇㅇ");
+		String uid = (String) request.getSession().getAttribute("id");
+		UserBoard ub = userBoardRepo.findById(ubno).get();
+		User user = userRepo.findById(uid).get();
+		UserReply userReply = new UserReply();
+		userReply.setUserBoard(ub);
+		userReply.setUser(user);
+		userReply.setContent(content);
 		userReplyRepo.save(userReply);
-		return "redirect:/user/user_community_detail?ubno=" + ubno;
+		return "redirect:/user/user_community_detail?ubno="+ubno;
 	}
 	
 	@RequestMapping("/user_communityForm_insert")//등록 화면
