@@ -31,7 +31,8 @@
 			</ul>
 		</div>
 		<div id="resumeForm">
-			<form method="post" th:action="@{/user/user_resume(rno=${rno})}">
+			<form method="post" th:action="@{/user/user_regupdate}">
+			<input type="hidden" name="rno" th:value="${resume.rno}">
 				<!-- 이력서 제목 -->
 				<div>
 					이력서 제목 <em class="em1">[필수] </em>
@@ -376,9 +377,9 @@
                 </select>
             </td>
             <td>
-                <input type="date" name="accDate" title="입학일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="accDate" title="입학일자">
                 <span>~</span>
-                <input type="date" name="gradDate" title="졸업일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="gradDate" title="졸업일자">
             </td>
             <td><input type="text" name="major" placeholder="내용을 입력해주세요."></td>
             <td><input type="text" name="score" placeholder="내용을 입력해주세요."></td>
@@ -422,9 +423,9 @@
                 <input type="text" name="cName" placeholder="내용을 입력해주세요.">
             </td>
             <td>
-                <input type="date" name="startDate" id="startDate" title="입사일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="startDate" id="startDate" title="입사일자">
                 <span>~</span>
-                <input type="date" name="endDate" id="endDate" title="퇴사일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="endDate" id="endDate" title="퇴사일자">
             </td>
             <td>
                 <input type="text" name="rank" id="rank" placeholder="내용을 입력해주세요.">
@@ -479,9 +480,9 @@
                 <input type="text" name="org" id="org" placeholder="내용을 입력해주세요.">
             </td>
             <td>
-                <input type="date" name="startDay" id="startDay" title="시작일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="startDay" id="startDay" title="시작일자">
                 <span>~</span>
-                <input type="date" name="endDay" id="endDay" title="종료일자" placeholder="yyyy.mm.dd" maxlength="10">
+                <input type="date" name="endDay" id="endDay" title="종료일자">
             </td>
             <td>
                 <input type="text" name="econtent" placeholder="내용을 입력해주세요.">
@@ -528,7 +529,7 @@
                     <input type="text" name="lorg" placeholder="내용을 입력해주세요.">
                 </td>
                 <td>
-                    <input type="date" name="getDate" id="getDate" title="취득일" placeholder="yyyy.mm.dd" maxlength="10">
+                    <input type="date" name="getDate" id="getDate" title="취득일">
                 </td>
                 <td>
                     <button type="button" class="deleteRowButton4">삭제</button>
