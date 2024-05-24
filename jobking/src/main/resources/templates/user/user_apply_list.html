@@ -43,8 +43,11 @@
                         <td>[[${apply.jobAd.position2}]]</td>
                         <td>[[${apply.jobAd.sector2}]]</td>
                         <td>[[${apply.regdate}]]</td>
-                        <td>[[${apply.status}]]</td>
-                        <!--                     <td class="deleteBtn"><a th:href="@{/user/deleteUserApplyList(ano=${apply.ano})}">지원철회</a></td> -->
+                        <td
+                            th:text="${apply.status == 0 ? '지원완료' : (apply.status == 1 ? '면접제안' : (apply.status == 2 ? '면접완료' : ''))}">
+                            [[${apply.status == 0 ? '지원완료' : (apply.status == 1 ? '면접제안' : (apply.status == 2 ? '면접완료' :
+                            ''))}]]
+                        </td>
                         <td class="deleteBtn">
                             <span style="display:none;">[[${apply.ano}]]</span>
                             ❌
